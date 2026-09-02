@@ -2,29 +2,33 @@
 
 **Status:** In progress. This document accumulates verified findings as Phase 0 runs, per task P0-16 — it is not written only at the end. Everything below is either a direct reading of the shipping SDK or the output of a real program run on this machine, not a claim from memory or documentation.
 
-**Environment:** macOS 26 (SDK MacOSX26.5), Xcode 26.6, Swift 6.3.3, Apple silicon Mac, Apple Intelligence **enabled**. `SystemLanguageModel.default.availability == .available` on this machine — see finding 5.
+**Environment:** macOS 26 (SDK MacOSX26.5), **Xcode 26.6 release toolchain only — no beta Xcode installed on this machine at the time of this finding** (see task M0-16, still blocked for the same reason), Swift 6.3.3, Apple silicon Mac, Apple Intelligence **enabled**. `SystemLanguageModel.default.availability == .available` on this machine — see finding 5.
 
 ---
 
-## 1. `CoreAI.framework` does not exist
+## 1. `CoreAI.framework` — not present in the release SDK; **status pending beta verification**
 
-**Resolves part of `PLANNING.md` §6 open question 1.**
+**Update 2026-09-02, same day as the original finding:** the user reports Core AI is a beta framework and will install the beta toolchain to check. The finding below is accurate for what was actually inspected — the release SDK — but is **not** a final verdict on whether Core AI exists at all. Do not treat "resolved" (as this was briefly marked in `PLANNING.md` §6 and `TASKS.md` P0-03) as settled until re-checked against the beta SDK. Reverted to in-progress pending that check.
 
-The PRD (§1 Executive Summary, R5) asserts "Core AI has replaced Core ML as the modern on-device ML runtime." Searched the actual shipping SDK:
+**Resolves part of `PLANNING.md` §6 open question 1 — partially, pending the above.**
+
+The PRD (§1 Executive Summary, R5) asserts "Core AI has replaced Core ML as the modern on-device ML runtime." Searched the **release** SDK (Xcode 26.6, MacOSX26.5.sdk — no beta installed at the time):
 
 ```
 $ ls MacOSX26.5.sdk/System/Library/Frameworks/ | grep -i "coreml\|coreai"
 CoreML.framework
 ```
 
-- `CoreML.framework` still exists, unreplaced.
-- `CoreAI.framework` does not exist anywhere in the SDK — zero matches for "CoreAI" across the entire SDK tree (frameworks, headers, module maps).
+- `CoreML.framework` still exists, unreplaced, in the release SDK.
+- `CoreAI.framework` does not appear anywhere in the release SDK — zero matches for "CoreAI" across the entire SDK tree (frameworks, headers, module maps).
 
-**Conclusion: Core AI, as described in the PRD, does not exist in the shipping SDK.** `FR-004`'s `CoreAIModelProvider`, and every other PRD/PLANNING reference to Core AI, describe a framework that is not real as of this SDK. This is not a naming or availability nuance — the framework is simply absent.
+**Conclusion, correctly scoped: Core AI is absent from the current release SDK.** Whether it exists in a beta SDK — which would make the PRD's premise correct, just ahead of general release rather than false — is unverified and is the very next thing to check once the beta toolchain is installed. `FR-004`'s `CoreAIModelProvider` and other PRD/PLANNING references should not be treated as debunked on the strength of this finding alone.
 
-## 2. Foundation Models has no third-party / BYO-LLM / MLX registration API
+## 2. Foundation Models — no third-party / BYO-LLM / MLX registration API found in the release interface; **also pending beta verification**
 
-**Resolves the other half of open question 1.**
+**Same caveat as finding 1:** this was checked against `FoundationModels`' release `.swiftinterface` only. `FoundationModels` itself is GA, not beta, but BYO-LLM/MLX registration could plausibly still be a beta-only *capability* added to an already-GA framework (e.g. via new API surfacing in a beta SDK's `.swiftinterface` for the same module) rather than requiring a wholly new framework. Not treating this as fully settled either, pending the same beta-toolchain check as finding 1.
+
+**Resolves the other half of open question 1 — partially, pending the above.**
 
 The PRD (§1, §4 G1, FR-004, R5) repeatedly asserts Foundation Models "now accepts third-party and custom LLM providers (including MLX models) directly." Read the actual public API surface directly from the framework's `.swiftinterface` (the real compiled interface, not documentation):
 
@@ -48,11 +52,13 @@ extension SystemLanguageModel.Adapter {
 
 This is Apple's own LoRA-style fine-tuning adapter mechanism for **specializing Apple's own on-device base model** — not a mechanism for registering an arbitrary third-party or MLX model as the backing LLM. There is no API that lets an app supply its own model weights/runtime and have `SystemLanguageModel` or `LanguageModelSession` use them instead of Apple's model.
 
-**Conclusion: the PRD's "BYO-LLM" premise, as described, does not exist.** `SystemLanguageModel` gives you Apple's on-device model (optionally adapter-specialized), full stop. This is a materially different (and more restrictive) situation than what the PRD's executive summary and R5 assume.
+**Conclusion, correctly scoped: no such mechanism was found in the release interface.** `SystemLanguageModel` gives you Apple's on-device model (optionally adapter-specialized) as far as the release `.swiftinterface` shows. Whether a beta SDK exposes more is the open question — not yet a settled "does not exist."
 
-### Why this matters beyond a factual correction
+### Why this would matter if it holds up — not yet acted on
 
-The PRD's R5 ("Shrinking model-abstraction differentiation") argues LocalAgentKit's `LocalModelProvider` protocol is *less* valuable now because Apple provides model abstraction itself. **Given finding 2, that argument's premise is false.** Apple does not let you swap the underlying model at all through this API. If anything, `LocalModelProvider` as a protocol that could have sibling implementations (a `FoundationModelProvider` wrapping `SystemLanguageModel`, and, separately, a genuinely independent llama.cpp/MLX-direct provider implementing the *same protocol* without going through Apple's API at all) is **more** valuable than the PRD assumed, not less — because Apple isn't providing that swap capability, LocalAgentKit would have to.
+*(This subsection describes the implication **if** findings 1–2 hold after the beta check. It's kept here rather than deleted so the reasoning isn't lost, but nothing in `PLANNING.md` should be treated as finalized on this basis until that check happens.)*
+
+The PRD's R5 ("Shrinking model-abstraction differentiation") argues LocalAgentKit's `LocalModelProvider` protocol is *less* valuable now because Apple provides model abstraction itself. If findings 1–2 hold after beta verification, that argument's premise would be false: Apple would not let you swap the underlying model at all through this API, which would make `LocalModelProvider` (as a protocol with sibling implementations — a `FoundationModelProvider` wrapping `SystemLanguageModel`, and, separately, a genuinely independent llama.cpp/MLX-direct provider implementing the *same protocol*) **more** valuable than the PRD assumed, not less. If the beta check instead confirms BYO-LLM/Core AI exist, this whole subsection is moot and the PRD's original R5 reasoning stands.
 
 ## 3. Context size and token counting ARE exposed
 
@@ -152,8 +158,11 @@ This is relevant to task M1-CO-03 (`AgentTool` protocol design): `AgentTool` is 
 
 Everything above came from static SDK inspection plus ad hoc single-run experiments (in a scratch SwiftPM package, not committed to this repository) — it is **not** a substitute for P0-01 through P0-14 as scoped:
 
+- **Beta SDK check (highest priority next step) — user is installing a beta Xcode/OS toolchain to check whether Core AI and/or BYO-LLM/MLX registration exist there.** Findings 1 and 2 above are not final until this happens; treat them as "absent from release, unknown in beta," not "does not exist." This also unblocks task M0-16 (Xcode beta side-by-side), which was blocked for the identical reason (no beta installed).
 - No formal, repeatable P0-01 spike artifact exists in-repo yet.
 - P0-05/P0-06/P0-07 (the actual 20/10/20-goal evaluation suites) have not been written.
 - P0-09–P0-12 (the actual measured rates) have not been produced — finding 6 is one trial, not a rate.
 - P0-14 (latency/thermal/battery) has not been attempted — this machine can inform macOS latency but not iPhone thermal/battery behavior.
 - The full `GenerationError.refusal` (model-generated refusal, as opposed to `guardrailViolation`) has not been triggered or inspected at runtime.
+
+**Explicitly paused here at the user's direction (2026-09-02)** — not continuing to P0-05 onward, not formalizing the spike in-repo, until the beta check above happens.

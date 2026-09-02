@@ -33,7 +33,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [x] **M0-13** 🔒 **Layering check script** — fail CI if `LocalAgentKitCore`/`LocalAgentKitRuntime` import `FoundationModels`, `CoreAI`, `SwiftData`, `Vision`, `Speech`, `EventKit`, `Contacts`, or `SwiftUI`. Wire into CI. *(This is what keeps M3 true; add it before there is anything to violate it.)*
 - [x] **M0-14** Enable Swift 6 strict concurrency, complete checking, on every target from the first commit
 - [x] **M0-15** Add code-coverage reporting; set the 80% gate on Core + Runtime only (M4)
-- [!] **M0-16** Verify the Xcode beta toolchain builds the package side-by-side with the release toolchain (needed for R4 later) *(blocked 2026-09-02: only one Xcode install — no beta — on the machine this was attempted from; needs a machine with both installed)*
+- [!] **M0-16** Verify the Xcode beta toolchain builds the package side-by-side with the release toolchain (needed for R4 later) *(blocked 2026-09-02: only one Xcode install — no beta — on the machine this was attempted from; user is installing the beta now, which will also unblock P0-03's Core AI check)*
 
 **Exit:** empty package builds green in CI with strict concurrency, formatting, and the layering check all enforced.
 
@@ -46,7 +46,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 ### Setup
 - [~] **P0-01** Bare Xcode app targeting the on-device model — no LocalAgentKit abstractions, no protocols, deliberately disposable *(a bare, disposable SwiftPM executable — not yet an Xcode app, not yet committed in-repo — proved the mechanism works; see docs/phase-0-findings.md. Formalizing this in-repo is a decision flagged to the user, not yet made.)*
 - [~] **P0-02** Verify Foundation Models availability, session lifecycle, and structured-output API on a physical Apple Intelligence device *(availability + a basic respond()/tool-call/transcript round trip verified — on a Mac, not a physical iPhone; full session lifecycle — multi-turn reuse, cancellation, streaming — and @Generable structured output beyond tool arguments not yet explored; see docs/phase-0-findings.md §5-6)*
-- [x] **P0-03** Confirm the real module names, availability annotations, and BYO-LLM registration API against the shipping SDK — resolves PLANNING §6 open question 1 🔒 *(RESOLVED 2026-09-02: CoreAI.framework does not exist; FoundationModels has no BYO-LLM/MLX registration API — see docs/phase-0-findings.md §1-2. This is a real correction to the PRD's premise, not just an implementation detail — flagged to the user.)*
+- [~] **P0-03** Confirm the real module names, availability annotations, and BYO-LLM registration API against the shipping SDK — resolves PLANNING §6 open question 1 🔒 *(2026-09-02: checked against the RELEASE SDK only — CoreAI.framework and any BYO-LLM/MLX API were absent from it. User reports Core AI is a beta framework and is installing the beta toolchain to check; not resolved until that happens — see docs/phase-0-findings.md §1-2. Same blocker as M0-16.)*
 - [x] **P0-04** Determine whether a token counter / tokenizer is exposed — resolves open question 2 🔒 *(RESOLVED 2026-09-02: yes — `SystemLanguageModel.contextSize` (4096, verified at runtime) and `tokenCount(for:)`; see docs/phase-0-findings.md §3)*
 
 ### Evaluation suites
