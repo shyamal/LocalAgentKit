@@ -25,7 +25,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [x] **M0-07** `CLAUDE.md` — build/test commands, the layering rule, naming conventions, PR definition-of-done
 - [x] **M0-08** `CONTRIBUTING.md` — how to add a tool, how to add a provider (M13 depends on this being genuinely easy)
 - [x] **M0-09** `SECURITY.md` — disclosure policy, threat model pointer (PRD §19)
-- [ ] **M0-10** `LICENSE` — decide license before any external contribution arrives
+- [!] **M0-10** `LICENSE` — decide license before any external contribution arrives *(deferred by user 2026-09-02, revisit before accepting outside contributions)*
 
 ### Tooling & CI
 - [ ] **M0-11** `.swift-format` config; format the tree; verify it is idempotent
