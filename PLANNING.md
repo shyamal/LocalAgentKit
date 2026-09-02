@@ -270,10 +270,10 @@ Ingestion is explicitly a background, batchable, cancellable operation with prog
 |---|---|---|
 | Language | **Swift 6.x**, strict concurrency, complete checking | The PRD demands actors/`Sendable`/`AsyncSequence`; strict mode makes the concurrency model verifiable rather than aspirational. |
 | Package manager | **Swift Package Manager**, multi-target | Zero-friction consumption (`.package(url:)`); targets enforce the layering rule. |
-| Min deployment | iOS 26+ / macOS 26+ (visionOS, iPadOS to follow) | Foundation Models BYO-LLM and Core AI are the floor. |
+| Min deployment | iOS 26+ / macOS 26+ (iPadOS shares the iOS floor; visionOS 26.0 already carries the same `FoundationModels` availability per the real `.swiftinterface` — not "to follow" as this table previously said) | `FoundationModels`'s real availability annotations are the floor — see `docs/phase-0-findings.md`. Framework name corrected from "Core AI" — see open question 1, now resolved. |
 | Xcode | Latest release + latest beta side by side | The beta toolchain is required to run the FR-029 harness against OS betas (R4). |
 
-*Verify the exact SDK availability line and framework module names against the shipping Xcode before writing `Package.swift` — the PRD describes WWDC-announced APIs.*
+*The exact SDK availability and the framework module names have now been verified against the shipping Xcode — see open questions 1–3 in §6 and `docs/phase-0-findings.md`. `Core AI` does not exist in the shipping SDK; the real model framework is `FoundationModels` (`SystemLanguageModel`/`LanguageModelSession`) only.*
 
 ### 3.2 Apple frameworks
 
@@ -427,12 +427,13 @@ Builds warning-free under strict concurrency · unit-tested with mocks · no new
 
 ## 6. Open questions
 
-Carried from the PRD's risk register plus what this plan surfaced. These need answers, not assumptions.
+Carried from the PRD's risk register plus what this plan surfaced. These need answers, not assumptions. Numbers are kept stable (tasks reference them by number) even as items resolve — resolved items stay in place, marked, rather than being renumbered or deleted.
 
-1. **Exact Foundation Models / Core AI API surface.** This plan is written from the PRD's description of WWDC 2026 announcements. Confirm module names, availability annotations, and the BYO-LLM registration API against the shipping SDK before `Package.swift` is written.
-2. **Context window size and tokenizer access.** `ContextBudgeter` needs to *count* tokens. If the on-device tokenizer isn't exposed, budgeting degrades to estimation — which changes how conservative the trimming thresholds must be.
-3. **Guardrail refusal detectability.** Is a policy refusal distinguishable from an ordinary response programmatically, or only by heuristics on the text? FR-005's `.refused` case depends on the answer, and heuristic detection is a materially weaker product.
-4. **Embedding quality from `NLEmbedding`** for RAG retrieval, versus shipping a small MLX embedding model via Core AI. Measure before committing — retrieval quality caps the whole RAG feature.
+1. **RESOLVED — 2026-09-02, see [`docs/phase-0-findings.md`](./docs/phase-0-findings.md) §1–2.** Exact Foundation Models / Core AI API surface. Answer, verified directly against the shipping SDK's `.swiftinterface`: **`CoreAI.framework` does not exist** (this SDK still ships `CoreML.framework`, unreplaced), and **Foundation Models has no third-party/BYO-LLM/MLX registration API** — `SystemLanguageModel.Adapter` is Apple's own fine-tuning-adapter mechanism for specializing Apple's base model, not a way to swap in an external model. The PRD's §1/R5 premise that Apple now provides model-abstraction is not true of this shipping SDK. If anything this makes `LocalModelProvider` *more* load-bearing than the PRD assumed, not less — see the findings doc for why. **This needs a decision on whether/how to correct the PRD**, not just this file; flagged to the user, not resolved unilaterally.
+2. **RESOLVED — 2026-09-02, see `docs/phase-0-findings.md` §3.** Context window size and tokenizer access. Answer: yes, both are real public API — `SystemLanguageModel.contextSize` (verified at runtime: `4096`) and `tokenCount(for:)` overloads for prompts, instructions, tools, schemas, and transcript entries. `ContextBudgeter` can budget against a real count, not an estimate — though 4096 tokens is a tight budget, which raises the *importance* of budgeting even as it resolves the *feasibility* of measuring it.
+3. **RESOLVED — 2026-09-02, see `docs/phase-0-findings.md` §4.** Guardrail refusal detectability. Answer: yes, unambiguously — `LanguageModelSession.GenerationError` has distinct `.guardrailViolation(Context)` and `.refusal(Refusal, Context)` cases, verified at runtime by actually triggering one. Bonus: the same enum has `.exceededContextWindowSize(Context)`, `.rateLimited`, and `.concurrentRequests` — real typed failure modes FR-025's `AgentError` should incorporate.
+4. **Embedding quality from `NLEmbedding`** for RAG retrieval, versus a small MLX embedding model. The "via Core AI" framing in the original version of this question is void per question 1 — Core AI doesn't exist, so an MLX-backed alternative would mean direct MLX Swift integration, not a Core AI-mediated path. Still open: measure `NLEmbedding` retrieval quality before committing — retrieval quality caps the whole RAG feature.
 5. **Permission UX ownership.** Does the SDK ship a SwiftUI confirmation sheet, or only the suspension protocol and event? Leaning toward: protocol + event required, sheet provided as an opt-in convenience in `LocalAgentKitSwiftUI`.
 6. **Model lifecycle across agents.** Multiple `LocalAgent` instances in one app should not each hold a model in memory. Needs a shared, reference-counted provider — design this before v0.1 rather than retrofitting it.
 7. **Audit log retention and export format.** Enterprise (Persona 3) will ask. Decide by v0.2.
+8. **NEW.** `AgentTool` vs. Foundation Models' own `Tool<Arguments, Output>` protocol (see `docs/phase-0-findings.md` §7). `AgentTool` should be designed as a wrapper/bridge to Apple's real `Tool` protocol — adding the permission tier, richer schema validation, and parallel-safety/cancellability declarations `Tool` doesn't have — rather than an independent reinvention. Affects task M1-CO-03.

@@ -44,10 +44,10 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 *Throwaway spike. **No SDK code is written until this reports.** Its output is a decision, not a library. (PRD §5 R1–R3, §21 Phase 0)*
 
 ### Setup
-- [ ] **P0-01** Bare Xcode app targeting the on-device model — no LocalAgentKit abstractions, no protocols, deliberately disposable
-- [ ] **P0-02** Verify Foundation Models availability, session lifecycle, and structured-output API on a physical Apple Intelligence device
-- [ ] **P0-03** Confirm the real module names, availability annotations, and BYO-LLM registration API against the shipping SDK — resolves PLANNING §6 open question 1 🔒 *(blocks `Package.swift` finalization)*
-- [ ] **P0-04** Determine whether a token counter / tokenizer is exposed — resolves open question 2 🔒 *(blocks `ContextBudgeter` design)*
+- [~] **P0-01** Bare Xcode app targeting the on-device model — no LocalAgentKit abstractions, no protocols, deliberately disposable *(a bare, disposable SwiftPM executable — not yet an Xcode app, not yet committed in-repo — proved the mechanism works; see docs/phase-0-findings.md. Formalizing this in-repo is a decision flagged to the user, not yet made.)*
+- [~] **P0-02** Verify Foundation Models availability, session lifecycle, and structured-output API on a physical Apple Intelligence device *(availability + a basic respond()/tool-call/transcript round trip verified — on a Mac, not a physical iPhone; full session lifecycle — multi-turn reuse, cancellation, streaming — and @Generable structured output beyond tool arguments not yet explored; see docs/phase-0-findings.md §5-6)*
+- [x] **P0-03** Confirm the real module names, availability annotations, and BYO-LLM registration API against the shipping SDK — resolves PLANNING §6 open question 1 🔒 *(RESOLVED 2026-09-02: CoreAI.framework does not exist; FoundationModels has no BYO-LLM/MLX registration API — see docs/phase-0-findings.md §1-2. This is a real correction to the PRD's premise, not just an implementation detail — flagged to the user.)*
+- [x] **P0-04** Determine whether a token counter / tokenizer is exposed — resolves open question 2 🔒 *(RESOLVED 2026-09-02: yes — `SystemLanguageModel.contextSize` (4096, verified at runtime) and `tokenCount(for:)`; see docs/phase-0-findings.md §3)*
 
 ### Evaluation suites
 - [ ] **P0-05** Write ~20 single-tool goals with known-correct tool + arguments
@@ -60,12 +60,12 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [ ] **P0-10** **Multi-step completion rate** — % of multi-step goals completed end to end (R1)
 - [ ] **P0-11** **Guardrail refusal rate** on the ordinary-task suite (R3, M9)
 - [ ] **P0-12** **Context exhaustion rate** and failure mode under realistic load (R2)
-- [ ] **P0-13** Determine whether a policy refusal is programmatically distinguishable from a normal response, or only by text heuristics — resolves open question 3 🔒 *(blocks FR-005 `.refused` design)*
+- [x] **P0-13** Determine whether a policy refusal is programmatically distinguishable from a normal response, or only by text heuristics — resolves open question 3 🔒 *(RESOLVED 2026-09-02: yes — `GenerationError.guardrailViolation`/`.refusal` are distinct typed cases, verified by actually triggering one at runtime; see docs/phase-0-findings.md §4)*
 - [ ] **P0-14** Record latency and thermal/battery behavior for a typical multi-step run
 
 ### Decision
 - [ ] **P0-15** 🔒 **GO/NO-GO: planner architecture.** Is `ModelDrivenPlanner` or `StateMachinePlanner` the v0.1 default? Below the >95% M5 bar it is the state machine — a successful, shippable outcome, not a failure
-- [ ] **P0-16** Write `docs/phase-0-findings.md`: numbers, the decision, and the reasoning. This is the document the team argues with later
+- [~] **P0-16** Write `docs/phase-0-findings.md`: numbers, the decision, and the reasoning. This is the document the team argues with later *(started 2026-09-02 with the API-surface findings from P0-03/04/13; the actual rate measurements and the P0-15 decision are still missing)*
 - [ ] **P0-17** Decide whether FR-026/FR-027 are MVP-blocking or deferred to v0.5
 - [ ] **P0-18** Port the spike's scenario suites into the seed of `LocalAgentKitEval` (FR-029) — the code is throwaway, the suites are not
 
