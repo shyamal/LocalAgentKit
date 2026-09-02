@@ -28,7 +28,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [!] **M0-10** `LICENSE` — decide license before any external contribution arrives *(deferred by user 2026-09-02, revisit before accepting outside contributions)*
 
 ### Tooling & CI
-- [ ] **M0-11** `.swift-format` config; format the tree; verify it is idempotent
+- [x] **M0-11** `.swift-format` config; format the tree; verify it is idempotent
 - [ ] **M0-12** `.github/workflows/ci.yml` — build all targets, `swift test`, format lint on every PR
 - [ ] **M0-13** 🔒 **Layering check script** — fail CI if `LocalAgentKitCore`/`LocalAgentKitRuntime` import `FoundationModels`, `CoreAI`, `SwiftData`, `Vision`, `Speech`, `EventKit`, `Contacts`, or `SwiftUI`. Wire into CI. *(This is what keeps M3 true; add it before there is anything to violate it.)*
 - [ ] **M0-14** Enable Swift 6 strict concurrency, complete checking, on every target from the first commit

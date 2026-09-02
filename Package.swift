@@ -15,93 +15,93 @@
 import PackageDescription
 
 let package = Package(
-    name: "LocalAgentKit",
-    platforms: [
-        .iOS(.v26),
-        .macOS(.v26),
-    ],
-    products: [
-        .library(name: "LocalAgentKitCore", targets: ["LocalAgentKitCore"]),
-        .library(name: "LocalAgentKitRuntime", targets: ["LocalAgentKitRuntime"]),
-        .library(name: "LocalAgentKitProviders", targets: ["LocalAgentKitProviders"]),
-        .library(name: "LocalAgentKitTools", targets: ["LocalAgentKitTools"]),
-        .library(name: "LocalAgentKitSwiftUI", targets: ["LocalAgentKitSwiftUI"]),
-        .library(name: "LocalAgentKitAppIntents", targets: ["LocalAgentKitAppIntents"]),
-        .library(name: "LocalAgentKitTesting", targets: ["LocalAgentKitTesting"]),
-        .executable(name: "LocalAgentKitEval", targets: ["LocalAgentKitEval"]),
-    ],
-    targets: [
-        // Protocols + value types only. Zero Apple-framework dependencies —
-        // enforced by the CI layering check (task M0-13).
-        .target(
-            name: "LocalAgentKitCore"
-        ),
+  name: "LocalAgentKit",
+  platforms: [
+    .iOS(.v26),
+    .macOS(.v26),
+  ],
+  products: [
+    .library(name: "LocalAgentKitCore", targets: ["LocalAgentKitCore"]),
+    .library(name: "LocalAgentKitRuntime", targets: ["LocalAgentKitRuntime"]),
+    .library(name: "LocalAgentKitProviders", targets: ["LocalAgentKitProviders"]),
+    .library(name: "LocalAgentKitTools", targets: ["LocalAgentKitTools"]),
+    .library(name: "LocalAgentKitSwiftUI", targets: ["LocalAgentKitSwiftUI"]),
+    .library(name: "LocalAgentKitAppIntents", targets: ["LocalAgentKitAppIntents"]),
+    .library(name: "LocalAgentKitTesting", targets: ["LocalAgentKitTesting"]),
+    .executable(name: "LocalAgentKitEval", targets: ["LocalAgentKitEval"]),
+  ],
+  targets: [
+    // Protocols + value types only. Zero Apple-framework dependencies —
+    // enforced by the CI layering check (task M0-13).
+    .target(
+      name: "LocalAgentKitCore"
+    ),
 
-        // The agent loop. Depends on Core only.
-        .target(
-            name: "LocalAgentKitRuntime",
-            dependencies: ["LocalAgentKitCore"]
-        ),
+    // The agent loop. Depends on Core only.
+    .target(
+      name: "LocalAgentKitRuntime",
+      dependencies: ["LocalAgentKitCore"]
+    ),
 
-        // Concrete model/memory/embedding/vector/vision/speech adapters —
-        // the only place Apple frameworks are imported.
-        .target(
-            name: "LocalAgentKitProviders",
-            dependencies: ["LocalAgentKitRuntime"]
-        ),
+    // Concrete model/memory/embedding/vector/vision/speech adapters —
+    // the only place Apple frameworks are imported.
+    .target(
+      name: "LocalAgentKitProviders",
+      dependencies: ["LocalAgentKitRuntime"]
+    ),
 
-        // Built-in AgentTool conformances (EventKit, Contacts, PDFKit, FileManager).
-        .target(
-            name: "LocalAgentKitTools",
-            dependencies: ["LocalAgentKitRuntime"]
-        ),
+    // Built-in AgentTool conformances (EventKit, Contacts, PDFKit, FileManager).
+    .target(
+      name: "LocalAgentKitTools",
+      dependencies: ["LocalAgentKitRuntime"]
+    ),
 
-        // Optional SwiftUI integration.
-        .target(
-            name: "LocalAgentKitSwiftUI",
-            dependencies: ["LocalAgentKitRuntime"]
-        ),
+    // Optional SwiftUI integration.
+    .target(
+      name: "LocalAgentKitSwiftUI",
+      dependencies: ["LocalAgentKitRuntime"]
+    ),
 
-        // Optional App Intents bridging.
-        .target(
-            name: "LocalAgentKitAppIntents",
-            dependencies: ["LocalAgentKitRuntime"]
-        ),
+    // Optional App Intents bridging.
+    .target(
+      name: "LocalAgentKitAppIntents",
+      dependencies: ["LocalAgentKitRuntime"]
+    ),
 
-        // MockModelProvider, ScriptedModelProvider, fixtures. Ships to consumers,
-        // and used by this package's own test targets — so it depends on Core
-        // only, never on Runtime, to avoid a test-time dependency cycle.
-        .target(
-            name: "LocalAgentKitTesting",
-            dependencies: ["LocalAgentKitCore"]
-        ),
+    // MockModelProvider, ScriptedModelProvider, fixtures. Ships to consumers,
+    // and used by this package's own test targets — so it depends on Core
+    // only, never on Runtime, to avoid a test-time dependency cycle.
+    .target(
+      name: "LocalAgentKitTesting",
+      dependencies: ["LocalAgentKitCore"]
+    ),
 
-        // FR-029 reliability harness. swift-argument-parser and the eval
-        // library split land in task M1-EV-01 — this is the empty skeleton.
-        .executableTarget(
-            name: "LocalAgentKitEval",
-            dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTesting"]
-        ),
+    // FR-029 reliability harness. swift-argument-parser and the eval
+    // library split land in task M1-EV-01 — this is the empty skeleton.
+    .executableTarget(
+      name: "LocalAgentKitEval",
+      dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTesting"]
+    ),
 
-        .testTarget(
-            name: "LocalAgentKitCoreTests",
-            dependencies: ["LocalAgentKitCore"]
-        ),
-        .testTarget(
-            name: "LocalAgentKitRuntimeTests",
-            dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTesting"]
-        ),
-        .testTarget(
-            name: "LocalAgentKitProvidersTests",
-            dependencies: ["LocalAgentKitProviders", "LocalAgentKitTesting"]
-        ),
-        .testTarget(
-            name: "LocalAgentKitToolsTests",
-            dependencies: ["LocalAgentKitTools", "LocalAgentKitTesting"]
-        ),
-        .testTarget(
-            name: "LocalAgentKitEvalTests",
-            dependencies: ["LocalAgentKitEval"]
-        ),
-    ]
+    .testTarget(
+      name: "LocalAgentKitCoreTests",
+      dependencies: ["LocalAgentKitCore"]
+    ),
+    .testTarget(
+      name: "LocalAgentKitRuntimeTests",
+      dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTesting"]
+    ),
+    .testTarget(
+      name: "LocalAgentKitProvidersTests",
+      dependencies: ["LocalAgentKitProviders", "LocalAgentKitTesting"]
+    ),
+    .testTarget(
+      name: "LocalAgentKitToolsTests",
+      dependencies: ["LocalAgentKitTools", "LocalAgentKitTesting"]
+    ),
+    .testTarget(
+      name: "LocalAgentKitEvalTests",
+      dependencies: ["LocalAgentKitEval"]
+    ),
+  ]
 )
