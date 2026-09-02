@@ -2,22 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository state: pre-code
+## Repository state: empty skeleton (Milestone 0)
 
-**There is no source code yet.** This repo contains three planning documents and a set of project skills. Not a git repo either — `git init` is task M0-01.
+The package **builds and its placeholder tests pass**, but there is no real implementation yet — every target in `Sources/` holds a one-line placeholder file. Phase 0 (the feasibility spike) has not run, which gates all of Milestone 1: no `AgentTool`, `LocalModelProvider`, or runtime logic should land before it reports (see Gates, below).
 
 | File | Role |
 |---|---|
 | `LocalAgentKit-PRD-v0.2.md` | Source of truth for *what* and *why*. Requirements are cited as FR-0xx / NFR / R1–R5 / M1–M14 |
 | `PLANNING.md` | Source of truth for *how* — architecture, stack, package layout, open questions |
-| `TASKS.md` | ~180 tasks in 8 milestones with stable IDs (`M1-RT-07`) |
+| `TASKS.md` | ~180 tasks in 8 milestones with stable IDs (`M1-RT-07`) — check this before starting any work |
 | `.claude/skills/` | Repeatable workflows — see below |
 
 When the PRD and any other document disagree, the PRD wins and the other document needs fixing.
 
 ## Commands
 
-**None of these run yet** — there is no `Package.swift`. They are the intended workflow once M0-03 lands, and are what CI will enforce.
+These run today, against the empty skeleton.
 
 ```bash
 swift build                                    # must be warning-free under Swift 6 strict concurrency
@@ -30,6 +30,8 @@ swift-format lint --recursive Sources Tests    # CI-enforced
 grep -rnE '^import (FoundationModels|CoreAI|SwiftData|Vision|Speech|EventKit|Contacts|SwiftUI)' \
   Sources/LocalAgentKitCore Sources/LocalAgentKitRuntime
 ```
+
+`swift-format` is not installed on every machine this has been developed on — verify before assuming the lint command is runnable locally; CI must run it regardless (task M0-11).
 
 Device work needs an Apple silicon Mac plus a physical Apple Intelligence-capable device — the on-device model's behavior, thermals, and battery cost cannot be measured in the simulator. Keep the latest Xcode beta installed side by side; the FR-029 harness runs against OS betas to catch model drift (R4).
 
@@ -69,6 +71,8 @@ This project's design was written from the PRD's account of WWDC 2026 announceme
 
 ## Conventions
 
+- Module names are `LocalAgentKit<Area>` (`LocalAgentKitCore`, `LocalAgentKitRuntime`, …), matching the target names in `Package.swift` — never abbreviate or rename a module independently of its target.
+- `AgentTool.name` is `snake_case`, verb-first (`create_reminder`, `search_documents`) — it's read by the model as a prompt, not by a compiler.
 - Swift 6, strict concurrency, complete checking. No `@unchecked Sendable`, no silenced warnings.
 - Target **zero runtime dependencies**. Dev/test-only deps (`swift-testing`, `swift-docc-plugin`, `swift-format`, `swift-argument-parser` for the eval CLI) are the permitted exceptions; anything new needs written justification in the PR.
 - Typed `AgentError` throughout; no `fatalError` in library code.
