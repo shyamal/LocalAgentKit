@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    # Requires Xcode 26.x — swift-tools-version 6.2 and the iOS(.v26)/
+    # macOS(.v26) platform constants in Package.swift need it. Which GitHub
+    # runner image ships that, under which /Applications/Xcode_*.app path,
+    # is NOT verified here — this repo was authored without network access
+    # to check actions/runner-images. `macos-15` and the glob below are a
+    # reasonable guess, not a confirmed fact; the first real CI run is the
+    # actual verification. If "Select Xcode 26" fails, check
+    # https://github.com/actions/runner-images for the current image's
+    # Xcode list and update `runs-on` / the glob accordingly.
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 26
+        run: |
+          shopt -s nullglob
+          candidates=(/Applications/Xcode_26*.app)
+          if [ ${#candidates[@]} -eq 0 ]; then
+            echo "No Xcode 26.x found on this runner image. Available Xcode installs:" >&2
+            find /Applications -maxdepth 1 -name 'Xcode*.app' >&2 || true
+            exit 1
+          fi
+          XCODE_PATH=$(printf '%s\n' "${candidates[@]}" | sort -V | tail -n1)
+          echo "Selecting $XCODE_PATH"
+          sudo xcode-select -switch "$XCODE_PATH/Contents/Developer"
+
+      - name: Swift version
+        run: swift --version
+
+      - name: Build (all targets, strict concurrency)
+        # Swift 6 language mode (implied by swift-tools-version 6.2, applied
+        # to every target with no per-target override) makes complete
+        # concurrency checking mandatory — there is no separate flag to pass
+        # here. A concurrency violation is a build error, not a warning.
+        run: swift build
+
+      - name: Layering check
+        # Fails if LocalAgentKitCore/LocalAgentKitRuntime import an Apple
+        # framework. Runs before the test suite: a layering violation is a
+        # cheaper, more specific failure to see than a downstream test error.
+        run: ./Scripts/check-layering.sh
+
+      - name: Format lint
+        run: xcrun swift-format lint --configuration .swift-format --recursive --strict Sources Tests Package.swift
+
+      - name: Test + coverage gate (Core + Runtime, 80%)
+        # Runs the full suite (must pass with no device and no network) and
+        # then enforces metric M4 on LocalAgentKitCore/LocalAgentKitRuntime
+        # only. Exits 0 with a notice, not a failure, while those targets
+        # have no coverable implementation yet (pre-Milestone-1).
+        run: ./Scripts/check-coverage.sh

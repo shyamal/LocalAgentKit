@@ -24,14 +24,14 @@ swift build                                    # must be warning-free under Swif
 swift test                                     # full unit suite — must pass with no device and no network
 swift test --filter <TestName>                 # single test or suite
 swift test --enable-code-coverage              # 80% gate applies to Core + Runtime only (metric M4)
-swift-format lint --recursive Sources Tests    # CI-enforced
+xcrun swift-format lint --configuration .swift-format --recursive Sources Tests Package.swift   # CI-enforced
 
 # The layering check — any output is a build failure (task M0-13)
 grep -rnE '^import (FoundationModels|CoreAI|SwiftData|Vision|Speech|EventKit|Contacts|SwiftUI)' \
   Sources/LocalAgentKitCore Sources/LocalAgentKitRuntime
 ```
 
-`swift-format` is not installed on every machine this has been developed on — verify before assuming the lint command is runnable locally; CI must run it regardless (task M0-11).
+`swift-format` ships inside the Xcode toolchain, not on `PATH` as a standalone binary — if `swift-format` isn't found, use `xcrun --find swift-format` or invoke it via `xcrun swift-format`. Configuration lives in `.swift-format` at the repo root.
 
 Device work needs an Apple silicon Mac plus a physical Apple Intelligence-capable device — the on-device model's behavior, thermals, and battery cost cannot be measured in the simulator. Keep the latest Xcode beta installed side by side; the FR-029 harness runs against OS betas to catch model drift (R4).
 

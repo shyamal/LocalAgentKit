@@ -29,11 +29,11 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 
 ### Tooling & CI
 - [x] **M0-11** `.swift-format` config; format the tree; verify it is idempotent
-- [ ] **M0-12** `.github/workflows/ci.yml` — build all targets, `swift test`, format lint on every PR
-- [ ] **M0-13** 🔒 **Layering check script** — fail CI if `LocalAgentKitCore`/`LocalAgentKitRuntime` import `FoundationModels`, `CoreAI`, `SwiftData`, `Vision`, `Speech`, `EventKit`, `Contacts`, or `SwiftUI`. Wire into CI. *(This is what keeps M3 true; add it before there is anything to violate it.)*
-- [ ] **M0-14** Enable Swift 6 strict concurrency, complete checking, on every target from the first commit
-- [ ] **M0-15** Add code-coverage reporting; set the 80% gate on Core + Runtime only (M4)
-- [ ] **M0-16** Verify the Xcode beta toolchain builds the package side-by-side with the release toolchain (needed for R4 later)
+- [x] **M0-12** `.github/workflows/ci.yml` — build all targets, `swift test`, format lint on every PR
+- [x] **M0-13** 🔒 **Layering check script** — fail CI if `LocalAgentKitCore`/`LocalAgentKitRuntime` import `FoundationModels`, `CoreAI`, `SwiftData`, `Vision`, `Speech`, `EventKit`, `Contacts`, or `SwiftUI`. Wire into CI. *(This is what keeps M3 true; add it before there is anything to violate it.)*
+- [x] **M0-14** Enable Swift 6 strict concurrency, complete checking, on every target from the first commit
+- [x] **M0-15** Add code-coverage reporting; set the 80% gate on Core + Runtime only (M4)
+- [!] **M0-16** Verify the Xcode beta toolchain builds the package side-by-side with the release toolchain (needed for R4 later) *(blocked 2026-09-02: only one Xcode install — no beta — on the machine this was attempted from; needs a machine with both installed)*
 
 **Exit:** empty package builds green in CI with strict concurrency, formatting, and the layering check all enforced.
 
