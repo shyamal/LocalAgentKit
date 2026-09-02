@@ -23,7 +23,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 ### Project documents
 - [x] **M0-06** `README.md` — one-line positioning, quick start, install snippet, platform requirements
 - [x] **M0-07** `CLAUDE.md` — build/test commands, the layering rule, naming conventions, PR definition-of-done
-- [ ] **M0-08** `CONTRIBUTING.md` — how to add a tool, how to add a provider (M13 depends on this being genuinely easy)
+- [x] **M0-08** `CONTRIBUTING.md` — how to add a tool, how to add a provider (M13 depends on this being genuinely easy)
 - [ ] **M0-09** `SECURITY.md` — disclosure policy, threat model pointer (PRD §19)
 - [ ] **M0-10** `LICENSE` — decide license before any external contribution arrives
 
