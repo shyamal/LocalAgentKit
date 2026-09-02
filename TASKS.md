@@ -16,9 +16,9 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 ### Version control & scaffolding
 - [x] **M0-01** `git init`; set default branch to `main`; first commit of the PRD + PLANNING.md
 - [x] **M0-02** Add Swift/Xcode `.gitignore` (`.build/`, `.swiftpm/`, `xcuserdata/`, `DerivedData/`, `*.xcuserstate`)
-- [ ] **M0-03** Create `Package.swift` with the multi-target layout from PLANNING §2.2 — empty targets are fine, structure is the point
-- [ ] **M0-04** Create the `Sources/` + `Tests/` directory tree, 1:1 mirrored, one placeholder file per target
-- [ ] **M0-05** Confirm `swift build` and `swift test` succeed on the empty skeleton before any real code lands
+- [x] **M0-03** Create `Package.swift` with the multi-target layout from PLANNING §2.2 — empty targets are fine, structure is the point
+- [x] **M0-04** Create the `Sources/` + `Tests/` directory tree, 1:1 mirrored, one placeholder file per target
+- [x] **M0-05** Confirm `swift build` and `swift test` succeed on the empty skeleton before any real code lands
 
 ### Project documents
 - [ ] **M0-06** `README.md` — one-line positioning, quick start, install snippet, platform requirements
