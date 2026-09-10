@@ -2,63 +2,140 @@
 
 **Status:** In progress. This document accumulates verified findings as Phase 0 runs, per task P0-16 — it is not written only at the end. Everything below is either a direct reading of the shipping SDK or the output of a real program run on this machine, not a claim from memory or documentation.
 
-**Environment:** macOS 26 (SDK MacOSX26.5), **Xcode 26.6 release toolchain only — no beta Xcode installed on this machine at the time of this finding** (see task M0-16, still blocked for the same reason), Swift 6.3.3, Apple silicon Mac, Apple Intelligence **enabled**. `SystemLanguageModel.default.availability == .available` on this machine — see finding 5.
+**Environment:** Apple silicon Mac, host macOS **26.6.2**, Apple Intelligence **enabled** (`SystemLanguageModel.default.availability == .available` — see finding 5).
+
+Two toolchains now installed side by side, which is what unblocked findings 1–2 (and closes task M0-16):
+
+| | Xcode | Build | Swift | macOS SDK | Notes |
+|---|---|---|---|---|---|
+| Release | 26.6 | 17F113 | 6.3.3 | `MacOSX26.5.sdk` | what findings 3–7 were measured against |
+| **Beta** | **27.0** | **27A5252f** | **6.4** | **`MacOSX27.0.sdk`** | + `iPhoneOS27.0.sdk`, iOS 27.0 simulator runtime (24A5423a) |
+
+The package builds warning-free and its tests pass under **both** toolchains (M0-16). Findings dated 2026-09-10 come from the beta SDK; findings dated 2026-09-02 come from the release SDK and say so where it matters.
+
+**Reading note:** the beta SDK is installed but the beta **OS** is not. A macOS 27 binary cannot run on this host, so macOS-side beta findings are *static* (interface + compile) unless stated otherwise; the iOS 27 simulator is available and is what runtime claims below are executed on.
 
 ---
 
-## 1. `CoreAI.framework` — not present in the release SDK; **status pending beta verification**
+## 1. `CoreAI.framework` — **EXISTS in the beta SDK**, but it is a tensor runtime, not the LLM abstraction
 
-**Update 2026-09-02, same day as the original finding:** the user reports Core AI is a beta framework and will install the beta toolchain to check. The finding below is accurate for what was actually inspected — the release SDK — but is **not** a final verdict on whether Core AI exists at all. Do not treat "resolved" (as this was briefly marked in `PLANNING.md` §6 and `TASKS.md` P0-03) as settled until re-checked against the beta SDK. Reverted to in-progress pending that check.
-
-**Resolves part of `PLANNING.md` §6 open question 1 — partially, pending the above.**
-
-The PRD (§1 Executive Summary, R5) asserts "Core AI has replaced Core ML as the modern on-device ML runtime." Searched the **release** SDK (Xcode 26.6, MacOSX26.5.sdk — no beta installed at the time):
+**RESOLVED 2026-09-10** against Xcode 27.0 beta (build 27A5252f, Swift 6.4), `MacOSX27.0.sdk`. Supersedes the 2026-09-02 release-SDK-only finding, which is preserved at the end of this section.
 
 ```
-$ ls MacOSX26.5.sdk/System/Library/Frameworks/ | grep -i "coreml\|coreai"
+$ ls MacOSX27.0.sdk/System/Library/Frameworks/ | grep -i "coreml\|coreai"
+CoreAI.framework
 CoreML.framework
 ```
 
-- `CoreML.framework` still exists, unreplaced, in the release SDK.
-- `CoreAI.framework` does not appear anywhere in the release SDK — zero matches for "CoreAI" across the entire SDK tree (frameworks, headers, module maps).
+`CoreAI.framework` **is present**, plus six SubFrameworks: `CoreAIRuntime`, `CoreAICompiler`, `CoreAICommon`, `CoreAIAsset`, `CoreAICache`, `CoreAIDelegates`. Availability is `@available(macOS 27.0, iOS 27.0, watchOS 27.0, tvOS 27.0, visionOS 27.0, *)` — beta-only, which is exactly why the release-SDK check found nothing. **The user was right and the PRD's premise was directionally correct**; the 2026-09-02 finding was scoped accurately but was reading an SDK that predates the framework.
 
-**Conclusion, correctly scoped: Core AI is absent from the current release SDK.** Whether it exists in a beta SDK — which would make the PRD's premise correct, just ahead of general release rather than false — is unverified and is the very next thing to check once the beta toolchain is installed. `FR-004`'s `CoreAIModelProvider` and other PRD/PLANNING references should not be treated as debunked on the strength of this finding alone.
-
-## 2. Foundation Models — no third-party / BYO-LLM / MLX registration API found in the release interface; **also pending beta verification**
-
-**Same caveat as finding 1:** this was checked against `FoundationModels`' release `.swiftinterface` only. `FoundationModels` itself is GA, not beta, but BYO-LLM/MLX registration could plausibly still be a beta-only *capability* added to an already-GA framework (e.g. via new API surfacing in a beta SDK's `.swiftinterface` for the same module) rather than requiring a wholly new framework. Not treating this as fully settled either, pending the same beta-toolchain check as finding 1.
-
-**Resolves the other half of open question 1 — partially, pending the above.**
-
-The PRD (§1, §4 G1, FR-004, R5) repeatedly asserts Foundation Models "now accepts third-party and custom LLM providers (including MLX models) directly." Read the actual public API surface directly from the framework's `.swiftinterface` (the real compiled interface, not documentation):
+**But the shape is not what the PRD implies.** `CoreAI.framework` itself is a 9-line umbrella that only re-exports `CoreAIDelegates`. The real surface is `CoreAIRuntime` (1428 lines), and its public types are a low-level tensor/inference API:
 
 ```
-MacOSX26.5.sdk/.../FoundationModels.swiftmodule/arm64e-apple-macos.swiftinterface
+AIModel  InferenceFunction  InferenceFunctionDescriptor  NDArray  NDArrayDescriptor
+ComputeStream  Inputs  Outputs  View / MutableView / RawView  ImageDescriptor  ScalarType
 ```
 
-Full public type list, and a grep for `mlx|third.?party|custom.?llm|bring.?your|external.?model` across the entire interface, returned **zero matches**. The only model-customization mechanism exposed is:
+`AIModel` exposes `functionNames: [String]` and `functionDescriptor(for:) -> InferenceFunctionDescriptor?`. This is a "load a compiled model, bind NDArray inputs, run named inference functions" runtime — a Core ML successor in *role*, not an LLM or agent API.
+
+Two corrections to the PRD's framing follow:
+- **Core ML is not "replaced."** `CoreML.framework` still ships in the beta SDK alongside `CoreAI.framework`. PRD §1/R5's "Core AI has replaced Core ML" overstates it — for macOS 27 they coexist.
+- **Core AI is not the path to a custom LLM provider.** The BYO-LLM mechanism lives in Foundation Models, not here — see finding 2. A `CoreAIModelProvider` (FR-004) built on `CoreAIRuntime` would mean hand-rolling tokenization, KV-cache, and sampling on top of NDArrays. That is not what FR-004 wants; finding 2's protocol is.
+
+<details>
+<summary>Original 2026-09-02 release-SDK finding (superseded, kept for the record)</summary>
+
+Searched Xcode 26.6 / `MacOSX26.5.sdk`: `CoreML.framework` present, zero matches for "CoreAI" anywhere in the SDK tree. Correctly scoped at the time as "absent from the current release SDK," explicitly *not* a verdict that Core AI does not exist. The beta check above is the resolution it was waiting on.
+</details>
+
+## 2. Foundation Models **DOES accept third-party model providers** — via `LanguageModel` + `LanguageModelExecutor`
+
+**RESOLVED 2026-09-10 — verified by compiling *and running* a non-Apple model through the stock session.** This reverses the tentative direction of the 2026-09-02 finding.
+
+The earlier check grepped the release `.swiftinterface` for `mlx|third.?party|custom.?llm|bring.?your|external.?model` and got zero matches. Those greps still return **zero matches against the beta interface** — the vocabulary was never Apple's. The mechanism is there under different names.
+
+The beta `FoundationModels.swiftinterface` is **3647 lines vs. 1501 in release**. Among what is new — none of these exist in the release interface at all (verified: 0 matches each):
 
 ```swift
-public struct Adapter {
-    public var creatorDefinedMetadata: [String: Any] { get }
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
+@available(tvOS, unavailable)
+public protocol LanguageModel : Sendable {
+    associatedtype Executor : LanguageModelExecutor where Self == Self.Executor.Model
+    var capabilities: LanguageModelCapabilities { get }
+    var executorConfiguration: Self.Executor.Configuration { get }
 }
-extension SystemLanguageModel.Adapter {
-    public init(fileURL: URL) throws
-    public init(name: String) throws
-    public func compile() async throws
-    public static func compatibleAdapterIdentifiers(name: String) -> [String]
+
+public protocol LanguageModelExecutor : Sendable {
+    associatedtype Configuration : Hashable, Sendable
+    associatedtype Model : LanguageModel
+    func prewarm(model: Self.Model, transcript: Transcript)
+    init(configuration: Self.Configuration) throws
+    nonisolated(nonsending) func respond(
+        to request: LanguageModelExecutorGenerationRequest,
+        model: Self.Model,
+        streamingInto channel: LanguageModelExecutorGenerationChannel
+    ) async throws
 }
 ```
 
-This is Apple's own LoRA-style fine-tuning adapter mechanism for **specializing Apple's own on-device base model** — not a mechanism for registering an arbitrary third-party or MLX model as the backing LLM. There is no API that lets an app supply its own model weights/runtime and have `SystemLanguageModel` or `LanguageModelSession` use them instead of Apple's model.
+`SystemLanguageModel` and the also-new `PrivateCloudComputeLanguageModel` are both just conformances to this protocol. Apple abstracted its *own* models behind it — and left it public.
 
-**Conclusion, correctly scoped: no such mechanism was found in the release interface.** `SystemLanguageModel` gives you Apple's on-device model (optionally adapter-specialized) as far as the release `.swiftinterface` shows. Whether a beta SDK exposes more is the open question — not yet a settled "does not exist."
+And `LanguageModelSession` is generic over it. Alongside the four `SystemLanguageModel`-typed convenience inits, the beta interface adds a full parallel set (lines 1947–1956):
 
-### Why this would matter if it holds up — not yet acted on
+```swift
+convenience init(model: some LanguageModel, tools: [any Tool] = [], instructions: Instructions? = nil)
+convenience init(model: some LanguageModel, tools: [any Tool] = [], transcript: Transcript)
+convenience init<Failure>(model: some LanguageModel, tools: [any Tool] = [],
+                          @InstructionsBuilder instructions: () throws(Failure) -> Instructions) throws(Failure)
+convenience init(model: some LanguageModel = SystemLanguageModel.default,
+                 dynamicInstructions: sending some DynamicInstructions,
+                 history: some Collection<Transcript.Entry> = [])
+```
 
-*(This subsection describes the implication **if** findings 1–2 hold after the beta check. It's kept here rather than deleted so the reasoning isn't lost, but nothing in `PLANNING.md` should be treated as finalized on this basis until that check happens.)*
+So a custom model gets the whole stock session: tools, transcript, instructions, streaming, structured output.
 
-The PRD's R5 ("Shrinking model-abstraction differentiation") argues LocalAgentKit's `LocalModelProvider` protocol is *less* valuable now because Apple provides model abstraction itself. If findings 1–2 hold after beta verification, that argument's premise would be false: Apple would not let you swap the underlying model at all through this API, which would make `LocalModelProvider` (as a protocol with sibling implementations — a `FoundationModelProvider` wrapping `SystemLanguageModel`, and, separately, a genuinely independent llama.cpp/MLX-direct provider implementing the *same protocol*) **more** valuable than the PRD assumed, not less. If the beta check instead confirms BYO-LLM/Core AI exist, this whole subsection is moot and the PRD's original R5 reasoning stands.
+### Verified by execution, not by reading
+
+A disposable spike defined `EchoModel: LanguageModel` + `EchoExecutor: LanguageModelExecutor` — no Apple weights, no `SystemLanguageModel` — and drove it through `LanguageModelSession.respond(to:)`. It compiles **warning-free under `-swift-version 6 -strict-concurrency=complete`** and, run on the **iOS 27.0 simulator** (24A5423a):
+
+```
+RESULT: [echo-v1] executor ran; transcript entries=2
+TRANSCRIPT ENTRIES AFTER: 3
+```
+
+The custom executor ran, received the framework-built `Transcript` (2 entries: instructions + prompt), streamed text back via `channel.send(.response(action: .appendText(_:tokenCount:)))`, and the framework appended the result to the session transcript. **BYO-LLM works.**
+
+One caveat, recorded honestly: the same binary built for `macos27.0` **fails to launch on this Mac** (`dyld: Symbol not found: ...LanguageModelP12capabilities...`, "built for macOS 27.0 which is newer than running OS") because the host is macOS 26.6.2. The macOS runtime path is therefore statically verified but not yet executed; the iOS 27 simulator is what supplied the runtime proof. Installing the macOS 27 beta would close that last gap.
+
+### What an executor must actually implement
+
+`LocalAgentKit`'s provider work should be sized against these, not guessed at:
+
+```swift
+struct LanguageModelExecutorGenerationRequest : Sendable {
+    var id: UUID
+    var transcript: Transcript
+    var enabledToolDefinitions: [Transcript.ToolDefinition]
+    var schema: GenerationSchema?          // guided generation is the executor's job
+    var generationOptions: GenerationOptions
+    var contextOptions: ContextOptions
+    var metadata: [String : GeneratedContent]
+}
+```
+
+The channel is an `AsyncSequence` you `send(_:)` into, with three event families — `.response`, `.reasoning`, `.toolCalls` — plus `.updateUsage(input:output:)` for token accounting. A model declares what it can do via `LanguageModelCapabilities([.toolCalling, .vision, .guidedGeneration, .reasoning])`, and `LanguageModelError.unsupportedCapability(_:)` is the typed failure when a session asks for more.
+
+### Consequence for R5 and `LocalModelProvider` — a real architectural question, not yet decided
+
+The 2026-09-02 note reasoned that *if* no BYO-LLM API existed, `LocalModelProvider` would be **more** valuable than the PRD assumed. That branch did not happen, so **that reasoning is void and the PRD's original R5 concern stands** — and is in fact sharper than the PRD put it:
+
+`FoundationModels.LanguageModel` / `LanguageModelExecutor` *is* the model-provider abstraction `LocalModelProvider` (FR-003/FR-004) was specified to be. A LocalAgentKit-defined protocol alongside it risks being a parallel abstraction over the same seam, with a bridge in the middle earning nothing. The live options — **for the user to decide, not for this document**:
+
+1. **Drop `LocalModelProvider`**; have LocalAgentKit consume `some LanguageModel` directly. Loses the layering rule as written (Core would need the `FoundationModels` type) and loses pre-macOS-27 support.
+2. **Keep `LocalModelProvider` as the Core-level seam**, ship a thin adapter both ways. Preserves layering + metric M3 and back-deploys to macOS 26, at the cost of one indirection.
+3. **Invert it**: LocalAgentKit ships `LanguageModelExecutor` conformances (llama.cpp, MLX) as its differentiator and drops model abstraction entirely, competing on tools/permissions/RAG instead.
+
+Option 2 is the smallest change and the only one that keeps the grep-enforced layering rule and M3 intact; note that all three depend on a **macOS/iOS 27 minimum** if they touch these types at all, which is a deployment-target decision the PRD has not made. **This blocks finalizing FR-003/FR-004 and `Package.swift`'s platform floor — flagged, not resolved.**
 
 ## 3. Context size and token counting ARE exposed
 
@@ -154,15 +231,31 @@ This is relevant to task M1-CO-03 (`AgentTool` protocol design): `AgentTool` is 
 
 ---
 
+## 8. Other beta additions that touch planned features
+
+Not the P0-03 question, but found in the same 1501→3647-line diff and relevant enough to record before someone plans around the release surface:
+
+| New in beta | Why it matters here |
+|---|---|
+| `PrivateCloudComputeLanguageModel` | An Apple-hosted, off-device model behind the *same* `LanguageModel` protocol. Directly relevant to the PRD's on-device/privacy positioning and to NFR network-policy declarations — an app can now escalate off-device through stock API, so "local" needs restating as a deliberate constraint, not an Apple limitation. |
+| `ReasoningLevel`, `Reasoning`, `ReasoningSignature` | The model exposes reasoning as first-class transcript content. Affects `AgentEvent` design and the planner work (M1-RT-11/12): reasoning may be observable rather than inferred. |
+| `DynamicInstructions`, `DynamicProfile` (+ result builders) | A composable instruction/profile system. Overlaps what LocalAgentKit was going to build for prompt assembly. |
+| `ContextOptions`, `ContextSizeExceeded`, `LimitReached`, `QuotaUsage`, `RateLimited`, `Timeout` | More typed failure modes for FR-025's `AgentError` than the release enum offered (extends finding 4). |
+| `ToolCallingMode`, `ToolCallError`, `ToolOutput`, `Transcript.ToolDefinition` | Firms up finding 7 — `AgentTool` should bridge to this, and the executor sees `enabledToolDefinitions` per request. |
+| `LanguageModelFeedback` | Structured feedback channel; possible fit for the FR-029 eval harness. |
+
+None of this is verified beyond interface reading + the finding 2 compile/run; treat as a map of what to check, not as settled API.
+
 ## Not yet done
 
-Everything above came from static SDK inspection plus ad hoc single-run experiments (in a scratch SwiftPM package, not committed to this repository) — it is **not** a substitute for P0-01 through P0-14 as scoped:
+Findings 1–2 are now resolved against the beta SDK; **the measurement half of Phase 0 has still not started.** Everything above is static SDK inspection plus small compile/run spikes (in scratch packages, not committed) — it is **not** a substitute for P0-01 through P0-14 as scoped:
 
-- **Beta SDK check (highest priority next step) — user is installing a beta Xcode/OS toolchain to check whether Core AI and/or BYO-LLM/MLX registration exist there.** Findings 1 and 2 above are not final until this happens; treat them as "absent from release, unknown in beta," not "does not exist." This also unblocks task M0-16 (Xcode beta side-by-side), which was blocked for the identical reason (no beta installed).
-- No formal, repeatable P0-01 spike artifact exists in-repo yet.
-- P0-05/P0-06/P0-07 (the actual 20/10/20-goal evaluation suites) have not been written.
-- P0-09–P0-12 (the actual measured rates) have not been produced — finding 6 is one trial, not a rate.
-- P0-14 (latency/thermal/battery) has not been attempted — this machine can inform macOS latency but not iPhone thermal/battery behavior.
-- The full `GenerationError.refusal` (model-generated refusal, as opposed to `guardrailViolation`) has not been triggered or inspected at runtime.
-
-**Explicitly paused here at the user's direction (2026-09-02)** — not continuing to P0-05 onward, not formalizing the spike in-repo, until the beta check above happens.
+- No formal, repeatable P0-01 spike artifact exists in-repo yet. The finding-2 BYO-LLM spike is disposable scratch code and was not committed either — worth reconstructing under P0-18 if the executor path is pursued.
+- P0-05/P0-06/P0-07 (the 20/10/20-goal evaluation suites) have not been written.
+- P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.
+- **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒
+- P0-14 (latency/thermal/battery) has not been attempted — and still needs a *physical* Apple Intelligence device; neither this Mac nor a simulator can measure iPhone thermals.
+- The `GenerationError.refusal` case (model-generated refusal, as distinct from `guardrailViolation`) has not been triggered or inspected at runtime.
+- **New, from finding 2:** the `LocalModelProvider` / `LanguageModel` overlap and the resulting **macOS/iOS 27 deployment-floor decision** are open and block finalizing FR-003/FR-004 and `Package.swift`. This is a design call for the user.
+- **New, from finding 1:** FR-004's `CoreAIModelProvider` should be re-specified or dropped — `CoreAIRuntime` is a tensor API, not a text-generation one.
+- Runtime verification on **macOS** 27 awaits the beta OS; the beta *SDK* is installed, the beta *OS* is not.
