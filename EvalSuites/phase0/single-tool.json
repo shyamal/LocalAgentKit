@@ -1,0 +1,172 @@
+{
+  "suite": "phase0-single-tool",
+  "task": "P0-05",
+  "version": 1,
+  "toolCatalog": "tools.json",
+  "context": {
+    "referenceDateTime": "2026-09-21T10:00",
+    "referenceWeekday": "Monday",
+    "timeZone": "UTC",
+    "locale": "en_US",
+    "note": "The runner must tell the model the current date/time (e.g. in instructions: 'Now is Monday 2026-09-21 10:00.') so relative phrases have exactly one correct answer. All tools in the catalog are registered for every goal."
+  },
+  "scoring": {
+    "unit": "one goal = one model turn; the first tool call is scored",
+    "measures": {
+      "toolCalled": "the model emitted a tool call rather than answering in text",
+      "schemaValid": "arguments parse and satisfy the catalog schema (types, required, enum, pattern) — the P0-09 rate",
+      "toolCorrect": "the called tool equals expected.tool",
+      "argumentsCorrect": "every matcher in expected.arguments passes; arguments not listed are not checked",
+      "extraCalls": "count of additional tool calls in the same turn (maxIterations is 1)"
+    },
+    "matchers": {
+      "exact": "value equals, after trimming whitespace",
+      "caseInsensitive": "value equals, ignoring case",
+      "containsAll": "string contains every term, case-insensitive",
+      "containsAny": "string contains at least one term, case-insensitive",
+      "evaluatesTo": "the expression evaluates to value within tolerance",
+      "datetime": "parses as YYYY-MM-DDTHH:MM and is within toleranceMinutes of value",
+      "absent": "argument is omitted or empty — catches invented values"
+    }
+  },
+  "goals": [
+    {
+      "id": "st-01", "tags": ["calculate", "direct"],
+      "goal": "What is 17.5% of 2,480?",
+      "expected": { "tool": "calculate", "arguments": { "expression": { "match": "evaluatesTo", "value": 434, "tolerance": 0.01 } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-02", "tags": ["calculate", "paraphrased"],
+      "goal": "We're splitting a $186.40 dinner bill evenly between 4 people. How much does each person pay?",
+      "expected": { "tool": "calculate", "arguments": { "expression": { "match": "evaluatesTo", "value": 46.6, "tolerance": 0.01 } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-03", "tags": ["calculate", "paraphrased", "unit-rate"],
+      "goal": "I drove 342 km on 27 litres of fuel. What's my fuel economy in km per litre?",
+      "expected": { "tool": "calculate", "arguments": { "expression": { "match": "evaluatesTo", "value": 12.6667, "tolerance": 0.01 } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-04", "tags": ["calendar", "relative-date"],
+      "goal": "What's on my calendar tomorrow?",
+      "expected": { "tool": "list_calendar_events", "arguments": {
+        "start": { "match": "datetime", "value": "2026-09-22T00:00", "toleranceMinutes": 0 },
+        "end": { "match": "datetime", "value": "2026-09-23T00:00", "toleranceMinutes": 1 } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-05", "tags": ["calendar", "absolute-date"],
+      "goal": "Do I have any meetings on October 2nd?",
+      "expected": { "tool": "list_calendar_events", "arguments": {
+        "start": { "match": "datetime", "value": "2026-10-02T00:00", "toleranceMinutes": 0 },
+        "end": { "match": "datetime", "value": "2026-10-03T00:00", "toleranceMinutes": 1 } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-06", "tags": ["calendar", "relative-date", "fuzzy-range"],
+      "goal": "Am I free on Friday afternoon?",
+      "expected": { "tool": "list_calendar_events", "arguments": {
+        "start": { "match": "datetime", "value": "2026-09-25T12:00", "toleranceMinutes": 60 },
+        "end": { "match": "datetime", "value": "2026-09-25T18:00", "toleranceMinutes": 60 } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-07", "tags": ["reminder", "relative-date"],
+      "goal": "Remind me to call the plumber tomorrow at 9am.",
+      "expected": { "tool": "create_reminder", "arguments": {
+        "title": { "match": "containsAll", "terms": ["plumber"] },
+        "due": { "match": "datetime", "value": "2026-09-22T09:00", "toleranceMinutes": 0 } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "st-08", "tags": ["reminder", "no-date", "hallucination-check"],
+      "goal": "Add a reminder to renew my passport.",
+      "expected": { "tool": "create_reminder", "arguments": {
+        "title": { "match": "containsAll", "terms": ["passport"] },
+        "due": { "match": "absent" } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "st-09", "tags": ["reminder", "relative-time"],
+      "goal": "Remind me in 30 minutes to take the laundry out.",
+      "expected": { "tool": "create_reminder", "arguments": {
+        "title": { "match": "containsAll", "terms": ["laundry"] },
+        "due": { "match": "datetime", "value": "2026-09-21T10:30", "toleranceMinutes": 1 } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "st-10", "tags": ["reminder", "paraphrased", "partial-date"],
+      "goal": "Don't let me forget to submit the quarterly report on the 30th at 5pm.",
+      "expected": { "tool": "create_reminder", "arguments": {
+        "title": { "match": "containsAll", "terms": ["report"] },
+        "due": { "match": "datetime", "value": "2026-09-30T17:00", "toleranceMinutes": 0 } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "st-11", "tags": ["contacts", "direct"],
+      "goal": "What's Priya Raman's phone number?",
+      "expected": { "tool": "search_contacts", "arguments": { "query": { "match": "containsAny", "terms": ["Priya", "Raman"] } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "st-12", "tags": ["contacts", "role-lookup"],
+      "goal": "Find the contact details for my dentist.",
+      "expected": { "tool": "search_contacts", "arguments": { "query": { "match": "containsAny", "terms": ["dentist", "dental"] } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "st-13", "tags": ["files", "enum-argument"],
+      "goal": "Find the PDF of my lease agreement.",
+      "expected": { "tool": "search_files", "arguments": {
+        "query": { "match": "containsAny", "terms": ["lease"] },
+        "file_type": { "match": "exact", "value": "pdf" } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-14", "tags": ["files", "enum-argument", "paraphrased"],
+      "goal": "Where are the screenshots I saved of that error message?",
+      "expected": { "tool": "search_files", "arguments": {
+        "query": { "match": "containsAny", "terms": ["error", "screenshot"] },
+        "file_type": { "match": "exact", "value": "image" } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-15", "tags": ["documents", "disambiguation"],
+      "goal": "What does the employee handbook say about working remotely?",
+      "expected": { "tool": "search_documents", "arguments": { "query": { "match": "containsAny", "terms": ["remote", "remotely", "work from home"] } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-16", "tags": ["documents", "disambiguation"],
+      "goal": "According to the onboarding guide, who approves laptop requests?",
+      "expected": { "tool": "search_documents", "arguments": { "query": { "match": "containsAny", "terms": ["laptop"] } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-17", "tags": ["notes-create", "direct"],
+      "goal": "Make a note: the gate code for the new office is 4417.",
+      "expected": { "tool": "create_note", "arguments": { "body": { "match": "containsAll", "terms": ["4417"] } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "st-18", "tags": ["notes-create", "paraphrased"],
+      "goal": "Jot down that the Q3 offsite is moving to Thursday.",
+      "expected": { "tool": "create_note", "arguments": { "body": { "match": "containsAll", "terms": ["offsite", "Thursday"] } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "st-19", "tags": ["notes-search", "disambiguation"],
+      "goal": "What did I write down about the wifi password?",
+      "expected": { "tool": "search_notes", "arguments": { "query": { "match": "containsAny", "terms": ["wifi", "wi-fi", "password"] } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "st-20", "tags": ["notes-search", "disambiguation"],
+      "goal": "Find my notes from the meeting with the design team.",
+      "expected": { "tool": "search_notes", "arguments": { "query": { "match": "containsAny", "terms": ["design"] } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    }
+  ]
+}

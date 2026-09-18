@@ -34,6 +34,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [x] **M0-14** Enable Swift 6 strict concurrency, complete checking, on every target from the first commit
 - [x] **M0-15** Add code-coverage reporting; set the 80% gate on Core + Runtime only (M4)
 - [x] **M0-16** Verify the Xcode beta toolchain builds the package side-by-side with the release toolchain (needed for R4 later) *(DONE 2026-09-10: Xcode 27.0 beta (27A5252f, Swift 6.4) installed alongside 26.6; `swift build` warning-free and `swift test` green under both toolchains. This also unblocked the beta SDK check in Phase 0 — see the environment table in docs/phase-0-findings.md.)*
+- [x] **M0-17** Keep the toolchain gates working after Xcode 27.0 went GA *(unplanned; serves NFR tooling/CI. DONE 2026-09-18: `Xcode.app` auto-updated on 2026-09-15 to Xcode 27.0 (27A266a, Swift 6.4), whose swift-format rejects `.swift-format` for a missing `orderedImports.shouldGroupImports` key; added it with the tool's own default (`true`). Clean build, tests, layering, and `--strict` lint all pass on 27.0. CI still selects `Xcode_26*` on the runner — left as is, flagged.)*
 
 **Exit:** empty package builds green in CI with strict concurrency, formatting, and the layering check all enforced.
 
@@ -50,7 +51,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [x] **P0-04** Determine whether a token counter / tokenizer is exposed — resolves open question 2 🔒 *(RESOLVED 2026-09-02: yes — `SystemLanguageModel.contextSize` (4096, verified at runtime) and `tokenCount(for:)`; see docs/phase-0-findings.md §3)*
 
 ### Evaluation suites
-- [ ] **P0-05** Write ~20 single-tool goals with known-correct tool + arguments
+- [x] **P0-05** Write ~20 single-tool goals with known-correct tool + arguments *(DONE 2026-09-18: `EvalSuites/phase0/single-tool.json`, 20 goals over the 8-tool shared catalog `EvalSuites/phase0/tools.json` (FR-008 built-ins + `search_documents`), with per-argument matchers and a pinned reference clock; structural validator `Scripts/validate-eval-suites.swift` runs in CI. Suites only — no runner yet; that is P0-09.)*
 - [ ] **P0-06** Write ~10 multi-step (3–5 step) goals with expected tool sequences
 - [ ] **P0-07** Write ~20 *ordinary* business tasks touching health/finance/legal phrasing (expenses, scheduling, notes) for the refusal suite
 - [ ] **P0-08** Build a realistic context-load fixture: long conversation + RAG chunks + plan state, sized to a real app

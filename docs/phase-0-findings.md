@@ -11,6 +11,8 @@ Two toolchains now installed side by side, which is what unblocked findings 1–
 | Release | 26.6 | 17F113 | 6.3.3 | `MacOSX26.5.sdk` | what findings 3–7 were measured against |
 | **Beta** | **27.0** | **27A5252f** | **6.4** | **`MacOSX27.0.sdk`** | + `iPhoneOS27.0.sdk`, iOS 27.0 simulator runtime (24A5423a) |
 
+**Update 2026-09-18:** `Xcode.app` auto-updated on 2026-09-15 to **Xcode 27.0 release (27A266a, Swift 6.4, `MacOSX27.0.sdk`)**, so the "Release 26.6" row above no longer describes the default toolchain. The table is kept as the record of what findings 1–7 were measured against. The GA `FoundationModels.swiftinterface` is **identical to the beta's**, apart from the compiler-version header (`diff` shows 0 lines), and `CoreAI.framework` ships in GA too, so findings 1–2 now describe a **shipping** SDK. The host OS is still macOS 26.6.2.
+
 The package builds warning-free and its tests pass under **both** toolchains (M0-16). Findings dated 2026-09-10 come from the beta SDK; findings dated 2026-09-02 come from the release SDK and say so where it matters.
 
 **Reading note:** the beta SDK is installed but the beta **OS** is not. A macOS 27 binary cannot run on this host, so macOS-side beta findings are *static* (interface + compile) unless stated otherwise; the iOS 27 simulator is available and is what runtime claims below are executed on.
@@ -93,6 +95,8 @@ convenience init(model: some LanguageModel = SystemLanguageModel.default,
 ```
 
 So a custom model gets the whole stock session: tools, transcript, instructions, streaming, structured output.
+
+**GA confirmation (2026-09-18):** the Xcode 27.0 *release* SDK's `FoundationModels` interface is identical to the beta's, apart from the compiler-version header, including `LanguageModel`, `LanguageModelExecutor`, and all four `init(model: some LanguageModel, …)` overloads. This is a shipping API, not a beta capability. That strengthens the case for resolving PLANNING §6 question 9, but doesn't decide it: back-deploying to macOS/iOS 26 is still the trade-off.
 
 ### Verified by execution, not by reading
 
@@ -251,7 +255,7 @@ None of this is verified beyond interface reading + the finding 2 compile/run; t
 Findings 1–2 are now resolved against the beta SDK; **the measurement half of Phase 0 has still not started.** Everything above is static SDK inspection plus small compile/run spikes (in scratch packages, not committed) — it is **not** a substitute for P0-01 through P0-14 as scoped:
 
 - No formal, repeatable P0-01 spike artifact exists in-repo yet. The finding-2 BYO-LLM spike is disposable scratch code and was not committed either — worth reconstructing under P0-18 if the executor path is pursued.
-- P0-05/P0-06/P0-07 (the 20/10/20-goal evaluation suites) have not been written.
+- P0-05 is written (`EvalSuites/phase0/single-tool.json`, 20 goals, 2026-09-18) but **not yet run**. P0-06/P0-07 (the 10-goal multi-step and 20-goal refusal suites) have not been written.
 - P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.
 - **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒
 - P0-14 (latency/thermal/battery) has not been attempted — and still needs a *physical* Apple Intelligence device; neither this Mac nor a simulator can measure iPhone thermals.

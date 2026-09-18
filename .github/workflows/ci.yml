@@ -51,6 +51,13 @@ jobs:
         # cheaper, more specific failure to see than a downstream test error.
         run: ./Scripts/check-layering.sh
 
+      - name: Eval suite consistency
+        # Structural check of EvalSuites/ against its tool catalog (unknown
+        # tools/arguments, bad datetimes, enum violations, confirmation vs.
+        # permission tier). Does not run a model — the suites are data the
+        # Phase 0 spike and later LocalAgentKitEval (FR-029) both consume.
+        run: swift Scripts/validate-eval-suites.swift EvalSuites/phase0
+
       - name: Format lint
         run: xcrun swift-format lint --configuration .swift-format --recursive --strict Sources Tests Package.swift
 
