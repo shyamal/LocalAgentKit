@@ -12,3 +12,5 @@ DerivedData/
 
 # macOS
 .DS_Store
+Spike/.build*/
+Spike/**/xcuserdata/

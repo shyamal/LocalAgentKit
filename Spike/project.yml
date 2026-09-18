@@ -1,0 +1,30 @@
+# Phase 0 spike (task P0-01). Deliberately disposable: no LocalAgentKit imports,
+# no protocols, no abstractions. Regenerate the project with `xcodegen generate`.
+name: Phase0Spike
+options:
+  bundleIdPrefix: dev.localagentkit.spike
+  deploymentTarget:
+    iOS: "27.0"
+    macOS: "26.4"  # tokenCount(for:) is macOS 26.4+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    GENERATE_INFOPLIST_FILE: YES
+    MARKETING_VERSION: "0.1"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    # DEVELOPMENT_TEAM is deliberately unset. Pass it on the command line
+    # (see README) so no team ID is committed.
+targets:
+  Phase0Spike:
+    type: application
+    supportedDestinations: [iOS, macOS]
+    sources: [Phase0Spike]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.localagentkit.spike.phase0
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        ENABLE_HARDENED_RUNTIME: NO
