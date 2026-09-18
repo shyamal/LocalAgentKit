@@ -226,10 +226,12 @@ struct SessionChecks {
     let beforeStream = session.transcript
     let start = clock.now
     var snapshots = 0
+    // --break-after-ms N: how far into the stream to abandon it (default 800).
+    let breakAfter = Int(value(after: "--break-after-ms") ?? "800") ?? 800
     do {
       for try await _ in session.streamResponse(to: "Write a 300-word story about a lighthouse keeper.") {
         snapshots += 1
-        if clock.now - start > .milliseconds(800) { break }
+        if clock.now - start > .milliseconds(breakAfter) { break }
       }
       let brokeAt = clock.now
       log.write("trace break: left loop after \(snapshots) snapshots, isResponding=\(session.isResponding)")
@@ -438,7 +440,15 @@ struct SessionChecks {
   /// The enum case of a framework error, found by reflection so the same code handles the
   /// OS 26 (`GenerationError`) and OS 27 (`LanguageModelError`, `LanguageModelSession.Error`) types.
   private func caseName(_ error: any Error) -> String {
-    Mirror(reflecting: error).children.first?.label ?? String(describing: error)
+    // OS 27's LanguageModelSession.Error has payload-less cases, which Mirror can't name.
+    if #available(iOS 27.0, macOS 27.0, *), let sessionError = error as? LanguageModelSession.Error {
+      switch sessionError {
+      case .concurrentRequests: return "concurrentRequests"
+      case .transcriptMutationWhileResponding: return "transcriptMutationWhileResponding"
+      @unknown default: return String(describing: sessionError)
+      }
+    }
+    return Mirror(reflecting: error).children.first?.label ?? String(describing: error)
   }
 
   private func describe(_ error: any Error) -> String {

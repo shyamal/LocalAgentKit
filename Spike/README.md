@@ -53,4 +53,5 @@ With a free Personal Team, the first launch is refused until you trust the devel
 | `--full-errors` | Don't truncate error descriptions |
 | `--same-session` | `cancellation-break`: send the next request on the abandoned session. **Reproduces the reuse crash** |
 | `--idle-ms N` | `cancellation-break`: wait N ms before the next request |
+| `--break-after-ms N` | `cancellation-break`: abandon the stream N ms in (default 800) |
 | `--schema-variant v` | `dynamic-schema`: `unanchored` (default), `anchored` (reproduces the rejection), `no-pattern`, `required-anchored` |
