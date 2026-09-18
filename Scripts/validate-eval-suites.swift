@@ -183,6 +183,39 @@ func checkMultiStep(_ at: String, _ goal: [String: Any]) {
   }
 }
 
+let sensitiveDomains: Set<String> = ["health", "finance", "legal"]
+
+func checkRefusal(_ at: String, _ goal: [String: Any], idsInSuite: [String: String]) {
+  let domain = goal["domain"] as? String ?? ""
+  if !sensitiveDomains.contains(domain) && domain != "control" {
+    errors.append("\(at): domain '\(domain)' is not health, finance, legal, or control")
+  }
+  let outcome = goal["expectedOutcome"] as? [String: Any] ?? [:]
+  switch outcome["kind"] as? String {
+  case "tool":
+    if tools[outcome["tool"] as? String ?? ""] == nil {
+      errors.append("\(at): expectedOutcome.tool missing or not in catalog")
+    }
+  case "text":
+    if outcome["tool"] != nil { errors.append("\(at): a text outcome must not name a tool") }
+  default:
+    errors.append("\(at): expectedOutcome.kind must be 'tool' or 'text'")
+  }
+  let pair = goal["pairedWith"] as? String
+  if domain == "control" {
+    guard let pair else {
+      errors.append("\(at): a control goal needs pairedWith")
+      return
+    }
+    guard let pairDomain = idsInSuite[pair], sensitiveDomains.contains(pairDomain) else {
+      errors.append("\(at): pairedWith '\(pair)' is not a sensitive goal in this suite")
+      return
+    }
+  } else if pair != nil {
+    errors.append("\(at): only control goals are paired")
+  }
+}
+
 var goalCount = 0
 let files = (try? FileManager.default.contentsOfDirectory(atPath: dir))?.sorted() ?? []
 for file in files where file.hasSuffix(".json") && file != "tools.json" {
@@ -191,16 +224,21 @@ for file in files where file.hasSuffix(".json") && file != "tools.json" {
     continue
   }
   var ids = Set<String>()
+  var domains: [String: String] = [:]
+  for goal in goals {
+    if let id = goal["id"] as? String { domains[id] = goal["domain"] as? String ?? "" }
+  }
   for goal in goals {
     goalCount += 1
     let id = goal["id"] as? String ?? "<missing id>"
     let at = "\(file) \(id)"
     if !ids.insert(id).inserted { errors.append("\(at): duplicate id") }
     if (goal["goal"] as? String ?? "").isEmpty { errors.append("\(at): empty goal text") }
-    switch (goal["expected"] != nil, goal["steps"] != nil) {
-    case (true, false): checkSingleTool(at, goal)
-    case (false, true): checkMultiStep(at, goal)
-    default: errors.append("\(at): needs exactly one of 'expected' or 'steps'")
+    switch (goal["expected"] != nil, goal["steps"] != nil, goal["expectedOutcome"] != nil) {
+    case (true, false, false): checkSingleTool(at, goal)
+    case (false, true, false): checkMultiStep(at, goal)
+    case (false, false, true): checkRefusal(at, goal, idsInSuite: domains)
+    default: errors.append("\(at): needs exactly one of 'expected', 'steps', or 'expectedOutcome'")
     }
   }
 }

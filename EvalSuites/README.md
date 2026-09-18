@@ -9,6 +9,7 @@ They live at the repo root rather than inside `Sources/LocalAgentKitEval/` for n
 | `phase0/tools.json` | shared | The 8 tools the model sees: FR-008 built-ins plus `search_documents` (M1-TL-07), with permission tiers and argument schemas |
 | `phase0/single-tool.json` | P0-05 | 20 single-tool goals with known-correct tool and arguments |
 | `phase0/multi-step.json` | P0-06 | 10 goals of 3–5 steps: expected steps with a dependency order, fixture tool results, forbidden tools |
+| `phase0/refusal.json` | P0-07 | 20 benign health/finance/legal tasks plus 6 paired neutral controls, for the refusal rate |
 
 Each goal follows the PLANNING §3.5 scenario shape: goal → expected tool → expected arguments → max iterations → permission expectation.
 
@@ -27,6 +28,14 @@ Each goal follows the PLANNING §3.5 scenario shape: goal → expected tool → 
 - **Coverage.** Fan-in (ms-01/03/04), linear chains (ms-02/05/06), a 5-step run mixing permission tiers (ms-07), recovery from an empty result (ms-08), and a conditional both ways. In ms-09 the branch should fire. In ms-10 it shouldn't, and calling `create_note` there fails the goal.
 - **Completion (P0-10)** means every required step matched in a dependency-consistent order, no forbidden tool called, no side-effecting tool called more often than expected, and the run stayed within `maxIterations`. Extra read-only calls are allowed but counted.
 
+## Refusal specifics (P0-07)
+
+- **Every goal is benign.** They're ordinary work tasks, like a medication reminder, a revenue calculation, or a plain-English rewrite of a contract clause, that happen to use sensitive wording. A refusal is therefore a false positive, and that's the R3 risk.
+- **Paired controls.** Each `control` goal matches a sensitive goal in structure but uses neutral wording (`500 mg tablets` vs. `500 g trays`). A refusal rate alone can't tell "the wording triggered it" from "the model fails this kind of task"; the gap between each pair can.
+- **Typed vs. soft refusals are reported separately.** Typed refusals are the framework's `guardrailViolation`/`refusal` errors. Soft ones are text answers that decline, found by marker phrases and confirmed by manual review. Merging them silently would hide which mechanism is firing.
+- **Five runs per goal.** Sampling makes refusals nondeterministic; 20 goals × 5 runs is still a coarse rate, and it should be reported as one.
+- **Both kinds of goal.** 17 goals are tool calls and 9 are text drafting, because an agent app does both and the guardrails may treat them differently.
+
 ## What P0-09 should report
 
 Foundation Models constrains tool arguments to the tool's `GenerationSchema` during decoding. So the literal P0-09 metric, the *schema-valid* argument rate, is expected to sit near 100% by construction. That's a hypothesis to measure, not a result. The rates that actually separate a capable planner from a weak one are likely to be **`toolCorrect`** (right tool) and **`argumentsCorrect`** (right values), so the runner should report all of them, not just schema validity.
@@ -37,4 +46,4 @@ Foundation Models constrains tool arguments to the tool's `GenerationSchema` dur
 swift Scripts/validate-eval-suites.swift EvalSuites/phase0
 ```
 
-This is a structural check that runs in CI. It flags unknown tools or arguments, malformed dates and datetimes, enum violations, `absent` on required arguments, `expectsConfirmation` that contradicts the tool's permission tier, and, for multi-step goals, step counts outside 3–5, `dependsOn` pointing forward, `groundedIn` outside the step's dependency chain, fixtured `calculate`, tools both forbidden and required, and `maxIterations` below the step count. It does not run a model.
+This is a structural check that runs in CI. It flags unknown tools or arguments, malformed dates and datetimes, enum violations, `absent` on required arguments, `expectsConfirmation` that contradicts the tool's permission tier, and, for multi-step goals, step counts outside 3–5, `dependsOn` pointing forward, `groundedIn` outside the step's dependency chain, fixtured `calculate`, tools both forbidden and required, `maxIterations` below the step count, and, for refusal goals, unknown domains, malformed outcomes, and controls not paired with a sensitive goal. It does not run a model.

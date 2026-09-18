@@ -331,7 +331,7 @@ Findings 1–2 are now resolved against the beta SDK; **the measurement half of 
 
 - **P0-01 is committed** as [`Spike/`](../Spike/) (2026-09-18): an Xcode app for iOS 27 and macOS 26.4+ that compiles warning-free for both and runs on this Mac. The finding-2 BYO-LLM spike is still uncommitted scratch code.
 - **P0-02 is done on both hosts** (§9). Still open from it: whether the §9a crash belongs to macOS or to OS 26 (needs a macOS 27 host), and triggering a guardrail or refusal on OS 27 to confirm the P0-13 cases under the new `LanguageModelError` type.
-- P0-05 and P0-06 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; both 2026-09-18) but **not yet run**. P0-07 (the 20-goal refusal suite) and P0-08 (context-load fixture) have not been written.
+- P0-05, P0-06 and P0-07 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; `refusal.json`, 20 goals + 6 controls; all 2026-09-18) but **not yet run**. P0-08 (the context-load fixture) has not been written. The M9 refusal threshold P0-11 needs has not been agreed.
 - P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.
 - **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒
 - P0-14 (latency/thermal/battery) has not been attempted — and still needs a *physical* Apple Intelligence device; neither this Mac nor a simulator can measure iPhone thermals.
