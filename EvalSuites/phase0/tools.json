@@ -1,6 +1,7 @@
 {
   "catalog": "phase0-builtins",
   "version": 1,
+  "patternSemantics": "A pattern must match the whole value, and it is written WITHOUT ^/$ anchors: Foundation Models rejects anchored patterns in a GenerationGuide with an opaque error (verified 2026-09-18, docs/phase-0-findings.md \u00a79). Runners must pass patterns through unchanged; validators must use whole-string matching.",
   "description": "The FR-008 built-in tools (plus M1-TL-07 search_documents) as the model sees them. Shared by the P0-05/P0-06/P0-07 suites. Names are snake_case, verb-first, because the model reads them as prompt text. Argument schemas use only what a Foundation Models GenerationSchema can express: string/number/integer, enum, regex pattern, description, required.",
   "dateTimeFormat": "YYYY-MM-DDTHH:MM, local wall-clock time in the suite's reference time zone, no offset",
   "tools": [
@@ -17,8 +18,8 @@
       "description": "List the user's calendar events that overlap a time range.",
       "permission": "readOnly",
       "arguments": {
-        "start": { "type": "string", "required": true, "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$", "description": "Range start, YYYY-MM-DDTHH:MM." },
-        "end": { "type": "string", "required": true, "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$", "description": "Range end, YYYY-MM-DDTHH:MM." }
+        "start": { "type": "string", "required": true, "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}", "description": "Range start, YYYY-MM-DDTHH:MM." },
+        "end": { "type": "string", "required": true, "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}", "description": "Range end, YYYY-MM-DDTHH:MM." }
       }
     },
     {
@@ -27,7 +28,7 @@
       "permission": "userConfirmation",
       "arguments": {
         "title": { "type": "string", "required": true, "description": "Short title of the reminder." },
-        "due": { "type": "string", "required": false, "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$", "description": "When the reminder is due, YYYY-MM-DDTHH:MM. Omit if the user gave no time." }
+        "due": { "type": "string", "required": false, "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}", "description": "When the reminder is due, YYYY-MM-DDTHH:MM. Omit if the user gave no time." }
       }
     },
     {

@@ -190,6 +190,8 @@ guardrailViolation(Context(debugDescription: "May contain unsafe content", under
 
 **Bonus finding, not in scope of any open question:** `exceededContextWindowSize(Context)` is a real, distinct error case. This maps directly onto FR-025's `.contextLimitExceeded` — the framework already surfaces this as a typed error, which simplifies `ContextBudgeter`'s job (task M1-RT-05): the runtime still needs to trim/summarize *before* hitting this, but detecting the failure itself doesn't need custom logic. `rateLimited` and `concurrentRequests` are two more real failure modes the PRD's `AgentError` enum (FR-025) doesn't currently name and should.
 
+**Addendum 2026-09-18:** on iOS/macOS 27, `GenerationError` is deprecated. `guardrailViolation` and `refusal` move to the new `LanguageModelError` (see §9c). The conclusion stands structurally; runtime verification on 27 is pending.
+
 ## 5. Apple Intelligence is active on this development machine
 
 Not a resolution of a numbered open question, but directly relevant to how Phase 0 gets executed: `SystemLanguageModel.default.availability` returns `.available` on this Mac (macOS target, not iOS). This means:
@@ -250,11 +252,60 @@ Not the P0-03 question, but found in the same 1501→3647-line diff and relevant
 
 None of this is verified beyond interface reading + the finding 2 compile/run; treat as a map of what to check, not as settled API.
 
+## 9. Session lifecycle, streaming, and structured output (P0-02) — macOS verified, iPhone pending
+
+**2026-09-18.** From the P0-01 spike ([`Spike/`](../Spike/)), on this Mac, **macOS 26.6.2** (the only OS 26 host available). Each check was run 1–3 times, so these results describe how the API *behaves*. They are not rates. The physical-iPhone half (iPhone 15 Pro, iOS 27.0 24A435) is built and waiting on device provisioning; see "Not yet done".
+
+| Check | macOS 26.6.2 result |
+|---|---|
+| Availability | `.available`, `contextSize` 4096, current locale supported, 23 languages |
+| Latency, 1-word reply (N=3) | Warm calls 190–340 ms. The **first call in a process** takes 0.56–1.4 s. At N=3, prewarm made no measurable difference; P0-14 owns latency properly |
+| Multi-turn reuse | Pass. A fact stated in turn 1 is recalled in turn 2. Two turns = 5 transcript entries (instructions + 2×prompt/response) = 80 tokens |
+| Transcript restore via `Codable` | Pass. `Transcript` is `Codable` (1.4 KB for two turns), and a new session built from the decoded copy recalls the fact. **Conversation persistence across launches (M2-04) can store the framework's own transcript** |
+| Concurrent request | The second `respond` on a busy session throws a typed `concurrentRequests`, and the first request still completes. **The runtime must serialize requests per session** |
+| Text streaming | Snapshots are **cumulative** (each one is the full text so far, not a delta): 12 snapshots over 2.0 s, first at ~350 ms |
+| `@Generable` output | Pass. A nested struct, an enum, `.range` and `.count` guides were all respected (7 days, 3 stops, nights sum to 7) |
+| `@Generable` streaming | Properties fill in order, and arrays grow one element at a time: the stop count went `[0,1,2,3]` over 6 snapshots |
+| Runtime schema (`DynamicGenerationSchema`) | Pass with an **unanchored** pattern guide, which produced exactly `2026-09-22T09:00` |
+| `Response.usage` | Only on 27; not observable on macOS 26 |
+
+### 9a. Abandoning a stream, then reusing the session, crashes the process 🔴
+
+This is the most consequential P0-02 result, because it constrains how the runtime implements cancellation (NFR "support cancellation", `AgentTool.isCancellable`).
+
+- **The crash.** Stop consuming a `streamResponse` (by `Task.cancel()` or by `break`), then send the next request on the *same* session immediately. The process dies inside FoundationModels: **3/3 SIGTRAP or SIGSEGV** with `EXC_BREAKPOINT` in a FoundationModels frame on a concurrency thread, and nothing on stderr. A *fresh* session passes 3/3; the same session after 100–1000 ms passes 6/6.
+- **Why.** Sampling the transcript after abandonment showed the same pattern 6/6: at t=0 it still holds `[prompt,response]`; **by t=25 ms the framework has rolled the abandoned exchange back out, to `[]`**, and `isResponding` already reads `false` at t=0. So `isResponding` goes false before the rollback finishes, and a request that lands mid-rollback crashes. The delay "fix" is timing luck, not a guarantee.
+- **The transcript is contaminated in the meantime.** A copy of `session.transcript` taken in that window contains the abandoned prompt. A session rebuilt from it answered the *abandoned* prompt instead of the new one in 2 of 3 runs.
+- **Cancellation doesn't throw.** `Task.cancel()` ends the stream's `for try await` loop **normally**: no `CancellationError`, `completedNormally` 3/3. Code that detects cancellation by catching the error will never see it.
+- **The safe pattern, verified 3/3:** snapshot `session.transcript` **before** starting a stream; after abandoning it, **discard the session and rebuild from the snapshot**. This doesn't depend on timing.
+
+**What this means for Milestone 1 (not yet acted on):** `AgentRuntime` should own its transcript and treat a `LanguageModelSession` as disposable after any abandoned request. It should track cancellation itself rather than infer it from errors, and never gate the next request on `isResponding`. iOS/macOS 27 adds a typed `LanguageModelSession.Error.transcriptMutationWhileResponding`, which may be how 27 reports this same race. **Whether 27 still crashes is the first thing the iPhone run must answer** (`--only cancellation-break --same-session`).
+
+### 9b. Anchored regex guides are rejected, with an untyped error
+
+A `GenerationGuide.pattern` written with `^…$` is refused **4/4**, both optional and required. The error is untyped: an `NSError` (domain `LanguageModelSession.GenerationError`, code −1) wrapping `GenerativeError` 1020000, with no message. It does **not** arrive as a typed `GenerationError` case. The same pattern without anchors works, and the output still matches the whole value. With no pattern at all, the model wrote `2026-09-22T09:00:00` (right time, wrong format), so the guides do real work.
+
+Consequences, already applied: `EvalSuites/phase0/tools.json` had three anchored patterns that would have failed every datetime goal at run time. They're now unanchored, the file states the rule, and the validator rejects anchors. For FR-025: `AgentError` mapping must handle untyped framework `NSError`s, not only the typed enums. iOS 27 adds `LanguageModelError.unsupportedGenerationGuide`, so this may be typed there; unverified.
+
+### 9c. OS 27 replaces the error types that P0-13 relied on
+
+Building the spike for iOS 27 failed on a deprecation: **`LanguageModelSession.GenerationError` is deprecated in iOS/macOS 27.** It's split into:
+
+- `LanguageModelError` (model outcomes): `contextSizeExceeded`, `rateLimited`, `guardrailViolation`, `refusal`, `unsupportedCapability`, `unsupportedTranscriptContent`, `unsupportedGenerationGuide`, `unsupportedLanguageOrLocale`, `timeout`
+- `LanguageModelSession.Error` (session misuse): `concurrentRequests`, `transcriptMutationWhileResponding`
+
+**P0-13's conclusion still holds on 27, structurally:** `guardrailViolation` and `refusal` remain distinct typed cases. But the *type* a provider must catch differs by OS version, and on 27 it hasn't been triggered at runtime yet. `FoundationModelProvider` (M1-PR-03, `.refused`) must map both generations of error types, which is one more input to the deployment-floor decision in PLANNING §6 question 9.
+
+### Unrelated system noise, recorded so nobody chases it
+
+`intelligencetasksd` was crash-looping on this Mac, with launchd backoff doubling from 10 s, **starting at 19:23, 14 minutes before the first spike run**. Model calls were unaffected throughout. It's not caused by the spike.
+
 ## Not yet done
 
 Findings 1–2 are now resolved against the beta SDK; **the measurement half of Phase 0 has still not started.** Everything above is static SDK inspection plus small compile/run spikes (in scratch packages, not committed) — it is **not** a substitute for P0-01 through P0-14 as scoped:
 
-- No formal, repeatable P0-01 spike artifact exists in-repo yet. The finding-2 BYO-LLM spike is disposable scratch code and was not committed either — worth reconstructing under P0-18 if the executor path is pursued.
+- **P0-01 is committed** as [`Spike/`](../Spike/) (2026-09-18): an Xcode app for iOS 27 and macOS 26.4+ that compiles warning-free for both and runs on this Mac. The finding-2 BYO-LLM spike is still uncommitted scratch code.
+- **P0-02 on the physical iPhone is pending**: the app is built, but a free Personal Team needs the phone unlocked once so Xcode can register it and create a provisioning profile, and the developer must then be trusted on the phone. Until it runs, every §9 result is **macOS 26.6.2 only**. On OS 27 the error types differ (§9c), and whether the §9a crash persists is unknown.
 - P0-05 and P0-06 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; both 2026-09-18) but **not yet run**. P0-07 (the 20-goal refusal suite) and P0-08 (context-load fixture) have not been written.
 - P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.
 - **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒

@@ -101,6 +101,11 @@ func checkArguments(_ at: String, tool toolName: String, _ args: [String: [Strin
     {
       errors.append("\(at): \(argName) date '\(value)' is not YYYY-MM-DD")
     }
+    if let pattern = argSchema["pattern"] as? String,
+      pattern.hasPrefix("^") || pattern.hasSuffix("$")
+    {
+      errors.append("\(at): \(argName) pattern is anchored; Foundation Models rejects ^ and $")
+    }
     if kind == "exact", let allowed = argSchema["enum"] as? [String],
       let value = matcher["value"] as? String, !allowed.contains(value)
     {
