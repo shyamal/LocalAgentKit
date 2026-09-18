@@ -8,6 +8,7 @@ They live at the repo root rather than inside `Sources/LocalAgentKitEval/` for n
 |---|---|---|
 | `phase0/tools.json` | shared | The 8 tools the model sees: FR-008 built-ins plus `search_documents` (M1-TL-07), with permission tiers and argument schemas |
 | `phase0/single-tool.json` | P0-05 | 20 single-tool goals with known-correct tool and arguments |
+| `phase0/multi-step.json` | P0-06 | 10 goals of 3–5 steps: expected steps with a dependency order, fixture tool results, forbidden tools |
 
 Each goal follows the PLANNING §3.5 scenario shape: goal → expected tool → expected arguments → max iterations → permission expectation.
 
@@ -17,6 +18,14 @@ Each goal follows the PLANNING §3.5 scenario shape: goal → expected tool → 
 - **All tools registered for every goal.** Picking the right tool out of the full catalog is part of the measurement, and so is the token cost of 8 tool definitions against a 4096-token context.
 - **Matchers, not string equality.** `"0.175 * 2480"` and `"2480*17.5/100"` are both correct, so expressions are scored with `evaluatesTo`. Free-text arguments use `containsAny`/`containsAll`. `absent` catches invented values (st-08 has no due date and must stay that way).
 - **Deliberately confusable tools.** `search_files` (names and metadata), `search_documents` (contents) and `search_notes` (notes) overlap on purpose. Goals tagged `disambiguation` measure whether the model tells them apart.
+
+## Multi-step specifics (P0-06)
+
+- **Fixtures are the model's whole world.** Each goal lists canned tool results, picked by argument matchers. Anything unmatched gets `"No results found."`. The one exception is `calculate`: the runner evaluates it for real, because fixturing arithmetic would test nothing.
+- **Partial order, not a script.** Steps declare `dependsOn`. Two independent lookups can run in either order, but a step that needs a lookup's result can't come before it.
+- **Grounding.** `groundedIn` marks an argument whose correct value only exists in, or is derived from, an earlier tool result: the phone number from a contact card, a date computed from a contract clause. It separates *calling the right tools* from *using what they returned*, and a compact model can pass the first while failing the second.
+- **Coverage.** Fan-in (ms-01/03/04), linear chains (ms-02/05/06), a 5-step run mixing permission tiers (ms-07), recovery from an empty result (ms-08), and a conditional both ways. In ms-09 the branch should fire. In ms-10 it shouldn't, and calling `create_note` there fails the goal.
+- **Completion (P0-10)** means every required step matched in a dependency-consistent order, no forbidden tool called, no side-effecting tool called more often than expected, and the run stayed within `maxIterations`. Extra read-only calls are allowed but counted.
 
 ## What P0-09 should report
 
@@ -28,4 +37,4 @@ Foundation Models constrains tool arguments to the tool's `GenerationSchema` dur
 swift Scripts/validate-eval-suites.swift EvalSuites/phase0
 ```
 
-This is a structural check that runs in CI. It flags unknown tools or arguments, malformed datetimes, enum violations, `absent` on required arguments, and `expectsConfirmation` that contradicts the tool's permission tier. It does not run a model.
+This is a structural check that runs in CI. It flags unknown tools or arguments, malformed dates and datetimes, enum violations, `absent` on required arguments, `expectsConfirmation` that contradicts the tool's permission tier, and, for multi-step goals, step counts outside 3–5, `dependsOn` pointing forward, `groundedIn` outside the step's dependency chain, fixtured `calculate`, tools both forbidden and required, and `maxIterations` below the step count. It does not run a model.

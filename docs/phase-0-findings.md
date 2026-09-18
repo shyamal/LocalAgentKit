@@ -255,7 +255,7 @@ None of this is verified beyond interface reading + the finding 2 compile/run; t
 Findings 1–2 are now resolved against the beta SDK; **the measurement half of Phase 0 has still not started.** Everything above is static SDK inspection plus small compile/run spikes (in scratch packages, not committed) — it is **not** a substitute for P0-01 through P0-14 as scoped:
 
 - No formal, repeatable P0-01 spike artifact exists in-repo yet. The finding-2 BYO-LLM spike is disposable scratch code and was not committed either — worth reconstructing under P0-18 if the executor path is pursued.
-- P0-05 is written (`EvalSuites/phase0/single-tool.json`, 20 goals, 2026-09-18) but **not yet run**. P0-06/P0-07 (the 10-goal multi-step and 20-goal refusal suites) have not been written.
+- P0-05 and P0-06 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; both 2026-09-18) but **not yet run**. P0-07 (the 20-goal refusal suite) and P0-08 (context-load fixture) have not been written.
 - P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.
 - **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒
 - P0-14 (latency/thermal/battery) has not been attempted — and still needs a *physical* Apple Intelligence device; neither this Mac nor a simulator can measure iPhone thermals.

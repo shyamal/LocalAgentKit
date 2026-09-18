@@ -52,7 +52,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 
 ### Evaluation suites
 - [x] **P0-05** Write ~20 single-tool goals with known-correct tool + arguments *(DONE 2026-09-18: `EvalSuites/phase0/single-tool.json`, 20 goals over the 8-tool shared catalog `EvalSuites/phase0/tools.json` (FR-008 built-ins + `search_documents`), with per-argument matchers and a pinned reference clock; structural validator `Scripts/validate-eval-suites.swift` runs in CI. Suites only — no runner yet; that is P0-09.)*
-- [ ] **P0-06** Write ~10 multi-step (3–5 step) goals with expected tool sequences
+- [x] **P0-06** Write ~10 multi-step (3–5 step) goals with expected tool sequences *(DONE 2026-09-18: `EvalSuites/phase0/multi-step.json`, 10 goals of 3–5 steps on the shared catalog. The expected sequence is a dependency partial order, not a fixed order. Each goal carries fixture tool results (`calculate` is evaluated for real), `groundedIn` marks arguments that must come from earlier tool output, and `forbidden` catches a conditional firing when it shouldn't (ms-10). Validator extended and negative-tested. Suites only; no runner yet, which is P0-10.)*
 - [ ] **P0-07** Write ~20 *ordinary* business tasks touching health/finance/legal phrasing (expenses, scheduling, notes) for the refusal suite
 - [ ] **P0-08** Build a realistic context-load fixture: long conversation + RAG chunks + plan state, sized to a real app
 

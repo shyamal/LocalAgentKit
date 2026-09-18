@@ -1,0 +1,979 @@
+{
+  "suite": "phase0-multi-step",
+  "task": "P0-06",
+  "version": 1,
+  "toolCatalog": "tools.json",
+  "context": {
+    "referenceDateTime": "2026-09-21T10:00",
+    "referenceWeekday": "Monday",
+    "timeZone": "UTC",
+    "locale": "en_US",
+    "note": "Same clock and full tool registration as single-tool.json. Confirmation-tier calls are auto-approved by the runner and counted; nothing real is created."
+  },
+  "scoring": {
+    "unit": "one goal = one agent run, looping model turns until the model answers in text or maxIterations tool calls are reached",
+    "toolResults": "On each tool call the runner returns the first fixture whose tool matches and whose 'when' matchers all pass; otherwise the suite's defaultToolResult. Exception: calculate is never fixtured - the runner evaluates the expression for real and returns the number, exactly as the evaluatesTo matcher does.",
+    "stepMatching": "Expected steps are matched in dependency order: a step matches the earliest unmatched call to its tool whose arguments pass its matchers and that comes after every call matched to its dependsOn steps.",
+    "completed": "The P0-10 rate. True when every non-optional step matches, no tool in 'forbidden' is called, no confirmation-tier tool is called more times than the steps expect, and total calls stay within maxIterations. Extra calls to none/readOnly tools are allowed and counted.",
+    "alsoReport": [
+      "stepsMatched / stepsExpected",
+      "first unmatched step id",
+      "extra calls",
+      "schema-invalid calls",
+      "iterations used",
+      "ended by text answer vs. by maxIterations"
+    ],
+    "groundedIn": "Marks an argument whose correct value exists only in, or is derived from, an earlier step's tool output. The referenced step must be in this step's dependsOn chain. This separates 'called the right tools' from 'used what the tools returned'.",
+    "matchers": "As single-tool.json, plus: evaluatesTo may give 'values' (any one passes) instead of 'value'; date = the YYYY-MM-DD part is within toleranceDays of value, time ignored."
+  },
+  "defaultToolResult": "No results found.",
+  "goals": [
+    {
+      "id": "ms-01",
+      "tags": [
+        "fan-in",
+        "grounded"
+      ],
+      "goal": "I have a dentist appointment this Thursday. Remind me the evening before to call and confirm it, and put the dentist's phone number in the reminder.",
+      "fixtures": [
+        {
+          "tool": "list_calendar_events",
+          "when": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-24",
+              "toleranceDays": 0
+            }
+          },
+          "returns": "1 event: 'Dentist - Dr. Okafor', Thu 2026-09-24 15:30-16:15, Bayside Dental."
+        },
+        {
+          "tool": "search_contacts",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "dentist",
+                "dental",
+                "Okafor",
+                "Bayside"
+              ]
+            }
+          },
+          "returns": "Dr. Amara Okafor - Bayside Dental - phone 555-0142 - reception@baysidedental.example"
+        }
+      ],
+      "steps": [
+        {
+          "id": "cal",
+          "tool": "list_calendar_events",
+          "dependsOn": [],
+          "arguments": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-24",
+              "toleranceDays": 0
+            }
+          }
+        },
+        {
+          "id": "contact",
+          "tool": "search_contacts",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "dentist",
+                "dental",
+                "Okafor",
+                "Bayside"
+              ]
+            }
+          }
+        },
+        {
+          "id": "remind",
+          "tool": "create_reminder",
+          "dependsOn": [
+            "cal",
+            "contact"
+          ],
+          "arguments": {
+            "title": {
+              "match": "containsAll",
+              "terms": [
+                "555-0142"
+              ],
+              "groundedIn": "contact"
+            },
+            "due": {
+              "match": "datetime",
+              "value": "2026-09-23T19:00",
+              "toleranceMinutes": 120
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 6
+    },
+    {
+      "id": "ms-02",
+      "tags": [
+        "linear",
+        "grounded",
+        "calculate"
+      ],
+      "goal": "Find the team lunch receipt total in my notes, work out a 15% tip on it, and save a note with the tip amount.",
+      "fixtures": [
+        {
+          "tool": "search_notes",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "lunch",
+                "receipt"
+              ]
+            }
+          },
+          "returns": "Note 'Team lunch receipt' (2026-09-18): Harbour Kitchen, 8 people, total $212.40."
+        }
+      ],
+      "steps": [
+        {
+          "id": "find",
+          "tool": "search_notes",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "lunch",
+                "receipt"
+              ]
+            }
+          }
+        },
+        {
+          "id": "tip",
+          "tool": "calculate",
+          "dependsOn": [
+            "find"
+          ],
+          "arguments": {
+            "expression": {
+              "match": "evaluatesTo",
+              "value": 31.86,
+              "tolerance": 0.01,
+              "groundedIn": "find"
+            }
+          }
+        },
+        {
+          "id": "save",
+          "tool": "create_note",
+          "dependsOn": [
+            "tip"
+          ],
+          "arguments": {
+            "body": {
+              "match": "containsAll",
+              "terms": [
+                "31.86"
+              ],
+              "groundedIn": "tip"
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 6
+    },
+    {
+      "id": "ms-03",
+      "tags": [
+        "fan-in",
+        "grounded",
+        "comparison"
+      ],
+      "goal": "Compare how many meetings I have on Tuesday versus Wednesday this week, then save a note saying which day is busier.",
+      "fixtures": [
+        {
+          "tool": "list_calendar_events",
+          "when": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-22",
+              "toleranceDays": 0
+            }
+          },
+          "returns": "2 events: 09:30-10:00 Standup; 14:00-15:00 Budget review."
+        },
+        {
+          "tool": "list_calendar_events",
+          "when": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-23",
+              "toleranceDays": 0
+            }
+          },
+          "returns": "4 events: 09:30-10:00 Standup; 11:00-12:00 Hiring panel; 13:00-14:00 Vendor call; 16:00-17:00 1:1 with Sam."
+        }
+      ],
+      "steps": [
+        {
+          "id": "tue",
+          "tool": "list_calendar_events",
+          "dependsOn": [],
+          "arguments": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-22",
+              "toleranceDays": 0
+            }
+          }
+        },
+        {
+          "id": "wed",
+          "tool": "list_calendar_events",
+          "dependsOn": [],
+          "arguments": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-23",
+              "toleranceDays": 0
+            }
+          }
+        },
+        {
+          "id": "save",
+          "tool": "create_note",
+          "dependsOn": [
+            "tue",
+            "wed"
+          ],
+          "arguments": {
+            "body": {
+              "match": "containsAll",
+              "terms": [
+                "Wednesday"
+              ],
+              "groundedIn": "wed"
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 6
+    },
+    {
+      "id": "ms-04",
+      "tags": [
+        "fan-in",
+        "grounded",
+        "calculate",
+        "cross-source"
+      ],
+      "goal": "Check the expense policy for the daily meal limit, find my note with the meal costs from my 3-day Sydney trip, work out how far over or under the limit I was in total, and remind me tomorrow at 9am to sort out the expense claim.",
+      "fixtures": [
+        {
+          "tool": "search_documents",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "meal",
+                "expense",
+                "allowance",
+                "food"
+              ]
+            }
+          },
+          "returns": "Expense Policy s4.2: Meals are reimbursed up to $75 per day while travelling. Amounts above the limit are not reimbursed."
+        },
+        {
+          "tool": "search_notes",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "Sydney",
+                "meal",
+                "trip"
+              ]
+            }
+          },
+          "returns": "Note 'Sydney trip meals': day 1 $68.20, day 2 $91.50, day 3 $77.30."
+        }
+      ],
+      "steps": [
+        {
+          "id": "policy",
+          "tool": "search_documents",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "meal",
+                "expense",
+                "allowance",
+                "food"
+              ]
+            }
+          }
+        },
+        {
+          "id": "costs",
+          "tool": "search_notes",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "Sydney",
+                "meal",
+                "trip"
+              ]
+            }
+          }
+        },
+        {
+          "id": "diff",
+          "tool": "calculate",
+          "dependsOn": [
+            "policy",
+            "costs"
+          ],
+          "arguments": {
+            "expression": {
+              "match": "evaluatesTo",
+              "values": [
+                -12,
+                12
+              ],
+              "tolerance": 0.01,
+              "groundedIn": "costs"
+            }
+          }
+        },
+        {
+          "id": "remind",
+          "tool": "create_reminder",
+          "dependsOn": [],
+          "arguments": {
+            "title": {
+              "match": "containsAny",
+              "terms": [
+                "expense",
+                "claim",
+                "meal"
+              ]
+            },
+            "due": {
+              "match": "datetime",
+              "value": "2026-09-22T09:00",
+              "toleranceMinutes": 0
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 8
+    },
+    {
+      "id": "ms-05",
+      "tags": [
+        "linear",
+        "grounded",
+        "chained-lookup"
+      ],
+      "goal": "Who am I meeting at 2pm today? Find their email address and save it in a note titled with their name.",
+      "fixtures": [
+        {
+          "tool": "list_calendar_events",
+          "when": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-21",
+              "toleranceDays": 0
+            }
+          },
+          "returns": "1 event: 14:00-14:45 'Partnership sync' with Daniel Mwangi (Northwind Logistics)."
+        },
+        {
+          "tool": "search_contacts",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "Mwangi",
+                "Daniel",
+                "Northwind"
+              ]
+            }
+          },
+          "returns": "Daniel Mwangi - Head of Partnerships, Northwind Logistics - daniel.mwangi@northwind.example - 555-0134"
+        }
+      ],
+      "steps": [
+        {
+          "id": "cal",
+          "tool": "list_calendar_events",
+          "dependsOn": [],
+          "arguments": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-21",
+              "toleranceDays": 0
+            }
+          }
+        },
+        {
+          "id": "contact",
+          "tool": "search_contacts",
+          "dependsOn": [
+            "cal"
+          ],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "Mwangi",
+                "Daniel"
+              ],
+              "groundedIn": "cal"
+            }
+          }
+        },
+        {
+          "id": "save",
+          "tool": "create_note",
+          "dependsOn": [
+            "contact"
+          ],
+          "arguments": {
+            "title": {
+              "match": "containsAny",
+              "terms": [
+                "Mwangi",
+                "Daniel"
+              ],
+              "groundedIn": "cal"
+            },
+            "body": {
+              "match": "containsAll",
+              "terms": [
+                "daniel.mwangi@northwind.example"
+              ],
+              "groundedIn": "contact"
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 6
+    },
+    {
+      "id": "ms-06",
+      "tags": [
+        "linear",
+        "grounded",
+        "date-arithmetic"
+      ],
+      "goal": "Find the PDF of our vendor contract, check what it says about the renewal notice period, and set a reminder for the last day I can give notice.",
+      "fixtures": [
+        {
+          "tool": "search_files",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "vendor",
+                "contract",
+                "agreement"
+              ]
+            }
+          },
+          "returns": "1 file: Acme_Vendor_Agreement_2025.pdf (Documents/Contracts), modified 2025-11-20."
+        },
+        {
+          "tool": "search_documents",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "renewal",
+                "notice",
+                "terminat"
+              ]
+            }
+          },
+          "returns": "Acme_Vendor_Agreement_2025.pdf s9.1: The agreement renews automatically on 2026-12-01 unless either party gives at least 60 days' written notice before the renewal date."
+        }
+      ],
+      "steps": [
+        {
+          "id": "file",
+          "tool": "search_files",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "vendor",
+                "contract",
+                "agreement"
+              ]
+            },
+            "file_type": {
+              "match": "exact",
+              "value": "pdf"
+            }
+          }
+        },
+        {
+          "id": "clause",
+          "tool": "search_documents",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "renewal",
+                "notice",
+                "terminat"
+              ]
+            }
+          }
+        },
+        {
+          "id": "remind",
+          "tool": "create_reminder",
+          "dependsOn": [
+            "clause"
+          ],
+          "arguments": {
+            "title": {
+              "match": "containsAny",
+              "terms": [
+                "notice",
+                "contract",
+                "vendor",
+                "Acme",
+                "renewal"
+              ]
+            },
+            "due": {
+              "match": "date",
+              "value": "2026-10-02",
+              "toleranceDays": 1,
+              "groundedIn": "clause"
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 6
+    },
+    {
+      "id": "ms-07",
+      "tags": [
+        "five-step",
+        "grounded",
+        "calculate",
+        "mixed-tiers"
+      ],
+      "goal": "I'm organising Friday's team dinner for 6 people. Check I'm free Friday evening, look up the restaurant booking in my notes, work out the cost per person from the booking details, save a note with the per-person amount, and remind me at 5pm on Friday to leave.",
+      "fixtures": [
+        {
+          "tool": "list_calendar_events",
+          "when": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-25",
+              "toleranceDays": 0
+            }
+          },
+          "returns": "No events between the requested times."
+        },
+        {
+          "tool": "search_notes",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "restaurant",
+                "booking",
+                "dinner"
+              ]
+            }
+          },
+          "returns": "Note 'Team dinner booking': Lantern House, Fri 19:00, table of 6, set menu $540 for the table, plus a 10% service charge."
+        }
+      ],
+      "steps": [
+        {
+          "id": "free",
+          "tool": "list_calendar_events",
+          "dependsOn": [],
+          "arguments": {
+            "start": {
+              "match": "datetime",
+              "value": "2026-09-25T17:00",
+              "toleranceMinutes": 120
+            },
+            "end": {
+              "match": "datetime",
+              "value": "2026-09-25T23:00",
+              "toleranceMinutes": 90
+            }
+          }
+        },
+        {
+          "id": "booking",
+          "tool": "search_notes",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "restaurant",
+                "booking",
+                "dinner"
+              ]
+            }
+          }
+        },
+        {
+          "id": "cost",
+          "tool": "calculate",
+          "dependsOn": [
+            "booking"
+          ],
+          "arguments": {
+            "expression": {
+              "match": "evaluatesTo",
+              "value": 99,
+              "tolerance": 0.01,
+              "groundedIn": "booking"
+            }
+          }
+        },
+        {
+          "id": "save",
+          "tool": "create_note",
+          "dependsOn": [
+            "cost"
+          ],
+          "arguments": {
+            "body": {
+              "match": "containsAny",
+              "terms": [
+                "99"
+              ],
+              "groundedIn": "cost"
+            }
+          }
+        },
+        {
+          "id": "remind",
+          "tool": "create_reminder",
+          "dependsOn": [],
+          "arguments": {
+            "title": {
+              "match": "containsAny",
+              "terms": [
+                "leave",
+                "dinner",
+                "Lantern"
+              ]
+            },
+            "due": {
+              "match": "datetime",
+              "value": "2026-09-25T17:00",
+              "toleranceMinutes": 0
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 9
+    },
+    {
+      "id": "ms-08",
+      "tags": [
+        "recovery",
+        "empty-result",
+        "grounded"
+      ],
+      "goal": "Look in my notes for the guest wifi password for the Harbour St office. If it's not there, check my documents. Then save it as a note so I have it next time.",
+      "fixtures": [
+        {
+          "tool": "search_notes",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "wifi",
+                "wi-fi",
+                "password",
+                "Harbour"
+              ]
+            }
+          },
+          "returns": "No results found."
+        },
+        {
+          "tool": "search_documents",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "wifi",
+                "wi-fi",
+                "password",
+                "Harbour"
+              ]
+            }
+          },
+          "returns": "Harbour St Office Guide p.2: Guest wifi network HSGuest, password tidal-7731. Rotated quarterly."
+        }
+      ],
+      "steps": [
+        {
+          "id": "notes",
+          "tool": "search_notes",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "wifi",
+                "wi-fi",
+                "password",
+                "Harbour"
+              ]
+            }
+          }
+        },
+        {
+          "id": "docs",
+          "tool": "search_documents",
+          "dependsOn": [
+            "notes"
+          ],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "wifi",
+                "wi-fi",
+                "password",
+                "Harbour"
+              ]
+            }
+          }
+        },
+        {
+          "id": "save",
+          "tool": "create_note",
+          "dependsOn": [
+            "docs"
+          ],
+          "arguments": {
+            "body": {
+              "match": "containsAll",
+              "terms": [
+                "tidal-7731"
+              ],
+              "groundedIn": "docs"
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 6
+    },
+    {
+      "id": "ms-09",
+      "tags": [
+        "conditional",
+        "branch-taken",
+        "grounded",
+        "calculate"
+      ],
+      "goal": "Add up how long my meetings tomorrow run in total. If it's more than 5 hours, remind me at 8am tomorrow to block out some focus time.",
+      "fixtures": [
+        {
+          "tool": "list_calendar_events",
+          "when": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-22",
+              "toleranceDays": 0
+            }
+          },
+          "returns": "3 events: 09:00-10:30 Quarterly planning; 11:00-12:00 Design review; 13:00-16:00 Customer workshop."
+        }
+      ],
+      "steps": [
+        {
+          "id": "cal",
+          "tool": "list_calendar_events",
+          "dependsOn": [],
+          "arguments": {
+            "start": {
+              "match": "date",
+              "value": "2026-09-22",
+              "toleranceDays": 0
+            }
+          }
+        },
+        {
+          "id": "sum",
+          "tool": "calculate",
+          "dependsOn": [
+            "cal"
+          ],
+          "optional": true,
+          "arguments": {
+            "expression": {
+              "match": "evaluatesTo",
+              "values": [
+                5.5,
+                330
+              ],
+              "tolerance": 0.01,
+              "groundedIn": "cal"
+            }
+          }
+        },
+        {
+          "id": "remind",
+          "tool": "create_reminder",
+          "dependsOn": [
+            "cal"
+          ],
+          "arguments": {
+            "title": {
+              "match": "containsAny",
+              "terms": [
+                "focus",
+                "block"
+              ]
+            },
+            "due": {
+              "match": "datetime",
+              "value": "2026-09-22T08:00",
+              "toleranceMinutes": 0
+            }
+          }
+        }
+      ],
+      "forbidden": [],
+      "maxIterations": 6
+    },
+    {
+      "id": "ms-10",
+      "tags": [
+        "conditional",
+        "branch-not-taken",
+        "grounded",
+        "forbidden"
+      ],
+      "goal": "Check my notes for what I pay for my current phone plan, and check my documents for the price of the new Unlimited Lite plan. If switching would save me more than $10 a month, make a note to switch.",
+      "fixtures": [
+        {
+          "tool": "search_notes",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "phone",
+                "plan",
+                "mobile"
+              ]
+            }
+          },
+          "returns": "Note 'Bills': Current phone plan (Metro Talk 40) - $49/month."
+        },
+        {
+          "tool": "search_documents",
+          "when": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "Unlimited Lite",
+                "Lite",
+                "plan",
+                "price"
+              ]
+            }
+          },
+          "returns": "Carrier brochure 2026: Unlimited Lite - $42 per month, 30GB data, unlimited calls."
+        }
+      ],
+      "steps": [
+        {
+          "id": "current",
+          "tool": "search_notes",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "phone",
+                "plan",
+                "mobile"
+              ]
+            }
+          }
+        },
+        {
+          "id": "new",
+          "tool": "search_documents",
+          "dependsOn": [],
+          "arguments": {
+            "query": {
+              "match": "containsAny",
+              "terms": [
+                "Unlimited Lite",
+                "Lite",
+                "plan",
+                "price"
+              ]
+            }
+          }
+        },
+        {
+          "id": "saving",
+          "tool": "calculate",
+          "dependsOn": [
+            "current",
+            "new"
+          ],
+          "optional": true,
+          "arguments": {
+            "expression": {
+              "match": "evaluatesTo",
+              "values": [
+                7,
+                -7
+              ],
+              "tolerance": 0.01,
+              "groundedIn": "current"
+            }
+          }
+        }
+      ],
+      "forbidden": [
+        "create_note"
+      ],
+      "maxIterations": 6
+    }
+  ]
+}
