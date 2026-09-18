@@ -1,0 +1,129 @@
+{
+  "fixture": "phase0-context-load",
+  "task": "P0-08",
+  "version": 1,
+  "toolCatalog": "tools.json",
+  "purpose": "Realistic context pressure for P0-12 (R2): an assistant session mid-way through a working day, with conversation history that includes tool traffic, retrieved document chunks, and live plan state. Profiles select how much of it goes into one request.",
+  "assembly": {
+    "order": "instructions (with all catalog tools registered) -> the last N conversation exchanges as transcript entries -> one final prompt containing the first K chunks, then the plan if included, then the probe question",
+    "chunkFormat": "[<doc> - <section>]\n<text>, chunks separated by blank lines, under the heading 'Relevant documents:'",
+    "planFormat": "'Current plan: <goal>' followed by one line per step: '<n>. [<status>] <description>' plus ' - <note>' when present",
+    "promptSuffix": "Answer using only the conversation and the material above. If the answer is not there, say you don't know.",
+    "tokenCounting": "Token cost differs by OS (80 vs 107 tokens for the same exchange on macOS 26 vs iOS 27; docs/phase-0-findings.md section 9), so every profile's size is measured per host with SystemLanguageModel.tokenCount, never assumed."
+  },
+  "instructions": "You are Ledger, the built-in assistant in a work app for a small professional-services company. You help one employee plan their day, find information in their calendar, notes, contacts and company documents, and keep track of multi-step tasks. Use the tools to look things up rather than guessing. Keep answers short and specific, give times in 24-hour format, and quote document wording when the user asks what a policy says. Never invent names, numbers or dates. Actions that create reminders or notes are confirmed by the user before they run.",
+  "conversation": [
+    { "exchange": 1, "entries": [
+      { "kind": "prompt", "text": "Morning. What have I got on today?" },
+      { "kind": "toolCall", "tool": "list_calendar_events", "arguments": { "start": "2026-09-21T00:00", "end": "2026-09-22T00:00" } },
+      { "kind": "toolOutput", "tool": "list_calendar_events", "text": "3 events: 09:30-10:00 Standup; 11:00-12:30 Northwind client workshop (Room Kestrel, level 3); 14:00-14:45 Partnership sync with Daniel Mwangi." },
+      { "kind": "response", "text": "You have three things today: standup at 09:30, the Northwind client workshop from 11:00 to 12:30 in Room Kestrel on level 3, and a partnership sync with Daniel Mwangi at 14:00." } ] },
+    { "exchange": 2, "entries": [
+      { "kind": "prompt", "text": "Who's coming to the workshop from Northwind?" },
+      { "kind": "toolCall", "tool": "search_contacts", "arguments": { "query": "Northwind" } },
+      { "kind": "toolOutput", "tool": "search_contacts", "text": "3 contacts: Daniel Mwangi - Head of Partnerships; Ines Carvalho - Operations Lead; Tom Becker - Finance Manager. All at Northwind Logistics." },
+      { "kind": "response", "text": "Your Northwind contacts are Daniel Mwangi (Head of Partnerships), Ines Carvalho (Operations Lead) and Tom Becker (Finance Manager). The invite doesn't list attendees, so I can't confirm which of them are coming." } ] },
+    { "exchange": 3, "entries": [
+      { "kind": "prompt", "text": "Ines mentioned their warehouse moved. Can you note down the new address: Unit 7, 212 Ferris Road, Port Melville?" },
+      { "kind": "toolCall", "tool": "create_note", "arguments": { "title": "Northwind warehouse address", "body": "New Northwind warehouse: Unit 7, 212 Ferris Road, Port Melville (per Ines Carvalho)." } },
+      { "kind": "toolOutput", "tool": "create_note", "text": "Note created: 'Northwind warehouse address'." },
+      { "kind": "response", "text": "Saved a note titled 'Northwind warehouse address' with Unit 7, 212 Ferris Road, Port Melville." } ] },
+    { "exchange": 4, "entries": [
+      { "kind": "prompt", "text": "What do I need to prepare for the workshop? I think I wrote something last week." },
+      { "kind": "toolCall", "tool": "search_notes", "arguments": { "query": "Northwind workshop prep" } },
+      { "kind": "toolOutput", "tool": "search_notes", "text": "Note 'Northwind workshop prep' (2026-09-15): bring the Q3 delivery metrics deck, print 6 copies of the SLA draft, confirm catering for 8, ask Tom about the delayed September invoice." },
+      { "kind": "response", "text": "Your prep note says: bring the Q3 delivery metrics deck, print 6 copies of the SLA draft, confirm catering for 8, and ask Tom about the delayed September invoice." } ] },
+    { "exchange": 5, "entries": [
+      { "kind": "prompt", "text": "Is catering for 8 still right? We added two people from our side." },
+      { "kind": "response", "text": "If two more people from your side are joining, catering should be for 10, not 8. Your prep note still says 8, so it's worth updating the order." } ] },
+    { "exchange": 6, "entries": [
+      { "kind": "prompt", "text": "Tom just emailed the purchase order for the new SLA. It's PO NW-44817, for $38,400 over 12 months. Keep that in mind." },
+      { "kind": "response", "text": "Got it: PO NW-44817 from Northwind, $38,400 over 12 months for the new SLA. That works out to $3,200 a month." } ] },
+    { "exchange": 7, "entries": [
+      { "kind": "prompt", "text": "Double-check that monthly figure." },
+      { "kind": "toolCall", "tool": "calculate", "arguments": { "expression": "38400 / 12" } },
+      { "kind": "toolOutput", "tool": "calculate", "text": "3200" },
+      { "kind": "response", "text": "Confirmed: $38,400 over 12 months is $3,200 per month." } ] },
+    { "exchange": 8, "entries": [
+      { "kind": "prompt", "text": "What does our contract template say about late payment? Tom is asking about the September invoice." },
+      { "kind": "toolCall", "tool": "search_documents", "arguments": { "query": "late payment interest invoice" } },
+      { "kind": "toolOutput", "tool": "search_documents", "text": "Standard Services Agreement s7.3: Invoices are payable within 30 days. Overdue amounts accrue interest at 1% per month, and we may suspend services after 60 days' non-payment with 10 days' written notice." },
+      { "kind": "response", "text": "The Standard Services Agreement (s7.3) says invoices are due within 30 days, overdue amounts accrue 1% interest per month, and services can be suspended after 60 days of non-payment with 10 days' written notice." } ] },
+    { "exchange": 9, "entries": [
+      { "kind": "prompt", "text": "Remind me at 16:00 to send Tom the late-payment clause." },
+      { "kind": "toolCall", "tool": "create_reminder", "arguments": { "title": "Send Tom the late-payment clause (s7.3)", "due": "2026-09-21T16:00" } },
+      { "kind": "toolOutput", "tool": "create_reminder", "text": "Reminder created for 2026-09-21 16:00." },
+      { "kind": "response", "text": "Done. You'll be reminded at 16:00 to send Tom the late-payment clause." } ] },
+    { "exchange": 10, "entries": [
+      { "kind": "prompt", "text": "After the workshop I need to book the team dinner for Friday. Start a plan for that." },
+      { "kind": "response", "text": "I've started a plan for Friday's team dinner: confirm headcount, check the budget, book the restaurant, send the invite, and add it to everyone's calendar. I'll track it as we go." } ] },
+    { "exchange": 11, "entries": [
+      { "kind": "prompt", "text": "Headcount is 9 now. What's the budget rule for team dinners?" },
+      { "kind": "toolCall", "tool": "search_documents", "arguments": { "query": "team dinner budget per person" } },
+      { "kind": "toolOutput", "tool": "search_documents", "text": "Expense Policy s6.1: Team meals are capped at $60 per person including service, and need manager approval above $400 in total." },
+      { "kind": "response", "text": "The expense policy (s6.1) caps team meals at $60 per person including service, and anything over $400 in total needs manager approval. For 9 people that's up to $540, so it will need approval." } ] },
+    { "exchange": 12, "entries": [
+      { "kind": "prompt", "text": "OK. Also, reception said to pick up the visitor badges for Northwind from the front desk after 13:00." },
+      { "kind": "response", "text": "Noted: pick up the Northwind visitor badges from the front desk after 13:00." } ] }
+  ],
+  "chunks": [
+    { "id": "c01", "doc": "Expense Policy", "section": "s2.1 Scope", "text": "This policy applies to all employees and contractors who incur costs on the company's behalf. Expenses must be necessary, reasonable, and directly connected to company business. Claims are submitted through the finance portal within 30 days of the expense being incurred, with an itemised receipt for every amount over $25. Claims submitted after 90 days are not reimbursed except with written approval from the Finance Director." },
+    { "id": "c02", "doc": "Expense Policy", "section": "s3.2 Travel", "text": "Economy class is the default for all flights. Premium economy may be booked for flights longer than six hours. Business class requires prior approval from a director and is only considered for flights longer than ten hours or where a medical certificate is provided. Rail travel is preferred for journeys under three hours. Ride-share and taxi costs are reimbursed for business travel where public transport is not practical." },
+    { "id": "c03", "doc": "Expense Policy", "section": "s4.2 Meals while travelling", "text": "Meals are reimbursed up to $75 per day while travelling on company business. This allowance covers breakfast, lunch, dinner and non-alcoholic drinks. Amounts above the daily limit are not reimbursed and cannot be carried over to another day. Alcohol is not reimbursable under the travel meal allowance. Client entertainment is covered separately under section 6." },
+    { "id": "c04", "doc": "Expense Policy", "section": "s5.4 Home-office equipment", "text": "Employees who work from home at least two days a week may claim up to $450 per financial year for home-office equipment such as chairs, monitors, keyboards and desk lamps. Items remain company property for two years from purchase. Laptops and phones are supplied by IT and cannot be claimed under this allowance. Receipts must show the item, the date and the price paid." },
+    { "id": "c05", "doc": "Employee Handbook", "section": "4.1 Flexible working", "text": "Staff may work remotely up to three days a week by agreement with their manager. Core collaboration hours are 10:00 to 15:00, when everyone should be reachable. Fully remote arrangements are considered case by case and reviewed every six months. Requests are made through the HR portal, and managers respond within ten working days." },
+    { "id": "c06", "doc": "Employee Handbook", "section": "5.3 Leave", "text": "Full-time employees receive 20 days of annual leave plus public holidays. Up to 5 unused days may be carried into the next year. Personal leave of 10 days per year covers illness, caring responsibilities and mental health days, and does not require a certificate for absences of up to two consecutive days. Leave is requested in the HR portal at least two weeks ahead where possible." },
+    { "id": "c07", "doc": "Employee Handbook", "section": "7.2 Equipment", "text": "New starters receive a laptop, a phone and a headset on their first day. Laptop requests for replacements or upgrades are approved by the IT Operations Lead, currently Sam Oyelaran. Lost or stolen devices must be reported to IT within 24 hours so they can be locked remotely. Personal software may not be installed without IT approval." },
+    { "id": "c08", "doc": "Standard Services Agreement", "section": "s4 Service levels", "text": "The Supplier will respond to priority-one incidents within 2 hours and resolve or provide a workaround within 8 hours, 24 hours a day. Priority-two incidents receive a response within one business day. Service availability is measured monthly, with a target of 99.5 percent. If availability falls below target in two consecutive months, the Customer may request a service review." },
+    { "id": "c09", "doc": "Standard Services Agreement", "section": "s9 Term and renewal", "text": "The agreement runs for an initial term of 12 months from the commencement date and renews automatically for further 12-month periods. Either party may prevent renewal by giving at least 60 days' written notice before the renewal date. Prices may be adjusted at renewal by no more than the published consumer price index plus 2 percent." },
+    { "id": "c10", "doc": "Standard Services Agreement", "section": "s11 Liability", "text": "Neither party is liable for indirect or consequential loss, including loss of profit or data. Each party's total liability in any 12-month period is capped at the fees paid under the agreement in that period. The cap does not apply to breaches of confidentiality or to liability that cannot be limited by law." },
+    { "id": "c11", "doc": "Harbour St Office Guide", "section": "Access", "text": "The office is on levels 2 and 3 of 18 Harbour Street. Staff badges open the building from 07:00 to 20:00 on weekdays. Visitors sign in at the ground-floor front desk and are issued a day badge, which must be returned when they leave. Meeting rooms on level 3 are named after birds: Kestrel, Heron and Wren." },
+    { "id": "c12", "doc": "Harbour St Office Guide", "section": "Facilities", "text": "The level 2 kitchen has coffee, tea and filtered water. Lockers are available on a first-come basis and must be cleared every Friday. Printing is managed through the Follow-Me queue: send to 'Harbour-Print' and release the job at any printer with your badge. Report building faults to facilities@harbourst.example." },
+    { "id": "c13", "doc": "Harbour St Office Guide", "section": "Catering", "text": "Meeting catering is ordered through Corner Pantry at least 24 hours in advance, with a minimum order of 6 people. Orders can be changed or cancelled free of charge until 16:00 the previous business day. Dietary requirements should be listed per person on the order form. Catering costs are charged to the booking team's cost centre." },
+    { "id": "c14", "doc": "Harbour St Office Guide", "section": "Wifi", "text": "Staff connect to the HSStaff network using their company login. The guest network is HSGuest, and the password is tidal-7731. The guest password is rotated quarterly, and the new one is posted on the reception screen. Guest access is limited to web browsing and is isolated from company systems." },
+    { "id": "c15", "doc": "Security Policy", "section": "2.4 Data handling", "text": "Customer data may only be stored in approved systems. It must not be copied to personal devices, personal cloud storage or removable media. Documents classified as Confidential must be shared with named individuals rather than by open link. Suspected data incidents are reported to security@company.example immediately, even if the impact is unclear." },
+    { "id": "c16", "doc": "Security Policy", "section": "3.1 Passwords and MFA", "text": "Company accounts require a password of at least 14 characters and multi-factor authentication. Passwords must not be reused across services or shared with colleagues. Password managers approved by IT may be used. Accounts are locked after 10 failed sign-in attempts and unlocked by the IT service desk after identity verification." }
+  ],
+  "plan": {
+    "goal": "Book Friday's team dinner",
+    "steps": [
+      { "n": 1, "status": "done", "description": "Confirm headcount", "note": "9 people" },
+      { "n": 2, "status": "done", "description": "Check the budget rule", "note": "$60 per person, manager approval over $400 total (Expense Policy s6.1)" },
+      { "n": 3, "status": "blocked", "description": "Get manager approval for the $540 total", "note": "waiting on approval from Priya Raman" },
+      { "n": 4, "status": "pending", "description": "Book Lantern House for 19:00 Friday" },
+      { "n": 5, "status": "pending", "description": "Send the invite and add it to everyone's calendar" }
+    ]
+  },
+  "probes": [
+    { "id": "pr-early", "question": "Which room is the Northwind workshop in?", "answerContainsAny": ["Kestrel"],
+      "source": { "exchange": 1 }, "why": "Oldest conversation fact. Dropped first when history is trimmed." },
+    { "id": "pr-mid", "question": "What was Northwind's PO number for the new SLA?", "answerContainsAny": ["NW-44817"],
+      "source": { "exchange": 6 }, "why": "A user-stated fact with no tool trace. Only survives if its exchange is kept." },
+    { "id": "pr-recent", "question": "After what time can I pick up the visitor badges?", "answerContainsAny": ["13:00", "1pm", "1 pm", "1:00"],
+      "source": { "exchange": 12 }, "why": "Newest conversation fact. Should survive every profile." },
+    { "id": "pr-chunk-first", "question": "What is the daily meal allowance when travelling?", "answerContainsAny": ["75"],
+      "source": { "chunk": "c03" }, "why": "An early chunk. Present in every profile." },
+    { "id": "pr-chunk-late", "question": "What is the guest wifi password at Harbour St?", "answerContainsAny": ["tidal-7731"],
+      "source": { "chunk": "c14" }, "why": "A late chunk. Only present in profiles with 14+ chunks, and sits far from the question in heavy prompts." },
+    { "id": "pr-plan", "question": "Why is the team dinner plan stuck?", "answerContainsAny": ["Priya", "approval"],
+      "source": { "plan": 3 }, "why": "Plan state. Only present when the profile includes the plan." }
+  ],
+  "profiles": [
+    { "id": "light", "exchanges": 3, "chunks": 3, "plan": false, "represents": "A quick lookup early in a session" },
+    { "id": "typical", "exchanges": 8, "chunks": 6, "plan": true, "represents": "A normal mid-session request with retrieval and an active plan" },
+    { "id": "heavy", "exchanges": 12, "chunks": 10, "plan": true, "represents": "A long working session with generous retrieval" },
+    { "id": "stress", "exchanges": 12, "chunks": 16, "plan": true, "represents": "Everything at once: more retrieval than an app should send, to find the ceiling" }
+  ],
+  "scoring": {
+    "availability": "A probe's fact is in context when its source is included: exchange >= 12 - profile.exchanges + 1, chunk position <= profile.chunks, plan when profile.plan is true.",
+    "outcomes": {
+      "exceeded": "The request threw the context-size error (exceededContextWindowSize on OS 26, contextSizeExceeded on OS 27). This is the P0-12 exhaustion count.",
+      "recalled": "Fact in context, and the answer contains it.",
+      "missed": "Fact in context, but the answer doesn't contain it. Silent degradation: the failure mode that exhaustion counts miss.",
+      "abstained": "Fact not in context, and the answer says it doesn't know. Correct behaviour.",
+      "hallucinated": "Fact not in context, but the answer asserts some other specific value.",
+      "otherError": "Any other thrown error, recorded by type and case."
+    },
+    "alsoReport": ["tokens per component (instructions+tools, history, chunks, plan, question) and total, per host", "total as a share of contextSize", "latency per request"]
+  }
+}

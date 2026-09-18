@@ -48,6 +48,7 @@ struct SessionChecks {
       ("abandon-timeline", abandonTimeline),
       ("text-streaming", textStreaming), ("structured", structuredOutput),
       ("structured-streaming", structuredStreaming), ("dynamic-schema", dynamicSchema),
+      ("context-size", contextSize),
     ]
   }
 
@@ -399,6 +400,41 @@ struct SessionChecks {
           + "due=\(due ?? "nil") dueIsCorrect=\(due == "2026-09-22T09:00")")
     } catch {
       log.write("check=dynamic-schema result=fail variant=\(variant) error=\(describe(error))")
+    }
+  }
+
+  /// P0-08: token cost of each context-load profile, by component, on this host. Measures
+  /// sizes only; whether requests at these sizes fail or degrade is P0-12.
+  private func contextSize() async {
+    do {
+      let fixture = try loadResource("context-load", as: ContextFixture.self)
+      let tools = try loadResource("tools", as: Catalog.self).tools.map(CatalogTool.init)
+      let model = SystemLanguageModel.default
+      let question = "Why is the team dinner plan stuck?"
+      let bareInstructions = Transcript.Entry.instructions(
+        .init(segments: [.text(.init(content: fixture.instructions))], toolDefinitions: []))
+      let instructionTokens = try await model.tokenCount(for: [bareInstructions])
+      let toolTokens = try await model.tokenCount(for: tools)
+      log.write(
+        "check=context-size result=observed component=fixed contextSize=\(model.contextSize) "
+          + "instructions=\(instructionTokens) tools=\(toolTokens) toolCount=\(tools.count)")
+      for profile in fixture.profiles {
+        let request = try AssembledRequest(
+          fixture: fixture, profile: profile, tools: tools, question: question)
+        let history = try await model.tokenCount(for: request.history)
+        let chunks = request.chunkText.isEmpty ? 0 : try await model.tokenCount(for: request.chunkText)
+        let plan = request.planText.isEmpty ? 0 : try await model.tokenCount(for: request.planText)
+        let prompt = try await model.tokenCount(for: request.prompt)
+        let total = try await model.tokenCount(for: request.fullTranscript)
+        let share = Int((Double(total) / Double(model.contextSize) * 100).rounded())
+        log.write(
+          "check=context-size result=observed profile=\(profile.id) exchanges=\(profile.exchanges) "
+            + "chunks=\(profile.chunks) plan=\(profile.plan) historyEntries=\(request.history.count) "
+            + "history=\(history) chunkTokens=\(chunks) planTokens=\(plan) finalPrompt=\(prompt) "
+            + "total=\(total) ofContext=\(share)% headroom=\(model.contextSize - total)")
+      }
+    } catch {
+      log.write("check=context-size result=fail error=\(describe(error))")
     }
   }
 

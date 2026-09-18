@@ -216,9 +216,103 @@ func checkRefusal(_ at: String, _ goal: [String: Any], idsInSuite: [String: Stri
   }
 }
 
+/// Context-load fixtures (P0-08) have no goals: they hold material that profiles assemble
+/// into requests. Probe answers are planted facts, so they must appear literally in their source.
+func checkFixture(_ file: String, _ fixture: [String: Any]) {
+  let exchanges = fixture["conversation"] as? [[String: Any]] ?? []
+  var exchangeText: [Int: String] = [:]
+  for (index, exchange) in exchanges.enumerated() {
+    let number = exchange["exchange"] as? Int ?? -1
+    let at = "\(file) exchange \(number)"
+    if number != index + 1 {
+      errors.append("\(at): exchanges must be numbered 1, 2, 3, … in order")
+    }
+    let entries = exchange["entries"] as? [[String: Any]] ?? []
+    let kinds = entries.map { $0["kind"] as? String ?? "" }
+    if kinds.first != "prompt" || kinds.last != "response" {
+      errors.append("\(at): must start with a prompt and end with a response")
+    }
+    var pendingCall: String?
+    for entry in entries {
+      let kind = entry["kind"] as? String ?? ""
+      let tool = entry["tool"] as? String ?? ""
+      switch kind {
+      case "prompt", "response":
+        if (entry["text"] as? String ?? "").isEmpty { errors.append("\(at): empty \(kind)") }
+      case "toolCall":
+        let schema = tools[tool]?["arguments"] as? [String: Any]
+        if schema == nil { errors.append("\(at): toolCall to unknown tool \(tool)") }
+        for name in (entry["arguments"] as? [String: Any] ?? [:]).keys where schema?[name] == nil {
+          errors.append("\(at): \(tool) has no argument \(name)")
+        }
+        pendingCall = tool
+      case "toolOutput":
+        if pendingCall != tool {
+          errors.append("\(at): toolOutput for \(tool) without a matching toolCall")
+        }
+        pendingCall = nil
+      default:
+        errors.append("\(at): unknown entry kind '\(kind)'")
+      }
+    }
+    exchangeText[number] = entries.compactMap { $0["text"] as? String }.joined(separator: " ")
+  }
+  var chunkText: [String: String] = [:]
+  for chunk in fixture["chunks"] as? [[String: Any]] ?? [] {
+    let id = chunk["id"] as? String ?? ""
+    if chunkText[id] != nil { errors.append("\(file): duplicate chunk \(id)") }
+    chunkText[id] = chunk["text"] as? String ?? ""
+  }
+  var stepText: [Int: String] = [:]
+  let plan = fixture["plan"] as? [String: Any] ?? [:]
+  for (index, step) in (plan["steps"] as? [[String: Any]] ?? []).enumerated() {
+    let number = step["n"] as? Int ?? -1
+    if number != index + 1 {
+      errors.append("\(file): plan steps must be numbered 1, 2, 3, … in order")
+    }
+    if !["done", "inProgress", "blocked", "pending"].contains(step["status"] as? String ?? "") {
+      errors.append("\(file): plan step \(number) has an unknown status")
+    }
+    stepText[number] = "\(step["description"] as? String ?? "") \(step["note"] as? String ?? "")"
+  }
+  for probe in fixture["probes"] as? [[String: Any]] ?? [] {
+    let at = "\(file) probe \(probe["id"] as? String ?? "?")"
+    let source = probe["source"] as? [String: Any] ?? [:]
+    let text: String? =
+      if let n = source["exchange"] as? Int {
+        exchangeText[n]
+      } else if let id = source["chunk"] as? String {
+        chunkText[id]
+      } else if let n = source["plan"] as? Int { stepText[n] } else { nil }
+    guard let text else {
+      errors.append("\(at): source does not name an existing exchange, chunk, or plan step")
+      continue
+    }
+    let terms = probe["answerContainsAny"] as? [String] ?? []
+    if !terms.contains(where: { text.localizedCaseInsensitiveContains($0) }) {
+      errors.append("\(at): none of \(terms) appears in its source, so the fact isn't planted")
+    }
+  }
+  var profileIDs = Set<String>()
+  for profile in fixture["profiles"] as? [[String: Any]] ?? [] {
+    let id = profile["id"] as? String ?? ""
+    if !profileIDs.insert(id).inserted { errors.append("\(file): duplicate profile \(id)") }
+    if !(1...exchanges.count).contains(profile["exchanges"] as? Int ?? 0) {
+      errors.append("\(file) profile \(id): exchanges must be 1...\(exchanges.count)")
+    }
+    if !(0...chunkText.count).contains(profile["chunks"] as? Int ?? -1) {
+      errors.append("\(file) profile \(id): chunks must be 0...\(chunkText.count)")
+    }
+  }
+}
+
 var goalCount = 0
 let files = (try? FileManager.default.contentsOfDirectory(atPath: dir))?.sorted() ?? []
 for file in files where file.hasSuffix(".json") && file != "tools.json" {
+  if let fixture = load("\(dir)/\(file)"), fixture["fixture"] != nil {
+    checkFixture(file, fixture)
+    continue
+  }
   guard let suite = load("\(dir)/\(file)"), let goals = suite["goals"] as? [[String: Any]] else {
     errors.append("\(file): no goals array")
     continue
@@ -244,7 +338,8 @@ for file in files where file.hasSuffix(".json") && file != "tools.json" {
 }
 
 if errors.isEmpty {
-  print("Eval suites valid: \(goalCount) goals against \(tools.count) tools in \(dir).")
+  print(
+    "Eval suites valid: \(goalCount) goals and fixtures against \(tools.count) tools in \(dir).")
 } else {
   for error in errors { print("error: \(error)") }
   exit(1)

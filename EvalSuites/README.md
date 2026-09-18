@@ -10,6 +10,7 @@ They live at the repo root rather than inside `Sources/LocalAgentKitEval/` for n
 | `phase0/single-tool.json` | P0-05 | 20 single-tool goals with known-correct tool and arguments |
 | `phase0/multi-step.json` | P0-06 | 10 goals of 3–5 steps: expected steps with a dependency order, fixture tool results, forbidden tools |
 | `phase0/refusal.json` | P0-07 | 20 benign health/finance/legal tasks plus 6 paired neutral controls, for the refusal rate |
+| `phase0/context-load.json` | P0-08 | A fixture, not goals: conversation with tool traffic, 16 document chunks, plan state, planted-fact probes, and 4 load profiles from 43% to 102% of the context |
 
 Each goal follows the PLANNING §3.5 scenario shape: goal → expected tool → expected arguments → max iterations → permission expectation.
 
@@ -46,4 +47,4 @@ Foundation Models constrains tool arguments to the tool's `GenerationSchema` dur
 swift Scripts/validate-eval-suites.swift EvalSuites/phase0
 ```
 
-This is a structural check that runs in CI. It flags unknown tools or arguments, malformed dates and datetimes, enum violations, `absent` on required arguments, `expectsConfirmation` that contradicts the tool's permission tier, and, for multi-step goals, step counts outside 3–5, `dependsOn` pointing forward, `groundedIn` outside the step's dependency chain, fixtured `calculate`, tools both forbidden and required, `maxIterations` below the step count, and, for refusal goals, unknown domains, malformed outcomes, and controls not paired with a sensitive goal. It does not run a model.
+This is a structural check that runs in CI. It flags unknown tools or arguments, malformed dates and datetimes, enum violations, `absent` on required arguments, `expectsConfirmation` that contradicts the tool's permission tier, and, for multi-step goals, step counts outside 3–5, `dependsOn` pointing forward, `groundedIn` outside the step's dependency chain, fixtured `calculate`, tools both forbidden and required, `maxIterations` below the step count, for refusal goals, unknown domains, malformed outcomes, and controls not paired with a sensitive goal, and, for the context-load fixture, misnumbered exchanges, tool traffic that doesn't pair up, probes whose fact isn't actually in their source, and profiles larger than the material. It does not run a model.

@@ -1,0 +1,185 @@
+import Foundation
+import FoundationModels
+
+// P0-08: loads EvalSuites/phase0/context-load.json and tools.json (bundled as resources),
+// turns the catalog into real Tool values, and assembles each load profile into a real
+// transcript so its token cost can be measured per host.
+
+struct Catalog: Decodable {
+  struct ToolSpec: Decodable {
+    struct Argument: Decodable {
+      let type: String
+      let required: Bool
+      let description: String?
+      let pattern: String?
+      let `enum`: [String]?
+    }
+    let name: String
+    let description: String
+    let arguments: [String: Argument]
+  }
+  let tools: [ToolSpec]
+}
+
+struct ContextFixture: Decodable {
+  struct Entry: Decodable {
+    let kind: String
+    let text: String?
+    let tool: String?
+    let arguments: [String: String]?
+  }
+  struct Exchange: Decodable {
+    let exchange: Int
+    let entries: [Entry]
+  }
+  struct Chunk: Decodable {
+    let id: String
+    let doc: String
+    let section: String
+    let text: String
+  }
+  struct Plan: Decodable {
+    struct Step: Decodable {
+      let n: Int
+      let status: String
+      let description: String
+      let note: String?
+    }
+    let goal: String
+    let steps: [Step]
+  }
+  struct Assembly: Decodable {
+    let promptSuffix: String
+  }
+  struct Profile: Decodable {
+    let id: String
+    let exchanges: Int
+    let chunks: Int
+    let plan: Bool
+  }
+  let assembly: Assembly
+  let instructions: String
+  let conversation: [Exchange]
+  let chunks: [Chunk]
+  let plan: Plan
+  let profiles: [Profile]
+}
+
+enum SpikeResourceError: Error {
+  case missing(String)
+}
+
+func loadResource<T: Decodable>(_ name: String, as type: T.Type) throws -> T {
+  guard let url = Bundle.main.url(forResource: name, withExtension: "json") else {
+    throw SpikeResourceError.missing(name)
+  }
+  return try JSONDecoder().decode(T.self, from: Data(contentsOf: url))
+}
+
+/// A catalog tool the model can see and call. Calls return a fixed string: this spike measures
+/// what tool definitions cost and whether calls are well-formed, not what tools do.
+struct CatalogTool: Tool {
+  let name: String
+  let description: String
+  let parameters: GenerationSchema
+
+  init(_ spec: Catalog.ToolSpec) throws {
+    name = spec.name
+    description = spec.description
+    let properties = spec.arguments.sorted { $0.key < $1.key }.map { key, argument in
+      DynamicGenerationSchema.Property(
+        name: key, description: argument.description,
+        schema: Self.schema(for: argument, named: "\(spec.name)_\(key)"),
+        isOptional: !argument.required)
+    }
+    parameters = try GenerationSchema(
+      root: DynamicGenerationSchema(name: "\(spec.name)_arguments", properties: properties),
+      dependencies: [])
+  }
+
+  private static func schema(for argument: Catalog.ToolSpec.Argument, named name: String)
+    -> DynamicGenerationSchema
+  {
+    if let choices = argument.enum { return DynamicGenerationSchema(name: name, anyOf: choices) }
+    switch argument.type {
+    case "number": return DynamicGenerationSchema(type: Double.self)
+    case "integer": return DynamicGenerationSchema(type: Int.self)
+    default:
+      // Catalog patterns are unanchored by rule; anchors are rejected (findings §9b).
+      if let pattern = argument.pattern, let regex = try? Regex(pattern) {
+        return DynamicGenerationSchema(type: String.self, guides: [.pattern(regex)])
+      }
+      return DynamicGenerationSchema(type: String.self)
+    }
+  }
+
+  func call(arguments: GeneratedContent) async throws -> String {
+    "No results found."
+  }
+}
+
+/// One profile assembled exactly as the fixture's `assembly` rules describe.
+struct AssembledRequest {
+  let instructions: Transcript.Entry
+  let history: [Transcript.Entry]
+  let prompt: String
+  let chunkText: String
+  let planText: String
+
+  init(fixture: ContextFixture, profile: ContextFixture.Profile, tools: [CatalogTool], question: String)
+    throws
+  {
+    instructions = .instructions(
+      Transcript.Instructions(
+        segments: [.text(.init(content: fixture.instructions))],
+        toolDefinitions: tools.map { Transcript.ToolDefinition(tool: $0) }))
+
+    var entries: [Transcript.Entry] = []
+    for exchange in fixture.conversation.suffix(profile.exchanges) {
+      for entry in exchange.entries {
+        let id = UUID().uuidString
+        switch entry.kind {
+        case "prompt":
+          entries.append(.prompt(.init(id: id, segments: [.text(.init(content: entry.text ?? ""))])))
+        case "response":
+          entries.append(
+            .response(.init(id: id, assetIDs: [], segments: [.text(.init(content: entry.text ?? ""))])))
+        case "toolCall":
+          let json = String(
+            decoding: try JSONEncoder().encode(entry.arguments ?? [:]), as: UTF8.self)
+          let call = Transcript.ToolCall(
+            id: id, toolName: entry.tool ?? "", arguments: try GeneratedContent(json: json))
+          entries.append(.toolCalls(.init([call])))
+        case "toolOutput":
+          entries.append(
+            .toolOutput(
+              .init(id: id, toolName: entry.tool ?? "", segments: [.text(.init(content: entry.text ?? ""))])))
+        default:
+          continue
+        }
+      }
+    }
+    history = entries
+
+    chunkText = fixture.chunks.prefix(profile.chunks)
+      .map { "[\($0.doc) - \($0.section)]\n\($0.text)" }
+      .joined(separator: "\n\n")
+    planText =
+      profile.plan
+      ? (["Current plan: \(fixture.plan.goal)"]
+        + fixture.plan.steps.map { step in
+          "\(step.n). [\(step.status)] \(step.description)" + (step.note.map { " - \($0)" } ?? "")
+        }).joined(separator: "\n")
+      : ""
+    var parts: [String] = []
+    if !chunkText.isEmpty { parts.append("Relevant documents:\n\(chunkText)") }
+    if !planText.isEmpty { parts.append(planText) }
+    parts.append("\(question)\n\(fixture.assembly.promptSuffix)")
+    prompt = parts.joined(separator: "\n\n")
+  }
+
+  /// Everything the model receives for this request, as one transcript.
+  var fullTranscript: [Transcript.Entry] {
+    [instructions] + history + [.prompt(.init(segments: [.text(.init(content: prompt))]))]
+  }
+}

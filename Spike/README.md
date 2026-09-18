@@ -6,7 +6,7 @@ It's a separate Xcode project, not part of the Swift package, so it can't affect
 
 ## What it runs
 
-`SessionChecks.swift` holds the **P0-02** checks: model availability, cold vs. prewarmed latency, multi-turn session reuse, restoring a transcript through `Codable`, concurrent requests, cancellation (by task cancel and by breaking the loop), the abandoned-stream timeline, text streaming, `@Generable` structured output (plain and streamed), and a runtime-built `DynamicGenerationSchema`.
+`SessionChecks.swift` holds the **P0-02** checks: model availability, cold vs. prewarmed latency, multi-turn session reuse, restoring a transcript through `Codable`, concurrent requests, cancellation (by task cancel and by breaking the loop), the abandoned-stream timeline, text streaming, `@Generable` structured output (plain and streamed), a runtime-built `DynamicGenerationSchema`, and (P0-08) `context-size`, which turns the eval tool catalog into real `Tool` values and measures each context-load profile with `tokenCount`. The eval JSON is bundled from `EvalSuites/phase0/` at build time, never copied.
 
 Each result is one line, `check=<id> result=<pass|fail|observed> key=value …`, printed to stdout with a `P0|` prefix and shown in the app window.
 

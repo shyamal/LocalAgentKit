@@ -21,7 +21,13 @@ targets:
   Phase0Spike:
     type: application
     supportedDestinations: [iOS, macOS]
-    sources: [Phase0Spike]
+    sources:
+      - Phase0Spike
+      # The eval data is bundled, not copied, so the spike always measures the committed files.
+      - path: ../EvalSuites/phase0/tools.json
+        buildPhase: resources
+      - path: ../EvalSuites/phase0/context-load.json
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.localagentkit.spike.phase0
