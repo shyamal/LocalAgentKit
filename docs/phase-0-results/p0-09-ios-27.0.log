@@ -1,0 +1,122 @@
+P0| run start os="Version 27.0 (Build 24A435)" hw=iPhone16,1
+P0| p09 instructions="You are the assistant in a work app. Now is Monday 2026-09-21 10:00 (UTC). Use the available tools to act on the user's request." runs=5 goals=20
+P0| p09 goal=st-01 run=1 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3148 args={"expression": "0.175 * 2480"} problems=
+P0| p09 goal=st-01 run=2 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3131 args={"expression": "0.175 * 2480"} problems=
+P0| p09 goal=st-01 run=3 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3193 args={"expression": "0.175 * 2480"} problems=
+P0| p09 goal=st-01 run=4 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3091 args={"expression": "0.175 * 2480"} problems=
+P0| p09 goal=st-01 run=5 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3090 args={"expression": "0.175 * 2480"} problems=
+P0| p09 goal-summary goal=st-01 clean=5/5
+P0| p09 goal=st-02 run=1 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=2856 args={"expression": "186.40 / 4"} problems=
+P0| p09 goal=st-02 run=2 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3078 args={"expression": "186.40 / 4"} problems=
+P0| p09 goal=st-02 run=3 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3044 args={"expression": "186.40 / 4"} problems=
+P0| p09 goal=st-02 run=4 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=2906 args={"expression": "186.40 / 4"} problems=
+P0| p09 goal=st-02 run=5 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=2925 args={"expression": "186.40 / 4"} problems=
+P0| p09 goal-summary goal=st-02 clean=5/5
+P0| p09 goal=st-03 run=1 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3322 args={"expression": "342 * 1 / 27"} problems=
+P0| p09 goal=st-03 run=2 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=6074 args={"expression": "342 * 1 / 27"} problems=
+P0| p09 goal=st-03 run=3 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3007 args={"expression": "342 / 27"} problems=
+P0| p09 goal=st-03 run=4 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3284 args={"expression": "342 / 27"} problems=
+P0| p09 goal=st-03 run=5 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3301 args={"expression": "342 / 27"} problems=
+P0| p09 goal-summary goal=st-03 clean=5/5
+P0| p09 goal=st-04 run=1 called=false ms=2865 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T00:00\",start:\"2026-09-21T00:00\"}<ctrl43>
+P0| p09 goal=st-04 run=2 called=false ms=2929 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T00:00\",start:\"2026-09-21T00:00\"}<ctrl43>
+P0| p09 goal=st-04 run=3 called=false ms=3036 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T00:00\",start:\"2026-09-21T00:00\"}<ctrl43>
+P0| p09 goal=st-04 run=4 called=false ms=2981 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T00:00\",start:\"2026-09-21T00:00\"}<ctrl43>
+P0| p09 goal=st-04 run=5 called=false ms=2891 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T00:00\",start:\"2026-09-21T00:00\"}<ctrl43>
+P0| p09 goal-summary goal=st-04 clean=0/5
+P0| p09 goal=st-05 run=1 called=false ms=3204 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-10-02T23:59\",start:\"2026-10-02T00:00\"}<ctrl43>
+P0| p09 goal=st-05 run=2 called=false ms=3051 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-10-02T23:59\",start:\"2026-10-02T00:00\"}<ctrl43>
+P0| p09 goal=st-05 run=3 called=false ms=3042 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-10-02T23:59\",start:\"2026-10-02T00:00\"}<ctrl43>
+P0| p09 goal=st-05 run=4 called=false ms=3183 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-10-02T23:59\",start:\"2026-10-02T00:00\"}<ctrl43>
+P0| p09 goal=st-05 run=5 called=false ms=3073 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-10-02T23:59\",start:\"2026-10-02T00:00\"}<ctrl43>
+P0| p09 goal-summary goal=st-05 clean=0/5
+P0| p09 goal=st-06 run=1 called=false ms=4674 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T17:00\",start:\"2026-09-22T12:00\"}<ctrl43>
+P0| p09 goal=st-06 run=2 called=false ms=4534 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T16:00\",start:\"2026-09-22T12:00\"}<ctrl43>
+P0| p09 goal=st-06 run=3 called=false ms=5588 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T16:00\",start:\"2026-09-22T12:00\"}<ctrl43>
+P0| p09 goal=st-06 run=4 called=false ms=3197 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T17:00\",start:\"2026-09-22T13:00\"}<ctrl43>
+P0| p09 goal=st-06 run=5 called=false ms=4749 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"end":\"2026-09-22T16:00\",start:\"2026-09-22T12:00\"}<ctrl43>
+P0| p09 goal-summary goal=st-06 clean=0/5
+P0| p09 goal=st-07 run=1 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=4231 args={"query": "plumber"} problems=wrong tool
+P0| p09 goal=st-07 run=2 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=2 ms=5179 args={"query": "plumber"} problems=wrong tool
+P0| p09 goal=st-07 run=3 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=4419 args={"query": "plumber"} problems=wrong tool
+P0| p09 goal=st-07 run=4 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=3977 args={"query": "plumber"} problems=wrong tool
+P0| p09 goal=st-07 run=5 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=4181 args={"query": "plumber"} problems=wrong tool
+P0| p09 goal-summary goal=st-07 clean=0/5
+P0| p09 goal=st-08 run=1 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3427 args={"title": "Renew passport"} problems=
+P0| p09 goal=st-08 run=2 called=false ms=2642 error=none
+P0| p09 goal=st-08 run=3 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3863 args={"title": "Renew passport"} problems=
+P0| p09 goal=st-08 run=4 called=false ms=2083 error=none
+P0| p09 goal=st-08 run=5 called=false ms=2361 error=none
+P0| p09 goal-summary goal=st-08 clean=2/5
+P0| p09 goal=st-09 run=1 called=false ms=2551 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-21T10:30\",title:"Take laundry out"}<ctrl43>
+P0| p09 goal=st-09 run=2 called=false ms=3537 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-21T22:30\",title:"Take the laundry out"}<ctrl43>
+P0| p09 goal=st-09 run=3 called=false ms=3710 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-21T22:30\",title:"Take the laundry out"}<ctrl43>
+P0| p09 goal=st-09 run=4 called=false ms=3438 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-21T23:30\",title:"Take the laundry out"}<ctrl43>
+P0| p09 goal=st-09 run=5 called=false ms=3501 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-21T22:30\",title:"Take the laundry out"}<ctrl43>
+P0| p09 goal-summary goal=st-09 clean=0/5
+P0| p09 goal=st-16 run=1 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4614 args={"query": "laptop requests approval"} problems=
+P0| p09 goal=st-16 run=2 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4547 args={"query": "laptop requests approval"} problems=
+P0| p09 goal=st-16 run=3 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=2 ms=5747 args={"query": "laptop requests approval"} problems=
+P0| p09 goal=st-16 run=4 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4775 args={"query": "laptop requests approval"} problems=
+P0| p09 goal=st-16 run=5 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=2 ms=5290 args={"query": "laptop requests approval"} problems=
+P0| p09 goal-summary goal=st-16 clean=0/5
+P0| p09 goal=st-17 run=1 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=5333 args={"title": "Gate code for new office", "body": "the gate code for the new office is 4417"} problems=
+P0| p09 goal=st-17 run=2 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4964 args={"title": "Gate code for new office", "body": "the gate code for the new office is 4417"} problems=
+P0| p09 goal=st-17 run=3 called=false ms=82736 error=GenerativeFunctionsFoundation.GenerativeError/type Provided 4,107 tokens, but the maximum allowed is 4,096.::Provided 4,107 tokens, but the maximum allowed is 4,096.: The operation couldn’t be completed. (TokenGenerationInference.DecoderModelError err
+P0| p09 goal=st-17 run=4 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4918 args={"title": "Gate code for new office", "body": "the gate code for the new office is 4417"} problems=
+P0| p09 goal=st-17 run=5 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=5129 args={"title": "Gate code for new office", "body": "the gate code for the new office is 4417"} problems=
+P0| p09 goal-summary goal=st-17 clean=0/5
+P0| p09 goal=st-18 run=1 called=true tool=search_notes schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=5016 args={"query": "Q3 offsite"} problems=wrong tool
+P0| p09 goal=st-18 run=2 called=true tool=search_notes schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=4588 args={"query": "Q3 offsite"} problems=wrong tool
+P0| p09 goal=st-18 run=3 called=true tool=search_notes schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=4046 args={"query": "Q3 offsite"} problems=wrong tool
+P0| p09 goal=st-18 run=4 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=2 ms=7026 args={"body": "The Q3 offsite is moving to Thursday.", "title": "Q3 Offsite Update"} problems=
+P0| p09 goal=st-18 run=5 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=3 ms=7081 args={"title": "Q3 offsite update", "body": "The Q3 offsite is moving to Thursday."} problems=
+P0| p09 goal-summary goal=st-18 clean=0/5
+P0| p09 goal=st-19 run=1 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4267 args={"query": "wifi password"} problems=
+P0| p09 goal=st-19 run=2 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=3974 args={"query": "wifi password"} problems=
+P0| p09 goal=st-19 run=3 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4084 args={"query": "wifi password"} problems=
+P0| p09 goal=st-19 run=4 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4023 args={"query": "wifi password"} problems=
+P0| p09 goal=st-19 run=5 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4093 args={"query": "wifi password"} problems=
+P0| p09 goal-summary goal=st-19 clean=0/5
+P0| p09 goal=st-20 run=1 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=2 ms=5861 args={"query": "meeting with design team"} problems=
+P0| p09 goal=st-20 run=2 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4769 args={"query": "design team meeting"} problems=
+P0| p09 goal=st-20 run=3 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4641 args={"query": "meeting with design team"} problems=
+P0| p09 goal=st-20 run=4 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=3 ms=6832 args={"query": "meeting with design team"} problems=
+P0| p09 goal=st-20 run=5 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4523 args={"query": "meeting with the design team"} problems=
+P0| p09 goal-summary goal=st-20 clean=0/5
+P0| p09 goal=st-10 run=1 called=false ms=4138 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-30T17:00\",title:"Submit Quarterly Report"}<ctrl43>
+P0| p09 goal=st-10 run=2 called=false ms=2173 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-10-30T17:00\",title:"Submit quarterly report"}<ctrl43>
+P0| p09 goal=st-10 run=3 called=false ms=2075 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-30T17:00\",title:"Submit quarterly report"}<ctrl43>
+P0| p09 goal=st-10 run=4 called=false ms=4439 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-30T17:00\",title:"Submit Quarterly Report"}<ctrl43>
+P0| p09 goal=st-10 run=5 called=false ms=4941 error=FoundationModels.GeneratedContent.ParsingError/rawContent Encountered content that cannot be completed into valid JSON Text: {"due":\"2026-09-30T17:00\",title:"Submit quarterly report"}<ctrl43>
+P0| p09 goal-summary goal=st-10 clean=0/5
+P0| p09 goal=st-11 run=1 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=2575 args={"query": "Priya Raman"} problems=
+P0| p09 goal=st-11 run=2 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=2677 args={"query": "Priya Raman"} problems=
+P0| p09 goal=st-11 run=3 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=2697 args={"query": "Priya Raman"} problems=
+P0| p09 goal=st-11 run=4 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3232 args={"query": "Priya Raman"} problems=
+P0| p09 goal=st-11 run=5 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3313 args={"query": "Priya Raman"} problems=
+P0| p09 goal-summary goal=st-11 clean=5/5
+P0| p09 goal=st-12 run=1 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=3887 args={"query": "dentist"} problems=
+P0| p09 goal=st-12 run=2 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=2957 args={"query": "dentist"} problems=
+P0| p09 goal=st-12 run=3 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3087 args={"query": "dentist"} problems=
+P0| p09 goal=st-12 run=4 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3198 args={"query": "dentist"} problems=
+P0| p09 goal=st-12 run=5 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3050 args={"query": "dentist"} problems=
+P0| p09 goal-summary goal=st-12 clean=4/5
+P0| p09 goal=st-13 run=1 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4010 args={"query": "lease agreement", "file_type": "pdf"} problems=
+P0| p09 goal=st-13 run=2 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4444 args={"file_type": "pdf", "query": "lease agreement"} problems=
+P0| p09 goal=st-13 run=3 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4049 args={"query": "lease agreement", "file_type": "pdf"} problems=
+P0| p09 goal=st-13 run=4 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4187 args={"query": "lease agreement", "file_type": "pdf"} problems=
+P0| p09 goal=st-13 run=5 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4238 args={"file_type": "pdf", "query": "lease agreement"} problems=
+P0| p09 goal-summary goal=st-13 clean=0/5
+P0| p09 goal=st-14 run=1 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=2 ms=4555 args={"file_type": "image", "query": "error message"} problems=
+P0| p09 goal=st-14 run=2 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4207 args={"file_type": "image", "query": "error message"} problems=
+P0| p09 goal=st-14 run=3 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=2 ms=5225 args={"file_type": "image", "query": "error message"} problems=
+P0| p09 goal=st-14 run=4 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=2 ms=5261 args={"query": "error message", "file_type": "image"} problems=
+P0| p09 goal=st-14 run=5 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4442 args={"file_type": "image", "query": "error message screenshot"} problems=
+P0| p09 goal-summary goal=st-14 clean=0/5
+P0| p09 goal=st-15 run=1 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4534 args={"query": "employee handbook remote work"} problems=
+P0| p09 goal=st-15 run=2 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4812 args={"query": "employee handbook remote work"} problems=
+P0| p09 goal=st-15 run=3 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4536 args={"query": "employee handbook remote work"} problems=
+P0| p09 goal=st-15 run=4 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4701 args={"query": "employee handbook remote work"} problems=
+P0| p09 goal=st-15 run=5 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=4816 args={"query": "employee handbook remote work"} problems=
+P0| p09 goal-summary goal=st-15 clean=0/5

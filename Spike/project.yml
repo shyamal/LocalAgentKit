@@ -28,6 +28,8 @@ targets:
         buildPhase: resources
       - path: ../EvalSuites/phase0/context-load.json
         buildPhase: resources
+      - path: ../EvalSuites/phase0/single-tool.json
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.localagentkit.spike.phase0

@@ -1,0 +1,126 @@
+P0| run start os="Version 26.6.2 (Build 25G83)" hw=arm64
+P0| check=availability result=pass contextSize=4096 supportsCurrentLocale=true languages=23
+P0| begin p0-09
+P0| p09 instructions="You are the assistant in a work app. Now is Monday 2026-09-21 10:00 (UTC). Use the available tools to act on the user's request." runs=5 goals=20
+P0| p09 goal=st-01 run=1 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1887 args={"expression": "0.175 * 2480"} problems=
+P0| p09 goal=st-01 run=2 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=1871 args={"expression": "17.5% * 2480"} problems=expression:not evaluable
+P0| p09 goal=st-01 run=3 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=1866 args={"expression": "17.5% of 2,480"} problems=expression:not evaluable
+P0| p09 goal=st-01 run=4 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=false extraCalls=3 ms=2841 args={"expression": "17.5% of 2,480"} problems=expression:not evaluable
+P0| p09 goal=st-01 run=5 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=false extraCalls=3 ms=2848 args={"expression": "17.5% of 2,480"} problems=expression:not evaluable
+P0| p09 goal-summary goal=st-01 clean=1/5
+P0| p09 goal=st-02 run=1 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=1730 args={"expression": "$186.40 / 4"} problems=expression:not evaluable
+P0| p09 goal=st-02 run=2 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=1757 args={"expression": "$186.40 / 4"} problems=expression:not evaluable
+P0| p09 goal=st-02 run=3 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=1730 args={"expression": "$186.40 / 4"} problems=expression:not evaluable
+P0| p09 goal=st-02 run=4 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1292 args={"expression": "186.40 / 4"} problems=
+P0| p09 goal=st-02 run=5 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1294 args={"expression": "186.40 / 4"} problems=
+P0| p09 goal-summary goal=st-02 clean=2/5
+P0| p09 goal=st-03 run=1 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1324 args={"expression": "342 / 27"} problems=
+P0| p09 goal=st-03 run=2 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1325 args={"expression": "342 / 27"} problems=
+P0| p09 goal=st-03 run=3 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1324 args={"expression": "342 / 27"} problems=
+P0| p09 goal=st-03 run=4 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1334 args={"expression": "342 / 27"} problems=
+P0| p09 goal=st-03 run=5 called=true tool=calculate schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1347 args={"expression": "342 / 27"} problems=
+P0| p09 goal-summary goal=st-03 clean=5/5
+P0| p09 goal=st-04 run=1 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1711 args={"end": "2026-09-22T00:00", "start": "2026-09-21T00:00"} problems=start:off by 1440 min;end:off by 1440 min
+P0| p09 goal=st-04 run=2 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1676 args={"end": "2026-09-22T00:00", "start": "2026-09-21T00:00"} problems=start:off by 1440 min;end:off by 1440 min
+P0| p09 goal=st-04 run=3 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1700 args={"end": "2026-09-22T00:00", "start": "2026-09-21T00:00"} problems=start:off by 1440 min;end:off by 1440 min
+P0| p09 goal=st-04 run=4 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1616 args={"end": "2026-09-22T00:00", "start": "2026-09-21T00:00"} problems=start:off by 1440 min;end:off by 1440 min
+P0| p09 goal=st-04 run=5 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1652 args={"end": "2026-09-22T00:00", "start": "2026-09-21T00:00"} problems=start:off by 1440 min;end:off by 1440 min
+P0| p09 goal-summary goal=st-04 clean=0/5
+P0| p09 goal=st-05 run=1 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1715 args={"end": "2026-10-02T23:59", "start": "2026-10-02T00:00"} problems=
+P0| p09 goal=st-05 run=2 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1655 args={"end": "2026-10-02T23:59", "start": "2026-10-02T00:00"} problems=
+P0| p09 goal=st-05 run=3 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1746 args={"end": "2026-10-02T23:59", "start": "2026-10-02T00:00"} problems=
+P0| p09 goal=st-05 run=4 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1665 args={"end": "2026-10-02T23:59", "start": "2026-10-02T00:00"} problems=
+P0| p09 goal=st-05 run=5 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1656 args={"end": "2026-10-02T23:59", "start": "2026-10-02T00:00"} problems=
+P0| p09 goal-summary goal=st-05 clean=5/5
+P0| p09 goal=st-06 run=1 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1506 args={"end": "2026-09-25T17:00", "start": "2026-09-25T00:00"} problems=start:off by 720 min
+P0| p09 goal=st-06 run=2 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1513 args={"end": "2026-09-24T17:00", "start": "2026-09-24T00:00"} problems=start:off by 2160 min;end:off by 1500 min
+P0| p09 goal=st-06 run=3 called=true tool=search_documents schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=1893 args={"query": "Friday afternoon"} problems=wrong tool
+P0| p09 goal=st-06 run=4 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1519 args={"end": "2026-09-24T16:00", "start": "2026-09-24T00:00"} problems=start:off by 2160 min;end:off by 1560 min
+P0| p09 goal=st-06 run=5 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1510 args={"end": "2026-09-24T17:00", "start": "2026-09-24T12:00"} problems=start:off by 1440 min;end:off by 1500 min
+P0| p09 goal-summary goal=st-06 clean=0/5
+P0| p09 goal=st-07 run=1 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1452 args={"title": "Call the plumber tomorrow at 9am."} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-07 run=2 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1453 args={"title": "Call the plumber tomorrow at 9am."} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-07 run=3 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=1960 args={"title": "Call the plumber tomorrow at 9am."} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-07 run=4 called=false ms=1207 error=NSError/Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(nul Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(null)" UserInfo={NSMultipleUnderlyingErrorsKey=( "Error Domain=com.apple.tokengeneration Code=10 \"(null)\" UserInfo={NSMul
+P0| p09 goal=st-07 run=5 called=false ms=1205 error=NSError/Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(nul Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(null)" UserInfo={NSMultipleUnderlyingErrorsKey=( "Error Domain=com.apple.tokengeneration Code=10 \"(null)\" UserInfo={NSMul
+P0| p09 goal-summary goal=st-07 clean=0/5
+P0| p09 goal=st-08 run=1 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=2111 args={"query": "passport"} problems=wrong tool
+P0| p09 goal=st-08 run=2 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=2039 args={"query": "passport"} problems=wrong tool
+P0| p09 goal=st-08 run=3 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=1935 args={"query": "passport"} problems=wrong tool
+P0| p09 goal=st-08 run=4 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=1907 args={"query": "passport"} problems=wrong tool
+P0| p09 goal=st-08 run=5 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=2065 args={"query": "passport"} problems=wrong tool
+P0| p09 goal-summary goal=st-08 clean=0/5
+P0| p09 goal=st-09 run=1 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1425 args={"title": "Take the laundry out,"} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-09 run=2 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1437 args={"title": "Take the laundry out,"} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-09 run=3 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1438 args={"title": "Take the laundry out,"} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-09 run=4 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1425 args={"title": "Take the laundry out,"} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-09 run=5 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=2330 args={"title": "Take the laundry out in 30 minutes. Remember to take it to the laundry room on the second floor. Also, don't forget the detergent!"} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal-summary goal=st-09 clean=0/5
+P0| p09 goal=st-10 run=1 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=2 ms=2384 args={"title": "Submit Quarterly Report,"} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-10 run=2 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=1947 args={"title": "Submit Quarterly Report,"} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-10 run=3 called=false ms=1325 error=NSError/Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(nul Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(null)" UserInfo={NSMultipleUnderlyingErrorsKey=( "Error Domain=com.apple.tokengeneration Code=10 \"(null)\" UserInfo={NSMul
+P0| p09 goal=st-10 run=4 called=true tool=create_reminder schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=1665 args={"title": "Quarterly Report Submission,"} problems=due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-10 run=5 called=false ms=1416 error=NSError/Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(nul Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(null)" UserInfo={NSMultipleUnderlyingErrorsKey=( "Error Domain=com.apple.tokengeneration Code=10 \"(null)\" UserInfo={NSMul
+P0| p09 goal-summary goal=st-10 clean=0/5
+P0| p09 goal=st-11 run=1 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1504 args={"query": "Priya Raman"} problems=
+P0| p09 goal=st-11 run=2 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1588 args={"query": "Priya Raman"} problems=
+P0| p09 goal=st-11 run=3 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1406 args={"query": "Priya Raman"} problems=
+P0| p09 goal=st-11 run=4 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1437 args={"query": "Priya Raman"} problems=
+P0| p09 goal=st-11 run=5 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1412 args={"query": "Priya Raman"} problems=
+P0| p09 goal-summary goal=st-11 clean=5/5
+P0| p09 goal=st-12 run=1 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1586 args={"query": "dentist"} problems=
+P0| p09 goal=st-12 run=2 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1410 args={"query": "dentist"} problems=
+P0| p09 goal=st-12 run=3 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1973 args={"query": "dentist"} problems=
+P0| p09 goal=st-12 run=4 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1440 args={"query": "dentist"} problems=
+P0| p09 goal=st-12 run=5 called=true tool=search_contacts schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1528 args={"query": "dentist"} problems=
+P0| p09 goal-summary goal=st-12 clean=5/5
+P0| p09 goal=st-13 run=1 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1730 args={"file_type": "pdf", "query": "lease agreement"} problems=
+P0| p09 goal=st-13 run=2 called=true tool=search_documents schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=2466 args={"query": "lease agreement"} problems=wrong tool
+P0| p09 goal=st-13 run=3 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1631 args={"file_type": "pdf", "query": "lease agreement"} problems=
+P0| p09 goal=st-13 run=4 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1600 args={"file_type": "pdf", "query": "lease agreement"} problems=
+P0| p09 goal=st-13 run=5 called=true tool=search_documents schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=2020 args={"query": "lease agreement"} problems=wrong tool
+P0| p09 goal-summary goal=st-13 clean=3/5
+P0| p09 goal=st-14 run=1 called=true tool=search_notes schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=1859 args={"query": "error message"} problems=wrong tool
+P0| p09 goal=st-14 run=2 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=2104 args={"query": "error", "file_type": "image"} problems=
+P0| p09 goal=st-14 run=3 called=true tool=search_notes schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=2196 args={"query": "error message"} problems=wrong tool
+P0| p09 goal=st-14 run=4 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1377 args={"query": "error message screenshot"} problems=file_type:not equal
+P0| p09 goal=st-14 run=5 called=true tool=search_files schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1410 args={"query": "error message screenshot"} problems=file_type:not equal
+P0| p09 goal-summary goal=st-14 clean=1/5
+P0| p09 goal=st-15 run=1 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1613 args={"query": "employee handbook working remotely"} problems=
+P0| p09 goal=st-15 run=2 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1520 args={"query": "employee handbook working remotely"} problems=
+P0| p09 goal=st-15 run=3 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=2127 args={"query": "working remotely"} problems=
+P0| p09 goal=st-15 run=4 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=2184 args={"query": "employee handbook"} problems=query:no term
+P0| p09 goal=st-15 run=5 called=false ms=1080 error=NSError/Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(nul Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(null)" UserInfo={NSMultipleUnderlyingErrorsKey=( "Error Domain=com.apple.tokengeneration Code=10 \"(null)\" UserInfo={NSMul
+P0| p09 goal-summary goal=st-15 clean=2/5
+P0| p09 goal=st-16 run=1 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=1516 args={"query": "onboarding guide"} problems=query:no term
+P0| p09 goal=st-16 run=2 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=2065 args={"query": "onboarding guide"} problems=query:no term
+P0| p09 goal=st-16 run=3 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=true extraCalls=1 ms=1973 args={"query": "laptop request"} problems=
+P0| p09 goal=st-16 run=4 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=2036 args={"query": "onboarding guide"} problems=query:no term
+P0| p09 goal=st-16 run=5 called=true tool=search_documents schemaValid=true toolCorrect=true argsCorrect=false extraCalls=1 ms=2226 args={"query": "onboarding guide"} problems=query:no term
+P0| p09 goal-summary goal=st-16 clean=0/5
+P0| p09 goal=st-17 run=1 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1700 args={"body": "the gate code for the new office is 4417.", "title": "Office Gate Code"} problems=
+P0| p09 goal=st-17 run=2 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1738 args={"body": "the gate code for the new office is 4417.", "title": "new office gate code"} problems=
+P0| p09 goal=st-17 run=3 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1722 args={"body": "the gate code for the new office is 4417.", "title": "Gate Code for New Office"} problems=
+P0| p09 goal=st-17 run=4 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1747 args={"body": "the gate code for the new office is 4417.", "title": "New Office Gate Code"} problems=
+P0| p09 goal=st-17 run=5 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1652 args={"body": "the gate code for the new office is 4417.", "title": "new office"} problems=
+P0| p09 goal-summary goal=st-17 clean=5/5
+P0| p09 goal=st-18 run=1 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1634 args={"body": "Q3 offsite is moving to Thursday.", "title": "Q3 offsite details"} problems=
+P0| p09 goal=st-18 run=2 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1609 args={"body": "Q3 offsite is moving to Thursday.", "title": "Q3 offsite update"} problems=
+P0| p09 goal=st-18 run=3 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1638 args={"body": "The Q3 offsite is moving to Thursday.", "title": "Q3 Offsite Update"} problems=
+P0| p09 goal=st-18 run=4 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1641 args={"body": "The Q3 offsite is moving to Thursday.", "title": "Q3 Offsite Update"} problems=
+P0| p09 goal=st-18 run=5 called=true tool=create_note schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1682 args={"body": "The Q3 offsite is moving to Thursday.", "title": "Q3 Offsite Update"} problems=
+P0| p09 goal-summary goal=st-18 clean=5/5
+P0| p09 goal=st-19 run=1 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1400 args={"query": "wifi password"} problems=
+P0| p09 goal=st-19 run=2 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1282 args={"query": "wifi password"} problems=
+P0| p09 goal=st-19 run=3 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1623 args={"query": "wifi password"} problems=
+P0| p09 goal=st-19 run=4 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1388 args={"query": "wifi password"} problems=
+P0| p09 goal=st-19 run=5 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1405 args={"query": "wifi password"} problems=
+P0| p09 goal-summary goal=st-19 clean=5/5
+P0| p09 goal=st-20 run=1 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1807 args={"query": "meeting with the design team"} problems=
+P0| p09 goal=st-20 run=2 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1562 args={"query": "meeting with the design team"} problems=
+P0| p09 goal=st-20 run=3 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1580 args={"query": "meeting with the design team"} problems=
+P0| p09 goal=st-20 run=4 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1481 args={"query": "design team"} problems=
+P0| p09 goal=st-20 run=5 called=true tool=search_notes schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=1456 args={"query": "meeting with the design team"} problems=
+P0| p09 goal-summary goal=st-20 clean=5/5
+P0| check=p0-09 result=observed runs=100 toolCalled=95/100=95.0% schemaValid=95/100=95.0% toolCorrect=85/100=85.0% argsCorrect=51/100=51.0% fullyCorrect=49/100=49.0% errors=5
+P0| run end

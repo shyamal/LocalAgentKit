@@ -37,9 +37,14 @@ Each goal follows the PLANNING §3.5 scenario shape: goal → expected tool → 
 - **Five runs per goal.** Sampling makes refusals nondeterministic; 20 goals × 5 runs is still a coarse rate, and it should be reported as one.
 - **Both kinds of goal.** 17 goals are tool calls and 9 are text drafting, because an agent app does both and the guardrails may treat them differently.
 
-## What P0-09 should report
+## What P0-09 reported
 
-Foundation Models constrains tool arguments to the tool's `GenerationSchema` during decoding. So the literal P0-09 metric, the *schema-valid* argument rate, is expected to sit near 100% by construction. That's a hypothesis to measure, not a result. The rates that actually separate a capable planner from a weak one are likely to be **`toolCorrect`** (right tool) and **`argumentsCorrect`** (right values), so the runner should report all of them, not just schema validity.
+Before P0-09 ran, this section guessed that framework-guided generation would make the literal schema-valid rate "near 100% by construction", and that tool choice and argument values would carry the signal. Measured 2026-09-19 (see `docs/phase-0-findings.md` §11):
+
+- **macOS 26.6.2:** schema-valid 95%, first call fully correct 51%. The guess held here: failures were wrong tools and wrong argument values.
+- **iOS 27.0:** schema-valid 71%, first call fully correct 63%. The guess was **wrong** here: every goal with a date-time argument produced JSON the framework couldn't parse.
+
+So runners must report all the measures, not schema validity alone, and must check validity themselves rather than trust the framework.
 
 ## Validation
 

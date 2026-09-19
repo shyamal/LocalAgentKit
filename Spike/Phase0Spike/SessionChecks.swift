@@ -48,7 +48,7 @@ struct SessionChecks {
       ("abandon-timeline", abandonTimeline),
       ("text-streaming", textStreaming), ("structured", structuredOutput),
       ("structured-streaming", structuredStreaming), ("dynamic-schema", dynamicSchema),
-      ("context-size", contextSize),
+      ("context-size", contextSize), ("p0-09", toolCallValidity),
     ]
   }
 
@@ -463,6 +463,86 @@ struct SessionChecks {
     }
   }
 
+  /// P0-09: the single-tool suite, `--runs N` times per goal (default 5), each in a fresh
+  /// session. Scores the first tool call; prints one line per run and a summary.
+  private func toolCallValidity() async {
+    do {
+      let suite = try SingleToolSuite.load()
+      let specs = try loadResource("tools", as: Catalog.self).tools
+      let tools = try specs.map(CatalogTool.init)
+      let specByName = Dictionary(uniqueKeysWithValues: specs.map { ($0.name, $0) })
+      let runs = Int(value(after: "--runs") ?? "5") ?? 5
+      log.write("p09 instructions=\(quote(suite.instructions)) runs=\(runs) goals=\(suite.goals.count)")
+      var totals = (runs: 0, called: 0, valid: 0, tool: 0, args: 0, clean: 0, extra: 0, errors: 0)
+      // --goals a,b limits the run to those goal ids.
+      let only = value(after: "--goals").map { Set($0.split(separator: ",").map(String.init)) }
+      for goal in suite.goals where only?.contains(goal["id"] as? String ?? "") ?? true {
+        let id = goal["id"] as? String ?? "?"
+        let expected = goal["expected"] as? [String: Any] ?? [:]
+        let expectedTool = expected["tool"] as? String ?? ""
+        let matchers = expected["arguments"] as? [String: [String: Any]] ?? [:]
+        var goalClean = 0
+        for run in 1...runs {
+          totals.runs += 1
+          let session = LanguageModelSession(tools: tools, instructions: suite.instructions)
+          let start = clock.now
+          var errorText = ""
+          do { _ = try await session.respond(to: goal["goal"] as? String ?? "") } catch {
+            errorText = describe(error)
+            totals.errors += 1
+          }
+          let elapsed = ms(clock.now - start)
+          let calls = session.transcript.flatMap { entry -> [Transcript.ToolCall] in
+            if case .toolCalls(let batch) = entry { return Array(batch) }
+            return []
+          }
+          guard let first = calls.first else {
+            log.write("p09 goal=\(id) run=\(run) called=false ms=\(elapsed) error=\(errorText.isEmpty ? "none" : errorText)")
+            continue
+          }
+          totals.called += 1
+          let json = first.arguments.jsonString
+          let arguments =
+            (try? JSONSerialization.jsonObject(with: Data(json.utf8)) as? [String: Any]) ?? [:]
+          let violations = specByName[first.toolName].map { schemaViolations(arguments, against: $0) }
+            ?? ["unknown tool"]
+          let toolCorrect = first.toolName == expectedTool
+          let failures = toolCorrect
+            ? matchers.compactMap { name, matcher in
+              matcherFailure(matcher, value: arguments[name]).map { "\(name):\($0)" }
+            } : ["wrong tool"]
+          // Scored on the first call, as the suite specifies. Follow-up calls are counted separately:
+          // the spike's tools answer "No results found.", which invites a reasonable retry.
+          let clean = violations.isEmpty && toolCorrect && failures.isEmpty
+          if calls.count > 1 { totals.extra += 1 }
+          if violations.isEmpty { totals.valid += 1 }
+          if toolCorrect { totals.tool += 1 }
+          if toolCorrect && failures.isEmpty { totals.args += 1 }
+          if clean {
+            totals.clean += 1
+            goalClean += 1
+          }
+          log.write(
+            "p09 goal=\(id) run=\(run) called=true tool=\(first.toolName) schemaValid=\(violations.isEmpty) "
+              + "toolCorrect=\(toolCorrect) argsCorrect=\(toolCorrect && failures.isEmpty) "
+              + "extraCalls=\(calls.count - 1) ms=\(elapsed) args=\(json.replacingOccurrences(of: "\n", with: " ")) "
+              + "problems=\((violations + failures).joined(separator: ";"))")
+        }
+        log.write("p09 goal-summary goal=\(id) clean=\(goalClean)/\(runs)")
+      }
+      func rate(_ n: Int) -> String {
+        String(format: "%d/%d=%.1f%%", n, totals.runs, Double(n) / Double(max(totals.runs, 1)) * 100)
+      }
+      log.write(
+        "check=p0-09 result=observed runs=\(totals.runs) toolCalled=\(rate(totals.called)) "
+          + "schemaValid=\(rate(totals.valid)) toolCorrect=\(rate(totals.tool)) "
+          + "argsCorrect=\(rate(totals.args)) firstCallFullyCorrect=\(rate(totals.clean)) "
+          + "runsWithFollowUpCalls=\(rate(totals.extra)) errors=\(totals.errors)")
+    } catch {
+      log.write("check=p0-09 result=fail error=\(describe(error))")
+    }
+  }
+
   /// The case names of a transcript's entries, e.g. `[prompt,response]`.
   private func kinds(_ transcript: Transcript) -> String {
     "[" + transcript.map { Mirror(reflecting: $0).children.first?.label ?? "?" }.joined(separator: ",") + "]"
@@ -514,8 +594,12 @@ struct SessionChecks {
 
   private func describe(_ error: any Error) -> String {
     let limit = CommandLine.arguments.contains("--full-errors") ? 4000 : 200
-    let detail = String(describing: error).replacingOccurrences(of: "\n", with: " ").prefix(limit)
-    return "\(String(reflecting: type(of: error)))/\(caseName(error)) \(detail)"
+    func oneLine(_ text: String) -> String {
+      text.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }
+        .joined(separator: " ")
+    }
+    let detail = oneLine(String(describing: error)).prefix(limit)
+    return "\(String(reflecting: type(of: error)))/\(oneLine(caseName(error)).prefix(80)) \(detail)"
   }
 
   private func hardwareModel() -> String {

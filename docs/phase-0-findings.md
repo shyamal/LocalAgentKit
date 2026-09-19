@@ -362,12 +362,79 @@ This matters beyond the spike. Anything that **builds or restores a transcript**
 
 The fixture's probes plant facts at known positions (oldest exchange, a mid-session user statement, the newest exchange, an early and a late chunk, the plan). P0-12 can then separate the two failure modes: an explicit context-size error, and silent loss where the request succeeds but a fact in context is missed, or a fact trimmed out of context is hallucinated.
 
+## 11. Structured tool-call validity (P0-09): 51% on macOS 26, 63% on iOS 27, far below the 95% bar
+
+**2026-09-19.** The P0-05 single-tool suite (20 goals, all 8 catalog tools registered) run **5 times per goal, 100 runs per host**, each in a fresh session, through the spike's `p0-09` check. The instructions were minimal and recorded verbatim: *"You are the assistant in a work app. Now is Monday 2026-09-21 10:00 (UTC). Use the available tools to act on the user's request."* The first tool call of each run is scored, and schema validity is checked independently against the catalog rather than trusted from the framework. Raw per-run logs and the scorer are in [`phase-0-results/`](phase-0-results/).
+
+| | macOS 26.6.2 | iPhone 15 Pro, iOS 27.0 |
+|---|---|---|
+| A tool was called | 95% | 71% |
+| Schema-valid call | 95% | 71% |
+| Right tool | 85% | 63% |
+| Right tool and right arguments | 51% | 63% |
+| **First call fully correct** | **51%** | **63%** |
+| Runs with follow-up calls | 27% | 45% |
+
+| Why runs failed | macOS 26.6.2 | iOS 27.0 |
+|---|---|---|
+| Right tool, **wrong arguments** | **34**: optional `due` left out 11, wrong date/time 9, calculator syntax 7, missing search term or enum 7 | **0** |
+| **Tool call was unparseable JSON** | 0 | **25** |
+| Wrong tool | 10 | 8 |
+| Other error, no call | 5 (untyped `GenerationError` −1 wrapping `tokengeneration` code 10) | 1 (the model ran past the 4,096 context on a single request) |
+| Answered in text, no call | 0 | 3 |
+
+**Neither host is anywhere near the M5 target of >95% tool-execution success.** That's the R1 question, and this is the first real evidence on it. P0-15 formally needs P0-10's multi-step completion rate too, but with single calls correct only half to two-thirds of the time, a model-driven planner chaining 3–5 of them would need a large improvement from somewhere. Recorded as evidence for P0-15, not a decision.
+
+### 11a. The framework does not guarantee schema-valid tool calls on iOS 27
+
+The EvalSuites README predicted that guided generation would make the literal P0-09 metric near 100% "by construction". **That's true on macOS 26 (every call that reached us was valid) and false on iOS 27.**
+
+On the iPhone, **every run of every goal whose tool takes a date-time argument, 25 of 25**, produced malformed JSON the framework itself couldn't parse (`GeneratedContent.ParsingError`), with an identical shape each time:
+
+```
+{"end":\"2026-09-22T00:00\",start:\"2026-09-21T00:00\"}<ctrl43>
+```
+
+The quotes around each value are escaped, the second key is unquoted, and a stray control token follows. The values inside were often right: st-05's `2026-10-02T00:00`–`23:59` was correct in all 5 broken calls. The corruption is therefore in how the output is constrained, not in what the model meant.
+
+A diagnostic matrix on the `create_reminder` goals (3 goals × 3 runs per cell) narrowed it down:
+
+| `due` declared as | macOS 26.6.2 | iOS 27.0 |
+|---|---|---|
+| optional + pattern (the catalog as shipped) | valid JSON, but `due` never filled | broken JSON |
+| optional, no pattern | valid JSON, but `due` never filled | **valid, and `due` correct 5/5** |
+| required + pattern | **valid, and `due` correct 8/8** | broken JSON |
+| required, no pattern | not tested | broken JSON |
+
+**No single declaration of a date field worked on both OS versions.** The one working iOS form (optional, no pattern) is a form macOS 26 never fills. Whether dropping the pattern also fixes the calendar's *required* `start`/`end` on iOS is untested: the phone disconnected before that run.
+
+### 11b. Optional tool arguments are never filled on macOS 26
+
+Across the suite and the diagnostics, macOS 26 filled the optional `due` argument **0 times in 20+ `create_reminder` calls**, including "tomorrow at 9am" and "the 30th at 5pm". The titles often ended in a stray comma (`"Submit Quarterly Report,"`), as if the model had started a next field that the decoder cut off. Declaring the same field **required** produced correct dates **8/8**. So the model can do it; the optional form suppresses it. A side effect: st-08 ("no date given, so `due` must be absent") passes trivially on macOS 26 for the wrong reason.
+
+### 11c. What the model gets wrong when the plumbing works
+
+- **Relative dates.** "Tomorrow" was read as today in 5/5 runs on macOS, and the broken iOS calls show the same values. "Friday afternoon" was placed on Thursday or even Tuesday. This held even with the date and weekday stated in the instructions.
+- **"Call X" reads as "look up X".** "Remind me to call the plumber" went to `search_contacts` in 5/5 iOS runs and some Mac runs; "Add a reminder to renew my passport" went to `search_contacts` 5/5 on macOS and 3/5 on iOS. For an agent that can chain calls, a contact lookup first is defensible, but it isn't what a single-step caller wants.
+- **Loose argument formats (macOS).** The calculator got `17.5% of 2,480` and `$186.40 / 4` despite its description asking for numbers and `+ - * /`. iOS 27 never did this.
+- **Confusable tools mostly separated.** On iOS, `search_files`, `search_documents` and `search_notes` were chosen correctly in every parsed call; on macOS a few lease/screenshot queries went to the wrong one.
+
+### Design inputs for Milestone 1 (none acted on)
+
+- **Argument validation in `ToolExecutor` is load-bearing, not a formality.** Framework-guided output can be unparseable (iOS 27) or silently incomplete (macOS 26). The runtime must parse and validate arguments itself and treat a `ParsingError` as a recoverable, retryable outcome, not a crash or a refusal.
+- **Tool schemas need per-OS testing, and date/time arguments need a different encoding.** Candidates to measure: separate date and time fields, a natural-language date the tool resolves itself, or supplying resolved dates ("tomorrow = 2026-09-22") in context. `AgentTool` design (M1-CO-03) should treat schema shape as something the eval harness verifies.
+- **Tools should accept loose input** (`17.5% of 2,480`) rather than fail on it; cheap to do, and it removes a whole failure class.
+- **Date resolution probably shouldn't be left to the model** at this size.
+
+**Caveats.** 20 goals × 5 runs per host; one instruction style; inert tools that always answer "No results found."; one OS build each. The two hosts differ in both OS version and platform, so a column difference can't be pinned on either alone. These are rates for *this* suite, not general capability claims.
+
 ## Not yet done
 
 Findings 1–2 are now resolved against the beta SDK; **the measurement half of Phase 0 has still not started.** Everything above is static SDK inspection plus small compile/run spikes (in scratch packages, not committed) — it is **not** a substitute for P0-01 through P0-14 as scoped:
 
 - **P0-01 is committed** as [`Spike/`](../Spike/) (2026-09-18): an Xcode app for iOS 27 and macOS 26.4+ that compiles warning-free for both and runs on this Mac. The finding-2 BYO-LLM spike is still uncommitted scratch code.
 - **P0-02 is done on both hosts** (§9). Still open from it: whether the §9a crash belongs to macOS or to OS 26 (needs a macOS 27 host), and triggering a guardrail or refusal on OS 27 to confirm the P0-13 cases under the new `LanguageModelError` type.
+- **P0-09 is measured** (§11): 51% / 63% first-call fully correct on macOS 26 / iOS 27. Follow-up: whether dropping the pattern also fixes required date fields on iOS 27 (phone disconnected before that run).
 - P0-05, P0-06 and P0-07 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; `refusal.json`, 20 goals + 6 controls; all 2026-09-18) but **not yet run**. P0-08 (the context-load fixture) is written and sized on both hosts (§10). The M9 refusal threshold P0-11 needs has not been agreed.
 - P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.
 - **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒

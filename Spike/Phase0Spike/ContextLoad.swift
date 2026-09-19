@@ -90,7 +90,9 @@ struct CatalogTool: Tool {
       DynamicGenerationSchema.Property(
         name: key, description: argument.description,
         schema: Self.schema(for: argument, named: "\(spec.name)_\(key)"),
-        isOptional: !argument.required)
+        // --all-required is a diagnostic: it makes optional arguments required, to test
+        // whether optionality itself affects generation.
+        isOptional: !argument.required && !CommandLine.arguments.contains("--all-required"))
     }
     parameters = try GenerationSchema(
       root: DynamicGenerationSchema(name: "\(spec.name)_arguments", properties: properties),
@@ -106,7 +108,10 @@ struct CatalogTool: Tool {
     case "integer": return DynamicGenerationSchema(type: Int.self)
     default:
       // Catalog patterns are unanchored by rule; anchors are rejected (findings §9b).
-      if let pattern = argument.pattern, let regex = try? Regex(pattern) {
+      // --no-patterns drops them, to isolate whether a pattern guide changes generation.
+      if !CommandLine.arguments.contains("--no-patterns"), let pattern = argument.pattern,
+        let regex = try? Regex(pattern)
+      {
         return DynamicGenerationSchema(type: String.self, guides: [.pattern(regex)])
       }
       return DynamicGenerationSchema(type: String.self)
@@ -114,7 +119,11 @@ struct CatalogTool: Tool {
   }
 
   func call(arguments: GeneratedContent) async throws -> String {
-    "No results found."
+    // calculate is evaluated for real (EvalSuites README); every other tool is inert here.
+    if name == "calculate", let expression = try? arguments.value(String.self, forProperty: "expression") {
+      return Arithmetic.evaluate(expression).map { String($0) } ?? "Error: could not evaluate '\(expression)'."
+    }
+    return "No results found."
   }
 }
 
