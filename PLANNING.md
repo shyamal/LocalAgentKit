@@ -454,3 +454,5 @@ Carried from the PRD's risk register plus what this plan surfaced. These need an
    3. **Invert**: ship `LanguageModelExecutor` conformances (llama.cpp, MLX) *as* the product and drop model abstraction, competing on tools/permissions/RAG.
 
    Option 2 is the smallest change and the only one preserving the grep-enforced layering rule and M3. All three force a **deployment-target decision** the PRD has not made if they touch the new protocols at all. **Blocks:** FR-003, FR-004, `Package.swift` platform floor, and task M1-PR-01. Needs the user, not a default.
+
+10. **RESOLVED — 2026-09-19, see [`docs/decisions/0001-m9-refusal-threshold.md`](./docs/decisions/0001-m9-refusal-threshold.md).** What is M9's "agreed threshold" for the guardrail refusal rate? Answer: on each OS version separately, at most 5% of sensitive-suite runs refused (typed + confirmed soft refusals), no sensitive goal refused in more than 2 of its 5 runs, and 0 control refusals. Crossing it makes R3's fallback UX v0.1 scope rather than a Phase 0 failure. Raised during P0-07, where the PRD named the metric without a number.
