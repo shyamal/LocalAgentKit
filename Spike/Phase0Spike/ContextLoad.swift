@@ -136,6 +136,8 @@ struct AssembledRequest {
 
     var entries: [Transcript.Entry] = []
     for exchange in fixture.conversation.suffix(profile.exchanges) {
+      // A tool output carries the id of the call it answers, as in a transcript the model wrote.
+      var lastCallID = ""
       for entry in exchange.entries {
         let id = UUID().uuidString
         switch entry.kind {
@@ -149,11 +151,14 @@ struct AssembledRequest {
             decoding: try JSONEncoder().encode(entry.arguments ?? [:]), as: UTF8.self)
           let call = Transcript.ToolCall(
             id: id, toolName: entry.tool ?? "", arguments: try GeneratedContent(json: json))
+          lastCallID = id
           entries.append(.toolCalls(.init([call])))
         case "toolOutput":
           entries.append(
             .toolOutput(
-              .init(id: id, toolName: entry.tool ?? "", segments: [.text(.init(content: entry.text ?? ""))])))
+              .init(
+                id: lastCallID, toolName: entry.tool ?? "",
+                segments: [.text(.init(content: entry.text ?? ""))])))
         default:
           continue
         }

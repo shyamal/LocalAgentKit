@@ -421,17 +421,42 @@ struct SessionChecks {
       for profile in fixture.profiles {
         let request = try AssembledRequest(
           fixture: fixture, profile: profile, tools: tools, question: question)
-        let history = try await model.tokenCount(for: request.history)
-        let chunks = request.chunkText.isEmpty ? 0 : try await model.tokenCount(for: request.chunkText)
-        let plan = request.planText.isEmpty ? 0 : try await model.tokenCount(for: request.planText)
-        let prompt = try await model.tokenCount(for: request.prompt)
-        let total = try await model.tokenCount(for: request.fullTranscript)
-        let share = Int((Double(total) / Double(model.contextSize) * 100).rounded())
+        // Each component is counted separately, so one failing count names itself
+        // instead of hiding the others.
+        func count(_ label: String, _ body: () async throws -> Int) async -> String {
+          do { return "\(label)=\(try await body())" } catch { return "\(label)=ERR(\(describe(error)))" }
+        }
+        let textOnlyHistory = request.history.filter {
+          switch $0 {
+          case .prompt, .response: true
+          default: false
+          }
+        }
+        var fields = [
+          await count("history") { try await model.tokenCount(for: request.history) },
+          await count("historyTextOnly") { try await model.tokenCount(for: textOnlyHistory) },
+          await count("chunkTokens") {
+            request.chunkText.isEmpty ? 0 : try await model.tokenCount(for: request.chunkText)
+          },
+          await count("planTokens") {
+            request.planText.isEmpty ? 0 : try await model.tokenCount(for: request.planText)
+          },
+          await count("finalPrompt") { try await model.tokenCount(for: request.prompt) },
+        ]
+        var total: Int?
+        do { total = try await model.tokenCount(for: request.fullTranscript) } catch {
+          fields.append("total=ERR(\(describe(error)))")
+        }
+        if let total {
+          let share = Int((Double(total) / Double(model.contextSize) * 100).rounded())
+          fields += ["total=\(total)", "ofContext=\(share)%", "headroom=\(model.contextSize - total)"]
+        }
+        // Errors go last so a long error message can't hide the numbers.
+        let ordered = fields.filter { !$0.contains("=ERR(") } + fields.filter { $0.contains("=ERR(") }
         log.write(
-          "check=context-size result=observed profile=\(profile.id) exchanges=\(profile.exchanges) "
-            + "chunks=\(profile.chunks) plan=\(profile.plan) historyEntries=\(request.history.count) "
-            + "history=\(history) chunkTokens=\(chunks) planTokens=\(plan) finalPrompt=\(prompt) "
-            + "total=\(total) ofContext=\(share)% headroom=\(model.contextSize - total)")
+          "check=context-size result=\(total == nil ? "fail" : "observed") profile=\(profile.id) "
+            + "exchanges=\(profile.exchanges) chunks=\(profile.chunks) plan=\(profile.plan) "
+            + "historyEntries=\(request.history.count) " + ordered.joined(separator: " "))
       }
     } catch {
       log.write("check=context-size result=fail error=\(describe(error))")

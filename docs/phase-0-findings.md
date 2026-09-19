@@ -267,7 +267,7 @@ Each check ran 1–3 times per host (the targeted repros ran more, as noted belo
 | Latency, 1-word reply (N=3) | 190–340 ms warm; the first call in a process takes 0.56–1.4 s | **740–880 ms warm; the first call takes 2.1 s**. Roughly 3–4× the Mac |
 | Prewarm | No measurable effect at N=3 | No measurable effect at N=3 (882/884/884 ms vs. cold 743–831 ms) |
 | Multi-turn reuse | Pass. Turn-2 answer recalls the turn-1 fact | Pass |
-| Transcript tokens after 2 turns | 80 | **107** for the same exchange, even though the answer was shorter. The **token cost differs across OS versions**, so budgets must be measured per OS, not hard-coded |
+| Transcript tokens after 2 turns | 80 | 107. **Corrected 2026-09-19:** this is not a general tokenizer difference. For identical content, totals agree within ~2% across the two OS versions (§10), and the gap sits mainly in how instructions are counted (161 vs. 129 for the fixture's instructions) |
 | `Response.usage` | Not available (27+ only) | Turn 2: 103 input, 9 output tokens |
 | Transcript restore via `Codable` | Pass, 1.4 KB | Pass, 2.1 KB |
 | Concurrent request | Throws typed `GenerationError.concurrentRequests`; the first request completes | Throws typed **`LanguageModelSession.Error.concurrentRequests`** (the new 27 type); the first request completes |
@@ -280,6 +280,7 @@ Consequences for the design:
 - **The runtime must serialize requests per session.** Both OS versions reject a second concurrent request, with different error types.
 - **Conversation persistence (M2-04) can store the framework's own `Codable` transcript** instead of inventing a format.
 - **Streaming UI must treat each snapshot as the full text so far, not a delta.** The snapshot rate varies about 5× between hosts.
+- **Budgets should use `tokenCount` at run time.** Per-component counts differ between OS versions even where totals agree (§10).
 
 ### 9a. Abandoning a stream, then reusing the session, crashed on macOS 26 but not on iOS 27 🔴
 
@@ -327,29 +328,37 @@ Building the spike for iOS 27 failed on a deprecation: **`LanguageModelSession.G
 
 ## 10. Context budget under realistic load (P0-08): tool definitions take a quarter of the context
 
-**2026-09-19.** From the P0-08 fixture ([`EvalSuites/phase0/context-load.json`](../EvalSuites/phase0/context-load.json)), measured with the real `SystemLanguageModel.tokenCount` on **macOS 26.6.2**. The fixture is a work-assistant session: 12 conversation exchanges including tool calls and outputs, 16 retrieved document chunks, and a 5-step plan. Each profile was assembled into a real transcript by the spike's `context-size` check. **iPhone (iOS 27) measurement is pending** (the phone was unreachable). Section 9 found the same exchange costs 107 tokens on iOS 27 vs. 80 here, so expect every row below to be *larger* on the phone.
+**2026-09-19.** From the P0-08 fixture ([`EvalSuites/phase0/context-load.json`](../EvalSuites/phase0/context-load.json)), measured with the real `SystemLanguageModel.tokenCount` on **macOS 26.6.2** and on the physical **iPhone 15 Pro, iOS 27.0**. The fixture is a work-assistant session: 12 conversation exchanges including tool calls and outputs, 16 retrieved document chunks, and a 5-step plan. Each profile was assembled into a real transcript by the spike's `context-size` check.
 
-| Component | Tokens | Share of 4,096 |
-|---|---|---|
-| **8 tool definitions** (the catalog) | **1,063** (~133 each) | **26%**, on every request |
-| Instructions | 129 | 3% |
-| One conversation exchange (with tool traffic) | ~120 average | 3% |
-| One retrieved chunk (~55-70 words) | ~87 average | 2% |
-| Plan state (5 steps) | 124 | 3% |
+| Component | macOS 26.6.2 | iOS 27.0 | Share of 4,096 |
+|---|---|---|---|
+| **8 tool definitions** (the catalog) | **1,063** | **1,045** | **~26%**, on every request |
+| Instructions | 129 | 161 | 3–4% |
+| 12 exchanges of history, with tool traffic | 1,476 | 1,487 | 36% |
+| …the same history, prompts and responses only | 809 | 826 | 20% |
+| 16 retrieved chunks (~55–70 words each) | 1,379 | 1,342 | 33% |
+| Plan state (5 steps) | 124 | 112 | 3% |
 
-| Profile | Content | Total | Of context | Left for the answer |
-|---|---|---|---|---|
-| light | 3 exchanges, 3 chunks | 1,779 | 43% | 2,317 |
-| typical | 8 exchanges, 6 chunks, plan | 2,723 | 66% | 1,373 |
-| heavy | 12 exchanges, 10 chunks, plan | 3,694 | **90%** | **402** |
-| stress | 12 exchanges, 16 chunks, plan | 4,189 | **102%** | **none: over the limit before the model writes anything** |
+| Profile | Content | macOS total | iOS total | Of context | Left for the answer |
+|---|---|---|---|---|---|
+| light | 3 exchanges, 3 chunks | 1,779 | 1,756 | 43% | ~2,330 |
+| typical | 8 exchanges, 6 chunks, plan | 2,723 | 2,694 | 66% | ~1,390 |
+| heavy | 12 exchanges, 10 chunks, plan | 3,694 | 3,664 | **89–90%** | **~400–430** |
+| stress | 12 exchanges, 16 chunks, plan | 4,189 | 4,148 | **101–102%** | **none: over the limit before the model writes anything** |
 
 What this shows, before P0-12 has measured any failures:
 
-- **Tools are the biggest fixed cost, not history or retrieval.** Registering the 8 built-in tools on every request spends a quarter of the context. Each extra tool costs about as much as one conversation exchange. For `ContextBudgeter` (M1-RT-04), "system + tools" is the dominant fixed share, so **per-request tool selection** (registering only tools relevant to the current step) is likely to be worth more than aggressive history trimming. That's a design input, not yet a decision.
-- **The limit is reached by ordinary content.** A long but normal session with generous retrieval (heavy) leaves ~400 tokens for the reply; adding 6 more chunks (stress) exceeds the window before generation starts. R2 is a real constraint at realistic sizes, not only under abuse.
-- **"Headroom" is the answer budget.** The context window holds the input *and* the output, so a profile at 90% can still fail if the reply runs past ~400 tokens. P0-12 should record whether failures come at request time or mid-generation.
-- **Budgets must be measured per OS.** Given §9's 80-vs-107 difference, the same content may be materially bigger on iOS 27; the iPhone column will say how much.
+- **Tools are the biggest fixed cost.** Registering the 8 built-in tools on every request spends about a quarter of the context, on both OS versions. Each tool costs about as much as one conversation exchange. For `ContextBudgeter` (M1-RT-04), "system + tools" is the dominant fixed share, so **per-request tool selection** (registering only the tools relevant to the current step) is likely worth more than aggressive history trimming. That's a design input, not yet a decision.
+- **Tool traffic nearly doubles history.** The tool calls and outputs inside the conversation account for ~45% of its tokens (1,476 vs. 809). Compacting old tool outputs is a second cheap lever.
+- **The limit is reached by ordinary content.** A long but normal session with generous retrieval (heavy) leaves ~400 tokens for the reply; 6 more chunks (stress) exceed the window before generation starts. R2 is a real constraint at realistic sizes, not only under abuse.
+- **"Headroom" is the answer budget.** The context holds the input *and* the output, so a request at 90% can still fail if the reply runs past ~400 tokens. P0-12 should record whether failures come at request time or mid-generation.
+- **For identical content the two OS versions agree within ~2% in total.** Individual components differ, instructions most (161 vs. 129). The profiles therefore need no per-OS resizing, but budgets should still be computed with `tokenCount` at run time rather than from constants.
+
+### 10a. iOS 27 rejects a transcript whose tool outputs don't answer a tool call
+
+The first iPhone run failed to count any history. `tokenCount(for:)` threw an untyped `NSError` (domain `LanguageModelError`, code −1) wrapping `ModelManagerServices.ModelManagerError 1001`, with no further explanation. It happened for every profile, twice. The cause was the fixture's assembly: each `Transcript.ToolOutput` had a fresh id instead of the id of the `Transcript.ToolCall` it answers. With outputs linked to their calls, every count succeeds. **macOS 26.6.2 accepted the unlinked transcript and returned counts; iOS 27 rejects it.**
+
+This matters beyond the spike. Anything that **builds or restores a transcript** rather than letting the session write it (conversation persistence M2-04, context trimming and summarization in `ContextBudgeter`, the eval runner) must keep every tool output's id equal to its call's id. The error that signals a violation doesn't say so.
 
 The fixture's probes plant facts at known positions (oldest exchange, a mid-session user statement, the newest exchange, an early and a late chunk, the plan). P0-12 can then separate the two failure modes: an explicit context-size error, and silent loss where the request succeeds but a fact in context is missed, or a fact trimmed out of context is hallucinated.
 
@@ -359,7 +368,7 @@ Findings 1–2 are now resolved against the beta SDK; **the measurement half of 
 
 - **P0-01 is committed** as [`Spike/`](../Spike/) (2026-09-18): an Xcode app for iOS 27 and macOS 26.4+ that compiles warning-free for both and runs on this Mac. The finding-2 BYO-LLM spike is still uncommitted scratch code.
 - **P0-02 is done on both hosts** (§9). Still open from it: whether the §9a crash belongs to macOS or to OS 26 (needs a macOS 27 host), and triggering a guardrail or refusal on OS 27 to confirm the P0-13 cases under the new `LanguageModelError` type.
-- P0-05, P0-06 and P0-07 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; `refusal.json`, 20 goals + 6 controls; all 2026-09-18) but **not yet run**. P0-08 (the context-load fixture) is written and sized on macOS (§10); its iPhone sizing is pending. The M9 refusal threshold P0-11 needs has not been agreed.
+- P0-05, P0-06 and P0-07 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; `refusal.json`, 20 goals + 6 controls; all 2026-09-18) but **not yet run**. P0-08 (the context-load fixture) is written and sized on both hosts (§10). The M9 refusal threshold P0-11 needs has not been agreed.
 - P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.
 - **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒
 - P0-14 (latency/thermal/battery) has not been attempted — and still needs a *physical* Apple Intelligence device; neither this Mac nor a simulator can measure iPhone thermals.
