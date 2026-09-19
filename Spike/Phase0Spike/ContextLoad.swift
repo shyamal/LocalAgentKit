@@ -16,7 +16,11 @@ struct Catalog: Decodable {
     }
     let name: String
     let description: String
+    let permission: String
     let arguments: [String: Argument]
+
+    /// Tiers above readOnly run only after a human confirms (PRD FR-009).
+    var needsConfirmation: Bool { ["userConfirmation", "sensitive", "destructive"].contains(permission) }
   }
   let tools: [ToolSpec]
 }

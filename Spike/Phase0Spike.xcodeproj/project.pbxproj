@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		095E72C434444948235E8E68 /* Phase0SpikeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F468967C10BAE6B1258B005 /* Phase0SpikeApp.swift */; };
+		182A1C45D80C9E1B9D6D199A /* MultiStepEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B146C6EE392710E8BD22751 /* MultiStepEval.swift */; };
 		2FCD3AF9F7E9DE2707452038 /* ContextLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B8C6F466CB4F643142AAD5 /* ContextLoad.swift */; };
+		3A25E7E220E610E60FD7DE88 /* multi-step.json in Resources */ = {isa = PBXBuildFile; fileRef = E5D1FD46A5B6A8AAED5C3440 /* multi-step.json */; };
 		588E96491143C6C90566EB81 /* tools.json in Resources */ = {isa = PBXBuildFile; fileRef = FF6FF9C650F55C2D8923A4DE /* tools.json */; };
 		845D5ADB40E8DD16319AB601 /* single-tool.json in Resources */ = {isa = PBXBuildFile; fileRef = ED33F4BAF17BDC9661660635 /* single-tool.json */; };
 		C843729894ACF8EB26A87539 /* context-load.json in Resources */ = {isa = PBXBuildFile; fileRef = 3258F0E1C8ACC48A734D1168 /* context-load.json */; };
@@ -21,7 +23,9 @@
 		3258F0E1C8ACC48A734D1168 /* context-load.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "context-load.json"; sourceTree = "<group>"; };
 		5F468967C10BAE6B1258B005 /* Phase0SpikeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase0SpikeApp.swift; sourceTree = "<group>"; };
 		83B8C6F466CB4F643142AAD5 /* ContextLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextLoad.swift; sourceTree = "<group>"; };
+		8B146C6EE392710E8BD22751 /* MultiStepEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStepEval.swift; sourceTree = "<group>"; };
 		C7E9E15F41D94D605F98139B /* ToolCallEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolCallEval.swift; sourceTree = "<group>"; };
+		E5D1FD46A5B6A8AAED5C3440 /* multi-step.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "multi-step.json"; sourceTree = "<group>"; };
 		ED33F4BAF17BDC9661660635 /* single-tool.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "single-tool.json"; sourceTree = "<group>"; };
 		F400AD7BBE4926D59D54915A /* Phase0Spike.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Phase0Spike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF6FF9C650F55C2D8923A4DE /* tools.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tools.json; sourceTree = "<group>"; };
@@ -32,6 +36,7 @@
 			isa = PBXGroup;
 			children = (
 				83B8C6F466CB4F643142AAD5 /* ContextLoad.swift */,
+				8B146C6EE392710E8BD22751 /* MultiStepEval.swift */,
 				5F468967C10BAE6B1258B005 /* Phase0SpikeApp.swift */,
 				199DE885B106975DE56E926C /* SessionChecks.swift */,
 				C7E9E15F41D94D605F98139B /* ToolCallEval.swift */,
@@ -52,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				3258F0E1C8ACC48A734D1168 /* context-load.json */,
+				E5D1FD46A5B6A8AAED5C3440 /* multi-step.json */,
 				ED33F4BAF17BDC9661660635 /* single-tool.json */,
 				FF6FF9C650F55C2D8923A4DE /* tools.json */,
 			);
@@ -127,6 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C843729894ACF8EB26A87539 /* context-load.json in Resources */,
+				3A25E7E220E610E60FD7DE88 /* multi-step.json in Resources */,
 				845D5ADB40E8DD16319AB601 /* single-tool.json in Resources */,
 				588E96491143C6C90566EB81 /* tools.json in Resources */,
 			);
@@ -140,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FCD3AF9F7E9DE2707452038 /* ContextLoad.swift in Sources */,
+				182A1C45D80C9E1B9D6D199A /* MultiStepEval.swift in Sources */,
 				095E72C434444948235E8E68 /* Phase0SpikeApp.swift in Sources */,
 				E7530A4BD2360ABC48566FF8 /* SessionChecks.swift in Sources */,
 				E53C630BCF4C1AA877F61CD3 /* ToolCallEval.swift in Sources */,

@@ -428,12 +428,47 @@ Across the suite and the diagnostics, macOS 26 filled the optional `due` argumen
 
 **Caveats.** 20 goals × 5 runs per host; one instruction style; inert tools that always answer "No results found."; one OS build each. The two hosts differ in both OS version and platform, so a column difference can't be pinned on either alone. These are rates for *this* suite, not general capability claims.
 
+## 12. Multi-step completion (P0-10): 14% as shipped, 28% with the framework bug removed (macOS 26; iPhone pending)
+
+**2026-09-19.** The P0-06 multi-step suite (10 goals of 3–5 steps, all 8 tools registered, each goal's fixtures behind the tools, `calculate` evaluated for real) run **5 times per goal** through the spike's `p0-10` check, with the same instructions as P0-09. The framework runs the whole tool loop inside one `respond()`, so `maxIterations` is enforced from inside the tools. Steps are matched in dependency order, per the suite's scoring. **macOS 26.6.2 only so far**; the iPhone was unreachable. Logs and scorer are in [`phase-0-results/`](phase-0-results/).
+
+Two configurations, because §11b showed macOS 26 never fills optional arguments, which would otherwise break every reminder step and turn this into a re-measurement of that bug:
+- **As shipped:** the catalog unchanged. This is the headline number.
+- **Workaround:** `--all-required`, the only difference being that optional arguments become required. That's safe for this suite, since every reminder in it names a time. The gap between the two runs is the framework's share; what remains is the model's.
+
+| macOS 26.6.2, 50 runs each | As shipped | Workaround |
+|---|---|---|
+| **Goals completed end to end** | **14%** (7/50) | **28%** (14/50) |
+| Required steps matched | 52% (81/155) | 59% (92/155) |
+| Runs ended by a framework error | 1 | 4 |
+| Runs that hit `maxIterations` | 0 | 0 |
+
+**First reason each failed run failed:**
+
+| | As shipped (43 failures) | Workaround (36 failures) |
+|---|---|---|
+| Called the step, but a value that had to come from earlier tool output was wrong (**grounding**) | 12 | **14** |
+| Called the step with wrong arguments (dates, search terms, or the missing optional `due`) | **18** | 8 |
+| Skipped a required step | 7 | 6 |
+| Conditional goal: did the forbidden action (ms-10, $7 saving vs. a $10 threshold) | 5 | 4 |
+| Framework error ended the run (untyped `GenerationError` −1 / `tokengeneration` 10) | 1 | 4 |
+
+Per goal (workaround): ms-09 (conditional, branch taken) 5/5; ms-08 (recover from an empty search) 3/5; ms-04 2/5; ms-02, ms-03, ms-05 and ms-10 1/5; **ms-01, ms-06 and ms-07 0/5**. The three zeros are the grounded dentist phone number, the contract-notice date arithmetic, and the 5-step dinner plan.
+
+**What this says about R1 (evidence for P0-15; the decision is P0-15's):**
+- **End-to-end completion is far below the M5 bar.** At 28% even with the framework bug removed, a `ModelDrivenPlanner` that lets the model drive the loop would complete roughly one multi-step task in four on this host. PRD R1 and PLANNING §2.4 say that below the bar the default is `StateMachinePlanner`, a successful, shippable outcome.
+- **The model mostly picks the right tools; it loses the thread between them.** Grounding is the largest failure class once the plumbing is fixed: the right tool is called, but the phone number, tip, email address, or deadline from the previous result doesn't make it into the next call. A state-machine planner that carries values between steps in code, and asks the model one narrow question per step, targets exactly this.
+- **Simple structures work.** The conditional that should fire (ms-09) completed 5/5, and recovering from an empty search (ms-08) 3/5. The failures concentrate in carrying specific values and in date arithmetic.
+
+**Caveats.** 10 goals × 5 runs on one host, one instruction style, fixture worlds, auto-approved confirmations. The iPhone numbers may differ materially: in P0-09, iOS 27 made *no* argument-value errors but broke date-time JSON (§11a), which would hit ms-01, 03, 05, 06, 07 and 09.
+
 ## Not yet done
 
 Findings 1–2 are now resolved against the beta SDK; **the measurement half of Phase 0 has still not started.** Everything above is static SDK inspection plus small compile/run spikes (in scratch packages, not committed) — it is **not** a substitute for P0-01 through P0-14 as scoped:
 
 - **P0-01 is committed** as [`Spike/`](../Spike/) (2026-09-18): an Xcode app for iOS 27 and macOS 26.4+ that compiles warning-free for both and runs on this Mac. The finding-2 BYO-LLM spike is still uncommitted scratch code.
 - **P0-02 is done on both hosts** (§9). Still open from it: whether the §9a crash belongs to macOS or to OS 26 (needs a macOS 27 host), and triggering a guardrail or refusal on OS 27 to confirm the P0-13 cases under the new `LanguageModelError` type.
+- **P0-10 is measured on macOS 26 only** (§12): 14% as shipped, 28% with the optional-argument workaround. The iPhone run (as shipped, plus a `--no-patterns` workaround run) is pending device availability.
 - **P0-09 is measured** (§11): 51% / 63% first-call fully correct on macOS 26 / iOS 27. Follow-up: whether dropping the pattern also fixes required date fields on iOS 27 (phone disconnected before that run).
 - P0-05, P0-06 and P0-07 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; `refusal.json`, 20 goals + 6 controls; all 2026-09-18) but **not yet run**. P0-08 (the context-load fixture) is written and sized on both hosts (§10). The M9 refusal threshold P0-11 needs has not been agreed.
 - P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.

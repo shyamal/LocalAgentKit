@@ -48,7 +48,7 @@ struct SessionChecks {
       ("abandon-timeline", abandonTimeline),
       ("text-streaming", textStreaming), ("structured", structuredOutput),
       ("structured-streaming", structuredStreaming), ("dynamic-schema", dynamicSchema),
-      ("context-size", contextSize), ("p0-09", toolCallValidity),
+      ("context-size", contextSize), ("p0-09", toolCallValidity), ("p0-10", multiStepCompletion),
     ]
   }
 
@@ -540,6 +540,77 @@ struct SessionChecks {
           + "runsWithFollowUpCalls=\(rate(totals.extra)) errors=\(totals.errors)")
     } catch {
       log.write("check=p0-09 result=fail error=\(describe(error))")
+    }
+  }
+
+  /// P0-10: the multi-step suite, `--runs N` per goal (default 5), each in a fresh session with
+  /// the goal's fixtures behind the tools. One line per run and a summary.
+  private func multiStepCompletion() async {
+    do {
+      guard let url = Bundle.main.url(forResource: "multi-step", withExtension: "json"),
+        let root = try JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: Any],
+        let goals = root["goals"] as? [[String: Any]]
+      else { throw SpikeResourceError.missing("multi-step") }
+      let specs = try loadResource("tools", as: Catalog.self).tools
+      let confirmationTools = Set(specs.filter(\.needsConfirmation).map(\.name))
+      let defaultResult = root["defaultToolResult"] as? String ?? "No results found."
+      let instructions = try SingleToolSuite.load().instructions
+      let runs = Int(value(after: "--runs") ?? "5") ?? 5
+      let only = value(after: "--goals").map { Set($0.split(separator: ",").map(String.init)) }
+      log.write("p10 instructions=\(quote(instructions)) runs=\(runs) goals=\(goals.count)")
+      var totals = (runs: 0, completed: 0, matched: 0, required: 0, hitLimit: 0, errors: 0)
+      for goal in goals where only?.contains(goal["id"] as? String ?? "") ?? true {
+        let id = goal["id"] as? String ?? "?"
+        let maxIterations = goal["maxIterations"] as? Int ?? 6
+        var goalCompleted = 0
+        for run in 1...runs {
+          totals.runs += 1
+          let router = FixtureRouter(
+            fixturesJSON: try JSONSerialization.data(withJSONObject: goal["fixtures"] ?? []),
+            defaultResult: defaultResult, maxCalls: maxIterations)
+          let tools = try specs.map { try FixtureTool($0, router: router) }
+          let session = LanguageModelSession(tools: tools, instructions: instructions)
+          let start = clock.now
+          var ending = "textAnswer"
+          var hitLimit = false
+          do { _ = try await session.respond(to: goal["goal"] as? String ?? "") } catch {
+            if "\(error)".contains("maxIterationsReached") {
+              ending = "maxIterations"
+              hitLimit = true
+              totals.hitLimit += 1
+            } else {
+              ending = "error:\(describe(error))"
+              totals.errors += 1
+            }
+          }
+          let calls = await router.calls
+          let outcome = scoreMultiStep(
+            goal: goal, calls: calls, confirmationTools: confirmationTools, hitLimit: hitLimit)
+          totals.matched += outcome.matched
+          totals.required += outcome.required
+          if outcome.completed {
+            totals.completed += 1
+            goalCompleted += 1
+          }
+          let trace = calls.map { "\($0.tool)\($0.json.replacingOccurrences(of: "\n", with: " "))" }
+            .joined(separator: " > ")
+          log.write(
+            "p10 goal=\(id) run=\(run) completed=\(outcome.completed) steps=\(outcome.matched)/\(outcome.required) "
+              + "firstUnmatched=\(outcome.firstUnmatched ?? "-") forbidden=\(outcome.forbiddenCalled.joined(separator: ",")) "
+              + "overConfirmed=\(outcome.overConfirmed.joined(separator: ",")) calls=\(calls.count) "
+              + "ending=\(ending) ms=\(ms(clock.now - start)) trace=\(trace)")
+        }
+        log.write("p10 goal-summary goal=\(id) completed=\(goalCompleted)/\(runs)")
+      }
+      func rate(_ n: Int, _ d: Int) -> String {
+        String(format: "%d/%d=%.1f%%", n, d, Double(n) / Double(max(d, 1)) * 100)
+      }
+      log.write(
+        "check=p0-10 result=observed runs=\(totals.runs) completed=\(rate(totals.completed, totals.runs)) "
+          + "stepsMatched=\(rate(totals.matched, totals.required)) hitMaxIterations=\(totals.hitLimit) "
+          + "errors=\(totals.errors)")
+    } catch {
+      log.write("check=p0-10 result=fail error=\(describe(error))")
     }
   }
 
