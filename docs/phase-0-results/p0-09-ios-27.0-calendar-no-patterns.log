@@ -1,0 +1,24 @@
+P0| run start os="Version 27.0 (Build 24A435)" hw=iPhone16,1
+P0| check=availability result=pass contextSize=4096 supportsCurrentLocale=true languages=24
+P0| begin p0-09
+P0| p09 instructions="You are the assistant in a work app. Now is Monday 2026-09-21 10:00 (UTC). Use the available tools to act on the user's request." runs=5 goals=20
+P0| p09 goal=st-04 run=1 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=9589 args={"end": "2026-09-22T00:00", "start": "2026-09-22T00:00"} problems=end:off by 1440 min
+P0| p09 goal=st-04 run=2 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=3495 args={"start": "2026-09-21T00:00", "end": "2026-09-22T00:00"} problems=start:off by 1440 min;end:off by 1440 min
+P0| p09 goal=st-04 run=3 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=3543 args={"start": "2026-09-22T00:00", "end": "2026-09-22T00:00"} problems=end:off by 1440 min
+P0| p09 goal=st-04 run=4 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=3275 args={"start": "2026-09-21T00:00", "end": "2026-09-22T00:00"} problems=start:off by 1440 min;end:off by 1440 min
+P0| p09 goal=st-04 run=5 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=3402 args={"end": "2026-09-22T00:00", "start": "2026-09-22T00:00"} problems=end:off by 1440 min
+P0| p09 goal-summary goal=st-04 clean=0/5
+P0| p09 goal=st-05 run=1 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=4609 args={"end": "2026-10-02T23:59", "start": "2026-10-02T00:00"} problems=
+P0| p09 goal=st-05 run=2 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3409 args={"start": "2026-10-02T00:00", "end": "2026-10-02T23:59"} problems=
+P0| p09 goal=st-05 run=3 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3113 args={"start": "2026-10-02T00:00", "end": "2026-10-02T23:59"} problems=
+P0| p09 goal=st-05 run=4 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3691 args={"start": "2026-10-02T00:00", "end": "2026-10-02T23:59"} problems=
+P0| p09 goal=st-05 run=5 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=true extraCalls=0 ms=3629 args={"start": "2026-10-02T00:00", "end": "2026-10-02T23:59"} problems=
+P0| p09 goal-summary goal=st-05 clean=5/5
+P0| p09 goal=st-06 run=1 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=4070 args={"end": "2026-09-22T17:00", "start": "2026-09-22T13:00"} problems=start:off by 4260 min;end:off by 4380 min
+P0| p09 goal=st-06 run=2 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=3604 args={"start": "2026-09-23T13:00", "end": "2026-09-23T17:00"} problems=start:off by 2820 min;end:off by 2940 min
+P0| p09 goal=st-06 run=3 called=true tool=list_calendar_events schemaValid=true toolCorrect=true argsCorrect=false extraCalls=0 ms=3646 args={"end": "2026-09-22T17:00", "start": "2026-09-22T13:00"} problems=start:off by 4260 min;end:off by 4380 min
+P0| p09 goal=st-06 run=4 called=false ms=62376 error=FoundationModels.LanguageModelError/contextSizeExceeded Content contains 4099 tokens, which exceeds the maximum allowed context size of 4096.
+P0| p09 goal=st-06 run=5 called=true tool=calculate schemaValid=true toolCorrect=false argsCorrect=false extraCalls=7 ms=38563 args={"expression": "2026-09-22T12:00:00"} problems=wrong tool
+P0| p09 goal-summary goal=st-06 clean=0/5
+P0| check=p0-09 result=observed runs=15 toolCalled=14/15=93.3% schemaValid=14/15=93.3% toolCorrect=13/15=86.7% argsCorrect=5/15=33.3% firstCallFullyCorrect=5/15=33.3% runsWithFollowUpCalls=1/15=6.7% errors=1
+P0| run end

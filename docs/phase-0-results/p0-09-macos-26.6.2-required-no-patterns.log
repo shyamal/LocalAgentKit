@@ -1,0 +1,30 @@
+P0| run start os="Version 26.6.2 (Build 25G83)" hw=arm64
+P0| check=availability result=pass contextSize=4096 supportsCurrentLocale=true languages=23
+P0| begin p0-09
+P0| p09 instructions="You are the assistant in a work app. Now is Monday 2026-09-21 10:00 (UTC). Use the available tools to act on the user's request." runs=3 goals=20
+P0| p09 goal=st-04 run=1 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=2300 args={"end": "2026-09-22T00:00:00", "start": "2026-09-21T00:00:00"} problems=end fails pattern;start fails pattern;start:not YYYY-MM-DDTHH:MM;end:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-04 run=2 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1935 args={"end": "2026-09-22T00:00:00+00:00", "start": "2026-09-21T00:00:00+00:00"} problems=end fails pattern;start fails pattern;start:not YYYY-MM-DDTHH:MM;end:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-04 run=3 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1773 args={"end": "2026-09-22T00:00:00", "start": "2026-09-21T00:00:00"} problems=end fails pattern;start fails pattern;start:not YYYY-MM-DDTHH:MM;end:not YYYY-MM-DDTHH:MM
+P0| p09 goal-summary goal=st-04 clean=0/3
+P0| p09 goal=st-05 run=1 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1725 args={"end": "2026-10-02T23:59:59", "start": "2026-10-02T00:00:00"} problems=end fails pattern;start fails pattern;start:not YYYY-MM-DDTHH:MM;end:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-05 run=2 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1780 args={"end": "2026-10-02T23:59:59", "start": "2026-10-02T00:00:00"} problems=end fails pattern;start fails pattern;start:not YYYY-MM-DDTHH:MM;end:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-05 run=3 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1756 args={"end": "2026-10-02T23:59:59Z", "start": "2026-10-02T00:00:00Z"} problems=end fails pattern;start fails pattern;start:not YYYY-MM-DDTHH:MM;end:not YYYY-MM-DDTHH:MM
+P0| p09 goal-summary goal=st-05 clean=0/3
+P0| p09 goal=st-06 run=1 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1637 args={"end": "2026-09-24T17:00:00", "start": "2026-09-24T12:00:00"} problems=end fails pattern;start fails pattern;end:not YYYY-MM-DDTHH:MM;start:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-06 run=2 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1621 args={"end": "2026-09-24T16:00:00", "start": "2026-09-24T00:00:00"} problems=end fails pattern;start fails pattern;end:not YYYY-MM-DDTHH:MM;start:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-06 run=3 called=true tool=list_calendar_events schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1607 args={"end": "2026-09-24T16:00:00", "start": "2026-09-24T00:00:00"} problems=end fails pattern;start fails pattern;end:not YYYY-MM-DDTHH:MM;start:not YYYY-MM-DDTHH:MM
+P0| p09 goal-summary goal=st-06 clean=0/3
+P0| p09 goal=st-07 run=1 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=2156 args={"query": "plumber"} problems=wrong tool
+P0| p09 goal=st-07 run=2 called=true tool=create_reminder schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1533 args={"title": "Call the plumber", "due": "2026-09-22T09:00:00"} problems=due fails pattern;due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-07 run=3 called=true tool=search_contacts schemaValid=true toolCorrect=false argsCorrect=false extraCalls=1 ms=2027 args={"query": "plumber"} problems=wrong tool
+P0| p09 goal-summary goal=st-07 clean=0/3
+P0| p09 goal=st-09 run=1 called=true tool=create_reminder schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1550 args={"title": "Take the laundry out", "due": "2026-09-21T10:30:00"} problems=due fails pattern;due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-09 run=2 called=true tool=create_reminder schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1640 args={"title": "Take the laundry out", "due": "2026-09-21T10:30:00"} problems=due fails pattern;due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-09 run=3 called=false ms=1278 error=NSError/Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(nul Error Domain=FoundationModels.LanguageModelSession.GenerationError Code=-1 "(null)" UserInfo={NSMultipleUnderlyingErrorsKey=( "Error Domain=com.apple.tokengeneration Code=10 \"(null)\" UserInfo={NSMul
+P0| p09 goal-summary goal=st-09 clean=0/3
+P0| p09 goal=st-10 run=1 called=true tool=create_reminder schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1661 args={"title": "Quarterly Report Submission", "due": "2026-09-30T17:00:00"} problems=due fails pattern;due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-10 run=2 called=true tool=create_reminder schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1700 args={"title": "Quarterly Report Submission", "due": "2026-09-30T17:00:00"} problems=due fails pattern;due:not YYYY-MM-DDTHH:MM
+P0| p09 goal=st-10 run=3 called=true tool=create_reminder schemaValid=false toolCorrect=true argsCorrect=false extraCalls=0 ms=1719 args={"title": "Quarterly Report Submission", "due": "2026-09-30T17:00:00"} problems=due fails pattern;due:not YYYY-MM-DDTHH:MM
+P0| p09 goal-summary goal=st-10 clean=0/3
+P0| check=p0-09 result=observed runs=18 toolCalled=17/18=94.4% schemaValid=2/18=11.1% toolCorrect=15/18=83.3% argsCorrect=0/18=0.0% firstCallFullyCorrect=0/18=0.0% runsWithFollowUpCalls=2/18=11.1% errors=1
+P0| run end

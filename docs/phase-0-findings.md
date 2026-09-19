@@ -406,7 +406,13 @@ A diagnostic matrix on the `create_reminder` goals (3 goals × 3 runs per cell) 
 | required + pattern | **valid, and `due` correct 8/8** | broken JSON |
 | required, no pattern | not tested | broken JSON |
 
-**No single declaration of a date field worked on both OS versions.** The one working iOS form (optional, no pattern) is a form macOS 26 never fills. Whether dropping the pattern also fixes the calendar's *required* `start`/`end` on iOS is untested: the phone disconnected before that run.
+**No single declaration of a date field worked on both OS versions.** The one working iOS form (optional, no pattern) is a form macOS 26 never fills.
+
+**Follow-up, 2026-09-19: dropping the pattern also fixes *required* date fields on iOS 27.** The three calendar goals (required `start`/`end`) run without pattern guides produced **valid JSON in all 14 calls that reached a tool**, against 15/15 broken with the pattern. What remained was model reasoning: "October 2nd" was correct 5/5, but "tomorrow" was read as today or given an empty range (0/5), and "Friday afternoon" landed on Tuesday or Wednesday. One run exceeded the context and one ran away into 8 calls. So on iOS 27 the regex guide is what breaks date-time arguments, and the practical per-OS rules are **no pattern guides on iOS 27** and **no optional arguments on macOS 26**. Log: `phase-0-results/p0-09-ios-27.0-calendar-no-patterns.log`.
+
+**Checked on macOS 26 the same day: required + no pattern also gives valid JSON there** (17/17 calls parsed; one run hit the untyped `tokengeneration` error). The values were often right: `10:30` for "in 30 minutes", `2026-09-30T17:00` for "the 30th at 5pm", the correct range for "October 2nd". But without the pattern, macOS writes timestamps in its own ISO-8601 variants: `…T09:00:00`, `…T00:00:00+00:00`, `…Z`. The suite's strict `YYYY-MM-DDTHH:MM` matcher rejects them, but a lenient ISO-8601 parser would accept them. Relative-date errors ("tomorrow" as today, Friday as Thursday) persist, as expected. Log: `phase-0-results/p0-09-macos-26.6.2-required-no-patterns.log`.
+
+**So one date-argument recipe works on both OS versions: required, no pattern guide, and the tool itself parses ISO-8601 leniently.** Format enforcement moves from generation into the tool. That's consistent with the broader design input below: validation belongs in `ToolExecutor` and the tools, not in the schema.
 
 ### 11b. Optional tool arguments are never filled on macOS 26
 
@@ -428,39 +434,44 @@ Across the suite and the diagnostics, macOS 26 filled the optional `due` argumen
 
 **Caveats.** 20 goals × 5 runs per host; one instruction style; inert tools that always answer "No results found."; one OS build each. The two hosts differ in both OS version and platform, so a column difference can't be pinned on either alone. These are rates for *this* suite, not general capability claims.
 
-## 12. Multi-step completion (P0-10): 14% as shipped, 28% with the framework bug removed (macOS 26; iPhone pending)
+## 12. Multi-step completion (P0-10): 14% as shipped on both OS versions, 20–28% with the framework bugs removed
 
-**2026-09-19.** The P0-06 multi-step suite (10 goals of 3–5 steps, all 8 tools registered, each goal's fixtures behind the tools, `calculate` evaluated for real) run **5 times per goal** through the spike's `p0-10` check, with the same instructions as P0-09. The framework runs the whole tool loop inside one `respond()`, so `maxIterations` is enforced from inside the tools. Steps are matched in dependency order, per the suite's scoring. **macOS 26.6.2 only so far**; the iPhone was unreachable. Logs and scorer are in [`phase-0-results/`](phase-0-results/).
+**2026-09-19.** The P0-06 multi-step suite (10 goals of 3–5 steps, all 8 tools registered, each goal's fixtures behind the tools, `calculate` evaluated for real) run **5 times per goal per configuration** through the spike's `p0-10` check, with the same instructions as P0-09. The framework runs the whole tool loop inside one `respond()`, so `maxIterations` is enforced from inside the tools. Steps are matched in dependency order, per the suite's scoring. Logs and scorer are in [`phase-0-results/`](phase-0-results/).
 
-Two configurations, because §11b showed macOS 26 never fills optional arguments, which would otherwise break every reminder step and turn this into a re-measurement of that bug:
+Two configurations per host, because P0-09 found an OS-specific framework bug that would otherwise dominate:
 - **As shipped:** the catalog unchanged. This is the headline number.
-- **Workaround:** `--all-required`, the only difference being that optional arguments become required. That's safe for this suite, since every reminder in it names a time. The gap between the two runs is the framework's share; what remains is the model's.
+- **Workaround:** the fix for that OS's bug: `--all-required` on macOS 26 (§11b, optional arguments never filled) and `--no-patterns` on iOS 27 (§11a, pattern-guided dates break JSON). Both are safe for this suite. The gap between the two runs is roughly the framework's share; what remains is the model's.
 
-| macOS 26.6.2, 50 runs each | As shipped | Workaround |
-|---|---|---|
-| **Goals completed end to end** | **14%** (7/50) | **28%** (14/50) |
-| Required steps matched | 52% (81/155) | 59% (92/155) |
-| Runs ended by a framework error | 1 | 4 |
-| Runs that hit `maxIterations` | 0 | 0 |
+| 50 runs per cell | macOS 26.6.2 as shipped | macOS workaround | iOS 27.0 as shipped | iOS workaround |
+|---|---|---|---|---|
+| **Goals completed end to end** | **14%** | **28%** | **14%** | **20%** |
+| Required steps matched | 52% | 59% | 41% | 65% |
+| Runs ended by a framework error | 1 | 4 | **30** (JSON parse) | 1 |
+| Runs that hit `maxIterations` | 0 | 0 | 5 | 7 |
 
 **First reason each failed run failed:**
 
-| | As shipped (43 failures) | Workaround (36 failures) |
-|---|---|---|
-| Called the step, but a value that had to come from earlier tool output was wrong (**grounding**) | 12 | **14** |
-| Called the step with wrong arguments (dates, search terms, or the missing optional `due`) | **18** | 8 |
-| Skipped a required step | 7 | 6 |
-| Conditional goal: did the forbidden action (ms-10, $7 saving vs. a $10 threshold) | 5 | 4 |
-| Framework error ended the run (untyped `GenerationError` −1 / `tokengeneration` 10) | 1 | 4 |
+| | macOS as shipped (43) | macOS workaround (36) | iOS as shipped (43) | iOS workaround (40) |
+|---|---|---|---|---|
+| Framework error ended the run | 1 | 4 | **30** | 1 |
+| Called the step, but a value from earlier tool output was wrong (**grounding**) | 12 | **14** | 1 | **10** |
+| Called the step with wrong arguments (dates, terms, missing optional `due`) | **18** | 8 | 0 | 8 |
+| Skipped a required step | 7 | 6 | 5 | 6 |
+| Conditional goal did the forbidden action (ms-10: $7 saving vs. a $10 threshold) | 5 | 4 | 5 | 5 |
+| **Repeated a side-effecting or sensitive call** (e.g. created the same note twice) | 0 | 0 | 2 | **10** |
 
-Per goal (workaround): ms-09 (conditional, branch taken) 5/5; ms-08 (recover from an empty search) 3/5; ms-04 2/5; ms-02, ms-03, ms-05 and ms-10 1/5; **ms-01, ms-06 and ms-07 0/5**. The three zeros are the grounded dentist phone number, the contract-notice date arithmetic, and the 5-step dinner plan.
+Per goal, completed out of 5 in the workaround runs (macOS / iOS): ms-01 0/0 · ms-02 1/1 · ms-03 1/0 · ms-04 2/4 · ms-05 1/0 · ms-06 0/0 · ms-07 0/0 · ms-08 3/1 · ms-09 5/4 · ms-10 1/0.
 
 **What this says about R1 (evidence for P0-15; the decision is P0-15's):**
-- **End-to-end completion is far below the M5 bar.** At 28% even with the framework bug removed, a `ModelDrivenPlanner` that lets the model drive the loop would complete roughly one multi-step task in four on this host. PRD R1 and PLANNING §2.4 say that below the bar the default is `StateMachinePlanner`, a successful, shippable outcome.
-- **The model mostly picks the right tools; it loses the thread between them.** Grounding is the largest failure class once the plumbing is fixed: the right tool is called, but the phone number, tip, email address, or deadline from the previous result doesn't make it into the next call. A state-machine planner that carries values between steps in code, and asks the model one narrow question per step, targets exactly this.
-- **Simple structures work.** The conditional that should fire (ms-09) completed 5/5, and recovering from an empty search (ms-08) 3/5. The failures concentrate in carrying specific values and in date arithmetic.
+- **Both OS versions are far below the M5 bar, and close to each other.** 14% as shipped on both; 20–28% even with each OS's known framework bug removed. A `ModelDrivenPlanner` that lets the model drive the loop would finish roughly one 3–5-step task in four or five. PRD R1 and PLANNING §2.4 say that below the bar the default is `StateMachinePlanner`, a successful, shippable outcome.
+- **Fixing the plumbing moves the failures rather than removing them.** On iOS, removing the pattern guides eliminated the JSON errors (30 → 1), but completion only rose from 14% to 20%. Grounding, repeated side effects and date errors took their place.
+- **The model picks tools reasonably and loses the thread between them.** Grounding (the right tool, but the phone number, tip, email or deadline from the previous result doesn't make it into the next call) is the largest model-side failure class on both OS versions. A state-machine planner that carries values between steps in code, and asks the model one narrow question per step, targets exactly this.
+- **Repeated side effects are a safety input, not just a score.** On iOS the model often created the same note twice (`create_note` over-called in 22 of 50 workaround runs). In a real app each repeat is another confirmation prompt, or another write. `ToolExecutor` should detect repeated identical side-effecting calls itself rather than rely on the model.
+- **Simple structures work.** The conditional that should fire (ms-09) completed 5/5 and 4/5; the one that shouldn't (ms-10) failed almost always, which says the model acts on the goal's verb more readily than it checks the condition.
 
-**Caveats.** 10 goals × 5 runs on one host, one instruction style, fixture worlds, auto-approved confirmations. The iPhone numbers may differ materially: in P0-09, iOS 27 made *no* argument-value errors but broke date-time JSON (§11a), which would hit ms-01, 03, 05, 06, 07 and 09.
+**Also observed:** on the first iPhone attempt, one `respond()` call **hung for over 5 minutes** without returning or erroring (goal ms-05, as shipped). The spike's runners now enforce a per-run timeout (`--run-timeout`, default 120 s), and no run timed out afterwards. The runtime needs the same: a model call is not guaranteed to finish, so `AgentRuntime` must own a deadline per call.
+
+**Caveats.** 10 goals × 5 runs per cell, one instruction style, fixture worlds, auto-approved confirmations; the two hosts differ in both OS version and platform. The as-shipped iOS cell was merged from three launches after the stall, all with the same catalog and runner (ms-01–04 before the stall; ms-05 and ms-06–10 after the timeout was added; both builds scored identically).
 
 ## Not yet done
 
@@ -468,8 +479,8 @@ Findings 1–2 are now resolved against the beta SDK; **the measurement half of 
 
 - **P0-01 is committed** as [`Spike/`](../Spike/) (2026-09-18): an Xcode app for iOS 27 and macOS 26.4+ that compiles warning-free for both and runs on this Mac. The finding-2 BYO-LLM spike is still uncommitted scratch code.
 - **P0-02 is done on both hosts** (§9). Still open from it: whether the §9a crash belongs to macOS or to OS 26 (needs a macOS 27 host), and triggering a guardrail or refusal on OS 27 to confirm the P0-13 cases under the new `LanguageModelError` type.
-- **P0-10 is measured on macOS 26 only** (§12): 14% as shipped, 28% with the optional-argument workaround. The iPhone run (as shipped, plus a `--no-patterns` workaround run) is pending device availability.
-- **P0-09 is measured** (§11): 51% / 63% first-call fully correct on macOS 26 / iOS 27. Follow-up: whether dropping the pattern also fixes required date fields on iOS 27 (phone disconnected before that run).
+- **P0-10 is measured on both hosts** (§12): 14% as shipped on both; 28% (macOS) and 20% (iOS) with each OS's framework workaround.
+- **P0-09 is measured** (§11): 51% / 63% first-call fully correct on macOS 26 / iOS 27. Follow-up answered: dropping the pattern fixes required date fields on iOS 27 (§11a).
 - P0-05, P0-06 and P0-07 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; `refusal.json`, 20 goals + 6 controls; all 2026-09-18) but **not yet run**. P0-08 (the context-load fixture) is written and sized on both hosts (§10). The M9 refusal threshold P0-11 needs has not been agreed.
 - P0-09–P0-12 (the measured rates: tool-call validity, multi-step completion, refusal rate, context exhaustion) have not been produced — finding 6 is one trial, not a rate.
 - **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒

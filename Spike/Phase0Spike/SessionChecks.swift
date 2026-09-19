@@ -28,6 +28,13 @@ enum Pace {
   case relaxed, moderate, packed
 }
 
+/// Outcome of one `respond()` raced against a timeout. Main-actor only.
+@MainActor
+final class RunState {
+  var done = false
+  var error: (any Error)?
+}
+
 /// Mutable state shared between a check and the task it spawns. Main-actor only.
 @MainActor
 final class Box {
@@ -487,7 +494,11 @@ struct SessionChecks {
           let session = LanguageModelSession(tools: tools, instructions: suite.instructions)
           let start = clock.now
           var errorText = ""
-          do { _ = try await session.respond(to: goal["goal"] as? String ?? "") } catch {
+          let result = await respondWithTimeout(session, to: goal["goal"] as? String ?? "")
+          if result.timedOut {
+            errorText = "timeout"
+            totals.errors += 1
+          } else if let error = result.error {
             errorText = describe(error)
             totals.errors += 1
           }
@@ -573,7 +584,11 @@ struct SessionChecks {
           let start = clock.now
           var ending = "textAnswer"
           var hitLimit = false
-          do { _ = try await session.respond(to: goal["goal"] as? String ?? "") } catch {
+          let result = await respondWithTimeout(session, to: goal["goal"] as? String ?? "")
+          if result.timedOut {
+            ending = "timeout"
+            totals.errors += 1
+          } else if let error = result.error {
             if "\(error)".contains("maxIterationsReached") {
               ending = "maxIterations"
               hitLimit = true
@@ -620,6 +635,23 @@ struct SessionChecks {
   }
 
   // MARK: - Helpers
+
+  /// Runs `respond(to:)` with a deadline (`--run-timeout` seconds, default 120). A hung call
+  /// may never honour cancellation, so on timeout the task is cancelled and abandoned rather
+  /// than awaited. Each eval run uses a fresh session, so an abandoned one can't leak into the next.
+  private func respondWithTimeout(_ session: LanguageModelSession, to prompt: String) async
+    -> (error: (any Error)?, timedOut: Bool)
+  {
+    let seconds = Double(value(after: "--run-timeout") ?? "120") ?? 120
+    let state = RunState()
+    let task = Task {
+      do { _ = try await session.respond(to: prompt) } catch { state.error = error }
+      state.done = true
+    }
+    if await waitUntil(seconds: seconds, { state.done }) { return (state.error, false) }
+    task.cancel()
+    return (nil, true)
+  }
 
   private func value(after flag: String) -> String? {
     let arguments = CommandLine.arguments
