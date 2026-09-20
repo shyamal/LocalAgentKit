@@ -13,6 +13,7 @@
 		3A25E7E220E610E60FD7DE88 /* multi-step.json in Resources */ = {isa = PBXBuildFile; fileRef = E5D1FD46A5B6A8AAED5C3440 /* multi-step.json */; };
 		588E96491143C6C90566EB81 /* tools.json in Resources */ = {isa = PBXBuildFile; fileRef = FF6FF9C650F55C2D8923A4DE /* tools.json */; };
 		845D5ADB40E8DD16319AB601 /* single-tool.json in Resources */ = {isa = PBXBuildFile; fileRef = ED33F4BAF17BDC9661660635 /* single-tool.json */; };
+		84A6ABC03DCBEAA2F4D0D623 /* refusal.json in Resources */ = {isa = PBXBuildFile; fileRef = 8EE6C0E03B21C71CF2FBB17C /* refusal.json */; };
 		C843729894ACF8EB26A87539 /* context-load.json in Resources */ = {isa = PBXBuildFile; fileRef = 3258F0E1C8ACC48A734D1168 /* context-load.json */; };
 		E53C630BCF4C1AA877F61CD3 /* ToolCallEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E9E15F41D94D605F98139B /* ToolCallEval.swift */; };
 		E7530A4BD2360ABC48566FF8 /* SessionChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199DE885B106975DE56E926C /* SessionChecks.swift */; };
@@ -24,6 +25,7 @@
 		5F468967C10BAE6B1258B005 /* Phase0SpikeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase0SpikeApp.swift; sourceTree = "<group>"; };
 		83B8C6F466CB4F643142AAD5 /* ContextLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextLoad.swift; sourceTree = "<group>"; };
 		8B146C6EE392710E8BD22751 /* MultiStepEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStepEval.swift; sourceTree = "<group>"; };
+		8EE6C0E03B21C71CF2FBB17C /* refusal.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = refusal.json; sourceTree = "<group>"; };
 		C7E9E15F41D94D605F98139B /* ToolCallEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolCallEval.swift; sourceTree = "<group>"; };
 		E5D1FD46A5B6A8AAED5C3440 /* multi-step.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "multi-step.json"; sourceTree = "<group>"; };
 		ED33F4BAF17BDC9661660635 /* single-tool.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "single-tool.json"; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			children = (
 				3258F0E1C8ACC48A734D1168 /* context-load.json */,
 				E5D1FD46A5B6A8AAED5C3440 /* multi-step.json */,
+				8EE6C0E03B21C71CF2FBB17C /* refusal.json */,
 				ED33F4BAF17BDC9661660635 /* single-tool.json */,
 				FF6FF9C650F55C2D8923A4DE /* tools.json */,
 			);
@@ -134,6 +137,7 @@
 			files = (
 				C843729894ACF8EB26A87539 /* context-load.json in Resources */,
 				3A25E7E220E610E60FD7DE88 /* multi-step.json in Resources */,
+				84A6ABC03DCBEAA2F4D0D623 /* refusal.json in Resources */,
 				845D5ADB40E8DD16319AB601 /* single-tool.json in Resources */,
 				588E96491143C6C90566EB81 /* tools.json in Resources */,
 			);

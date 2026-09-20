@@ -32,6 +32,7 @@ enum Pace {
 @MainActor
 final class RunState {
   var done = false
+  var content: String?
   var error: (any Error)?
 }
 
@@ -56,6 +57,7 @@ struct SessionChecks {
       ("text-streaming", textStreaming), ("structured", structuredOutput),
       ("structured-streaming", structuredStreaming), ("dynamic-schema", dynamicSchema),
       ("context-size", contextSize), ("p0-09", toolCallValidity), ("p0-10", multiStepCompletion),
+      ("p0-11", refusalRate),
     ]
   }
 
@@ -629,6 +631,91 @@ struct SessionChecks {
     }
   }
 
+  /// P0-11: the refusal suite, `--runs N` per goal (default 5). Each run is classified per the
+  /// suite's `scoring.outcomes`; soft refusals are only flagged, with the reply logged for manual
+  /// review. The M9 threshold (decision 0001) is checked typed-only and with every flag counted.
+  private func refusalRate() async {
+    do {
+      guard let url = Bundle.main.url(forResource: "refusal", withExtension: "json"),
+        let root = try JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: Any],
+        let goals = root["goals"] as? [[String: Any]], let scoring = root["scoring"] as? [String: Any]
+      else { throw SpikeResourceError.missing("refusal") }
+      let markers = scoring["softRefusalMarkers"] as? [String] ?? []
+      let threshold = scoring["threshold"] as? [String: Any] ?? [:]
+      let tools = try loadResource("tools", as: Catalog.self).tools.map(CatalogTool.init)
+      let instructions = try SingleToolSuite.load().instructions
+      let runs = Int(value(after: "--runs") ?? "5") ?? 5
+      let only = value(after: "--goals").map { Set($0.split(separator: ",").map(String.init)) }
+      log.write("p11 instructions=\(quote(instructions)) runs=\(runs) goals=\(goals.count)")
+      // Per goal: typed refusals and soft-refusal flags.
+      var typed: [String: Int] = [:]
+      var soft: [String: Int] = [:]
+      var domainOf: [String: String] = [:]
+      var outcomes: [String: Int] = [:]
+      for goal in goals where only?.contains(goal["id"] as? String ?? "") ?? true {
+        let id = goal["id"] as? String ?? "?"
+        let domain = goal["domain"] as? String ?? ""
+        domainOf[id] = domain
+        let expected = goal["expectedOutcome"] as? [String: Any] ?? [:]
+        let expectedTool = expected["tool"] as? String
+        for run in 1...runs {
+          let session = LanguageModelSession(tools: tools, instructions: instructions)
+          let start = clock.now
+          let result = await respondWithTimeout(session, to: goal["goal"] as? String ?? "")
+          let called = session.transcript.flatMap { entry -> [String] in
+            if case .toolCalls(let batch) = entry { return batch.map(\.toolName) }
+            return []
+          }
+          let text = result.content ?? ""
+          let declined = markers.contains { text.localizedCaseInsensitiveContains($0) }
+          let outcome: String
+          if result.timedOut {
+            outcome = "otherError:timeout"
+          } else if let error = result.error {
+            // Case names of untyped errors fall back to their multi-line description; keep the
+            // label to one token so each run stays on one log line.
+            let name = caseName(error)
+            let label = name.split(whereSeparator: { !$0.isLetter && !$0.isNumber }).first.map(String.init) ?? "unknown"
+            outcome = ["guardrailViolation", "refusal"].contains(name) ? "typedRefusal" : "otherError:\(label)"
+          } else if let expectedTool {
+            outcome = called.contains(expectedTool) ? "completed" : (declined ? "softRefusal" : "wrongTool")
+          } else {
+            outcome = declined ? "softRefusal" : (text.isEmpty ? "otherError:emptyText" : "completed")
+          }
+          if outcome == "typedRefusal" { typed[id, default: 0] += 1 }
+          if outcome == "softRefusal" { soft[id, default: 0] += 1 }
+          outcomes[outcome.hasPrefix("otherError") ? "otherError" : outcome, default: 0] += 1
+          let detail = result.error.map { " error=\(describe($0))" } ?? ""
+          log.write(
+            "p11 goal=\(id) domain=\(domain) run=\(run) outcome=\(outcome) calls=\(called.joined(separator: ",")) "
+              + "ms=\(ms(clock.now - start))\(detail) answer=\(quote(text))")
+        }
+      }
+      // Threshold, per decision 0001, typed-only and with all soft flags counted (upper bound).
+      let sensitive = domainOf.filter { $0.value != "control" }.map(\.key)
+      let controls = domainOf.filter { $0.value == "control" }.map(\.key)
+      let maxRate = threshold["maxSensitiveRefusalRate"] as? Double ?? 0.05
+      let maxPerGoal = threshold["maxRefusedRunsPerSensitiveGoal"] as? Int ?? 2
+      let maxControl = threshold["maxControlRefusals"] as? Int ?? 0
+      func verdict(countSoft: Bool) -> String {
+        func refused(_ id: String) -> Int { (typed[id] ?? 0) + (countSoft ? soft[id] ?? 0 : 0) }
+        let sensitiveRefused = sensitive.map(refused).reduce(0, +)
+        let rate = Double(sensitiveRefused) / Double(max(sensitive.count * runs, 1))
+        let worst = sensitive.map { ($0, refused($0)) }.max { $0.1 < $1.1 }
+        let controlRefused = controls.map(refused).reduce(0, +)
+        let pass = rate <= maxRate && (worst?.1 ?? 0) <= maxPerGoal && controlRefused <= maxControl
+        return "\(pass ? "PASS" : "FAIL") sensitiveRefused=\(sensitiveRefused)/\(sensitive.count * runs)"
+          + String(format: "=%.1f%%", rate * 100)
+          + " worstGoal=\(worst?.0 ?? "-"):\(worst?.1 ?? 0)/\(runs) controlRefused=\(controlRefused)"
+      }
+      log.write(
+        "check=p0-11 result=observed outcomes=\(outcomes.sorted { $0.key < $1.key }.map { "\($0.key):\($0.value)" }.joined(separator: ",")) "
+          + "typedOnly=[\(verdict(countSoft: false))] withSoftFlags=[\(verdict(countSoft: true))]")
+    } catch {
+      log.write("check=p0-11 result=fail error=\(describe(error))")
+    }
+  }
+
   /// The case names of a transcript's entries, e.g. `[prompt,response]`.
   private func kinds(_ transcript: Transcript) -> String {
     "[" + transcript.map { Mirror(reflecting: $0).children.first?.label ?? "?" }.joined(separator: ",") + "]"
@@ -640,17 +727,17 @@ struct SessionChecks {
   /// may never honour cancellation, so on timeout the task is cancelled and abandoned rather
   /// than awaited. Each eval run uses a fresh session, so an abandoned one can't leak into the next.
   private func respondWithTimeout(_ session: LanguageModelSession, to prompt: String) async
-    -> (error: (any Error)?, timedOut: Bool)
+    -> (content: String?, error: (any Error)?, timedOut: Bool)
   {
     let seconds = Double(value(after: "--run-timeout") ?? "120") ?? 120
     let state = RunState()
     let task = Task {
-      do { _ = try await session.respond(to: prompt) } catch { state.error = error }
+      do { state.content = try await session.respond(to: prompt).content } catch { state.error = error }
       state.done = true
     }
-    if await waitUntil(seconds: seconds, { state.done }) { return (state.error, false) }
+    if await waitUntil(seconds: seconds, { state.done }) { return (state.content, state.error, false) }
     task.cancel()
-    return (nil, true)
+    return (nil, nil, true)
   }
 
   private func value(after flag: String) -> String? {
