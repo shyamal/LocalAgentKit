@@ -373,7 +373,7 @@ struct SessionChecks {
     }
   }
 
-  /// A schema built at runtime, as the eval runner must do from EvalSuites/phase0/tools.json.
+  /// A schema built at runtime, as the eval runner must do from Sources/LocalAgentKitEval/Suites/phase0/tools.json.
   private func dynamicSchema() async {
     // --schema-variant isolates which part of the schema the framework rejects:
     // unanchored (default) | anchored | no-pattern | required-anchored

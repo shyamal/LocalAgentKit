@@ -142,6 +142,7 @@ LocalAgentKit/
 │   ├── LocalAgentKitAppIntents/    # optional. AgentIntent bridging.
 │   ├── LocalAgentKitTesting/       # MockModelProvider, ScriptedModel, fixtures. Ships to consumers.
 │   └── LocalAgentKitEval/          # FR-029 reliability harness (executable + library)
+│       └── Suites/phase0/          #   the Phase 0 scenario suites, bundled as resources (P0-18)
 │
 ├── Tests/                          # mirrors Sources 1:1
 ├── Examples/

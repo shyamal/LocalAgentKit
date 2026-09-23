@@ -1,7 +1,7 @@
 import Foundation
 import FoundationModels
 
-// P0-09: runs EvalSuites/phase0/single-tool.json against the on-device model and scores the
+// P0-09: runs Sources/LocalAgentKitEval/Suites/phase0/single-tool.json against the on-device model and scores the
 // first tool call of each run on the suite's measures. Matchers follow the suite's `scoring`.
 
 /// Evaluates `+ - * /` arithmetic with parentheses and unary minus. Returns nil for anything

@@ -1,12 +1,12 @@
 # Phase 0 spike
 
-Task **P0-01**: a bare app that talks to the on-device model directly. There are **no LocalAgentKit imports, no protocols, no abstractions**, on purpose. It's disposable: when Phase 0 reports, the code can be deleted. The *findings* live in [`docs/phase-0-findings.md`](../docs/phase-0-findings.md), and the eval *suites* live in [`EvalSuites/`](../EvalSuites/) (P0-18). Neither belongs here.
+Task **P0-01**: a bare app that talks to the on-device model directly. There are **no LocalAgentKit imports, no protocols, no abstractions**, on purpose. It's disposable: when Phase 0 reports, the code can be deleted. The *findings* live in [`docs/phase-0-findings.md`](../docs/phase-0-findings.md), and the eval *suites* live in [`Sources/LocalAgentKitEval/Suites/`](../Sources/LocalAgentKitEval/Suites/) (P0-18). Neither belongs here.
 
 It's a separate Xcode project, not part of the Swift package, so it can't affect the package's build, coverage, lint, or layering gates.
 
 ## What it runs
 
-`SessionChecks.swift` holds the **P0-02** checks: model availability, cold vs. prewarmed latency, multi-turn session reuse, restoring a transcript through `Codable`, concurrent requests, cancellation (by task cancel and by breaking the loop), the abandoned-stream timeline, text streaming, `@Generable` structured output (plain and streamed), a runtime-built `DynamicGenerationSchema`, and (P0-08) `context-size`, which turns the eval tool catalog into real `Tool` values and measures each context-load profile with `tokenCount`. The eval JSON is bundled from `EvalSuites/phase0/` at build time, never copied.
+`SessionChecks.swift` holds the **P0-02** checks: model availability, cold vs. prewarmed latency, multi-turn session reuse, restoring a transcript through `Codable`, concurrent requests, cancellation (by task cancel and by breaking the loop), the abandoned-stream timeline, text streaming, `@Generable` structured output (plain and streamed), a runtime-built `DynamicGenerationSchema`, and (P0-08) `context-size`, which turns the eval tool catalog into real `Tool` values and measures each context-load profile with `tokenCount`. The eval JSON is bundled from `Sources/LocalAgentKitEval/Suites/phase0/` at build time, never copied.
 
 Each result is one line, `check=<id> result=<pass|fail|observed> key=value …`, printed to stdout with a `P0|` prefix and shown in the app window.
 

@@ -1,8 +1,10 @@
-# Eval suites
+# Phase 0 scenario suites
 
-Scenario data for the Phase 0 feasibility spike and, later, the `LocalAgentKitEval` reliability harness (FR-029). **The spike code is throwaway. These files are not** (task P0-18): they will move into the `LocalAgentKitEval` target as resources.
+Scenario data for the FR-029 reliability harness, bundled as resources of the `LocalAgentKitEval` target and loaded by `SuiteLoader`.
 
-They live at the repo root rather than inside `Sources/LocalAgentKitEval/` for now because SwiftPM warns about unhandled files in a target directory, which would break the warning-free build gate. Declaring them as resources in `Package.swift` is P0-18's job.
+**The Phase 0 spike that produced these was throwaway. These files are not** (task P0-18). They moved here from a top-level directory once Phase 0 reported, so they ship with the harness rather than sitting beside it.
+
+What exists today is the data plus enough Swift to load and check it (`swift run LocalAgentKitEval` lists the suites; `Tests/LocalAgentKitEvalTests` keeps them honest). **Running them against a model is task M1-EV-01**; until then the only runner is the throwaway spike in [`Spike/`](../../../Spike/), which bundles these same files.
 
 | File | Task | Contents |
 |---|---|---|
@@ -49,7 +51,7 @@ So runners must report all the measures, not schema validity alone, and must che
 ## Validation
 
 ```bash
-swift Scripts/validate-eval-suites.swift EvalSuites/phase0
+swift Scripts/validate-eval-suites.swift Sources/LocalAgentKitEval/Suites/phase0
 ```
 
 This is a structural check that runs in CI. It flags unknown tools or arguments, malformed dates and datetimes, enum violations, `absent` on required arguments, `expectsConfirmation` that contradicts the tool's permission tier, and, for multi-step goals, step counts outside 3–5, `dependsOn` pointing forward, `groundedIn` outside the step's dependency chain, fixtured `calculate`, tools both forbidden and required, `maxIterations` below the step count, for refusal goals, unknown domains, malformed outcomes, and controls not paired with a sensitive goal, and, for the context-load fixture, misnumbered exchanges, tool traffic that doesn't pair up, probes whose fact isn't actually in their source, and profiles larger than the material. It does not run a model.

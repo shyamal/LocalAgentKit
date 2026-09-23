@@ -1,7 +1,7 @@
 import Foundation
 import FoundationModels
 
-// P0-08: loads EvalSuites/phase0/context-load.json and tools.json (bundled as resources),
+// P0-08: loads Sources/LocalAgentKitEval/Suites/phase0/context-load.json and tools.json (bundled as resources),
 // turns the catalog into real Tool values, and assembles each load profile into a real
 // transcript so its token cost can be measured per host.
 
@@ -148,7 +148,7 @@ struct CatalogTool: Tool {
   }
 
   func call(arguments: GeneratedContent) async throws -> String {
-    // calculate is evaluated for real (EvalSuites README); every other tool is inert here.
+    // calculate is evaluated for real (eval suites README); every other tool is inert here.
     if name == "calculate", let expression = try? arguments.value(String.self, forProperty: "expression") {
       return Arithmetic.evaluate(expression).map { String($0) } ?? "Error: could not evaluate '\(expression)'."
     }

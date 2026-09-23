@@ -1,9 +1,11 @@
-// Validates the eval suites in EvalSuites/ against their tool catalog.
-// Run: swift Scripts/validate-eval-suites.swift [EvalSuites/phase0]
+// Validates the bundled eval suites against their tool catalog.
+// Run: swift Scripts/validate-eval-suites.swift [Sources/LocalAgentKitEval/Suites/phase0]
 // Exits non-zero on any inconsistency. Checks structure only — it does not run a model.
 import Foundation
 
-let dir = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "EvalSuites/phase0"
+let dir =
+  CommandLine.arguments.count > 1
+  ? CommandLine.arguments[1] : "Sources/LocalAgentKitEval/Suites/phase0"
 var errors: [String] = []
 
 func load(_ path: String) -> [String: Any]? {

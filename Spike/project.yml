@@ -23,16 +23,17 @@ targets:
     supportedDestinations: [iOS, macOS]
     sources:
       - Phase0Spike
-      # The eval data is bundled, not copied, so the spike always measures the committed files.
-      - path: ../EvalSuites/phase0/tools.json
+      # The eval data is bundled from the LocalAgentKitEval target, so the spike always
+      # measures the committed suites (task P0-18).
+      - path: ../Sources/LocalAgentKitEval/Suites/phase0/tools.json
         buildPhase: resources
-      - path: ../EvalSuites/phase0/context-load.json
+      - path: ../Sources/LocalAgentKitEval/Suites/phase0/context-load.json
         buildPhase: resources
-      - path: ../EvalSuites/phase0/single-tool.json
+      - path: ../Sources/LocalAgentKitEval/Suites/phase0/single-tool.json
         buildPhase: resources
-      - path: ../EvalSuites/phase0/multi-step.json
+      - path: ../Sources/LocalAgentKitEval/Suites/phase0/multi-step.json
         buildPhase: resources
-      - path: ../EvalSuites/phase0/refusal.json
+      - path: ../Sources/LocalAgentKitEval/Suites/phase0/refusal.json
         buildPhase: resources
     settings:
       base:

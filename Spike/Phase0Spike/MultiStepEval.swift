@@ -1,7 +1,7 @@
 import Foundation
 import FoundationModels
 
-// P0-10: runs EvalSuites/phase0/multi-step.json. Tools answer from each goal's fixtures;
+// P0-10: runs Sources/LocalAgentKitEval/Suites/phase0/multi-step.json. Tools answer from each goal's fixtures;
 // calculate is evaluated for real. Scoring follows the suite's `scoring` section.
 
 struct RecordedCall: Sendable {

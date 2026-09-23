@@ -26,7 +26,7 @@ Per-run logs behind the rates in [`../phase-0-findings.md`](../phase-0-findings.
 | `score_p0_09.py` | Re-scores a P0-09 log: first call fully correct = schema-valid + right tool + right arguments, with follow-up calls reported separately |
 
 ```bash
-python3 docs/phase-0-results/score_p0_10.py EvalSuites/phase0/multi-step.json docs/phase-0-results/p0-10-macos-26.6.2.log docs/phase-0-results/p0-10-macos-26.6.2-all-required.log docs/phase-0-results/p0-10-ios-27.0.log docs/phase-0-results/p0-10-ios-27.0-no-patterns.log
+python3 docs/phase-0-results/score_p0_10.py Sources/LocalAgentKitEval/Suites/phase0/multi-step.json docs/phase-0-results/p0-10-macos-26.6.2.log docs/phase-0-results/p0-10-macos-26.6.2-all-required.log docs/phase-0-results/p0-10-ios-27.0.log docs/phase-0-results/p0-10-ios-27.0-no-patterns.log
 ```
 
 ```bash

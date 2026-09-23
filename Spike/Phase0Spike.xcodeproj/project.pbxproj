@@ -65,7 +65,7 @@
 				FF6FF9C650F55C2D8923A4DE /* tools.json */,
 			);
 			name = phase0;
-			path = ../EvalSuites/phase0;
+			path = ../Sources/LocalAgentKitEval/Suites/phase0;
 			sourceTree = "<group>";
 		};
 		927F57AE8B5A634F6ADC03FE /* Products */ = {

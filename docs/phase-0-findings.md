@@ -311,7 +311,7 @@ A `GenerationGuide.pattern` written with `^…$` was refused every time on both 
 
 The same pattern without anchors works on both, and the output still matches the whole value. With no pattern at all, the Mac wrote `2026-09-22T09:00:00` (extra seconds, 2/2), while the iPhone wrote the exact format (2/2). Guides are what make the format reliable across OS versions.
 
-Consequences, already applied: `EvalSuites/phase0/tools.json` had three anchored patterns that would have failed every datetime goal at run time. They're now unanchored, the file states the rule, and the validator rejects anchors. For FR-025: the `AgentError` mapping must handle untyped framework `NSError`s on OS 26, not only the typed enums.
+Consequences, already applied: `Sources/LocalAgentKitEval/Suites/phase0/tools.json` had three anchored patterns that would have failed every datetime goal at run time. They're now unanchored, the file states the rule, and the validator rejects anchors. For FR-025: the `AgentError` mapping must handle untyped framework `NSError`s on OS 26, not only the typed enums.
 
 ### 9c. OS 27 replaces the error types that P0-13 relied on
 
@@ -328,7 +328,7 @@ Building the spike for iOS 27 failed on a deprecation: **`LanguageModelSession.G
 
 ## 10. Context budget under realistic load (P0-08): tool definitions take a quarter of the context
 
-**2026-09-19.** From the P0-08 fixture ([`EvalSuites/phase0/context-load.json`](../EvalSuites/phase0/context-load.json)), measured with the real `SystemLanguageModel.tokenCount` on **macOS 26.6.2** and on the physical **iPhone 15 Pro, iOS 27.0**. The fixture is a work-assistant session: 12 conversation exchanges including tool calls and outputs, 16 retrieved document chunks, and a 5-step plan. Each profile was assembled into a real transcript by the spike's `context-size` check.
+**2026-09-19.** From the P0-08 fixture ([`Sources/LocalAgentKitEval/Suites/phase0/context-load.json`](../Sources/LocalAgentKitEval/Suites/phase0/context-load.json)), measured with the real `SystemLanguageModel.tokenCount` on **macOS 26.6.2** and on the physical **iPhone 15 Pro, iOS 27.0**. The fixture is a work-assistant session: 12 conversation exchanges including tool calls and outputs, 16 retrieved document chunks, and a 5-step plan. Each profile was assembled into a real transcript by the spike's `context-size` check.
 
 | Component | macOS 26.6.2 | iOS 27.0 | Share of 4,096 |
 |---|---|---|---|
@@ -387,7 +387,7 @@ The fixture's probes plant facts at known positions (oldest exchange, a mid-sess
 
 ### 11a. The framework does not guarantee schema-valid tool calls on iOS 27
 
-The EvalSuites README predicted that guided generation would make the literal P0-09 metric near 100% "by construction". **That's true on macOS 26 (every call that reached us was valid) and false on iOS 27.**
+The eval suites README predicted that guided generation would make the literal P0-09 metric near 100% "by construction". **That's true on macOS 26 (every call that reached us was valid) and false on iOS 27.**
 
 On the iPhone, **every run of every goal whose tool takes a date-time argument, 25 of 25**, produced malformed JSON the framework itself couldn't parse (`GeneratedContent.ParsingError`), with an identical shape each time:
 
@@ -614,7 +614,7 @@ Findings 1–2 are now resolved against the beta SDK; **the measurement half of 
 - **P0-10 is measured on both hosts** (§12): 14% as shipped on both; 28% (macOS) and 20% (iOS) with each OS's framework workaround.
 - **P0-09 is measured** (§11): 51% / 63% first-call fully correct on macOS 26 / iOS 27. Follow-up answered: dropping the pattern fixes required date fields on iOS 27 (§11a).
 - **P0-11 is measured on macOS only** (§13): decision 0001 FAILS on the per-goal bar (`rf-h06`, a medication-dose calculation, refused 4–5 of 5 times). The iPhone run stopped at 57 of 130 runs and has to be redone (as shipped and with `--no-patterns`).
-- P0-05, P0-06 and P0-07 are written (`EvalSuites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; `refusal.json`, 20 goals + 6 controls; all 2026-09-18); the first two have since been run (P0-09, P0-10). P0-08 (the context-load fixture) is written and sized on both hosts (§10). The M9 refusal threshold was agreed 2026-09-19 (docs/decisions/0001-m9-refusal-threshold.md).
+- P0-05, P0-06 and P0-07 are written (`Sources/LocalAgentKitEval/Suites/phase0/single-tool.json`, 20 goals; `multi-step.json`, 10 goals; `refusal.json`, 20 goals + 6 controls; all 2026-09-18); the first two have since been run (P0-09, P0-10). P0-08 (the context-load fixture) is written and sized on both hosts (§10). The M9 refusal threshold was agreed 2026-09-19 (docs/decisions/0001-m9-refusal-threshold.md).
 - P0-12 (context exhaustion rate) has not been produced. P0-09, P0-10 and (macOS only) P0-11 have; finding 6 was one trial, not a rate.
 - **P0-15 (the planner GO/NO-GO) therefore cannot be called**, since it depends on P0-09/P0-10. Milestone 1 remains gated. 🔒
 - P0-14 (latency/thermal/battery) has not been attempted — and still needs a *physical* Apple Intelligence device; neither this Mac nor a simulator can measure iPhone thermals.

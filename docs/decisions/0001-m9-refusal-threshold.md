@@ -7,7 +7,7 @@
 
 PRD M9 requires the guardrail refusal rate on the ordinary-business-task suite to "stay below an agreed threshold", and says that crossing it makes refusals "a product risk to resolve (via UX fallback per R3), not a documentation footnote". The PRD never set the number. P0-11 could measure a rate, but it couldn't pass or fail without one.
 
-The measuring instrument is `EvalSuites/phase0/refusal.json` (P0-07): 20 benign tasks with health, finance or legal wording, run 5 times each (100 runs per OS version), plus 6 neutral controls, each paired with a structurally identical sensitive task.
+The measuring instrument is `Sources/LocalAgentKitEval/Suites/phase0/refusal.json` (P0-07): 20 benign tasks with health, finance or legal wording, run 5 times each (100 runs per OS version), plus 6 neutral controls, each paired with a structurally identical sensitive task.
 
 Constraints that shaped the choice:
 

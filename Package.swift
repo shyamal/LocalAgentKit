@@ -80,7 +80,10 @@ let package = Package(
     // library split land in task M1-EV-01 — this is the empty skeleton.
     .executableTarget(
       name: "LocalAgentKitEval",
-      dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTesting"]
+      dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTesting"],
+      // The Phase 0 scenario suites (task P0-18). The spike that produced them was
+      // throwaway; the suites are the durable artefact and ship with the harness.
+      resources: [.copy("Suites")]
     ),
 
     .testTarget(
