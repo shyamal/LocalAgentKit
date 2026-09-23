@@ -15,6 +15,10 @@ Per-run logs behind the rates in [`../phase-0-findings.md`](../phase-0-findings.
 | `p0-11-macos-26.6.2-run1.log` | The first macOS P0-11 run, from a runner build that predates the error-label fix (its `Code=-1` errors are unlabelled). Kept because findings §13 cites it as the repeat of `rf-h06` |
 | `p0-11-macos-26.6.2-full-errors.log` | Three goals re-run with `--full-errors`, to read the full text of the `Code=-1` error (findings §13) |
 | `p0-11-ios-27.0.log` (complete 2026-09-23) | **Partial**: 57 of 130 runs on the iPhone (iOS 27.0) before the launch stopped at `rf-f05`. Not a verdict; the run has to be redone (as shipped, and with `--no-patterns`) |
+| `p0-12-macos-26.6.2-context-only.log` | P0-12, 4 profiles × 6 probes × 3 runs, macOS 26.6.2, tool definitions costed but no callable tools |
+| `p0-12-macos-26.6.2-tools-registered.log` | The same with tools callable |
+| `p0-12-ios-27.0-context-only.log` | P0-12 on the iPhone, partial: the light profile only (14 runs) |
+| `score_p0_12.py` | Per-profile exhaustion, in-context recall, and what happened to trimmed-out facts |
 | `score_p0_11.py` | Applies decision 0001 to a P0-11 log, typed-only and with soft-refusal flags counted |
 | `p0-09-ios-27.0-calendar-no-patterns.log` | P0-09 follow-up: the three calendar goals on iOS 27 with `--no-patterns` (findings §11a) |
 | `p0-09-macos-26.6.2-required-no-patterns.log` | P0-09 follow-up: the date goals on macOS 26 with `--all-required --no-patterns` (findings §11a) |

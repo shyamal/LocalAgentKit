@@ -61,12 +61,37 @@ struct ContextFixture: Decodable {
     let chunks: Int
     let plan: Bool
   }
+  struct Probe: Decodable {
+    struct Source: Decodable {
+      let exchange: Int?
+      let chunk: String?
+      let plan: Int?
+    }
+    let id: String
+    let question: String
+    let answerContainsAny: [String]
+    let source: Source
+  }
+
   let assembly: Assembly
   let instructions: String
   let conversation: [Exchange]
   let chunks: [Chunk]
   let plan: Plan
+  let probes: [Probe]
   let profiles: [Profile]
+
+  /// Whether a probe's planted fact is inside the request this profile assembles, per the
+  /// fixture's `scoring.availability` rule.
+  func isAvailable(_ probe: Probe, in profile: Profile) -> Bool {
+    if let exchange = probe.source.exchange {
+      return exchange >= conversation.count - profile.exchanges + 1
+    }
+    if let chunk = probe.source.chunk {
+      return (chunks.prefix(profile.chunks).contains { $0.id == chunk })
+    }
+    return probe.source.plan != nil && profile.plan
+  }
 }
 
 enum SpikeResourceError: Error {
@@ -139,13 +164,14 @@ struct AssembledRequest {
   let chunkText: String
   let planText: String
 
-  init(fixture: ContextFixture, profile: ContextFixture.Profile, tools: [CatalogTool], question: String)
-    throws
-  {
+  init(
+    fixture: ContextFixture, profile: ContextFixture.Profile, tools: [CatalogTool], question: String,
+    instructionsOverride: String? = nil, registerTools: Bool = true
+  ) throws {
     instructions = .instructions(
       Transcript.Instructions(
-        segments: [.text(.init(content: fixture.instructions))],
-        toolDefinitions: tools.map { Transcript.ToolDefinition(tool: $0) }))
+        segments: [.text(.init(content: instructionsOverride ?? fixture.instructions))],
+        toolDefinitions: registerTools ? tools.map { Transcript.ToolDefinition(tool: $0) } : []))
 
     var entries: [Transcript.Entry] = []
     for exchange in fixture.conversation.suffix(profile.exchanges) {

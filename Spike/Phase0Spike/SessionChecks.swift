@@ -57,7 +57,7 @@ struct SessionChecks {
       ("text-streaming", textStreaming), ("structured", structuredOutput),
       ("structured-streaming", structuredStreaming), ("dynamic-schema", dynamicSchema),
       ("context-size", contextSize), ("p0-09", toolCallValidity), ("p0-10", multiStepCompletion),
-      ("p0-11", refusalRate),
+      ("p0-11", refusalRate), ("p0-12", contextExhaustion),
     ]
   }
 
@@ -713,6 +713,102 @@ struct SessionChecks {
           + "typedOnly=[\(verdict(countSoft: false))] withSoftFlags=[\(verdict(countSoft: true))]")
     } catch {
       log.write("check=p0-11 result=fail error=\(describe(error))")
+    }
+  }
+
+  /// P0-12: every context-load profile × probe, `--runs N` times (default 3). Streams the
+  /// response so a request rejected up front can be told from one that fails mid-generation,
+  /// and classifies the outcome per the fixture's `scoring.outcomes`.
+  private func contextExhaustion() async {
+    let abstentionMarkers = [
+      "don't know", "do not know", "not in", "no information", "couldn't find", "could not find",
+      "not mentioned", "isn't mentioned", "unable to find", "not provided", "no mention",
+    ]
+    do {
+      let fixture = try loadResource("context-load", as: ContextFixture.self)
+      let specs = try loadResource("tools", as: Catalog.self).tools
+      let tools = try specs.map(CatalogTool.init)
+      let model = SystemLanguageModel.default
+      let runs = Int(value(after: "--runs") ?? "3") ?? 3
+      let onlyProfiles = value(after: "--profiles").map { Set($0.split(separator: ",").map(String.init)) }
+      // --no-tools is the primary configuration: tools are not registered, but the catalog is
+      // inlined into the instructions so the token load stays comparable. With inert tools
+      // registered the model searches instead of reading its own context, which measures tool
+      // preference rather than context retention. GenerationOptions.toolCallingMode(.disallowed)
+      // would be cleaner but is 27-only, so it can't be used for a cross-host comparison.
+      let noTools = CommandLine.arguments.contains("--no-tools")
+      // The tool definitions stay in the transcript either way, so the token load matches the
+      // profile sizes in findings section 10; only the session's callable tools differ.
+      let sessionTools = noTools ? [] : tools
+      log.write(
+        "p12 runs=\(runs) profiles=\(fixture.profiles.count) probes=\(fixture.probes.count) "
+          + "config=\(noTools ? "context-only" : "tools-registered")")
+      var totals: [String: Int] = [:]
+      for profile in fixture.profiles where onlyProfiles?.contains(profile.id) ?? true {
+        for probe in fixture.probes {
+          let available = fixture.isAvailable(probe, in: profile)
+          let request = try AssembledRequest(
+            fixture: fixture, profile: profile, tools: tools, question: probe.question)
+          let tokens = (try? await model.tokenCount(for: request.fullTranscript)) ?? -1
+          if CommandLine.arguments.contains("--dump-prompt") {
+            log.write("p12 prompt profile=\(profile.id) probe=\(probe.id) historyEntries=\(request.history.count) text=\(request.prompt.replacingOccurrences(of: "\n", with: " | "))")
+          }
+          for run in 1...runs {
+            let session = LanguageModelSession(
+              tools: sessionTools,
+              transcript: Transcript(entries: [request.instructions] + request.history))
+            let start = clock.now
+            var snapshots = 0
+            var answer = ""
+            var outcome = ""
+            var errorDetail = ""
+            do {
+              for try await snapshot in session.streamResponse(to: request.prompt) {
+                snapshots += 1
+                answer = snapshot.content
+              }
+            } catch {
+              let name = caseName(error)
+              errorDetail = " error=\(describe(error))"
+              let exhausted = ["exceededContextWindowSize", "contextSizeExceeded"].contains(name)
+                || "\(error)".contains("maximum allowed")
+              outcome =
+                exhausted
+                ? (snapshots == 0 ? "exceeded:atRequest" : "exceeded:midGeneration")
+                : "otherError:\(name.split(whereSeparator: { !$0.isLetter && !$0.isNumber }).first.map(String.init) ?? "unknown")"
+            }
+            if outcome.isEmpty {
+              let hasFact = probe.answerContainsAny.contains { answer.localizedCaseInsensitiveContains($0) }
+              let abstained = abstentionMarkers.contains { answer.localizedCaseInsensitiveContains($0) }
+              let detour = session.transcript.dropFirst(request.history.count + 1)
+                .contains { if case .toolCalls = $0 { true } else { false } }
+              outcome =
+                available
+                ? (hasFact ? "recalled" : (detour ? "missed:toolDetour" : "missed"))
+                : (hasFact ? "leaked" : (abstained ? "abstained" : "hallucinated"))
+            }
+            totals[outcome.split(separator: ":").first.map(String.init) ?? outcome, default: 0] += 1
+            // Only calls this run made: the fixture's history contains tool calls by design.
+            let toolCalls = session.transcript.dropFirst(request.history.count + 1)
+              .flatMap { entry -> [String] in
+                if case .toolCalls(let batch) = entry { return batch.map(\.toolName) }
+                return []
+              }
+            log.write(
+              "p12 profile=\(profile.id) probe=\(probe.id) run=\(run) available=\(available) "
+                + "outcome=\(outcome) tokens=\(tokens) snapshots=\(snapshots) tools=\(toolCalls.joined(separator: ",")) "
+                + "ms=\(ms(clock.now - start))\(errorDetail) answer=\(quote(answer))")
+          }
+        }
+      }
+      let summary = totals.sorted { $0.key < $1.key }.map { "\($0.key):\($0.value)" }.joined(separator: ",")
+      let all = totals.values.reduce(0, +)
+      let exceeded = totals["exceeded"] ?? 0
+      log.write(
+        "check=p0-12 result=observed runs=\(all) outcomes=\(summary) "
+          + String(format: "exhaustionRate=%d/%d=%.1f%%", exceeded, all, Double(exceeded) / Double(max(all, 1)) * 100))
+    } catch {
+      log.write("check=p0-12 result=fail error=\(describe(error))")
     }
   }
 
