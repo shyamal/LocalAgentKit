@@ -1,6 +1,6 @@
 # Phase 0 Findings
 
-**Status:** In progress. This document accumulates verified findings as Phase 0 runs, per task P0-16 — it is not written only at the end. Everything below is either a direct reading of the shipping SDK or the output of a real program run on this machine, not a claim from memory or documentation.
+**Status:** The Phase 0 decision is made — see §15 (`StateMachinePlanner` is the v0.1 default). This document accumulates verified findings as Phase 0 runs, per task P0-16 — it is not written only at the end. Everything below is either a direct reading of the shipping SDK or the output of a real program run on this machine, not a claim from memory or documentation.
 
 **Environment:** Apple silicon Mac, host macOS **26.6.2**, Apple Intelligence **enabled** (`SystemLanguageModel.default.availability == .available` — see finding 5).
 
@@ -558,6 +558,50 @@ With tools callable, both hosts behave the same at the top end: light, typical a
 - Recall is judged by whether the planted string appears, so a correct paraphrase without the literal value scores as a miss. Spot-checking the macOS misses found genuine "I don't know" answers rather than paraphrases.
 
 **Caveats.** 3 runs per cell; synthetic fixture worlds; abstention vs. hallucination uses marker phrases plus the logged answer.
+
+## 15. The Phase 0 decision (P0-15): `StateMachinePlanner` is the v0.1 default
+
+**2026-09-23.** Recorded in full as [decision 0002](decisions/0002-planner-default.md). This is the GO/NO-GO the spike existed to make.
+
+The PRD set the rule before any data existed (§21, task P0-15): **below the >95% M5 bar the default is the state machine, and that is a successful, shippable outcome, not a failure.** The measurements are not marginal, so applying the rule is mechanical rather than a fresh judgement.
+
+### Everything Phase 0 measured
+
+| | macOS 26.6.2 | iPhone 15 Pro, iOS 27.0 | Bar | §|
+|---|---|---|---|---|
+| Single tool call fully correct (P0-09) | 51% | 63% | >95% (M5) | §11 |
+| Schema-valid tool call (P0-09) | 95% | 71% | — | §11a |
+| 3–5 step task completed (P0-10, as shipped) | 14% | 14% | >95% | §12 |
+| …with each OS's framework bug worked around | 28% | 20% | >95% | §12 |
+| Guardrail refusals, benign tasks (P0-11) | 4–5% — **FAILS M9** on the per-goal bar | 2% — passes, provisional | decision 0001 | §13 |
+| Context exhaustion, no callable tools (P0-12) | 0% | 0% | — | §14 |
+| Context exhaustion, tools callable, stress profile | 100% | 100% | — | §14 |
+| Facts present in the window that reached the answer (P0-12) | 55% | 100% | — | §14 |
+| Tool definitions' share of the 4,096-token window (P0-08) | 26% | 26% | — | §10 |
+
+Still unmeasured: **P0-14** (latency, thermal and battery over a sustained session on device). Latency was sampled incidentally — a one-word reply takes ~0.2–0.3 s on macOS and ~0.7–0.9 s on the iPhone, with the first call in a process costing 0.6–2.1 s — but thermals and battery need a long device run.
+
+### The decision
+
+**`StateMachinePlanner` is `.default` in v0.1.** `ModelDrivenPlanner` still ships and stays selectable by configuration, exactly as PLANNING §2.4 intended; M5-03 gates promoting it.
+
+### Why the failure shape matters more than the rate
+
+If the model failed randomly, a deterministic planner would help little. It doesn't. Once each OS's framework bug is worked around, the largest model-side failure in P0-10 is **grounding**: the right tool is called, but a value from an earlier result — a phone number, a tip, an email address, a computed deadline — does not carry into the next call. That is precisely what a state machine removes by construction, because values flow through `AgentContext` in code rather than through the model's attention.
+
+The same data sets the design constraints for M1-RT-11:
+
+- **Assume ~50–60% accuracy per model consultation** (P0-09). Validate every answer, retry with a narrower question, and prefer closed choices over free-form argument generation.
+- **Evaluate conditional guards in code.** The model acted on a goal's verb rather than checking its condition (ms-10, 4/5 wrong).
+- **Detect repeated side-effecting calls in the executor.** The model created duplicate notes in 22 of 50 iOS runs.
+- **Budget tools per request.** Tool definitions are 26% of the window, and callable tools turned a working profile into 100% exhaustion (§14).
+- **Don't trust the window's contents to be read.** macOS 26 used 55% of what it was given (§14), so a step whose answer depends on far-away context needs the value restated close to the question.
+
+### What this does not decide
+
+- **Question 9** (keep or drop `LocalModelProvider`; whether to require OS 27) is still the owner's, and is unaffected by this: both planners sit above the model-provider seam.
+- **P0-17** (are FR-026/FR-027 MVP-blocking or deferred to v0.5?) is now unblocked and still open. This decision only says they are not the v0.1 *default*.
+- **Nothing about Milestone 1 sequencing.** Phase 0 gating ends when P0-16 through P0-18 are closed.
 
 ## Not yet done
 

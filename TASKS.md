@@ -65,8 +65,8 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [ ] **P0-14** Record latency and thermal/battery behavior for a typical multi-step run
 
 ### Decision
-- [ ] **P0-15** 🔒 **GO/NO-GO: planner architecture.** Is `ModelDrivenPlanner` or `StateMachinePlanner` the v0.1 default? Below the >95% M5 bar it is the state machine — a successful, shippable outcome, not a failure
-- [~] **P0-16** Write `docs/phase-0-findings.md`: numbers, the decision, and the reasoning. This is the document the team argues with later *(started 2026-09-02 with the API-surface findings from P0-03/04/13; the actual rate measurements and the P0-15 decision are still missing)*
+- [x] **P0-15** 🔒 **GO/NO-GO: planner architecture.** Is `ModelDrivenPlanner` or `StateMachinePlanner` the v0.1 default? Below the >95% M5 bar it is the state machine — a successful, shippable outcome, not a failure *(DECIDED 2026-09-23: **`StateMachinePlanner` is the v0.1 default** — docs/decisions/0002-planner-default.md. Multi-step completion measured 14% as shipped on both hosts, 28% (macOS) and 20% (iOS) with each OS's framework workaround, against a >95% bar; single-call accuracy 51%/63%. The dominant model-side failure is grounding, which a deterministic planner removes by construction. `ModelDrivenPlanner` still ships and stays config-selectable; M5-03 gates promoting it.)*
+- [~] **P0-16** Write `docs/phase-0-findings.md`: numbers, the decision, and the reasoning. This is the document the team argues with later *(sections 1–15 written: API-surface findings, the four measurements with raw logs in docs/phase-0-results/, and the P0-15 decision with its reasoning (§15). Outstanding: P0-14's latency/thermal/battery numbers.)*
 - [ ] **P0-17** Decide whether FR-026/FR-027 are MVP-blocking or deferred to v0.5
 - [ ] **P0-18** Port the spike's scenario suites into the seed of `LocalAgentKitEval` (FR-029) — the code is throwaway, the suites are not
 
@@ -103,8 +103,8 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [ ] **M1-RT-08** Argument-repair path: bounded retries with schema feedback on invalid tool arguments
 - [ ] **M1-RT-09** Guardrail refusals terminate — **never** retried (R3)
 - [ ] **M1-RT-10** Suspension via continuation for permission prompts and clarifications — no thread or lock held while waiting on a human (FR-010)
-- [ ] **M1-RT-11** `AgentPlanner` protocol + `StateMachinePlanner` implementation
-- [ ] **M1-RT-12** `ModelDrivenPlanner` — built either way; P0-15 decides which is `.default` (FR-026)
+- [ ] **M1-RT-11** `AgentPlanner` protocol + `StateMachinePlanner` implementation *(the v0.1 default per P0-15. Design targets the measured failures: carry values between steps in `AgentContext` rather than through the model; ask one narrow, preferably closed question per step; validate and retry every model answer, assuming ~50–60% single-call accuracy; evaluate conditional guards in code.)*
+- [ ] **M1-RT-12** `ModelDrivenPlanner` — built either way; P0-15 decided `StateMachinePlanner` is `.default` (FR-026), so this ships config-selectable and is promoted only if M5-03 re-measures above the >95% bar
 - [ ] **M1-RT-13** Cooperative cancellation through model, RAG, tools; every `await` a cancellation point (FR-024)
 - [ ] **M1-RT-14** Enforce all four execution limits with distinct typed errors
 - [ ] **M1-RT-15** OSLog + signpost instrumentation across the loop

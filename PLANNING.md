@@ -225,7 +225,7 @@ protocol AgentPlanner: Sendable {
 - **`StateMachinePlanner`** — deterministic control flow; the model is consulted for *individual* decisions ("which tool for this step?", "is this step satisfied?"). Robust, dull, and always shippable.
 - **`ModelDrivenPlanner`** — the model emits and revises a whole plan. More capable, unproven on-device.
 
-**Phase 0 chooses which one is `.default` in v0.1.** Both ship either way; the config picks. This is a one-line change if the spike goes badly, instead of an architecture rewrite.
+**Phase 0 chose: `StateMachinePlanner` is `.default` in v0.1** (2026-09-23, P0-15 — see [`docs/decisions/0002-planner-default.md`](./docs/decisions/0002-planner-default.md)). Multi-step completion measured **14–28% against the >95% M5 bar**, and the dominant model-side failure is grounding: the right tool is called, but values from earlier tool results don't carry into the next call. Both planners still ship; the config picks. This was the one-line change the design left room for, instead of an architecture rewrite. `ModelDrivenPlanner` is promoted only if M5-03 re-measures above the bar.
 
 ### 2.5 Concurrency model
 
