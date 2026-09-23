@@ -523,39 +523,41 @@ Per goal, completed out of 5 in the workaround runs (macOS / iOS): ms-01 0/0 · 
 **So the iOS verdict is provisional.** A `--no-patterns` re-run of those seven goals would make them measurable; it is the one piece of P0-11 still outstanding (the device dropped before it could run). It cannot lower the rate, only raise it: those goals currently contribute zero refusals out of zero effective runs.
 
 
-## 14. Context behaviour under load (P0-12): the window is rarely the failure; ignoring the window is
+## 14. Context behaviour under load (P0-12): the window is rarely the failure; ignoring the window is, and only on macOS 26
 
-**2026-09-23, macOS 26.6.2 complete; iPhone partial.** The P0-08 fixture ([§10](#10-context-budget-under-realistic-load-p0-08-tool-definitions-take-a-quarter-of-the-context)) assembled into real requests: instructions + tool definitions + the last N conversation exchanges + a prompt carrying K document chunks, the plan, and one probe question. **4 profiles × 6 probes × 3 runs = 72 runs per configuration.** Responses are streamed, so a request rejected up front (`exceeded:atRequest`) is distinguishable from one that dies mid-generation. Logs and scorer are in [`phase-0-results/`](phase-0-results/).
+**2026-09-23, both hosts complete.** The P0-08 fixture ([§10](#10-context-budget-under-realistic-load-p0-08-tool-definitions-take-a-quarter-of-the-context)) assembled into real requests: instructions + tool definitions + the last N conversation exchanges + a prompt carrying K document chunks, the plan, and one probe question. **4 profiles × 6 probes × 3 runs = 72 runs per configuration per host.** Responses are streamed, so a request rejected up front is distinguishable from one that dies mid-generation. Logs and scorer are in [`phase-0-results/`](phase-0-results/).
 
 Two configurations, because the first attempt measured the wrong thing:
-- **Context-only (primary).** Tool *definitions* stay in the transcript, so the token load matches §10's sizes, but the session has no callable tools. This measures what R2 asks: does material that is in the window get used, and when does the window break?
+- **Context-only (primary).** Tool *definitions* stay in the transcript, so the token load matches §10's sizes, but the session has no callable tools. This measures what R2 asks: does material in the window get used, and when does the window break?
 - **Tools registered (secondary).** Tools callable, as a real agent would have them.
 
 The first attempt registered inert tools that answer "No results found.". The model then **searched instead of reading its own prompt** and reported "I don't know" for facts sitting a few hundred tokens above the question — measuring tool preference, not context retention. The fixture's prompt suffix now forbids tool use, and the primary configuration removes callable tools entirely. (`GenerationOptions.toolCallingMode(.disallowed)` would be cleaner but is 27-only, so it can't support a cross-host comparison.)
 
-### macOS 26.6.2, per profile (18 runs each)
+### Context-only, per profile (18 runs per cell)
 
-| Profile | Tokens | Typed exhaustion | Untyped errors | Facts **in context** recalled | Facts trimmed out: abstained / hallucinated |
-|---|---|---|---|---|---|
-| light | 1,790 | 0/18 | 0 | **3/6** | 9 / **3** |
-| typical | 2,734 | 0/18 | 2 | **7/12** | 4 / 0 |
-| heavy | 3,705 | 0/18 | 2 | **6/13** | 3 / 0 |
-| stress | 4,200 | 0/18 | 0 | **11/18** | 0 / 0 |
+| Profile | Tokens | Typed exhaustion | **In-context facts recalled: macOS** | **iOS** | Trimmed-out facts: macOS abstain / hallucinate | iOS |
+|---|---|---|---|---|---|---|
+| light | ~1,780 | 0/18 both | **3/6** | **6/6** | 9 / **3** | 9 / 0 |
+| typical | ~2,720 | 0/18 both | **7/12** | **12/12** | 4 / 0 | 6 / 0 |
+| heavy | ~3,690 | 0/18 both | **6/13** | **15/15** | 3 / 0 | 3 / 0 |
+| stress | ~4,180 | 0/18 both | **11/18** | **18/18** | 0 / 0 | 0 / 0 |
+| **Total** | | **0%** | **27/49 = 55%** | **51/51 = 100%** | 16 / 3 | 18 / 0 |
 
-With tools registered, the same content behaves differently at the top end: light/typical/heavy show 0 exhaustion, and **stress fails 18/18 with the typed context error**. Overall exhaustion: **0% context-only, 25% with tools**.
+With tools callable, both hosts behave the same at the top end: light, typical and heavy show 0 exhaustion, and **stress fails 18/18 with the typed context error on both**. Overall exhaustion: **0% context-only, 25% with tools**, on each host.
 
 **What this says about R2:**
 
-- **Exhaustion is not the main failure mode; silent non-use is.** Context-only, *no* request failed for size at any profile, including one measured at 4,200 tokens against a stated 4,096 window. Yet only **27 of 49 in-context facts (55%)** made it into the answer. The rest produced "I don't know" about text in the same prompt. A budgeter that only prevents overflow would call all of these runs healthy.
-- **Tools are what push a working request over the edge.** Identical content plus callable tools turned the stress profile from 0% to 100% exhaustion. The definitions cost ~1,050 tokens (§10) and each call and result adds more. **Per-request tool selection is therefore a context-budget lever, not just a prompt-size nicety** (M1-RT-04).
-- **Over-budget doesn't reliably mean a typed error.** Failures arrived both as typed `exceededContextWindowSize` and as the untyped `GenerationError −1` wrapping `tokengeneration 10` (§11b's error). Some requests above 4,096 tokens simply succeeded. `AgentError` mapping (FR-025) must treat "context exhausted" as a *class* of failures, not one enum case, and the budgeter cannot assume the framework will report overflow at all.
-- **Hallucination is rare but real, and it appears where the load is lightest.** All 3 hallucinations (a fact trimmed out, asserted anyway) occurred at the *light* profile; heavier profiles abstained correctly. Small samples, but it argues the fallback for "not in context" must be explicit, not assumed.
+- **Exhaustion is not the main failure mode.** Context-only, *no* request failed for size at any profile on either host, including requests measured above the stated 4,096-token window. A budgeter that only prevents overflow would call every one of those runs healthy.
+- **The real failure is silent non-use, and it is macOS-only.** macOS 26 used just **55%** of the facts present in its own prompt, answering "I don't know" about text a few hundred tokens above the question. **iOS 27 used 100% (51/51), at every load level including the largest.** This is the widest OS-version gap Phase 0 has found, and it means the macOS figure is the pessimistic one. Whether this is the platform or the OS version remains unseparated, as everywhere else in Phase 0.
+- **Tools are what push a working request over the edge.** Identical content plus callable tools turned the stress profile from 0% to 100% exhaustion on both hosts. Definitions cost ~1,050 tokens (§10) and each call and result adds more. **Per-request tool selection is a context-budget lever** (M1-RT-04), not just prompt hygiene.
+- **Over-budget doesn't reliably mean a typed error.** Failures arrived as typed `exceededContextWindowSize` *and* as the untyped `GenerationError −1` wrapping `tokengeneration 10` (§11b), and some requests above 4,096 tokens simply succeeded. `AgentError` (FR-025) must treat "context exhausted" as a *class* of failures, and the budgeter cannot assume the framework reports overflow at all.
+- **When macOS loses a fact it sometimes invents one.** All 3 hallucinations were macOS, at the *lightest* profile: "Northwind is in Room 401" (twice) and "Northwind's PO number for the new SLA is s12345". Both are confident, specific and wrong. iOS abstained correctly in all 18 equivalent runs. The fallback for "not in context" has to be explicit.
 
-### iPhone, iOS 27.0 (partial: 14 of 144 runs)
+**Two scoring caveats, both checked by reading the answers:**
+- The 3 iOS runs scored `leaked` at the light profile are **not** leaks. The `pr-plan` probe accepts "approval" as an answer term, and exchange 11 — which is inside the light profile's history — already discusses needing manager approval over $400. The model answered correctly from conversation; the probe's terms are simply too broad for the plan to be its only source. The same looseness applies to the macOS column.
+- Recall is judged by whether the planted string appears, so a correct paraphrase without the literal value scores as a miss. Spot-checking the macOS misses found genuine "I don't know" answers rather than paraphrases.
 
-The device dropped repeatedly; only the light profile, context-only, completed (14 runs). In it the phone **recalled 6/6 in-context facts against macOS's 3/6**, and abstained correctly on the 8 runs whose fact was trimmed out, with no hallucinations. If that holds at higher loads, in-context recall differs materially between OS versions and the macOS figure is the pessimistic one. **P0-12 stays open until the iPhone matrix is complete.**
-
-**Caveats.** 3 runs per cell; recall is judged by whether the planted string appears in the answer, so a correct paraphrase without the literal value scores as a miss; abstention vs. hallucination uses marker phrases plus the logged answer. The fixture's worlds are synthetic.
+**Caveats.** 3 runs per cell; synthetic fixture worlds; abstention vs. hallucination uses marker phrases plus the logged answer.
 
 ## Not yet done
 
@@ -563,7 +565,7 @@ Findings 1–2 are now resolved against the beta SDK; **the measurement half of 
 
 - **P0-01 is committed** as [`Spike/`](../Spike/) (2026-09-18): an Xcode app for iOS 27 and macOS 26.4+ that compiles warning-free for both and runs on this Mac. The finding-2 BYO-LLM spike is still uncommitted scratch code.
 - **P0-02 is done on both hosts** (§9). Still open from it: whether the §9a crash belongs to macOS or to OS 26 (needs a macOS 27 host), and triggering a guardrail or refusal on OS 27 to confirm the P0-13 cases under the new `LanguageModelError` type.
-- **P0-12 is measured on macOS 26 only** (§14): 0% exhaustion context-only vs. 25% with tools registered, and only 55% of in-context facts used. The iPhone matrix is 14/144 runs done after repeated device drops.
+- **P0-12 is measured on both hosts** (§14): 0% exhaustion context-only vs. 25% with tools registered on each. In-context recall is **55% on macOS 26 against 100% on iOS 27** — the widest OS gap in Phase 0.
 - **P0-11 is measured on macOS 26 and, as shipped, on iOS 27** (§13): macOS **fails** M9 on the per-goal bar (`rf-h06` refused 4–5 of 5); iOS passes as measured (2/5 on the same goal) but 35% of its runs never reached the model. Outstanding: a `--no-patterns` re-run of the seven iOS goals the date-JSON bug makes unmeasurable. R3 fallback UX is v0.1 scope on the macOS result alone.
 - **P0-10 is measured on both hosts** (§12): 14% as shipped on both; 28% (macOS) and 20% (iOS) with each OS's framework workaround.
 - **P0-09 is measured** (§11): 51% / 63% first-call fully correct on macOS 26 / iOS 27. Follow-up answered: dropping the pattern fixes required date fields on iOS 27 (§11a).
