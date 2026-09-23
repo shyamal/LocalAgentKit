@@ -31,3 +31,7 @@ Typed refusals are `guardrailViolation` / `refusal` (`GenerationError` on OS 26,
 - **Fail on any condition:** this is not a Phase 0 failure. It triggers the R3 mitigation as v0.1 scope: a non-agentic fallback path and "complete this step yourself" UX become requirements, and the failing goals are recorded as known-refused phrasings.
 - The same thresholds apply to the ongoing FR-029 harness (M1-EV-04) and to every OS beta it runs against (R4).
 - 5% means roughly 1 in 20 health, finance or legal-flavoured requests refused: noticeable, and judged tolerable only if the app handles it well. A stricter bar would need a larger suite to be testable at all.
+
+## First measurement (P0-11, 2026-09-23)
+
+macOS 26.6.2 **FAIL**, iPhone iOS 27.0 **PASS**. Typed refusals: 4/100 and 2/100 sensitive runs; 0 soft refusals after review; 0 control refusals on both. All refusals came from one goal, rf-h06 (dosage arithmetic: "2 tablets of 500 mg three times a day"), whose neutral twin completed 5/5 on both hosts. macOS fails on the per-goal rule (4 of 5 > 2), not on the average, which is the case the per-goal rule exists for. See `docs/phase-0-findings.md` §13.
