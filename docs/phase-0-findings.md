@@ -636,6 +636,18 @@ The same data sets the design constraints for M1-RT-11:
 
 **Caveats.** One 15-minute run per host, one workload (the P0-06 suite with each OS's workaround), screen on, no other apps contending. Thermal state is the OS's own coarse signal, not a temperature. Battery is read from `UIDevice.batteryLevel`, which moves in ~5% steps, so 10% over 15 minutes is ±5% precise; the per-hour figure inherits that. The phone began at 70% charge; drain is not necessarily linear across the charge curve.
 
+## 17. Scope of FR-026/FR-027 (P0-17): the capabilities ship in v0.1, the model-driven implementation does not
+
+**2026-09-26.** Recorded as [decision 0003](decisions/0003-fr-026-027-scope.md). Both requirements carried the same gate: MVP-blocking *only* if Phase 0 showed acceptable multi-step reliability. It did not (§12: 14% as shipped, 20–28% worked around, against >95%).
+
+The distinction that matters: FR-026 lists **capabilities** (sequential tasks, conditional tasks, tool dependencies, retries, completion detection) *and* an **implementation** (the model produces the plan). The gate defers the implementation. Deferring the capabilities as well would leave v0.1 with a planner that cannot sequence, branch, retry or detect completion — which contradicts §15's decision. `TASKS.md` had all of FR-026 in Milestone 5; that is now corrected.
+
+**v0.1:** those capabilities, deterministic, with conditional guards evaluated in code (the model ignored a goal's condition 4/5, §12) and every per-step model answer validated (single-call accuracy 51–63%, §11). From FR-027, deterministic recovery only: an empty or invalid tool result takes a declared alternative path, or fails with a typed error.
+
+**v0.5:** the model emitting whole plans (M5-01) and revising them from unexpected observations (M5-02), promoted only if M5-03 re-measures above the bar, per OS version.
+
+Phase 0's measurements also produced three runtime requirements that had no task: deterministic multi-step execution (M1-RT-16), deterministic recovery (M1-RT-17), and thermal-aware degradation (M1-RT-18, from §16). A per-model-call deadline is noted on M1-RT-14 rather than added, since "maximum execution time" already exists there as a run-level limit.
+
 ## Not yet done
 
 Findings 1–2 are now resolved against the beta SDK; **the measurement half of Phase 0 has still not started.** Everything above is static SDK inspection plus small compile/run spikes (in scratch packages, not committed) — it is **not** a substitute for P0-01 through P0-14 as scoped:

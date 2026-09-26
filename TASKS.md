@@ -67,7 +67,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 ### Decision
 - [x] **P0-15** 🔒 **GO/NO-GO: planner architecture.** Is `ModelDrivenPlanner` or `StateMachinePlanner` the v0.1 default? Below the >95% M5 bar it is the state machine — a successful, shippable outcome, not a failure *(DECIDED 2026-09-23: **`StateMachinePlanner` is the v0.1 default** — docs/decisions/0002-planner-default.md. Multi-step completion measured 14% as shipped on both hosts, 28% (macOS) and 20% (iOS) with each OS's framework workaround, against a >95% bar; single-call accuracy 51%/63%. The dominant model-side failure is grounding, which a deterministic planner removes by construction. `ModelDrivenPlanner` still ships and stays config-selectable; M5-03 gates promoting it.)*
 - [x] **P0-16** Write `docs/phase-0-findings.md`: numbers, the decision, and the reasoning. This is the document the team argues with later *(DONE 2026-09-26: sections 1–16 — the API-surface findings, all five measurements (P0-09 to P0-12, P0-14) with raw logs and scorers in docs/phase-0-results/, and the P0-15 decision with its reasoning (§15). Two results are explicitly provisional and say so: P0-11's iOS verdict pending a 7-goal re-run, and the macOS-vs-iOS attribution throughout, since the hosts differ in platform and OS version.)*
-- [ ] **P0-17** Decide whether FR-026/FR-027 are MVP-blocking or deferred to v0.5
+- [x] **P0-17** Decide whether FR-026/FR-027 are MVP-blocking or deferred to v0.5 *(DECIDED 2026-09-26: **capabilities are MVP-blocking, implemented deterministically; model-driven planning and replanning defer to v0.5** — docs/decisions/0003-fr-026-027-scope.md. FR-026's bullets (sequential, conditional, dependencies, retries, completion detection) ship in v0.1 via `StateMachinePlanner` with guards evaluated in code; FR-027 ships as deterministic recovery only. The model emitting or revising whole plans is M5-01/M5-02, gated by M5-03. Corrects this file, which previously placed all of FR-026 in Milestone 5.)*
 - [x] **P0-18** Port the spike's scenario suites into the seed of `LocalAgentKitEval` (FR-029) — the code is throwaway, the suites are not *(DONE 2026-09-23: the five suite files moved to `Sources/LocalAgentKitEval/Suites/phase0/` and ship as target resources; `SuiteLoader` loads the catalog and suites, `swift run LocalAgentKitEval` lists them, and 6 tests in `LocalAgentKitEvalTests` check counts, unique ids, the refusal suite's control pairing, and that no tool pattern is anchored (findings §11b). Scoring and execution are deliberately absent — that is M1-EV-01. The spike, the validator script and CI all read the new location.)*
 
 **Exit:** findings documented, planner decision made and written down, open questions 1–3 answered.
@@ -106,8 +106,11 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [ ] **M1-RT-11** `AgentPlanner` protocol + `StateMachinePlanner` implementation *(the v0.1 default per P0-15. Design targets the measured failures: carry values between steps in `AgentContext` rather than through the model; ask one narrow, preferably closed question per step; validate and retry every model answer, assuming ~50–60% single-call accuracy; evaluate conditional guards in code.)*
 - [ ] **M1-RT-12** `ModelDrivenPlanner` — built either way; P0-15 decided `StateMachinePlanner` is `.default` (FR-026), so this ships config-selectable and is promoted only if M5-03 re-measures above the >95% bar
 - [ ] **M1-RT-13** Cooperative cancellation through model, RAG, tools; every `await` a cancellation point (FR-024)
-- [ ] **M1-RT-14** Enforce all four execution limits with distinct typed errors
+- [ ] **M1-RT-14** Enforce all four execution limits with distinct typed errors *(includes a deadline **per model call**, not only per run: a single `respond()` hung for over 5 minutes in P0-10, and the worst sustained-load run took 40.7 s — findings §12, §16)*
 - [ ] **M1-RT-15** OSLog + signpost instrumentation across the loop
+- [ ] **M1-RT-16** Deterministic multi-step execution in `StateMachinePlanner`: sequential steps, tool dependencies resolved through `AgentContext`, bounded retries, completion detection, and **conditional guards evaluated in code** (FR-026 capabilities per decision 0003; the model ignored a goal's condition 4/5 — findings §12)
+- [ ] **M1-RT-17** Deterministic recovery when a tool returns nothing or fails validation: declared alternative path, else a typed error (the v0.1 half of FR-027 per decision 0003)
+- [ ] **M1-RT-18** Observe `ProcessInfo.thermalState` and degrade deliberately — fewer parallel tool executions, tighter context budget, no speculative calls (NFR performance; the iPhone reaches `.serious` within 5 minutes of sustained work and ~39%/hour battery — findings §16)
 
 ### Tools & registry (`LocalAgentKitTools`)
 - [ ] **M1-TL-01** `ToolRegistry` actor — register, lookup, remove, metadata, schemas, permission metadata (FR-007)
@@ -238,10 +241,10 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 
 ## Milestone 5 — v0.5 Advanced Agents
 
-*Scope here depends on the P0-15 decision. If the state machine won, this is where model-driven planning gets re-attempted with better evidence.*
+*Scope settled by P0-15 and P0-17: the state machine is the v0.1 default (decision 0002) and the deterministic planning capabilities ship in Milestone 1, so this milestone is where **model-driven** planning is re-attempted with better evidence (decision 0003). M5-03 gates promoting it.*
 
-- [ ] **M5-01** Full planner: sequential + conditional tasks, tool dependencies, retries, completion detection (FR-026)
-- [ ] **M5-02** Replanning on unexpected tool results (FR-027)
+- [ ] **M5-01** **Model-driven** planning: the model emits a whole plan end to end (the deferred half of FR-026 per decision 0003; the deterministic capabilities ship in v0.1 as M1-RT-16)
+- [ ] **M5-02** **Model-driven** replanning: the model revises its plan from unexpected observations (the deferred half of FR-027 per decision 0003; deterministic recovery ships in v0.1 as M1-RT-17)
 - [ ] **M5-03** Re-run the Phase 0 planning measurements against the current model before promoting `ModelDrivenPlanner` to default
 - [ ] **M5-04** Parallel tool execution for tools declaring `isParallelSafe` (NFR performance)
 - [ ] **M5-05** Task dependency graph + scheduling
