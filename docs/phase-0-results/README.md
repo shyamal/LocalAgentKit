@@ -19,6 +19,8 @@ Per-run logs behind the rates in [`../phase-0-findings.md`](../phase-0-findings.
 | `p0-12-macos-26.6.2-tools-registered.log` | The same with tools callable |
 | `p0-12-ios-27.0-context-only.log` | P0-12 on the iPhone, iOS 27.0, all 4 profiles (72 runs) |
 | `p0-12-ios-27.0-tools-registered.log` | The same with tools callable |
+| `p0-14-macos-26.6.2.log` | P0-14, 15 minutes of continuous multi-step runs, macOS 26.6.2 |
+| `p0-14-ios-27.0.log` | The same on the iPhone, iOS 27.0, running on battery |
 | `score_p0_12.py` | Per-profile exhaustion, in-context recall, and what happened to trimmed-out facts |
 | `score_p0_11.py` | Applies decision 0001 to a P0-11 log, typed-only and with soft-refusal flags counted |
 | `p0-09-ios-27.0-calendar-no-patterns.log` | P0-09 follow-up: the three calendar goals on iOS 27 with `--no-patterns` (findings §11a) |

@@ -578,8 +578,11 @@ The PRD set the rule before any data existed (§21, task P0-15): **below the >95
 | Context exhaustion, tools callable, stress profile | 100% | 100% | — | §14 |
 | Facts present in the window that reached the answer (P0-12) | 55% | 100% | — | §14 |
 | Tool definitions' share of the 4,096-token window (P0-08) | 26% | 26% | — | §10 |
+| Sustained-load latency per multi-step run, p50 (P0-14) | 3.3 s | 9.8 s | — | §16 |
+| Thermal state after 5 min of continuous work (P0-14) | `nominal` | **`serious`** | — | §16 |
+| Battery cost of continuous work (P0-14) | n/a | **~39%/hour** | — | §16 |
 
-Still unmeasured: **P0-14** (latency, thermal and battery over a sustained session on device). Latency was sampled incidentally — a one-word reply takes ~0.2–0.3 s on macOS and ~0.7–0.9 s on the iPhone, with the first call in a process costing 0.6–2.1 s — but thermals and battery need a long device run.
+**P0-14 is measured (§16):** 15 minutes of continuous multi-step work drives the iPhone to `.serious` thermal state within 5 minutes and costs ~39% battery per hour, at ~9.8 s per run against the Mac's 3.3 s.
 
 ### The decision
 
@@ -602,6 +605,36 @@ The same data sets the design constraints for M1-RT-11:
 - **Question 9** (keep or drop `LocalModelProvider`; whether to require OS 27) is still the owner's, and is unaffected by this: both planners sit above the model-provider seam.
 - **P0-17** (are FR-026/FR-027 MVP-blocking or deferred to v0.5?) is now unblocked and still open. This decision only says they are not the v0.1 *default*.
 - **Nothing about Milestone 1 sequencing.** Phase 0 gating ends when P0-16 through P0-18 are closed.
+
+## 16. What a sustained agent workload costs (P0-14): the iPhone reaches "serious" thermal state in 5 minutes and burns ~39% battery an hour
+
+**2026-09-26.** The multi-step suite run back to back for **15 minutes** on each host, sampling thermal state, battery and memory footprint between runs, through the spike's `p0-14` check. The iPhone ran **on battery** (`batteryState=unplugged`) — the only configuration in which battery drain means anything, since a cable charges the device as it works. Logs: `phase-0-results/p0-14-*.log`.
+
+| 15 minutes of continuous multi-step runs | macOS 26.6.2 | iPhone 15 Pro, iOS 27.0 |
+|---|---|---|
+| Runs completed / attempted | 248 / 264 | 65 / 87 |
+| Throughput | ~17.6 runs/min | ~5.7 runs/min |
+| Latency per run, p50 | 3.3 s | **9.8 s** |
+| p90 / worst | 4.4 s / 5.9 s | **13.4 s / 40.7 s** |
+| Thermal state | `nominal` for all 264 runs | `nominal` 6 runs, `fair` from 61 s, **`serious` from 293 s and for 58 of 87 runs** |
+| Battery | no reading (desktop) | **70% → 60% in 15.2 min = ~39.4%/hour** |
+| Memory footprint | 12 → 63 MB | 6.8 → 47.8 MB |
+
+**Thermals are the binding constraint on device.** The iPhone reached `.serious` **within five minutes** of continuous agent work and stayed there for two thirds of the run. At `.serious`, iOS is already throttling the CPU and GPU and Apple's guidance is for apps to *reduce* system usage. Median latency held around 9.8 s, but the worst run took **40.7 s**, four times the median — consistent with throttling plus the occasional runaway generation seen in P0-10.
+
+**Battery rules out an always-on agent.** ~39% per hour means a continuous agent would flatten a full phone in about two and a half hours and burn a fifth of the battery in half an hour of use. Agent runs have to be user-initiated and bounded; a background or always-listening design is not viable on this hardware.
+
+**Memory is not a per-run leak on either host.** macOS sat at ~18 MB for eight minutes, then stepped once to ~56 MB and plateaued — a framework-level allocation (model assets or a cache), not accumulation across 264 sessions. The iPhone grew more gradually to 47.8 MB peak. Neither is near a jetsam threshold, but the step means a "first heavy use" memory jump should be expected rather than treated as a regression.
+
+**The device is ~3× slower and ~3× less reliable than the Mac.** 5.7 runs/min against 17.6, and 65/87 completed against 248/264. The failures match P0-10's iOS profile (JSON parse errors and runaway generations), so the gap is not thermal alone.
+
+**Design inputs for Milestone 1 (none acted on):**
+- **`AgentRuntime` should observe `ProcessInfo.thermalState` and degrade deliberately** — fewer parallel tool executions, tighter context budgets, no speculative model calls — rather than discovering throttling as latency. The state changes within a minute of sustained work, so this is normal operation, not an edge case.
+- **Budget work in battery terms, not just tokens.** A user-visible agent that costs ~0.7% battery per minute needs bounded runs and a visible stopping point.
+- **Per-call deadlines are required, not optional** (already added to the spike after P0-10's 5-minute hang): the worst run here was 40.7 s, and a UI that waits without a deadline will look hung.
+- **Latency budgets differ by an order of magnitude between hosts.** Anything with a timeout tuned on macOS will be wrong on device by ~3×.
+
+**Caveats.** One 15-minute run per host, one workload (the P0-06 suite with each OS's workaround), screen on, no other apps contending. Thermal state is the OS's own coarse signal, not a temperature. Battery is read from `UIDevice.batteryLevel`, which moves in ~5% steps, so 10% over 15 minutes is ±5% precise; the per-hour figure inherits that. The phone began at 70% charge; drain is not necessarily linear across the charge curve.
 
 ## Not yet done
 

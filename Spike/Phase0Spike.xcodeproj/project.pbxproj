@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		095E72C434444948235E8E68 /* Phase0SpikeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F468967C10BAE6B1258B005 /* Phase0SpikeApp.swift */; };
+		169CD500F77029DCE4A97CFE /* DeviceLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F83A21EEDA7721F34997497 /* DeviceLoad.swift */; };
 		182A1C45D80C9E1B9D6D199A /* MultiStepEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B146C6EE392710E8BD22751 /* MultiStepEval.swift */; };
 		2FCD3AF9F7E9DE2707452038 /* ContextLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B8C6F466CB4F643142AAD5 /* ContextLoad.swift */; };
 		3A25E7E220E610E60FD7DE88 /* multi-step.json in Resources */ = {isa = PBXBuildFile; fileRef = E5D1FD46A5B6A8AAED5C3440 /* multi-step.json */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F83A21EEDA7721F34997497 /* DeviceLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLoad.swift; sourceTree = "<group>"; };
 		199DE885B106975DE56E926C /* SessionChecks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionChecks.swift; sourceTree = "<group>"; };
 		3258F0E1C8ACC48A734D1168 /* context-load.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "context-load.json"; sourceTree = "<group>"; };
 		5F468967C10BAE6B1258B005 /* Phase0SpikeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase0SpikeApp.swift; sourceTree = "<group>"; };
@@ -38,6 +40,7 @@
 			isa = PBXGroup;
 			children = (
 				83B8C6F466CB4F643142AAD5 /* ContextLoad.swift */,
+				0F83A21EEDA7721F34997497 /* DeviceLoad.swift */,
 				8B146C6EE392710E8BD22751 /* MultiStepEval.swift */,
 				5F468967C10BAE6B1258B005 /* Phase0SpikeApp.swift */,
 				199DE885B106975DE56E926C /* SessionChecks.swift */,
@@ -151,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FCD3AF9F7E9DE2707452038 /* ContextLoad.swift in Sources */,
+				169CD500F77029DCE4A97CFE /* DeviceLoad.swift in Sources */,
 				182A1C45D80C9E1B9D6D199A /* MultiStepEval.swift in Sources */,
 				095E72C434444948235E8E68 /* Phase0SpikeApp.swift in Sources */,
 				E7530A4BD2360ABC48566FF8 /* SessionChecks.swift in Sources */,
