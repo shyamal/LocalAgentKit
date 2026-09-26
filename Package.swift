@@ -17,8 +17,11 @@ import PackageDescription
 let package = Package(
   name: "LocalAgentKit",
   platforms: [
-    .iOS(.v26),
-    .macOS(.v26),
+    // Final per decision 0004. 26.4, not 26.0: SystemLanguageModel.tokenCount(for:) is 26.4+
+    // and ContextBudgeter must budget against real token counts, not estimates (findings §3).
+    // OS 27-only API (LanguageModel, LanguageModelError, toolCallingMode) sits behind #available.
+    .iOS("26.4"),
+    .macOS("26.4"),
   ],
   products: [
     .library(name: "LocalAgentKitCore", targets: ["LocalAgentKitCore"]),

@@ -139,7 +139,7 @@ The 2026-09-02 note reasoned that *if* no BYO-LLM API existed, `LocalModelProvid
 2. **Keep `LocalModelProvider` as the Core-level seam**, ship a thin adapter both ways. Preserves layering + metric M3 and back-deploys to macOS 26, at the cost of one indirection.
 3. **Invert it**: LocalAgentKit ships `LanguageModelExecutor` conformances (llama.cpp, MLX) as its differentiator and drops model abstraction entirely, competing on tools/permissions/RAG instead.
 
-Option 2 is the smallest change and the only one that keeps the grep-enforced layering rule and M3 intact; note that all three depend on a **macOS/iOS 27 minimum** if they touch these types at all, which is a deployment-target decision the PRD has not made. **This blocks finalizing FR-003/FR-004 and `Package.swift`'s platform floor — flagged, not resolved.**
+Option 2 is the smallest change and the only one that keeps the grep-enforced layering rule and M3 intact; note that all three depend on a **macOS/iOS 27 minimum** if they touch these types at all, which is a deployment-target decision the PRD has not made. **Resolved 2026-09-26 by [decision 0004](decisions/0004-model-provider-seam-and-platform-floor.md): option 2.** `LocalModelProvider` stays as the Core seam, the floor is macOS/iOS 26.4, and `CoreAIModelProvider` is dropped.
 
 ## 3. Context size and token counting ARE exposed
 

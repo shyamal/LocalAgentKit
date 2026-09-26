@@ -131,7 +131,6 @@ LocalAgentKit/
 │   │
 │   ├── LocalAgentKitProviders/     # concrete adapters — the only place Apple frameworks are imported
 │   │   ├── FoundationModelProvider/
-│   │   ├── CoreAIModelProvider/
 │   │   ├── SwiftDataMemoryStore/
 │   │   ├── NLEmbeddingProvider/
 │   │   ├── InMemoryVectorStore/
@@ -274,14 +273,14 @@ Ingestion is explicitly a background, batchable, cancellable operation with prog
 | Min deployment | iOS 26+ / macOS 26+ (iPadOS shares the iOS floor; visionOS 26.0 already carries the same `FoundationModels` availability per the real release `.swiftinterface` — not "to follow" as this table previously said) | `FoundationModels`'s real availability annotations, confirmed against the release SDK — see `docs/phase-0-findings.md`. |
 | Xcode | Latest release + latest beta side by side | The beta toolchain is required to run the FR-029 harness against OS betas (R4). Installed 2026-09-10 (Xcode 27.0, 27A5252f) and used to resolve open question 1 / task P0-03; M0-16 confirms both toolchains build the package. |
 
-*SDK availability and framework module names have now been checked against **both** the release and the Xcode 27.0 beta SDK — see open question 1 (resolved) and `docs/phase-0-findings.md` §1–2. `CoreAI.framework` exists in the beta SDK but is a tensor runtime, and Foundation Models does expose a third-party model protocol. **The platform floor in `Package.swift` is not final** — it depends on open question 9.*
+*SDK availability and framework module names have now been checked against **both** the release and the Xcode 27.0 beta SDK — see open question 1 (resolved) and `docs/phase-0-findings.md` §1–2. `CoreAI.framework` exists in the beta SDK but is a tensor runtime, and Foundation Models does expose a third-party model protocol. **The platform floor in `Package.swift` is final at macOS/iOS 26.4** per decision 0004.*
 
 ### 3.2 Apple frameworks
 
 | Framework | Used for | Isolated in |
 |---|---|---|
 | **Foundation Models** | Primary inference; BYO-LLM + MLX registration | `FoundationModelProvider` |
-| **Core AI** | Custom/local model execution | `CoreAIModelProvider` |
+| ~~**Core AI**~~ | ~~Custom/local model execution~~ | **Dropped 2026-09-26 (decision 0004).** Core AI exists but is a tensor/NDArray runtime, not a text-generation API (findings §1); custom model execution goes through `LocalModelProvider`, or Apple's `LanguageModel` protocol on OS 27 (M1-PR-06) |
 | **Natural Language** (`NLEmbedding`) | Default on-device embeddings for RAG v0.3 | `NLEmbeddingProvider` |
 | **SwiftData** | Memory persistence (working/conversation/semantic/episodic) | `SwiftDataMemoryStore` |
 | **Vision** | OCR, classification, detection, document understanding | `AppleVisionProvider` |
@@ -448,12 +447,6 @@ Carried from the PRD's risk register plus what this plan surfaced. These need an
 7. **Audit log retention and export format.** Enterprise (Persona 3) will ask. Decide by v0.2.
 8. **NEW.** `AgentTool` vs. Foundation Models' own `Tool<Arguments, Output>` protocol (see `docs/phase-0-findings.md` §7). `AgentTool` should be designed as a wrapper/bridge to Apple's real `Tool` protocol — adding the permission tier, richer schema validation, and parallel-safety/cancellability declarations `Tool` doesn't have — rather than an independent reinvention. Affects task M1-CO-03.
 
-9. **NEW, BLOCKING — 2026-09-10, from question 1b.** Does `LocalModelProvider` survive, now that Apple ships `LanguageModel`/`LanguageModelExecutor`? A LocalAgentKit protocol beside Apple's covers the same seam, and a bridge between two abstractions of one thing earns nothing. Three live options, with the trade already measured:
-
-   1. **Drop `LocalModelProvider`**, consume `some LanguageModel` directly. Simplest, but Core would need a `FoundationModels` type — **breaking the layering rule and metric M3 as written** — and gives up macOS 26 support.
-   2. **Keep `LocalModelProvider` as the Core-level seam** with a thin adapter to/from `LanguageModel`. Preserves layering + M3, back-deploys to macOS 26; costs one indirection.
-   3. **Invert**: ship `LanguageModelExecutor` conformances (llama.cpp, MLX) *as* the product and drop model abstraction, competing on tools/permissions/RAG.
-
-   Option 2 is the smallest change and the only one preserving the grep-enforced layering rule and M3. All three force a **deployment-target decision** the PRD has not made if they touch the new protocols at all. **Blocks:** FR-003, FR-004, `Package.swift` platform floor, and task M1-PR-01. Needs the user, not a default.
+9. **RESOLVED — 2026-09-26, see [`docs/decisions/0004-model-provider-seam-and-platform-floor.md`](./docs/decisions/0004-model-provider-seam-and-platform-floor.md).** Does `LocalModelProvider` survive, now that Apple ships `LanguageModel`/`LanguageModelExecutor`? **Answer: yes, as the Core-level seam, with `FoundationModelProvider` adapting to `SystemLanguageModel` and an OS 27 adapter wrapping any `LanguageModel` conformance (M1-PR-06).** The deciding evidence is that the two OS versions behave like different models — optional arguments, date guides, context recall, refusal rate, error types and session-reuse safety all differ (findings §9–§14) — and those workarounds have to live behind an abstraction we own; routing Core at `FoundationModels` directly would also break the layering rule and metric M3. **Deployment floor is final at macOS/iOS 26.4** (`tokenCount` is 26.4+), with OS 27-only API behind `#available`. FR-004's `CoreAIModelProvider` is dropped: Core AI is a tensor runtime (§1).
 
 10. **RESOLVED — 2026-09-19, see [`docs/decisions/0001-m9-refusal-threshold.md`](./docs/decisions/0001-m9-refusal-threshold.md).** What is M9's "agreed threshold" for the guardrail refusal rate? Answer: on each OS version separately, at most 5% of sensitive-suite runs refused (typed + confirmed soft refusals), no sensitive goal refused in more than 2 of its 5 runs, and 0 control refusals. Crossing it makes R3's fallback UX v0.1 scope rather than a Phase 0 failure. Raised during P0-07, where the PRD named the metric without a number.
