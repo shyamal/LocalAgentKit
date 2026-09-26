@@ -501,27 +501,29 @@ Per goal, completed out of 5 in the workaround runs (macOS / iOS): ms-01 0/0 · 
 
 **Caveats.** 5 runs per goal, so "5/5" on one goal and "0/5" on 19 are different claims of very different strength. One instruction style, fixture tools. **20 of 130 runs (15%) produced no answer at all**, so the 100-run denominator over-counts runs that could have been refused; among sensitive runs that produced an outcome, 4 of 84 were refused (4.8%). Neither changes the per-goal verdict.
 
-### 13a. iPhone, iOS 27.0: the same goal is refused, at a lower rate, on a thinner sample
+### 13a. iPhone, iOS 27.0: the same goal is refused, at a lower rate — and iOS passes M9
 
-**2026-09-23**, the full suite as shipped, 26 goals × 5 runs = 130 runs, merged from five launches after repeated device drops (every goal has exactly 5 runs). Log: `phase-0-results/p0-11-ios-27.0.log`.
+**2026-09-23, completed 2026-09-26.** The full suite, 26 goals × 5 runs = 130 runs. Logs: `phase-0-results/p0-11-ios-27.0.log` (as shipped), `…-no-patterns-7goals.log` (the re-run), `…-complete.log` (the dataset scored below).
 
-| iOS 27.0, 130 runs, as shipped | |
+The as-shipped run left **seven goals unmeasured**: the date-JSON bug (§11a) broke every run of `rf-h01`, `rf-h02`, `rf-f02`, `rf-l02`, `rf-l04` and controls `rf-c01`, `rf-c03` before the model could answer, and a goal that never reaches the model cannot be refused. Those seven were re-run with `--no-patterns`, the iOS workaround, and **all 35 runs reached the model with zero refusals** — including both controls. Errors across the suite fell from 46 to 15.
+
+| iOS 27.0, 130 runs (as shipped, with the 7 goals re-run under the workaround) | |
 |---|---|
-| Completed | 80 |
+| Completed | 109 |
 | Typed refusal (`guardrailViolation`) | **2**, both `rf-h06` |
-| Other error (not a refusal) | 46 |
-| Wrong tool | 2 |
-| Sensitive refusal rate (limit 5%) | 2/100 = 2.0% |
-| Worst sensitive goal (limit 2 of 5) | `rf-h06`, 2/5 |
-| Control refusals (limit 0) | 0/30 |
-| **Decision 0001, as measured** | **PASS**, but see the caveat below |
+| Soft refusals, after reading every completed answer | 0 |
+| Other error (not a refusal) | 15 |
+| Wrong tool | 4 |
+| Sensitive refusal rate (limit 5%) | **2/100 = 2.0%** |
+| Worst sensitive goal (limit 2 of 5) | **`rf-h06`, 2/5** |
+| Control refusals (limit 0) | **0/30** |
+| **Decision 0001** | **PASS** on all three conditions |
 
-**The same goal, the same guardrail, a lower rate.** `rf-h06` is refused 2 of 5 times on iOS 27 against 4–5 of 5 on macOS 26, with the same typed `guardrailViolation`. Its control `rf-c02` completed 5/5 here too. Nothing else was refused on either host, so **the one known-refused phrasing reproduces across OS versions while its rate does not** — exactly the drift R4 predicts, and a good reason to keep `rf-h06` as a canary in the FR-029 harness.
+**The same goal, the same guardrail, a lower rate.** `rf-h06` is refused 2 of 5 times on iOS 27 against 4–5 of 5 on macOS 26, with the same typed `guardrailViolation`; its control `rf-c02` completed 5/5 on both. So **the one known-refused phrasing reproduces across OS versions while its rate does not** — exactly the drift R4 predicts, and the reason to keep `rf-h06` as a canary in the FR-029 harness.
 
-**The caveat is the sample, and it is large.** 46 of 130 runs (35%) never reached the model, against 20 on macOS. Six goals are effectively unmeasured as shipped, because the date-JSON bug (§11a) breaks every run before the model answers: `rf-h01`, `rf-h02`, `rf-f02`, `rf-l02`, `rf-l04`, plus controls `rf-c01` and `rf-c03`. A goal that never reaches the model cannot be refused, so iOS's 2.0% is measured over a thinner sample than macOS's 4.0%: among sensitive runs that produced an outcome, iOS is 2 of 65 (3.1%) against macOS 4 of 84 (4.8%). The gap narrows but holds.
+**The verdict is no longer provisional**, and the earlier concern that iOS's lower rate was an artifact of unmeasured goals is now tested rather than assumed: the seven goals that had measured nothing contributed 25 sensitive and 10 control runs with no refusals at all. Over runs that reached the model, the two hosts sit at 4.8% (macOS) and ~1.7% (iOS).
 
-**So the iOS verdict is provisional.** A `--no-patterns` re-run of those seven goals would make them measurable; it is the one piece of P0-11 still outstanding (the device dropped before it could run). It cannot lower the rate, only raise it: those goals currently contribute zero refusals out of zero effective runs.
-
+**One host passes and one fails, which is the point.** M9 is judged per OS version (decision 0001), so the macOS failure alone puts R3's fallback UX into v0.1 scope. Shipping against iOS 27 only would pass today — and would still be one OS update away from failing, since the guardrail's rate already differs this much between versions.
 
 ## 14. Context behaviour under load (P0-12): the window is rarely the failure; ignoring the window is, and only on macOS 26
 
@@ -578,8 +580,11 @@ The PRD set the rule before any data existed (§21, task P0-15): **below the >95
 | Context exhaustion, tools callable, stress profile | 100% | 100% | — | §14 |
 | Facts present in the window that reached the answer (P0-12) | 55% | 100% | — | §14 |
 | Tool definitions' share of the 4,096-token window (P0-08) | 26% | 26% | — | §10 |
+| Sustained-load latency per multi-step run, p50 (P0-14) | 3.3 s | 9.8 s | — | §16 |
+| Thermal state after 5 min of continuous work (P0-14) | `nominal` | **`serious`** | — | §16 |
+| Battery cost of continuous work (P0-14) | n/a | **~39%/hour** | — | §16 |
 
-Still unmeasured: **P0-14** (latency, thermal and battery over a sustained session on device). Latency was sampled incidentally — a one-word reply takes ~0.2–0.3 s on macOS and ~0.7–0.9 s on the iPhone, with the first call in a process costing 0.6–2.1 s — but thermals and battery need a long device run.
+**P0-14 is measured (§16):** 15 minutes of continuous multi-step work drives the iPhone to `.serious` thermal state within 5 minutes and costs ~39% battery per hour, at ~9.8 s per run against the Mac's 3.3 s.
 
 ### The decision
 
@@ -603,6 +608,48 @@ The same data sets the design constraints for M1-RT-11:
 - **P0-17** (are FR-026/FR-027 MVP-blocking or deferred to v0.5?) is now unblocked and still open. This decision only says they are not the v0.1 *default*.
 - **Nothing about Milestone 1 sequencing.** Phase 0 gating ends when P0-16 through P0-18 are closed.
 
+## 16. What a sustained agent workload costs (P0-14): the iPhone reaches "serious" thermal state in 5 minutes and burns ~39% battery an hour
+
+**2026-09-26.** The multi-step suite run back to back for **15 minutes** on each host, sampling thermal state, battery and memory footprint between runs, through the spike's `p0-14` check. The iPhone ran **on battery** (`batteryState=unplugged`) — the only configuration in which battery drain means anything, since a cable charges the device as it works. Logs: `phase-0-results/p0-14-*.log`.
+
+| 15 minutes of continuous multi-step runs | macOS 26.6.2 | iPhone 15 Pro, iOS 27.0 |
+|---|---|---|
+| Runs completed / attempted | 248 / 264 | 65 / 87 |
+| Throughput | ~17.6 runs/min | ~5.7 runs/min |
+| Latency per run, p50 | 3.3 s | **9.8 s** |
+| p90 / worst | 4.4 s / 5.9 s | **13.4 s / 40.7 s** |
+| Thermal state | `nominal` for all 264 runs | `nominal` 6 runs, `fair` from 61 s, **`serious` from 293 s and for 58 of 87 runs** |
+| Battery | no reading (desktop) | **70% → 60% in 15.2 min = ~39.4%/hour** |
+| Memory footprint | 12 → 63 MB | 6.8 → 47.8 MB |
+
+**Thermals are the binding constraint on device.** The iPhone reached `.serious` **within five minutes** of continuous agent work and stayed there for two thirds of the run. At `.serious`, iOS is already throttling the CPU and GPU and Apple's guidance is for apps to *reduce* system usage. Median latency held around 9.8 s, but the worst run took **40.7 s**, four times the median — consistent with throttling plus the occasional runaway generation seen in P0-10.
+
+**Battery rules out an always-on agent.** ~39% per hour means a continuous agent would flatten a full phone in about two and a half hours and burn a fifth of the battery in half an hour of use. Agent runs have to be user-initiated and bounded; a background or always-listening design is not viable on this hardware.
+
+**Memory is not a per-run leak on either host.** macOS sat at ~18 MB for eight minutes, then stepped once to ~56 MB and plateaued — a framework-level allocation (model assets or a cache), not accumulation across 264 sessions. The iPhone grew more gradually to 47.8 MB peak. Neither is near a jetsam threshold, but the step means a "first heavy use" memory jump should be expected rather than treated as a regression.
+
+**The device is ~3× slower and ~3× less reliable than the Mac.** 5.7 runs/min against 17.6, and 65/87 completed against 248/264. The failures match P0-10's iOS profile (JSON parse errors and runaway generations), so the gap is not thermal alone.
+
+**Design inputs for Milestone 1 (none acted on):**
+- **`AgentRuntime` should observe `ProcessInfo.thermalState` and degrade deliberately** — fewer parallel tool executions, tighter context budgets, no speculative model calls — rather than discovering throttling as latency. The state changes within a minute of sustained work, so this is normal operation, not an edge case.
+- **Budget work in battery terms, not just tokens.** A user-visible agent that costs ~0.7% battery per minute needs bounded runs and a visible stopping point.
+- **Per-call deadlines are required, not optional** (already added to the spike after P0-10's 5-minute hang): the worst run here was 40.7 s, and a UI that waits without a deadline will look hung.
+- **Latency budgets differ by an order of magnitude between hosts.** Anything with a timeout tuned on macOS will be wrong on device by ~3×.
+
+**Caveats.** One 15-minute run per host, one workload (the P0-06 suite with each OS's workaround), screen on, no other apps contending. Thermal state is the OS's own coarse signal, not a temperature. Battery is read from `UIDevice.batteryLevel`, which moves in ~5% steps, so 10% over 15 minutes is ±5% precise; the per-hour figure inherits that. The phone began at 70% charge; drain is not necessarily linear across the charge curve.
+
+## 17. Scope of FR-026/FR-027 (P0-17): the capabilities ship in v0.1, the model-driven implementation does not
+
+**2026-09-26.** Recorded as [decision 0003](decisions/0003-fr-026-027-scope.md). Both requirements carried the same gate: MVP-blocking *only* if Phase 0 showed acceptable multi-step reliability. It did not (§12: 14% as shipped, 20–28% worked around, against >95%).
+
+The distinction that matters: FR-026 lists **capabilities** (sequential tasks, conditional tasks, tool dependencies, retries, completion detection) *and* an **implementation** (the model produces the plan). The gate defers the implementation. Deferring the capabilities as well would leave v0.1 with a planner that cannot sequence, branch, retry or detect completion — which contradicts §15's decision. `TASKS.md` had all of FR-026 in Milestone 5; that is now corrected.
+
+**v0.1:** those capabilities, deterministic, with conditional guards evaluated in code (the model ignored a goal's condition 4/5, §12) and every per-step model answer validated (single-call accuracy 51–63%, §11). From FR-027, deterministic recovery only: an empty or invalid tool result takes a declared alternative path, or fails with a typed error.
+
+**v0.5:** the model emitting whole plans (M5-01) and revising them from unexpected observations (M5-02), promoted only if M5-03 re-measures above the bar, per OS version.
+
+Phase 0's measurements also produced three runtime requirements that had no task: deterministic multi-step execution (M1-RT-16), deterministic recovery (M1-RT-17), and thermal-aware degradation (M1-RT-18, from §16). A per-model-call deadline is noted on M1-RT-14 rather than added, since "maximum execution time" already exists there as a run-level limit.
+
 ## Not yet done
 
 Findings 1–2 are now resolved against the beta SDK; **the measurement half of Phase 0 has still not started.** Everything above is static SDK inspection plus small compile/run spikes (in scratch packages, not committed) — it is **not** a substitute for P0-01 through P0-14 as scoped:
@@ -610,7 +657,7 @@ Findings 1–2 are now resolved against the beta SDK; **the measurement half of 
 - **P0-01 is committed** as [`Spike/`](../Spike/) (2026-09-18): an Xcode app for iOS 27 and macOS 26.4+ that compiles warning-free for both and runs on this Mac. The finding-2 BYO-LLM spike is still uncommitted scratch code.
 - **P0-02 is done on both hosts** (§9). Still open from it: whether the §9a crash belongs to macOS or to OS 26 (needs a macOS 27 host), and triggering a guardrail or refusal on OS 27 to confirm the P0-13 cases under the new `LanguageModelError` type.
 - **P0-12 is measured on both hosts** (§14): 0% exhaustion context-only vs. 25% with tools registered on each. In-context recall is **55% on macOS 26 against 100% on iOS 27** — the widest OS gap in Phase 0.
-- **P0-11 is measured on macOS 26 and, as shipped, on iOS 27** (§13): macOS **fails** M9 on the per-goal bar (`rf-h06` refused 4–5 of 5); iOS passes as measured (2/5 on the same goal) but 35% of its runs never reached the model. Outstanding: a `--no-patterns` re-run of the seven iOS goals the date-JSON bug makes unmeasurable. R3 fallback UX is v0.1 scope on the macOS result alone.
+- **P0-11 is complete on both hosts** (§13, §13a): macOS 26 **fails** M9 on the per-goal bar (`rf-h06` refused 4–5 of 5); iOS 27 **passes** (2/5 on the same goal, 2.0% overall, 0 control refusals) after re-running the seven goals the date-JSON bug had left unmeasured. R3 fallback UX is v0.1 scope on the macOS result.
 - **P0-10 is measured on both hosts** (§12): 14% as shipped on both; 28% (macOS) and 20% (iOS) with each OS's framework workaround.
 - **P0-09 is measured** (§11): 51% / 63% first-call fully correct on macOS 26 / iOS 27. Follow-up answered: dropping the pattern fixes required date fields on iOS 27 (§11a).
 - **P0-11 is measured on macOS only** (§13): decision 0001 FAILS on the per-goal bar (`rf-h06`, a medication-dose calculation, refused 4–5 of 5 times). The iPhone run stopped at 57 of 130 runs and has to be redone (as shipped and with `--no-patterns`).

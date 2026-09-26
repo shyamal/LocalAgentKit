@@ -1,5 +1,9 @@
 import SwiftUI
 
+#if canImport(UIKit)
+  import UIKit
+#endif
+
 /// Runs the P0-02 checks on launch and shows the log. With the `--run-and-exit`
 /// launch argument it exits when the checks finish, so `devicectl --console`
 /// (iOS) or a direct binary launch (macOS) returns and the stdout log is the artifact.
@@ -11,6 +15,10 @@ struct Phase0SpikeApp: App {
   @State private var log: Log
 
   init() {
+    #if canImport(UIKit)
+      // Battery level reads -1 until monitoring is enabled (P0-14).
+      UIDevice.current.isBatteryMonitoringEnabled = true
+    #endif
     let log = Log()
     _log = State(initialValue: log)
     Task {

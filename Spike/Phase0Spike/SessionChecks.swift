@@ -57,7 +57,7 @@ struct SessionChecks {
       ("text-streaming", textStreaming), ("structured", structuredOutput),
       ("structured-streaming", structuredStreaming), ("dynamic-schema", dynamicSchema),
       ("context-size", contextSize), ("p0-09", toolCallValidity), ("p0-10", multiStepCompletion),
-      ("p0-11", refusalRate), ("p0-12", contextExhaustion),
+      ("p0-11", refusalRate), ("p0-12", contextExhaustion), ("p0-14", sustainedLoad),
     ]
   }
 
@@ -809,6 +809,99 @@ struct SessionChecks {
           + String(format: "exhaustionRate=%d/%d=%.1f%%", exceeded, all, Double(exceeded) / Double(max(all, 1)) * 100))
     } catch {
       log.write("check=p0-12 result=fail error=\(describe(error))")
+    }
+  }
+
+  /// P0-14: runs multi-step goals back to back for `--duration-min` minutes (default 15),
+  /// sampling thermal state, battery and memory between runs. Also mirrors every line to a file
+  /// in Documents so an untethered run (the only way to measure battery) survives disconnection.
+  private func sustainedLoad() async {
+    do {
+      guard let url = Bundle.main.url(forResource: "multi-step", withExtension: "json"),
+        let root = try JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: Any],
+        let goals = root["goals"] as? [[String: Any]]
+      else { throw SpikeResourceError.missing("multi-step") }
+      let specs = try loadResource("tools", as: Catalog.self).tools
+      let defaultResult = root["defaultToolResult"] as? String ?? "No results found."
+      let instructions = try SingleToolSuite.load().instructions
+      let minutes = Double(value(after: "--duration-min") ?? "15") ?? 15
+      let file = DeviceLogFile(name: "p0-14-\(Int(Date().timeIntervalSince1970)).log")
+      func record(_ line: String) {
+        log.write(line)
+        file.write(line)
+      }
+      let start = clock.now
+      let opening = DeviceSample.take()
+      record(
+        "p14 start durationMin=\(minutes) goals=\(goals.count) logFile=\(file.url?.lastPathComponent ?? "none") "
+          + opening.line)
+
+      var durations: [Int] = []
+      var thermalCounts: [String: Int] = [:]
+      var firstSeen: [String: Int] = [:]
+      var peakFootprint = opening.footprintMB
+      var completed = 0
+      var iteration = 0
+      while clock.now - start < .seconds(minutes * 60) {
+        iteration += 1
+        for goal in goals {
+          if clock.now - start >= .seconds(minutes * 60) { break }
+          let id = goal["id"] as? String ?? "?"
+          let maxIterations = goal["maxIterations"] as? Int ?? 6
+          let router = FixtureRouter(
+            fixturesJSON: try JSONSerialization.data(withJSONObject: goal["fixtures"] ?? []),
+            defaultResult: defaultResult, maxCalls: maxIterations)
+          let tools = try specs.map { try FixtureTool($0, router: router) }
+          let session = LanguageModelSession(tools: tools, instructions: instructions)
+          let runStart = clock.now
+          let result = await respondWithTimeout(session, to: goal["goal"] as? String ?? "")
+          let elapsed = ms(clock.now - runStart)
+          let calls = await router.calls.count
+          let sample = DeviceSample.take()
+          durations.append(elapsed)
+          thermalCounts[sample.thermal, default: 0] += 1
+          if firstSeen[sample.thermal] == nil {
+            firstSeen[sample.thermal] = ms(clock.now - start) / 1000
+          }
+          peakFootprint = max(peakFootprint, sample.footprintMB)
+          if result.error == nil && !result.timedOut { completed += 1 }
+          record(
+            "p14 iteration=\(iteration) goal=\(id) ms=\(elapsed) calls=\(calls) "
+              + "ended=\(result.timedOut ? "timeout" : (result.error == nil ? "ok" : "error")) "
+              + "elapsedS=\(ms(clock.now - start) / 1000) \(sample.line)")
+        }
+      }
+
+      let closing = DeviceSample.take()
+      let elapsedMinutes = Double(ms(clock.now - start)) / 60_000
+      let sorted = durations.sorted()
+      func percentile(_ fraction: Double) -> Int {
+        sorted.isEmpty ? -1 : sorted[min(sorted.count - 1, Int(Double(sorted.count) * fraction))]
+      }
+      // Battery only means something untethered: a cable charges the device as it runs, and
+      // macOS reports no level at all.
+      func percent(_ level: Float) -> String {
+        level < 0 ? "n/a" : String(format: "%.0f%%", level * 100)
+      }
+      let batteryKnown = opening.batteryLevel >= 0 && closing.batteryLevel >= 0
+      let drain = batteryKnown
+        ? String(format: "%.1f%%", (opening.batteryLevel - closing.batteryLevel) * 100) : "n/a"
+      let perHour = elapsedMinutes > 0 && batteryKnown
+        ? String(
+          format: "%.1f%%/h",
+          Double((opening.batteryLevel - closing.batteryLevel) * 100) / elapsedMinutes * 60) : "n/a"
+      record(
+        "check=p0-14 result=observed runs=\(durations.count) completed=\(completed) "
+          + String(format: "elapsedMin=%.1f ", elapsedMinutes)
+          + "latencyMsP50=\(percentile(0.5)) P90=\(percentile(0.9)) max=\(sorted.last ?? -1) "
+          + "thermal=\(thermalCounts.sorted { $0.key < $1.key }.map { "\($0.key):\($0.value)" }.joined(separator: ",")) "
+          + "thermalFirstSeenS=\(firstSeen.sorted { $0.value < $1.value }.map { "\($0.key):\($0.value)" }.joined(separator: ",")) "
+          + String(format: "footprintStartMB=%.1f peakMB=%.1f ", opening.footprintMB, peakFootprint)
+          + "batteryStart=\(percent(opening.batteryLevel)) batteryEnd=\(percent(closing.batteryLevel)) "
+          + "drain=\(drain) drainPerHour=\(perHour) batteryState=\(closing.batteryState) "
+          + "note=\(!batteryKnown ? "noBatteryReading" : (["charging", "full"].contains(closing.batteryState) ? "tethered-batteryInvalid" : "untethered"))")
+    } catch {
+      log.write("check=p0-14 result=fail error=\(describe(error))")
     }
   }
 
