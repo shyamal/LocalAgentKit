@@ -25,6 +25,7 @@ public actor AgentRuntime {
   private let repairer: ArgumentRepairer
   private let customGate: (any PermissionGate)?
   private let auditLogger: AuditLogger
+  private let memory: ConversationMemory?
   private let broker = HumanInputBroker()
   private let bus = EventBus()
   private let now: @Sendable () -> Date
@@ -39,6 +40,9 @@ public actor AgentRuntime {
   ///   - auditLogger: Where confirmed executions are recorded when
   ///     `configuration.security.auditSensitiveExecutions` is true (M1-SE-02); read back with
   ///     ``auditEntries()``.
+  ///   - memory: When given, a `run` whose `conversation` argument is nil reads history from
+  ///     here instead of starting empty, and a successful run's goal and answer are appended back
+  ///     (M1-ME-01/02). Passing an explicit `conversation` (including `[]`) always overrides it.
   /// - Throws: `.invalidConfiguration` for unusable limits, budget shares, an unsupported planner
   ///   choice, or `.never` network policy paired with a component that requires the network
   ///   (M1-SE-03).
@@ -51,6 +55,7 @@ public actor AgentRuntime {
     budgeter: ContextBudgeter = ContextBudgeter(),
     repairer: ArgumentRepairer = ArgumentRepairer(),
     auditLogger: AuditLogger = AuditLogger(),
+    memory: ConversationMemory? = nil,
     now: @escaping @Sendable () -> Date = { Date() }
   ) throws {
     if let issue = configuration.limits.issue { throw AgentError.invalidConfiguration(issue) }
@@ -73,6 +78,7 @@ public actor AgentRuntime {
     self.repairer = repairer
     self.customGate = gate
     self.auditLogger = auditLogger
+    self.memory = memory
     self.now = now
   }
 
@@ -92,10 +98,19 @@ public actor AgentRuntime {
   /// Runs one goal to completion.
   ///
   /// - Parameter conversation: Earlier turns, so a follow-up such as "those meetings" resolves.
+  ///   Nil reads from the configured `memory` instead (M1-ME-01); pass `[]` explicitly to start
+  ///   fresh even with memory configured.
   /// - Throws: ``AgentError``. Cancelling the calling task cancels the run.
-  public func run(_ goal: String, conversation: [ModelMessage] = []) async throws -> AgentResponse {
+  public func run(_ goal: String, conversation: [ModelMessage]? = nil) async throws -> AgentResponse
+  {
     guard activeRun == nil else { throw AgentError.runInProgress }
-    let task = Task { try await self.execute(goal: goal, conversation: conversation) }
+    let effectiveConversation: [ModelMessage]
+    if let conversation {
+      effectiveConversation = conversation
+    } else {
+      effectiveConversation = await memory?.history() ?? []
+    }
+    let task = Task { try await self.execute(goal: goal, conversation: effectiveConversation) }
     activeRun = task
     do {
       let response = try await withTaskCancellationHandler {
@@ -104,6 +119,7 @@ public actor AgentRuntime {
         task.cancel()
       }
       activeRun = nil
+      await memory?.recordTurn(goal: goal, answer: response.text)
       return response
     } catch {
       activeRun = nil
