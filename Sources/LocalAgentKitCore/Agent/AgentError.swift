@@ -6,6 +6,22 @@ public enum TimeoutScope: Sendable, Hashable {
   case modelCall
 }
 
+/// A device capability gated by system-level authorization (Calendar, Reminders, …). Distinct
+/// from ``ToolPermission``, which is the app's own tier: this is the OS's decision, not ours, and
+/// it is why the error below is separate from a generic tool failure — an app can direct the user
+/// to Settings instead of just reporting an error.
+public enum DeviceCapability: Sendable, Hashable, CustomStringConvertible {
+  case calendar
+  case reminders
+
+  public var description: String {
+    switch self {
+    case .calendar: "Calendar"
+    case .reminders: "Reminders"
+    }
+  }
+}
+
 /// Why a configuration was rejected at construction.
 public enum ConfigurationIssue: Sendable, Hashable {
   /// `NetworkPolicy.never` with a component that needs the network (FR-023).
@@ -30,6 +46,8 @@ public enum AgentError: Error, Sendable, Hashable {
   /// What remains after both trimming and summarizing failed — not the first line of defense (R2).
   case contextLimitExceeded
   case guardrailRefusal(GuardrailRefusal)
+  /// The OS denied, restricted, or never granted access to a device capability (M1-TL-06).
+  case deviceAuthorizationDenied(DeviceCapability)
   case loopDetected(tool: String)
   case memoryFailure(String)
   case retrievalFailure(String)
