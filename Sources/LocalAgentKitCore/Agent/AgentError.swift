@@ -11,6 +11,8 @@ public enum ConfigurationIssue: Sendable, Hashable {
   /// `NetworkPolicy.never` with a component that needs the network (FR-023).
   case networkRequiredButForbidden(component: String)
   case invalidLimit(String)
+  /// A planner workflow that cannot run against the registered tools.
+  case invalidWorkflow(String)
 }
 
 /// Typed errors (FR-025). Each of the four execution limits has its own case.
