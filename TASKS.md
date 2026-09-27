@@ -79,18 +79,18 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 *The MVP. Largest milestone; ordered so each group unblocks the next.*
 
 ### Core protocols & types (`LocalAgentKitCore`)
-- [ ] **M1-CO-01** `LocalModelProvider` protocol; `ModelRequest` / `ModelResponse` (FR-004) *(stays as the Core seam per decision 0004; Core must not import `FoundationModels` — the per-OS quirks live in the provider)*
-- [ ] **M1-CO-02** `ModelResponse` cases: `.text`, `.toolCall`, `.multipleToolCalls`, `.clarification`, `.refused(GuardrailRefusal)` (FR-005)
-- [ ] **M1-CO-03** `AgentTool` protocol — `name`, `description`, `schema`, `permission`, `execute` (FR-006)
-- [ ] **M1-CO-04** Add `isParallelSafe` and `isCancellable` to `AgentTool` — the runtime cannot schedule or cancel correctly without them *(addition to the PRD protocol)*
-- [ ] **M1-CO-05** `ToolSchema` + `ToolArguments` with JSON-Schema-shaped validation
-- [ ] **M1-CO-06** `ToolPermission` enum: `.none`, `.readOnly`, `.userConfirmation`, `.sensitive`, `.destructive` (FR-009)
-- [ ] **M1-CO-07** `AgentEvent` enum, all cases incl. `.guardrailRefused` and context-utilization reporting (FR-019, NFR context)
-- [ ] **M1-CO-08** `AgentError` typed errors, incl. `.guardrailRefusal` and `.contextLimitExceeded` (FR-025)
-- [ ] **M1-CO-09** `AgentConfiguration` — providers, security policy, execution limits, `networkPolicy` (FR-001, FR-023)
-- [ ] **M1-CO-10** `ExecutionLimits` — max iterations, max tool calls, max duration, max context (FR-003)
-- [ ] **M1-CO-11** `MemoryStore`, `EmbeddingProvider`, `VectorStore` protocol stubs so Core's shape is complete (FR-012, FR-014, FR-015)
-- [ ] **M1-CO-12** Verify Core compiles with **zero** Apple-framework imports (layering check must pass)
+- [x] **M1-CO-01** `LocalModelProvider` protocol; `ModelRequest` / `ModelResponse` (FR-004) *(stays as the Core seam per decision 0004; Core must not import `FoundationModels` — the per-OS quirks live in the provider)*
+- [x] **M1-CO-02** `ModelResponse` cases: `.text`, `.toolCall`, `.multipleToolCalls`, `.clarification`, `.refused(GuardrailRefusal)` (FR-005)
+- [x] **M1-CO-03** `AgentTool` protocol — `name`, `description`, `schema`, `permission`, `execute` (FR-006)
+- [x] **M1-CO-04** Add `isParallelSafe` and `isCancellable` to `AgentTool` — the runtime cannot schedule or cancel correctly without them *(addition to the PRD protocol)*
+- [x] **M1-CO-05** `ToolSchema` + `ToolArguments` with JSON-Schema-shaped validation
+- [x] **M1-CO-06** `ToolPermission` enum: `.none`, `.readOnly`, `.userConfirmation`, `.sensitive`, `.destructive` (FR-009)
+- [x] **M1-CO-07** `AgentEvent` enum, all cases incl. `.guardrailRefused` and context-utilization reporting (FR-019, NFR context)
+- [x] **M1-CO-08** `AgentError` typed errors, incl. `.guardrailRefusal` and `.contextLimitExceeded` (FR-025)
+- [x] **M1-CO-09** `AgentConfiguration` — providers, security policy, execution limits, `networkPolicy` (FR-001, FR-023)
+- [x] **M1-CO-10** `ExecutionLimits` — max iterations, max tool calls, max duration, max context (FR-003)
+- [x] **M1-CO-11** `MemoryStore`, `EmbeddingProvider`, `VectorStore` protocol stubs so Core's shape is complete (FR-012, FR-014, FR-015)
+- [x] **M1-CO-12** Verify Core compiles with **zero** Apple-framework imports (layering check must pass) *(DONE 2026-09-27 for the whole group M1-CO-01…12: Core is in `Sources/LocalAgentKitCore/{Model,Tools,Agent,Memory,RAG}`; 24 tests; build, format lint and layering grep clean. Design calls beyond the PRD: `isParallelSafe`/`isCancellable` have no default; `LocalModelProvider` gained `requiresNetwork`, `contextWindowTokens`, `tokenCount(for:)` (all defaulted) for FR-023 and the budgeter; `ExecutionLimits` adds `maxModelCallDuration`; `AgentConfiguration` has no `.default` because Core cannot name a model, defaults to `.never` network and `.stateMachine` planner; `SecurityPolicy` deliberately has no tier setting. `AgentPlan`/`PlanStep` are minimal placeholders that M1-RT-11 will extend.)*
 
 ### Runtime (`LocalAgentKitRuntime`)
 - [ ] **M1-RT-01** `AgentRuntime` actor — owns all execution state; the iterate/observe loop (FR-003)
