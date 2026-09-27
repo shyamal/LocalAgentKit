@@ -11,6 +11,10 @@ struct BudgetedModel: LocalModelProvider {
   let limits: ExecutionLimits
   let clock: RunClock
   let events: EventBus
+  /// Retrieved once per run (M1-RG-05), before the loop starts, and given to every call this
+  /// model makes — RAG passages get the budgeter's own `retrievalShare` rather than competing
+  /// with conversation history for the same tokens.
+  var retrievedChunks: [String] = []
 
   var requiresNetwork: Bool { base.requiresNetwork }
   var contextWindowTokens: Int? { base.contextWindowTokens }
@@ -26,8 +30,9 @@ struct BudgetedModel: LocalModelProvider {
     let (allowed, scope) =
       perCall <= remaining ? (perCall, TimeoutScope.modelCall) : (remaining, .run)
 
-    let fitted = try await budgeter.fit(
-      Self.inputs(from: request), for: base, limits: limits, events: events)
+    var inputs = Self.inputs(from: request)
+    inputs.retrievedChunks = retrievedChunks
+    let fitted = try await budgeter.fit(inputs, for: base, limits: limits, events: events)
     await events.publish(.thinking)
 
     let model = base

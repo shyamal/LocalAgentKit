@@ -146,7 +146,8 @@ public actor AgentRuntime {
   ) async throws -> AgentResponse {
     let limits = configuration.limits
     let model = BudgetedModel(
-      base: configuration.model, budgeter: budgeter, limits: limits, clock: clock, events: bus)
+      base: configuration.model, budgeter: budgeter, limits: limits, clock: clock, events: bus,
+      retrievedChunks: try await retrieveChunks(for: goal))
     let executor = ToolExecutor(
       source: tools, gate: TimedGate(inner: customGate ?? broker, clock: clock), events: bus,
       remainingTime: { await clock.remaining() })
@@ -193,6 +194,23 @@ public actor AgentRuntime {
           context: &context, toolCalls: &toolCalls)
         if case .replanned(let revised) = revision { await bus.publish(.planCreated(revised)) }
       }
+    }
+  }
+
+  /// Retrieves relevant chunks for `goal` once per run, before the loop starts (M1-RG-05).
+  /// Best-effort: with no embedding provider and vector store both configured, or if retrieval
+  /// itself fails, the run proceeds with none rather than treating document search as
+  /// load-bearing. Genuine cancellation still propagates rather than being swallowed.
+  private func retrieveChunks(for goal: String) async throws -> [String] {
+    guard let embedding = configuration.embedding, let vectorStore = configuration.vectorStore
+    else { return [] }
+    do {
+      return try await RetrievalPipeline(embeddingProvider: embedding, vectorStore: vectorStore)
+        .retrieve(for: goal)
+    } catch is CancellationError {
+      throw AgentError.cancelled
+    } catch {
+      return []
     }
   }
 
