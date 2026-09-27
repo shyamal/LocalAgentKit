@@ -1,0 +1,58 @@
+import LocalAgentKitCore
+
+/// The model as the planner sees it: the provider wrapped so that **every** call is budgeted,
+/// bounded, and observable, whoever makes it.
+///
+/// Context is fitted before the call, not after it fails (R2). The call gets a deadline: the
+/// per-call limit, capped by what is left of the run. It is abandoned if it ignores cancellation.
+struct BudgetedModel: LocalModelProvider {
+  let base: any LocalModelProvider
+  let budgeter: ContextBudgeter
+  let limits: ExecutionLimits
+  let clock: RunClock
+  let events: EventBus
+
+  var requiresNetwork: Bool { base.requiresNetwork }
+  var contextWindowTokens: Int? { base.contextWindowTokens }
+
+  func tokenCount(for request: ModelRequest) async -> Int? {
+    await base.tokenCount(for: request)
+  }
+
+  func generate(request: ModelRequest) async throws -> ModelResponse {
+    let remaining = await clock.remaining()
+    guard remaining > .zero else { throw AgentError.executionTimeout(.run) }
+    let perCall = limits.maxModelCallDuration
+    let (allowed, scope) =
+      perCall <= remaining ? (perCall, TimeoutScope.modelCall) : (remaining, .run)
+
+    let fitted = try await budgeter.fit(
+      Self.inputs(from: request), for: base, limits: limits, events: events)
+    await events.publish(.thinking)
+
+    let model = base
+    let fittedRequest = fitted.request
+    do {
+      return try await withDeadline(allowed, scope: scope) {
+        try await model.generate(request: fittedRequest)
+      }
+    } catch let error as AgentError {
+      throw error
+    } catch is CancellationError {
+      throw AgentError.cancelled
+    } catch {
+      throw AgentError.modelUnavailable(reason: String(describing: error))
+    }
+  }
+
+  /// Leading system messages are the instructions; the rest is the conversation. The tools a
+  /// request carries are never dropped: they are what the call is asking about.
+  static func inputs(from request: ModelRequest) -> ContextInputs {
+    let leading = request.messages.prefix { $0.role == .system }
+    return ContextInputs(
+      instructions: leading.map(\.content).joined(separator: "\n\n"),
+      tools: request.tools,
+      requiredToolNames: Set(request.tools.map(\.name)),
+      conversation: Array(request.messages.dropFirst(leading.count)))
+  }
+}

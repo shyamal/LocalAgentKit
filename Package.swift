@@ -98,6 +98,10 @@ let package = Package(
       dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTesting"]
     ),
     .testTarget(
+      name: "LocalAgentKitTestingTests",
+      dependencies: ["LocalAgentKitTesting"]
+    ),
+    .testTarget(
       name: "LocalAgentKitProvidersTests",
       dependencies: ["LocalAgentKitProviders", "LocalAgentKitTesting"]
     ),
