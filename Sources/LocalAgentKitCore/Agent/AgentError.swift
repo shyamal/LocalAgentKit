@@ -13,6 +13,8 @@ public enum ConfigurationIssue: Sendable, Hashable {
   case invalidLimit(String)
   /// A planner workflow that cannot run against the registered tools.
   case invalidWorkflow(String)
+  /// A configured choice with nothing behind it, such as a planner that has not shipped.
+  case unsupported(String)
 }
 
 /// Typed errors (FR-025). Each of the four execution limits has its own case.
@@ -32,5 +34,7 @@ public enum AgentError: Error, Sendable, Hashable {
   case memoryFailure(String)
   case retrievalFailure(String)
   case invalidConfiguration(ConfigurationIssue)
+  /// `run` was called while another run was active. One runtime runs one goal at a time.
+  case runInProgress
   case cancelled
 }

@@ -44,12 +44,21 @@ public struct ToolExecutor: Sendable {
   private let source: any ToolSource
   private let gate: (any PermissionGate)?
   private let events: EventBus
+  private let remainingTime: (@Sendable () async -> Duration)?
 
-  /// - Parameter gate: With nil, every tool above `.readOnly` is denied.
-  public init(source: any ToolSource, gate: (any PermissionGate)? = nil, events: EventBus) {
+  /// - Parameters:
+  ///   - gate: With nil, every tool above `.readOnly` is denied.
+  ///   - remainingTime: How long the run has left. A tool that declares `isCancellable` is
+  ///     abandoned when it runs out; one that does not is left to finish, since it cannot be
+  ///     stopped safely.
+  public init(
+    source: any ToolSource, gate: (any PermissionGate)? = nil, events: EventBus,
+    remainingTime: (@Sendable () async -> Duration)? = nil
+  ) {
     self.source = source
     self.gate = gate
     self.events = events
+    self.remainingTime = remainingTime
   }
 
   /// - Throws: ``AgentError`` — `.toolNotFound`, `.invalidArguments`, `.permissionDenied`,
@@ -82,7 +91,14 @@ public struct ToolExecutor: Sendable {
     var result: ToolResult
     do {
       try Task.checkCancellationAsAgentError()
-      result = try await tool.execute(arguments: call.arguments)
+      if tool.isCancellable, let remaining = await remainingTime?() {
+        guard remaining > .zero else { throw AgentError.executionTimeout(.run) }
+        result = try await withDeadline(remaining, scope: .run) {
+          try await tool.execute(arguments: call.arguments)
+        }
+      } else {
+        result = try await tool.execute(arguments: call.arguments)
+      }
     } catch let error as AgentError {
       throw error
     } catch is CancellationError {
