@@ -147,7 +147,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [ ] **M1-SE-04** Test: a schema-valid tool call originating from injected document text is still stopped at the permission gate (PRD §19)
 
 ### Testing infrastructure (`LocalAgentKitTesting`)
-- [ ] **M1-TS-01** `MockModelProvider` + `ScriptedModelProvider` for deterministic loop tests (FR-004, §18)
+- [x] **M1-TS-01** `MockModelProvider` + `ScriptedModelProvider` for deterministic loop tests (FR-004, §18) *(DONE 2026-09-27: both in `Sources/LocalAgentKitTesting`, plus `MockTool`, `MockMemoryStore`, `MockEmbeddingProvider`, `MockVectorStore` so every Core protocol has a mock. `ScriptedModelProvider` steps: respond, fail, delay, hang; running past the script's end throws rather than passing silently. New target `LocalAgentKitTestingTests`, 15 tests. Testing still depends on Core only.)*
 - [ ] **M1-TS-02** Unit tests: runtime, planner, registry, executor, budgeter, loop detector, permissions
 - [ ] **M1-TS-03** Agent evaluation scenarios: goal → expected tools → expected result → max iterations → permission expectations (§18)
 - [ ] **M1-TS-04** Reach the 80% coverage gate on Core + Runtime (M4)
