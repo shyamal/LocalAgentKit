@@ -84,7 +84,7 @@ import Testing
     let model = StubModel()
     #expect(!model.requiresNetwork)
     #expect(model.contextWindowTokens == nil)
-    #expect(await model.tokenCount(for: []) == nil)
+    #expect(await model.tokenCount(for: ModelRequest(messages: [])) == nil)
   }
 
   @Test func defaultLimitsAreValid() {

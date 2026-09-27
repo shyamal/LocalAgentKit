@@ -8,16 +8,25 @@ public actor MockModelProvider: LocalModelProvider {
   public nonisolated let requiresNetwork: Bool
   public nonisolated let contextWindowTokens: Int?
   private let handler: Handler
+  private let tokenCounter: (@Sendable (ModelRequest) -> Int?)?
   private var recorded: [ModelRequest] = []
 
+  /// - Parameter tokenCounter: Stands in for the platform's token counter. Nil means the
+  ///   provider cannot count, as on an OS without `tokenCount(for:)`.
   public init(
     requiresNetwork: Bool = false,
     contextWindowTokens: Int? = nil,
-    handler: @escaping Handler = { _ in .text("mock") }
+    handler: @escaping Handler = { _ in .text("mock") },
+    tokenCounter: (@Sendable (ModelRequest) -> Int?)? = nil
   ) {
     self.requiresNetwork = requiresNetwork
     self.contextWindowTokens = contextWindowTokens
+    self.tokenCounter = tokenCounter
     self.handler = handler
+  }
+
+  public func tokenCount(for request: ModelRequest) async -> Int? {
+    tokenCounter?(request)
   }
 
   /// Every request received, oldest first.

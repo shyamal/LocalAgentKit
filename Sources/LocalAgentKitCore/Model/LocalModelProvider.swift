@@ -64,9 +64,10 @@ public protocol LocalModelProvider: Sendable {
   /// The context window in tokens, if the provider knows it. `ContextBudgeter` budgets against it.
   var contextWindowTokens: Int? { get }
 
-  /// Counts tokens for the given messages, if the platform exposes a counter (findings §3).
-  /// Returns nil when it cannot, and the budgeter falls back to an estimate.
-  func tokenCount(for messages: [ModelMessage]) async -> Int?
+  /// Counts tokens for a whole request, tool definitions included (they cost about a quarter of
+  /// the window, findings §10), if the platform exposes a counter (findings §3). Returns nil when
+  /// it cannot, and the budgeter falls back to an estimate.
+  func tokenCount(for request: ModelRequest) async -> Int?
 
   /// Honors `Task` cancellation. Throws ``AgentError`` — a provider maps platform errors itself.
   func generate(request: ModelRequest) async throws -> ModelResponse
@@ -75,5 +76,5 @@ public protocol LocalModelProvider: Sendable {
 extension LocalModelProvider {
   public var requiresNetwork: Bool { false }
   public var contextWindowTokens: Int? { nil }
-  public func tokenCount(for messages: [ModelMessage]) async -> Int? { nil }
+  public func tokenCount(for request: ModelRequest) async -> Int? { nil }
 }
