@@ -17,6 +17,7 @@ private func kind(_ entry: Transcript.Entry) -> String {
   case .toolCalls: "toolCalls"
   case .toolOutput: "toolOutput"
   case .response: "response"
+  case .reasoning: "reasoning"
   @unknown default: "other"
   }
 }

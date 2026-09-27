@@ -42,23 +42,27 @@ public protocol PermissionGate: Sendable {
 /// (PRD §19). Do not reorder these steps.
 public struct ToolExecutor: Sendable {
   private let source: any ToolSource
-  private let gate: (any PermissionGate)?
+  private let permissions: PermissionManager
   private let events: EventBus
   private let remainingTime: (@Sendable () async -> Duration)?
+  private let auditLogger: AuditLogger?
 
   /// - Parameters:
   ///   - gate: With nil, every tool above `.readOnly` is denied.
   ///   - remainingTime: How long the run has left. A tool that declares `isCancellable` is
   ///     abandoned when it runs out; one that does not is left to finish, since it cannot be
   ///     stopped safely.
+  ///   - auditLogger: Records every confirmed (above `.readOnly`) execution (M1-SE-02). Nil
+  ///     disables the log; `AgentRuntime` decides based on `SecurityPolicy.auditSensitiveExecutions`.
   public init(
     source: any ToolSource, gate: (any PermissionGate)? = nil, events: EventBus,
-    remainingTime: (@Sendable () async -> Duration)? = nil
+    remainingTime: (@Sendable () async -> Duration)? = nil, auditLogger: AuditLogger? = nil
   ) {
     self.source = source
-    self.gate = gate
+    self.permissions = PermissionManager(gate: gate)
     self.events = events
     self.remainingTime = remainingTime
+    self.auditLogger = auditLogger
   }
 
   /// - Throws: ``AgentError`` — `.toolNotFound`, `.invalidArguments`, `.permissionDenied`,
@@ -77,13 +81,14 @@ public struct ToolExecutor: Sendable {
     }
 
     // 2. Permission gate.
+    let descriptor = ToolDescriptor(tool)
     if tool.permission.requiresConfirmation {
       await events.publish(.permissionRequired(call))
-      let decision = await gate?.decide(for: call, tool: ToolDescriptor(tool)) ?? .denied
-      try Task.checkCancellationAsAgentError()
-      guard decision == .approved else {
-        throw AgentError.permissionDenied(tool: call.name)
-      }
+    }
+    let decision = await permissions.authorize(call, tool: descriptor)
+    try Task.checkCancellationAsAgentError()
+    guard decision == .approved else {
+      throw AgentError.permissionDenied(tool: call.name)
     }
 
     // 3. Execute.
@@ -111,6 +116,12 @@ public struct ToolExecutor: Sendable {
     result.callID = call.id
     result.toolName = call.name
     await events.publish(.toolCompleted(result))
+    if tool.permission.requiresConfirmation {
+      await auditLogger?.record(
+        AuditEntry(
+          toolName: call.name, permission: tool.permission,
+          argumentsSignature: call.arguments.signature, wasEmpty: result.isEmpty))
+    }
 
     // 4. Observe.
     let observation = ToolObservation(call: call, result: result)

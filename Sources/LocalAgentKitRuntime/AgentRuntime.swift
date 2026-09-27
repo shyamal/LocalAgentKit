@@ -24,6 +24,7 @@ public actor AgentRuntime {
   private let budgeter: ContextBudgeter
   private let repairer: ArgumentRepairer
   private let customGate: (any PermissionGate)?
+  private let auditLogger: AuditLogger
   private let broker = HumanInputBroker()
   private let bus = EventBus()
   private let now: @Sendable () -> Date
@@ -35,7 +36,12 @@ public actor AgentRuntime {
   ///     shipped (M1-RT-12).
   ///   - gate: Decides permission prompts. With nil, a prompt suspends the run until the app calls
   ///     ``resolvePermission(callID:approved:)`` in response to `.permissionRequired`.
-  /// - Throws: `.invalidConfiguration` for unusable limits, budget shares, or planner choice.
+  ///   - auditLogger: Where confirmed executions are recorded when
+  ///     `configuration.security.auditSensitiveExecutions` is true (M1-SE-02); read back with
+  ///     ``auditEntries()``.
+  /// - Throws: `.invalidConfiguration` for unusable limits, budget shares, an unsupported planner
+  ///   choice, or `.never` network policy paired with a component that requires the network
+  ///   (M1-SE-03).
   public init(
     configuration: AgentConfiguration,
     tools: any ToolSource,
@@ -44,10 +50,14 @@ public actor AgentRuntime {
     gate: (any PermissionGate)? = nil,
     budgeter: ContextBudgeter = ContextBudgeter(),
     repairer: ArgumentRepairer = ArgumentRepairer(),
+    auditLogger: AuditLogger = AuditLogger(),
     now: @escaping @Sendable () -> Date = { Date() }
   ) throws {
     if let issue = configuration.limits.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = budgeter.configuration.issue { throw AgentError.invalidConfiguration(issue) }
+    if let issue = NetworkPolicyGuard.validate(configuration) {
+      throw AgentError.invalidConfiguration(issue)
+    }
     switch (configuration.planner, planner) {
     case (_, let planner?):
       self.planner = planner
@@ -62,6 +72,7 @@ public actor AgentRuntime {
     self.budgeter = budgeter
     self.repairer = repairer
     self.customGate = gate
+    self.auditLogger = auditLogger
     self.now = now
   }
 
@@ -119,6 +130,12 @@ public actor AgentRuntime {
     await broker.answer(text)
   }
 
+  /// Every confirmed execution recorded so far (M1-SE-02). Empty unless
+  /// `configuration.security.auditSensitiveExecutions` is true.
+  public func auditEntries() async -> [AuditEntry] {
+    await auditLogger.allEntries()
+  }
+
   // MARK: The run
 
   private func execute(goal: String, conversation: [ModelMessage]) async throws -> AgentResponse {
@@ -150,7 +167,8 @@ public actor AgentRuntime {
       retrievedChunks: try await retrieveChunks(for: goal))
     let executor = ToolExecutor(
       source: tools, gate: TimedGate(inner: customGate ?? broker, clock: clock), events: bus,
-      remainingTime: { await clock.remaining() })
+      remainingTime: { await clock.remaining() },
+      auditLogger: configuration.security.auditSensitiveExecutions ? auditLogger : nil)
     let descriptors = await tools.descriptors()
 
     var context = AgentContext(goal: goal, now: now(), conversation: conversation)
