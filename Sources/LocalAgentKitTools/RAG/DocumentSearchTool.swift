@@ -28,7 +28,20 @@ public struct DocumentSearchTool: AgentTool {
     guard let query = arguments.string("query"), !query.isEmpty else {
       throw AgentError.invalidArguments(tool: name, violations: [.missingRequired(path: "query")])
     }
-    let passages = try await pipeline.retrieve(for: query, limit: limit)
+    let passages: [String]
+    do {
+      passages = try await pipeline.retrieve(for: query, limit: limit)
+    } catch AgentError.cancelled {
+      throw AgentError.cancelled
+    } catch is CancellationError {
+      throw AgentError.cancelled
+    } catch {
+      // The embedding provider or vector store failed — an unavailable on-device model asset,
+      // for instance (`NLEmbeddingProvider` throws `.retrievalFailure` when the sentence-
+      // embedding asset isn't present). This is a read-only search: reporting "nothing found"
+      // lets the conversation continue instead of ending the whole run over it.
+      return ToolResult(callID: "", toolName: name, text: "No results found.", isEmpty: true)
+    }
     guard !passages.isEmpty else {
       return ToolResult(callID: "", toolName: name, text: "No results found.", isEmpty: true)
     }

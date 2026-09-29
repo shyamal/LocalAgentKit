@@ -13,7 +13,7 @@ enum AgentSetup {
   static func makeViewModel() async throws -> AgentViewModel {
     let embedding = NLEmbeddingProvider()
     let vectorStore = InMemoryVectorStore()
-    try await seedNotes(embedding: embedding, vectorStore: vectorStore)
+    await seedNotes(embedding: embedding, vectorStore: vectorStore)
 
     let noteStore = NoteStore(directory: applicationSupportDirectory())
     let tools: [any AgentTool] = [
@@ -37,13 +37,27 @@ enum AgentSetup {
   /// ("Find my notes related to those meetings"). These are fixed content, not correlated to
   /// whatever is actually on the device's calendar — the demo proves the retrieval *mechanism*
   /// end to end, not a scripted match between two independent real data sources.
+  ///
+  /// Best-effort, deliberately: `NLEmbedding.sentenceEmbedding(for:)` returns nil, and
+  /// `NLEmbeddingProvider.embed(text:)` throws, when the on-device sentence-embedding *asset*
+  /// isn't present — observed on a physical device and in Simulator, logged by the framework
+  /// itself as "Unable to locate Asset for sentence embedding model for local en." (a system
+  /// asset-download state, not something the app controls or can be verified from a bare
+  /// SwiftPM CLI binary the way `NLEmbeddingProviderTests` does — this only showed up in the real
+  /// app). Failing here must not take down the rest of the agent: Calendar, Reminders, the
+  /// calculator, and note-saving don't depend on RAG at all, and `AgentRuntime`'s own retrieval
+  /// wiring (M1-RG-05) treats a retrieval failure as best-effort for exactly this reason.
   private static func seedNotes(
     embedding: NLEmbeddingProvider, vectorStore: InMemoryVectorStore
-  ) async throws {
+  ) async {
     guard let url = Bundle.main.url(forResource: "notes", withExtension: "md") else { return }
-    let document = try DocumentLoader.load(contentsOf: url)
-    try await RetrievalPipeline(embeddingProvider: embedding, vectorStore: vectorStore)
-      .ingest(document)
+    do {
+      let document = try DocumentLoader.load(contentsOf: url)
+      try await RetrievalPipeline(embeddingProvider: embedding, vectorStore: vectorStore)
+        .ingest(document)
+    } catch {
+      print("LocalAgentDemo: could not seed notes for RAG (turn 2 will find nothing): \(error)")
+    }
   }
 
   private static func applicationSupportDirectory() -> URL {

@@ -4,6 +4,15 @@ import Testing
 
 @testable import LocalAgentKitTools
 
+/// Stands in for `NLEmbeddingProvider` when its on-device sentence-embedding asset isn't
+/// available — the failure this tool must degrade gracefully from.
+private struct FailingEmbeddingProvider: EmbeddingProvider {
+  let requiresNetwork = false
+  func embed(text: String) async throws -> [Float] {
+    throw AgentError.retrievalFailure("no sentence embedding model for this language")
+  }
+}
+
 @Suite struct DocumentSearchToolTests {
   private func tool(_ store: MockVectorStore, limit: Int = 5) -> DocumentSearchTool {
     DocumentSearchTool(embeddingProvider: MockEmbeddingProvider(), vectorStore: store, limit: limit)
@@ -62,5 +71,16 @@ import Testing
     #expect(result.text.contains("[1]"))
     #expect(result.text.contains("[2]"))
     #expect(!result.text.contains("[3]"))
+  }
+
+  /// A missing on-device model asset — a real, observed condition (`NLEmbeddingProvider` throws
+  /// `.retrievalFailure`) — must not end the whole run: `search_documents` is read-only, so it
+  /// reports no results rather than failing the conversation.
+  @Test func anEmbeddingFailureIsReportedAsNoResultsNotThrown() async throws {
+    let tool = DocumentSearchTool(
+      embeddingProvider: FailingEmbeddingProvider(), vectorStore: MockVectorStore())
+    let result = try await tool.execute(arguments: ToolArguments(["query": "budget"]))
+    #expect(result.isEmpty)
+    #expect(result.text == "No results found.")
   }
 }
