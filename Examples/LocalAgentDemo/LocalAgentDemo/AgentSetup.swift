@@ -20,13 +20,19 @@ enum AgentSetup {
       CalculatorTool(),
       CalendarTool(),
       ReminderTool(),
-      DocumentSearchTool(embeddingProvider: embedding, vectorStore: vectorStore),
+      DocumentSearchTool(embeddingProvider: embedding, vectorStore: vectorStore, limit: 3),
       CreateNoteTool(store: noteStore),
     ]
 
-    let configuration = AgentConfiguration(
-      model: FoundationModelProvider(), embedding: embedding, vectorStore: vectorStore,
-      networkPolicy: .never)
+    // `AgentConfiguration.embedding`/`.vectorStore` are deliberately left unset here — setting
+    // both would turn on `AgentRuntime`'s *automatic* per-run retrieval (M1-RG-05: it embeds the
+    // goal once per run and injects matching chunks into every model call that run), which would
+    // run *in addition to* `DocumentSearchTool` above searching the same store when the model
+    // calls it. On a 4096-token on-device window (findings §3) that double-counted the same
+    // fixture content and hit `AgentError.contextLimitExceeded` on turn 2 in testing. The
+    // explicit tool call is what the demo scenario (PRD §13) actually wants to show; the
+    // automatic path is the implicit, always-on one and isn't needed alongside it.
+    let configuration = AgentConfiguration(model: FoundationModelProvider(), networkPolicy: .never)
     let runtime = try AgentRuntime(
       configuration: configuration, tools: StaticToolSource(tools),
       memory: ConversationMemory())
