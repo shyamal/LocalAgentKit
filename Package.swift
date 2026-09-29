@@ -102,6 +102,10 @@ let package = Package(
       dependencies: ["LocalAgentKitTesting"]
     ),
     .testTarget(
+      name: "LocalAgentKitSwiftUITests",
+      dependencies: ["LocalAgentKitSwiftUI", "LocalAgentKitTesting"]
+    ),
+    .testTarget(
       name: "LocalAgentKitProvidersTests",
       dependencies: ["LocalAgentKitProviders", "LocalAgentKitTesting"]
     ),
