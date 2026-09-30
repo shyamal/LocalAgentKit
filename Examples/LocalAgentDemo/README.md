@@ -7,6 +7,17 @@ on-device model.
 It's a separate Xcode project, not part of the Swift package, so it can't affect the package's
 build, coverage, lint, or layering gates — the same reasoning as `Spike/`.
 
+> [!IMPORTANT]
+> **`LocalAgentDemo` does not run on iOS Simulator.** The on-device generative model is not
+> available there at all — Apple's own framework throws `InferenceError::operationNotAllowed::
+> Simulator is not supported`, found by testing (Simulator's console log, not documented anywhere
+> we could find beforehand). Every model call fails immediately. Use the **macOS** build (this
+> Mac, no device needed) or a **physical iPhone** — see *Build and run* below. `Simulator not
+> supported` surfaces as an untyped, unhelpfully generic error from deep in the framework
+> (`Model Catalog error ... Code=5000`); earlier versions of this provider's error mapping
+> misclassified it as `AgentError.contextLimitExceeded`, which is a separate, real, and much
+> rarer failure — see `ErrorMapping.swift`'s `isTokenGenerationFailure`.
+
 ## The four turns
 
 | You say | What happens |

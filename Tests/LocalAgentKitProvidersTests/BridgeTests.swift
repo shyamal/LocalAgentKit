@@ -161,6 +161,28 @@ private func descriptor(_ schema: ToolSchema, name: String = "create_reminder") 
     #expect(!mapped.isRetryable)
   }
 
+  /// Found by testing, not from findings: running the real model in iOS Simulator (where
+  /// on-device generation is not supported at all) throws this exact shape. Its code is 5000,
+  /// not 10, so it must not be classified as context overflow — this is the failure the loose
+  /// substring match used to misclassify, since "tokengeneration" is also this error's logging
+  /// *subsystem name*, not anything about its actual domain or code.
+  @Test func aSimulatorNotSupportedErrorIsNotMisreadAsContextOverflow() async {
+    let error = NSError(
+      domain: "com.apple.UnifiedAssetFramework", code: 5000,
+      userInfo: [
+        NSLocalizedFailureReasonErrorKey:
+          "There are no underlying assets (neither atomic instance nor asset roots) for "
+          + "consistency token for asset set com.apple.modelcatalog"
+      ])
+    let mapped = await FoundationModelErrors.map(error)
+    #expect(mapped.error != .contextLimitExceeded)
+    guard case .modelUnavailable(let reason) = mapped.error else {
+      Issue.record("expected modelUnavailable, got \(mapped.error)")
+      return
+    }
+    #expect(reason?.contains("modelcatalog") == true)
+  }
+
   @Test func anUnknownErrorIsAModelUnavailableErrorNotACrash() async {
     struct Odd: Error {}
     let mapped = await FoundationModelErrors.map(Odd())
