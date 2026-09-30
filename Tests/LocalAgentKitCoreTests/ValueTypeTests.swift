@@ -117,4 +117,26 @@ import Testing
     #expect(AgentError.executionTimeout(.run) != .executionTimeout(.modelCall))
     #expect(AgentError.guardrailRefusal(GuardrailRefusal()) != AgentError.contextLimitExceeded)
   }
+
+  /// `String(describing:)` — what `AgentViewModel.lastFailure` actually calls — must read as a
+  /// sentence a person can be shown, not a Swift enum dump like `loopDetected(tool: "x")`. Found
+  /// by testing the demo app for real: a loop-detector trip surfaced exactly that raw dump.
+  @Test func everyCaseDescribesItselfAsASentenceNotAnEnumDump() {
+    #expect(
+      String(describing: AgentError.loopDetected(tool: "search_documents"))
+        == "\"search_documents\" was called repeatedly without making progress, so the request "
+        + "was stopped.")
+    #expect(!String(describing: AgentError.loopDetected(tool: "x")).contains("loopDetected"))
+    #expect(
+      String(describing: AgentError.contextLimitExceeded)
+        == "The conversation grew too large for the model's context window.")
+    #expect(
+      String(describing: AgentError.deviceAuthorizationDenied(.calendar))
+        == "Access to Calendar was not authorized. Check Settings to grant access.")
+    let refusalWithExplanation = AgentError.guardrailRefusal(
+      GuardrailRefusal(explanation: "that touches medical advice"))
+    #expect(String(describing: refusalWithExplanation) == "that touches medical advice")
+    #expect(
+      !String(describing: AgentError.guardrailRefusal(GuardrailRefusal())).isEmpty)
+  }
 }

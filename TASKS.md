@@ -86,7 +86,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [x] **M1-CO-05** `ToolSchema` + `ToolArguments` with JSON-Schema-shaped validation
 - [x] **M1-CO-06** `ToolPermission` enum: `.none`, `.readOnly`, `.userConfirmation`, `.sensitive`, `.destructive` (FR-009)
 - [x] **M1-CO-07** `AgentEvent` enum, all cases incl. `.guardrailRefused` and context-utilization reporting (FR-019, NFR context)
-- [x] **M1-CO-08** `AgentError` typed errors, incl. `.guardrailRefusal` and `.contextLimitExceeded` (FR-025)
+- [x] **M1-CO-08** `AgentError` typed errors, incl. `.guardrailRefusal` and `.contextLimitExceeded` (FR-025) *(UPDATED 2026-09-30: `AgentError`/`ConfigurationIssue` conform to `CustomStringConvertible` with a sentence per case, e.g. "\"search_documents\" was called repeatedly without making progress, so the request was stopped." — found by testing the demo app for real: `AgentViewModel.lastFailure` calls `String(describing: error)`, which previously surfaced the raw enum dump, `loopDetected(tool: "search_documents")`, directly to the user on a genuine loop-detector trip (FR-028 working as designed; a read-only tool may legitimately repeat once per `aReadOnlyCallMayRepeat`, but three identical calls in a row correctly ends the run). No call site needed to change — `String(describing:)` picks up `description` automatically)*
 - [x] **M1-CO-09** `AgentConfiguration` — providers, security policy, execution limits, `networkPolicy` (FR-001, FR-023)
 - [x] **M1-CO-10** `ExecutionLimits` — max iterations, max tool calls, max duration, max context (FR-003)
 - [x] **M1-CO-11** `MemoryStore`, `EmbeddingProvider`, `VectorStore` protocol stubs so Core's shape is complete (FR-012, FR-014, FR-015)
