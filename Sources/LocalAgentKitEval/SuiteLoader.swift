@@ -6,8 +6,7 @@ import Foundation
 /// what every suite shares — identity, the tool catalog it targets, and its scenario ids — so the
 /// data can be listed and checked without a model, a device, or the agent runtime.
 ///
-/// Scoring, matchers and execution belong to the FR-029 harness proper (task M1-EV-01) and are
-/// deliberately absent here: until then the spike in `Spike/` remains the only runner.
+/// The CLI and probe runner use this metadata. Scoring and matchers are separate harness tasks.
 public enum SuiteLoader {
   public enum Error: Swift.Error, CustomStringConvertible {
     case resourceMissing(String)
@@ -27,6 +26,12 @@ public enum SuiteLoader {
       public let type: String
       public let required: Bool
       public let pattern: String?
+      public let description: String?
+      public let allowedValues: [String]?
+      enum CodingKeys: String, CodingKey {
+        case type, required, pattern, description
+        case allowedValues = "enum"
+      }
     }
     public let name: String
     public let description: String
@@ -50,6 +55,13 @@ public enum SuiteLoader {
     public let suite: String?
     /// Present on the context-load fixture instead of `suite`.
     public let fixture: String?
+    public struct Context: Decodable, Sendable {
+      public let referenceDateTime: String
+      public let referenceWeekday: String
+      public let timeZone: String
+      public let locale: String
+    }
+    public let context: Context?
     public let task: String
     public let version: Int
     public let goals: [Goal]?

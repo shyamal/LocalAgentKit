@@ -1,6 +1,6 @@
 import Testing
 
-@testable import LocalAgentKitEval
+@testable import LocalAgentKitEvalSupport
 
 // The Phase 0 suites ship as bundled data (task P0-18). These tests keep the data honest without
 // a model or a device: every suite loads, ids are unique, and the goals reference real tools.

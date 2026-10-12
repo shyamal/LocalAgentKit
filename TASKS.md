@@ -149,18 +149,18 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 
 ### Testing infrastructure (`LocalAgentKitTesting`)
 - [x] **M1-TS-01** `MockModelProvider` + `ScriptedModelProvider` for deterministic loop tests (FR-004, §18) *(DONE 2026-09-27: both in `Sources/LocalAgentKitTesting`, plus `MockTool`, `MockMemoryStore`, `MockEmbeddingProvider`, `MockVectorStore` so every Core protocol has a mock. `ScriptedModelProvider` steps: respond, fail, delay, hang; running past the script's end throws rather than passing silently. New target `LocalAgentKitTestingTests`, 15 tests. Testing still depends on Core only.)*
-- [ ] **M1-TS-02** Unit tests: runtime, planner, registry, executor, budgeter, loop detector, permissions
-- [ ] **M1-TS-03** Agent evaluation scenarios: goal → expected tools → expected result → max iterations → permission expectations (§18)
-- [ ] **M1-TS-04** Reach the 80% coverage gate on Core + Runtime (M4)
-- [ ] **M1-TS-05** Test that the full unit suite runs with **no device and no network**
+- [x] **M1-TS-02** Unit tests: runtime, planner, registry, executor, budgeter, loop detector, permissions *(DONE 2026-10-10: Audited existing runtime, state-machine planner, registry, executor, context budgeter, loop detector, and permission suites; full default suite passed. See docs/testing-verification.md for the coverage map.)*
+- [x] **M1-TS-03** Agent evaluation scenarios: goal → expected tools → expected result → max iterations → permission expectations (§18) *(DONE 2026-10-10: AgentScenarioTests adds five goal/tool/result/iteration/permission fixtures plus a four-turn memory-and-confirmation scenario with scripted models and mock tools. This measures runtime contracts, not real-model reliability (M1-EV).)*
+- [x] **M1-TS-04** Reach the 80% coverage gate on Core + Runtime (M4) *(DONE 2026-10-10: Measured Core 99.32% (436/439 lines), Runtime 97.94% (1471/1502), combined 98.25% (1907/1941) with check-coverage.sh. Collector now supports combined and per-target SwiftPM test bundles without counting a source line twice.)*
+- [x] **M1-TS-05** Test that the full unit suite runs with **no device and no network** *(DONE 2026-10-10: Full default suite passed under sandbox-exec socket-network denial with LOCALAGENTKIT_DEVICE_TESTS unset; CI repeats the check. Real embedding-asset tests now share the real-model opt-in. System-service network activity and physical-device behavior are outside this process-level check.)*
 
 ### Reliability harness (`LocalAgentKitEval`, FR-029)
-- [ ] **M1-EV-01** CLI harness target (swift-argument-parser)
+- [x] **M1-EV-01** CLI harness target (swift-argument-parser) *(DONE 2026-10-11: list/run subcommands; development-only ArgumentParser dependency and internal EvalSupport target. Single-tool/refusal probes use the fixed suite clock and full catalog through the runtime’s budget/deadline wrapper, recording raw JSON without executing tools. Eleven runner tests, CLI smoke/invalid-input checks, full/offline suites, format/layering and coverage passed. A single real-model macOS probe returned calculate(0.175 * 2480); this verifies wiring, not a reliability rate. Multi-step/context execution and scoring remain the following tasks. See docs/evaluation-harness.md.)*
 - [ ] **M1-EV-02** Measure structured tool-call validity rate
 - [ ] **M1-EV-03** Measure multi-step task completion rate
 - [ ] **M1-EV-04** Measure guardrail refusal rate on the ordinary-task suite (M9) *(Threshold: docs/decisions/0001-m9-refusal-threshold.md, applied per OS version and per OS beta.)*
 - [ ] **M1-EV-05** Measure context-budget exhaustion rate under realistic load
-- [ ] **M1-EV-06** Machine-readable report output + run-over-run comparison
+- [~] **M1-EV-06** Machine-readable report output + run-over-run comparison *(PARTIAL 2026-10-11: raw per-goal JSON with OS, suite version, clock, synthetic/live label, outcomes, arguments, failures and elapsed time exists from M1-EV-01. Scored aggregates and comparison remain unfinished.)*
 - [ ] **M1-EV-07** CI job: harness on every release **and every OS beta** → drift report (R4)
 - [ ] **M1-EV-08** Wire harness results into the M5 metric so it is measured continuously, not observed informally
 

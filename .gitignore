@@ -2,6 +2,8 @@
 .build/
 .swiftpm/
 Package.resolved
+# Reproducible development CLI dependency resolution at the package root.
+!/Package.resolved
 
 # Xcode
 xcuserdata/
