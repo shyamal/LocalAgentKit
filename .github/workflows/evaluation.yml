@@ -1,0 +1,109 @@
+name: Model evaluation
+
+on:
+  release:
+    types: [published]
+  repository_dispatch:
+    types: [os-beta-installed]
+  schedule:
+    # Check the beta runner after updates; unchanged build/source/Xcode is skipped.
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Installed OS runner to measure
+        type: choice
+        options: [both, stable, beta]
+        default: both
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  evaluate:
+    # Opt in only after dedicated model-capable runners have been provisioned.
+    # Never execute PR branches on these persistent machines.
+    if: >-
+      vars.LOCALAGENTKIT_EVAL_ENABLED == 'true' &&
+      (github.event_name != 'workflow_dispatch' ||
+       github.ref == format('refs/heads/{0}', github.event.repository.default_branch))
+    strategy:
+      fail-fast: false
+      matrix:
+        channel: ${{ fromJSON((github.event_name == 'schedule' || github.event_name == 'repository_dispatch') && '["beta"]' || (github.event_name == 'workflow_dispatch' && inputs.channel != 'both') && format('["{0}"]', inputs.channel) || '["stable","beta"]') }}
+    runs-on: [self-hosted, macOS, ARM64, 'localagentkit-model-${{ matrix.channel }}']
+    timeout-minutes: 180
+    env:
+      CHANNEL: ${{ matrix.channel }}
+      EXPECTED_OS_BUILD: ${{ github.event.client_payload.os_build || '' }}
+      EVAL_DEVELOPER_DIR: ${{ matrix.channel == 'beta' && vars.LOCALAGENTKIT_BETA_DEVELOPER_DIR || vars.LOCALAGENTKIT_STABLE_DEVELOPER_DIR }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Configure evaluation paths and toolchain
+        shell: bash
+        run: |
+          echo "EVAL_DIR=$RUNNER_TEMP/localagentkit-eval-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-$CHANNEL" >> "$GITHUB_ENV"
+          if [ -n "$EVAL_DEVELOPER_DIR" ]; then
+            echo "DEVELOPER_DIR=$EVAL_DEVELOPER_DIR" >> "$GITHUB_ENV"
+          fi
+          if [ "$GITHUB_EVENT_NAME" = repository_dispatch ] && [ -z "$EXPECTED_OS_BUILD" ]; then
+            echo "os-beta-installed dispatch requires client_payload.os_build" >&2
+            exit 1
+          fi
+
+      - name: Find previous complete channel artifact and detect changes
+        id: prepare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          python3 Scripts/eval_ci.py prepare --repo "$GITHUB_REPOSITORY"
+          --channel "$CHANNEL" --run-id "$GITHUB_RUN_ID" --output "$EVAL_DIR"
+
+      - name: Build evaluation CLI
+        if: steps.prepare.outputs.should_run == 'true'
+        shell: bash
+        run: |
+          if swift build > "$EVAL_DIR/build.log" 2>&1; then
+            cat "$EVAL_DIR/build.log"
+          else
+            cat "$EVAL_DIR/build.log"
+            exit 1
+          fi
+          echo "EVAL_CLI=$(swift build --show-bin-path)/LocalAgentKitEval" >> "$GITHUB_ENV"
+
+      - name: Run full suites and compare with baseline
+        if: steps.prepare.outputs.should_run == 'true'
+        env:
+          BASELINE: ${{ steps.prepare.outputs.baseline }}
+          FAIL_ON_REGRESSION: ${{ vars.LOCALAGENTKIT_EVAL_FAIL_ON_REGRESSION }}
+        shell: bash
+        run: |
+          args=(--cli "$EVAL_CLI" --output "$EVAL_DIR")
+          if [ -n "$BASELINE" ]; then args+=(--baseline "$BASELINE"); fi
+          if [ "$FAIL_ON_REGRESSION" = true ]; then args+=(--fail-on-regression); fi
+          python3 Scripts/eval_ci.py run "${args[@]}"
+
+      - name: Publish summary even if evaluation fails
+        if: always() && (steps.prepare.outputs.should_run == 'true' || steps.prepare.outcome == 'failure')
+        shell: bash
+        run: |
+          if [ -f "$EVAL_DIR/summary.md" ]; then
+            cat "$EVAL_DIR/summary.md" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Evaluation did not complete. Inspect the retained provenance and build logs.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Retain raw evidence, comparisons, reviews and logs
+        if: always() && (steps.prepare.outputs.should_run == 'true' || steps.prepare.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: localagentkit-eval-${{ matrix.channel }}
+          path: ${{ env.EVAL_DIR }}
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 90

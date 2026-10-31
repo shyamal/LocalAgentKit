@@ -355,6 +355,15 @@ Any proposal to add a runtime dependency needs an explicit written justification
 | Per-OS-beta | FR-029 harness → drift report (R4) |
 | Docs | DocC build + publish |
 
+The Mac release/beta evaluation workflow is implemented locally in
+`.github/workflows/evaluation.yml` (M1-EV-07); see
+[runner setup and evidence rules](docs/evaluation-ci.md). Activation and live
+stable/beta verification remain pending because no model runners are registered.
+The workflow covers installed Mac OS versions, not physical-iPhone measurements.
+M1-EV-08 embeds a scoped M5 fixture assessment in multi-step reports and CI artifacts;
+required-action coverage and real-tool verification remain explicit. See
+[continuous M5 evidence](docs/evaluation-harness.md#continuous-m5-evidence-m1-ev-08).
+
 **Layering check** (cheap, high-value): fail the build if `LocalAgentKitCore` or `LocalAgentKitRuntime` contains an `import` of `FoundationModels`, `CoreAI`, `SwiftData`, `Vision`, `Speech`, `EventKit`, `Contacts`, or `SwiftUI`. Grep-level is sufficient. This is the one test that keeps M3 ("replace the model provider without touching AgentCore") true a year from now.
 
 ### 4.3 Agent tool catalog (the tools the SDK ships *to* agents)

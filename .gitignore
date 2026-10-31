@@ -18,3 +18,7 @@ Spike/.build*/
 Spike/**/xcuserdata/
 Examples/LocalAgentDemo/.build*/
 Examples/LocalAgentDemo/**/xcuserdata/
+
+# Python automation tests
+__pycache__/
+*.py[cod]

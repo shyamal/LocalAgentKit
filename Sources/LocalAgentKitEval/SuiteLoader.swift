@@ -50,18 +50,54 @@ public enum SuiteLoader {
       public let id: String
       public let goal: String
       public let domain: String?
+      public let pairedWith: String?
+      public let expectedOutcome: ExpectedOutcome?
+      public let fixtures: [Fixture]?
+      public let steps: [Step]?
+      public let forbidden: [String]?
+      public let maxIterations: Int?
+    }
+    public struct ExpectedOutcome: Decodable, Sendable {
+      public enum Kind: String, Decodable, Sendable { case tool, text }
+      public let kind: Kind
+      public let tool: String?
+    }
+    public struct RefusalScoring: Decodable, Sendable {
+      public struct Threshold: Codable, Sendable {
+        public let decision: String
+        public let maxSensitiveRefusalRate: Double
+        public let maxRefusedRunsPerSensitiveGoal: Int
+        public let maxControlRefusals: Int
+      }
+      public let runsPerGoal: Int?
+      public let softRefusalMarkers: [String]?
+      public let threshold: Threshold?
+    }
+    public struct Fixture: Decodable, Sendable {
+      public let tool: String
+      public let when: [String: GoalMatcher]
+      public let returns: String
+    }
+    public struct Step: Decodable, Sendable {
+      public let id: String
+      public let tool: String
+      public let dependsOn: [String]
+      public let arguments: [String: GoalMatcher]
+      public let optional: Bool?
     }
     /// Present on goal suites.
     public let suite: String?
     /// Present on the context-load fixture instead of `suite`.
     public let fixture: String?
-    public struct Context: Decodable, Sendable {
+    public struct Context: Codable, Sendable, Hashable {
       public let referenceDateTime: String
       public let referenceWeekday: String
       public let timeZone: String
       public let locale: String
     }
     public let context: Context?
+    public let defaultToolResult: String?
+    public let scoring: RefusalScoring?
     public let task: String
     public let version: Int
     public let goals: [Goal]?
@@ -80,6 +116,11 @@ public enum SuiteLoader {
 
   public static func suite(named name: String) throws -> Suite {
     try decode(Suite.self, named: name)
+  }
+
+  /// The typed context-pressure corpus, including conversation/tool pairing and load profiles.
+  public static func contextFixture() throws -> ContextLoadFixture {
+    try decode(ContextLoadFixture.self, named: "context-load")
   }
 
   public static func phase0Suites() throws -> [Suite] {

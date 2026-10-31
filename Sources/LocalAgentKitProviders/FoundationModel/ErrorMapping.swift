@@ -91,7 +91,7 @@ enum FoundationModelErrors {
   /// 10, "tokengeneration" (findings §11b, §14, both quoting only the code, not a domain
   /// string). The typed case is not the only way the framework reports overflow.
   ///
-  /// Checks the actual `.code`, recursing into `NSUnderlyingErrorKey`, rather than searching the
+  /// Checks the actual `.code`, walking both underlying-error keys, rather than searching the
   /// whole error description for the substring "tokengeneration" — found by testing (running the
   /// real model in iOS Simulator, where on-device generation is not supported at all) that a
   /// completely unrelated failure logs through the `tokengenerationcore` *subsystem name*, so a
@@ -102,13 +102,19 @@ enum FoundationModelErrors {
   /// doesn't match, so the tightened check correctly falls through to `.modelUnavailable` with
   /// the real message instead of hiding it behind a wrong `.contextLimitExceeded`.
   static func isTokenGenerationFailure(_ error: any Error) -> Bool {
-    matchesTokenGenerationOverflow(error as NSError)
-  }
-
-  private static func matchesTokenGenerationOverflow(_ error: NSError) -> Bool {
-    if error.code == 10 { return true }
-    if let underlying = error.userInfo[NSUnderlyingErrorKey] as? NSError {
-      return matchesTokenGenerationOverflow(underlying)
+    // OS 26 can wrap overflow in a multiple-error array (EV-05 live measurement).
+    // Track identity so malformed cyclic error graphs cannot recurse forever.
+    var pending = [error as NSError]
+    var visited: Set<ObjectIdentifier> = []
+    while let current = pending.popLast() {
+      guard visited.insert(ObjectIdentifier(current)).inserted else { continue }
+      if current.code == 10 { return true }
+      if let underlying = current.userInfo[NSUnderlyingErrorKey] as? NSError {
+        pending.append(underlying)
+      }
+      if let underlying = current.userInfo[NSMultipleUnderlyingErrorsKey] as? [NSError] {
+        pending.append(contentsOf: underlying)
+      }
     }
     return false
   }

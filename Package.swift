@@ -86,7 +86,7 @@ let package = Package(
     // Testable harness mechanics and durable Phase 0 resources, without CLI dependencies.
     .target(
       name: "LocalAgentKitEvalSupport",
-      dependencies: ["LocalAgentKitRuntime"],
+      dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTools"],
       path: "Sources/LocalAgentKitEval",
       resources: [.copy("Suites")]
     ),

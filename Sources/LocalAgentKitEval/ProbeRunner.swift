@@ -102,7 +102,7 @@ public enum ProbeRunner {
     return results
   }
 
-  private static func descriptor(_ tool: SuiteLoader.Tool) throws -> ToolDescriptor {
+  static func descriptor(_ tool: SuiteLoader.Tool) throws -> ToolDescriptor {
     var parameters: [String: ToolParameter] = [:]
     for (name, argument) in tool.arguments {
       let type: ToolParameterType

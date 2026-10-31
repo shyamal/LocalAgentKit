@@ -126,6 +126,14 @@ public struct ContextBudgeter: Sendable {
     self.summarizer = summarizer
   }
 
+  /// Assembles the exact untrimmed request for diagnostics and token counting.
+  /// Call `fit` before generation; this method alone does not enforce the window.
+  public static func untrimmedRequest(for inputs: ContextInputs) -> ModelRequest {
+    assemble(
+      instructions: inputs.instructions, tools: inputs.tools, plan: inputs.planState,
+      chunks: inputs.retrievedChunks, summary: nil, conversation: inputs.conversation)
+  }
+
   /// - Parameter events: When given, receives `.contextUtilization` (M1-RT-06).
   /// - Throws: `.contextLimitExceeded` if the call cannot be made to fit, `.invalidConfiguration`
   ///   for unusable shares, `.cancelled`.
@@ -149,9 +157,7 @@ public struct ContextBudgeter: Sendable {
   private func fitted(
     _ inputs: ContextInputs, model: any LocalModelProvider, window: Int, available: Int
   ) async throws -> BudgetedContext {
-    let full = Self.assemble(
-      instructions: inputs.instructions, tools: inputs.tools, plan: inputs.planState,
-      chunks: inputs.retrievedChunks, summary: nil, conversation: inputs.conversation)
+    let full = Self.untrimmedRequest(for: inputs)
     let fullEstimate = TokenEstimator.tokens(full)
     let fullReal = await model.tokenCount(for: full)
 

@@ -1,0 +1,946 @@
+{
+  "baseline" : {
+    "createdAt" : "2026-10-24T04:43:50Z",
+    "model" : "foundation",
+    "operatingSystem" : "Version 26.6.2 (Build 25G83)",
+    "schemaVersion" : 5,
+    "synthetic" : false
+  },
+  "candidate" : {
+    "createdAt" : "2026-10-24T04:50:05Z",
+    "model" : "foundation",
+    "operatingSystem" : "Version 26.6.2 (Build 25G83)",
+    "schemaVersion" : 5,
+    "synthetic" : false
+  },
+  "changes" : [
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 144,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 144,
+        "numerator" : 6,
+        "value" : 0.041666666666666664
+      },
+      "delta" : 4.166666666666666,
+      "higherIsBetter" : false,
+      "metric" : "all\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 144,
+        "numerator" : 3,
+        "value" : 0.020833333333333332
+      },
+      "candidate" : {
+        "denominator" : 144,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : -2.083333333333333,
+      "higherIsBetter" : false,
+      "metric" : "all\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 144,
+        "numerator" : 324.9772674190001,
+        "value" : 2.2567865792986117
+      },
+      "candidate" : {
+        "denominator" : 144,
+        "numerator" : 318.29171220899997,
+        "value" : 2.2103591125624997
+      },
+      "delta" : -0.04642746673611198,
+      "higherIsBetter" : false,
+      "metric" : "all\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 144,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 144,
+        "numerator" : 6,
+        "value" : 0.041666666666666664
+      },
+      "delta" : 4.166666666666666,
+      "higherIsBetter" : false,
+      "metric" : "all\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 95,
+        "numerator" : 58,
+        "value" : 0.6105263157894737
+      },
+      "candidate" : {
+        "denominator" : 92,
+        "numerator" : 52,
+        "value" : 0.5652173913043478
+      },
+      "delta" : -4.530892448512591,
+      "higherIsBetter" : true,
+      "metric" : "all\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 144,
+        "numerator" : 3,
+        "value" : 0.020833333333333332
+      },
+      "candidate" : {
+        "denominator" : 144,
+        "numerator" : 2,
+        "value" : 0.013888888888888888
+      },
+      "delta" : -0.6944444444444444,
+      "higherIsBetter" : false,
+      "metric" : "all\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 2,
+        "value" : 0.1111111111111111
+      },
+      "delta" : 11.11111111111111,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/context-only\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/context-only\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 42.060754292,
+        "value" : 2.336708571777778
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 41.407216624,
+        "value" : 2.3004009235555554
+      },
+      "delta" : -0.03630764822222243,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/context-only\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 2,
+        "value" : 0.1111111111111111
+      },
+      "delta" : 11.11111111111111,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/context-only\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 15,
+        "numerator" : 9,
+        "value" : 0.6
+      },
+      "candidate" : {
+        "denominator" : 13,
+        "numerator" : 5,
+        "value" : 0.38461538461538464
+      },
+      "delta" : -21.538461538461533,
+      "higherIsBetter" : true,
+      "metric" : "profile\/heavy\/context-only\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/context-only\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 2,
+        "value" : 0.1111111111111111
+      },
+      "delta" : 11.11111111111111,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/registered\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/registered\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 58.83217695800001,
+        "value" : 3.2684542754444452
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 57.05525354199999,
+        "value" : 3.169736307888888
+      },
+      "delta" : -0.09871796755555717,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/registered\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 2,
+        "value" : 0.1111111111111111
+      },
+      "delta" : 11.11111111111111,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/registered\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 13,
+        "numerator" : 8,
+        "value" : 0.6153846153846154
+      },
+      "candidate" : {
+        "denominator" : 12,
+        "numerator" : 7,
+        "value" : 0.5833333333333334
+      },
+      "delta" : -3.205128205128205,
+      "higherIsBetter" : true,
+      "metric" : "profile\/heavy\/registered\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 2,
+        "value" : 0.1111111111111111
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 1,
+        "value" : 0.05555555555555555
+      },
+      "delta" : -5.555555555555555,
+      "higherIsBetter" : false,
+      "metric" : "profile\/heavy\/registered\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/context-only\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/context-only\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 15.076070542000002,
+        "value" : 0.8375594745555557
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 14.651017000999998,
+        "value" : 0.8139453889444443
+      },
+      "delta" : -0.023614085611111335,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/context-only\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/context-only\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 6,
+        "numerator" : 3,
+        "value" : 0.5
+      },
+      "candidate" : {
+        "denominator" : 6,
+        "numerator" : 4,
+        "value" : 0.6666666666666666
+      },
+      "delta" : 16.666666666666664,
+      "higherIsBetter" : true,
+      "metric" : "profile\/light\/context-only\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/context-only\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/registered\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 2,
+        "value" : 0.1111111111111111
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : -11.11111111111111,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/registered\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 26.212960248999998,
+        "value" : 1.4562755693888887
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 25.927095666999996,
+        "value" : 1.440394203722222
+      },
+      "delta" : -0.015881365666666758,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/registered\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/registered\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 6,
+        "numerator" : 5,
+        "value" : 0.8333333333333334
+      },
+      "candidate" : {
+        "denominator" : 6,
+        "numerator" : 5,
+        "value" : 0.8333333333333334
+      },
+      "delta" : 0,
+      "higherIsBetter" : true,
+      "metric" : "profile\/light\/registered\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/light\/registered\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/context-only\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/context-only\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 52.07196304400001,
+        "value" : 2.8928868357777784
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 51.260830000999995,
+        "value" : 2.8478238889444443
+      },
+      "delta" : -0.04506294683333412,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/context-only\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/context-only\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 8,
+        "value" : 0.4444444444444444
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 8,
+        "value" : 0.4444444444444444
+      },
+      "delta" : 0,
+      "higherIsBetter" : true,
+      "metric" : "profile\/stress\/context-only\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/context-only\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 1,
+        "value" : 0.05555555555555555
+      },
+      "delta" : 5.555555555555555,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/registered\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 1,
+        "value" : 0.05555555555555555
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : -5.555555555555555,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/registered\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 58.653335666,
+        "value" : 3.258518648111111
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 58.164816707,
+        "value" : 3.2313787059444445
+      },
+      "delta" : -0.027139942166666486,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/registered\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 1,
+        "value" : 0.05555555555555555
+      },
+      "delta" : 5.555555555555555,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/registered\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 13,
+        "numerator" : 9,
+        "value" : 0.6923076923076923
+      },
+      "candidate" : {
+        "denominator" : 13,
+        "numerator" : 7,
+        "value" : 0.5384615384615384
+      },
+      "delta" : -15.384615384615385,
+      "higherIsBetter" : true,
+      "metric" : "profile\/stress\/registered\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 1,
+        "value" : 0.05555555555555555
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 1,
+        "value" : 0.05555555555555555
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/stress\/registered\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/context-only\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/context-only\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 27.848615251000005,
+        "value" : 1.5471452917222226
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 26.568873167999996,
+        "value" : 1.476048509333333
+      },
+      "delta" : -0.0710967823888895,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/context-only\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/context-only\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 12,
+        "numerator" : 9,
+        "value" : 0.75
+      },
+      "candidate" : {
+        "denominator" : 12,
+        "numerator" : 9,
+        "value" : 0.75
+      },
+      "delta" : 0,
+      "higherIsBetter" : true,
+      "metric" : "profile\/typical\/context-only\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/context-only\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 1,
+        "value" : 0.05555555555555555
+      },
+      "delta" : 5.555555555555555,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/registered\/exhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/registered\/failures",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 44.221391417,
+        "value" : 2.456743967611111
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 43.256609499,
+        "value" : 2.4031449721666664
+      },
+      "delta" : -0.053598995444444686,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/registered\/meanLatency",
+      "unit" : "seconds"
+    },
+    {
+      "adverse" : true,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 1,
+        "value" : 0.05555555555555555
+      },
+      "delta" : 5.555555555555555,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/registered\/modelExhaustion",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 12,
+        "numerator" : 7,
+        "value" : 0.5833333333333334
+      },
+      "candidate" : {
+        "denominator" : 12,
+        "numerator" : 7,
+        "value" : 0.5833333333333334
+      },
+      "delta" : 0,
+      "higherIsBetter" : true,
+      "metric" : "profile\/typical\/registered\/retainedSourceRecall",
+      "unit" : "percentagePoints"
+    },
+    {
+      "adverse" : false,
+      "baseline" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "candidate" : {
+        "denominator" : 18,
+        "numerator" : 0,
+        "value" : 0
+      },
+      "delta" : 0,
+      "higherIsBetter" : false,
+      "metric" : "profile\/typical\/registered\/unexpectedToolCalls",
+      "unit" : "percentagePoints"
+    }
+  ],
+  "observedRegression" : false,
+  "reasons" : [
+
+  ],
+  "schemaVersion" : 1,
+  "status" : "provisional",
+  "warnings" : [
+    "Missing protocol metadata: measurementProtocolVersion.",
+    "Observed differences are descriptive; no statistical significance or causal attribution is established."
+  ]
+}

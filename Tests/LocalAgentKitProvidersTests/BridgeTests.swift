@@ -161,6 +161,24 @@ private func descriptor(_ schema: ToolSchema, name: String = "create_reminder") 
     #expect(!mapped.isRetryable)
   }
 
+  @Test func multipleUnderlyingTokenGenerationOverflowIsAContextError() async {
+    let overflow = NSError(domain: "com.apple.tokengeneration", code: 10)
+    let unrelated = NSError(domain: "com.apple.UnifiedAssetFramework", code: 5000)
+    let nested = NSError(
+      domain: "wrapper", code: -1,
+      userInfo: [NSMultipleUnderlyingErrorsKey: [unrelated, overflow]])
+    let error = NSError(
+      domain: "FoundationModels.LanguageModelSession.GenerationError", code: -1,
+      userInfo: [NSMultipleUnderlyingErrorsKey: [nested]])
+    let mapped = await FoundationModelErrors.map(error)
+    #expect(mapped.error == .contextLimitExceeded)
+    #expect(!mapped.isRetryable)
+    let other = NSError(
+      domain: "wrapper", code: -1,
+      userInfo: [NSMultipleUnderlyingErrorsKey: [unrelated]])
+    #expect((await FoundationModelErrors.map(other)).error != .contextLimitExceeded)
+  }
+
   /// Found by testing, not from findings: running the real model in iOS Simulator (where
   /// on-device generation is not supported at all) throws this exact shape. Its code is 5000,
   /// not 10, so it must not be classified as context overflow — this is the failure the loose
