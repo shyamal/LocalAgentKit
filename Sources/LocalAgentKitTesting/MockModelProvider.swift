@@ -11,6 +11,9 @@ public actor MockModelProvider: LocalModelProvider {
   private let tokenCounter: (@Sendable (ModelRequest) -> Int?)?
   private var recorded: [ModelRequest] = []
 
+  /// - Parameter requiresNetwork: Whether this test provider declares network use.
+  /// - Parameter contextWindowTokens: The test model context window, if known.
+  /// - Parameter handler: Computes a scripted response from each recorded request.
   /// - Parameter tokenCounter: Stands in for the platform's token counter. Nil means the
   ///   provider cannot count, as on an OS without `tokenCount(for:)`.
   public init(

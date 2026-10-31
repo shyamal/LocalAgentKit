@@ -33,6 +33,11 @@ public actor AgentRuntime {
   private var activeRun: Task<AgentResponse, any Error>?
 
   /// - Parameters:
+  ///   - configuration: Model, limits, security policy, and optional retrieval components.
+  ///   - tools: The registry of tools available to this runtime.
+  ///   - budgeter: Fits every model request to the configured context allowance.
+  ///   - repairer: Repairs invalid tool arguments within its attempt limit.
+  ///   - now: Supplies the run clock, allowing a fixed instant in tests.
   ///   - workflows: Declared for the default `StateMachinePlanner`; ignored if `planner` is given.
   ///   - planner: Overrides the configured planner. Required for `.modelDriven`, which has not
   ///     shipped (M1-RT-12).
@@ -101,10 +106,11 @@ public actor AgentRuntime {
 
   /// Runs one goal to completion.
   ///
+  /// - Parameter goal: The task the agent should complete.
   /// - Parameter conversation: Earlier turns, so a follow-up such as "those meetings" resolves.
   ///   Nil reads from the configured `memory` instead (M1-ME-01); pass `[]` explicitly to start
   ///   fresh even with memory configured.
-  /// - Throws: ``AgentError``. Cancelling the calling task cancels the run.
+  /// - Throws: `LocalAgentKitCore.AgentError`. Cancelling the calling task cancels the run.
   public func run(_ goal: String, conversation: [ModelMessage]? = nil) async throws -> AgentResponse
   {
     guard activeRun == nil else { throw AgentError.runInProgress }

@@ -134,6 +134,9 @@ public struct ContextBudgeter: Sendable {
       chunks: inputs.retrievedChunks, summary: nil, conversation: inputs.conversation)
   }
 
+  /// - Parameter inputs: Instructions, tool definitions, history, retrieval, and plan state.
+  /// - Parameter model: Supplies the context window and optional token counts.
+  /// - Parameter limits: Optional execution limits that cap the context window.
   /// - Parameter events: When given, receives `.contextUtilization` (M1-RT-06).
   /// - Throws: `.contextLimitExceeded` if the call cannot be made to fit, `.invalidConfiguration`
   ///   for unusable shares, `.cancelled`.

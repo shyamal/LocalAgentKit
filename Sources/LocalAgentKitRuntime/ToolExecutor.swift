@@ -48,6 +48,8 @@ public struct ToolExecutor: Sendable {
   private let auditLogger: AuditLogger?
 
   /// - Parameters:
+  ///   - source: Resolves registered tool implementations.
+  ///   - events: Publishes requests, permission decisions, and execution outcomes.
   ///   - gate: With nil, every tool above `.readOnly` is denied.
   ///   - remainingTime: How long the run has left. A tool that declares `isCancellable` is
   ///     abandoned when it runs out; one that does not is left to finish, since it cannot be
@@ -65,7 +67,7 @@ public struct ToolExecutor: Sendable {
     self.auditLogger = auditLogger
   }
 
-  /// - Throws: ``AgentError`` — `.toolNotFound`, `.invalidArguments`, `.permissionDenied`,
+  /// - Throws: `LocalAgentKitCore.AgentError` — `.toolNotFound`, `.invalidArguments`, `.permissionDenied`,
   ///   `.toolFailed`, or `.cancelled`. An invalid-arguments failure is repairable
   ///   (see ``ArgumentRepairer``); a denial is final.
   public func execute(_ call: ToolCall) async throws -> ToolObservation {

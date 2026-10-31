@@ -21,6 +21,7 @@ public struct StateMachinePlanner: AgentPlanner {
   private static let finish = "finish"
   private static let none = "none"
 
+  /// - Parameter workflows: Declared deterministic workflows selectable by the planner.
   /// - Parameter maxRepairs: Re-asks, with the schema violation as feedback, when the model's
   ///   answer to a narrow question does not validate.
   public init(workflows: [Workflow] = [], maxRepairs: Int = 2) {

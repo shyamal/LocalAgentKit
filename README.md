@@ -68,3 +68,9 @@ Not yet open for contributions — see [`TASKS.md`](./TASKS.md) Milestone 0 for 
 ## License
 
 Not yet decided.
+
+
+## API documentation
+
+See [documentation catalogs and publishing setup](Documentation/README.md) for the
+local DocC build and CI workflow. Hosted publication is not yet verified.

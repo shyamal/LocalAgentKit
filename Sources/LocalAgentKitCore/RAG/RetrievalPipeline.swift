@@ -1,6 +1,6 @@
 /// Composes an ``EmbeddingProvider`` and a ``VectorStore`` into the two operations RAG needs
 /// (M1-RG-05): ingest a document, and retrieve chunks for a query. Its `retrieve` output is
-/// exactly what ``ContextInputs/retrievedChunks`` expects — the link between retrieval and
+/// exactly what `ContextInputs.retrievedChunks` expects — the link between retrieval and
 /// `ContextBudgeter`'s prompt-injection path.
 public struct RetrievalPipeline: Sendable {
   public let embeddingProvider: any EmbeddingProvider
