@@ -64,6 +64,20 @@ jobs:
       - name: Test + coverage gate (Core + Runtime, 80%)
         # Runs the full suite (must pass with no device and no network) and
         # then enforces metric M4 on LocalAgentKitCore/LocalAgentKitRuntime
-        # only. Exits 0 with a notice, not a failure, while those targets
-        # have no coverable implementation yet (pre-Milestone-1).
+        # only, combining coverage across the toolchain's test bundles.
         run: ./Scripts/check-coverage.sh
+
+      - name: Default suite without socket networking or model assets
+        run: bash Scripts/check-offline-tests.sh
+
+      - name: Evaluation automation tests (no model, no network)
+        run: python3 -m unittest discover -s Scripts/tests -p 'test_eval_ci.py'
+
+      - name: Evaluation CLI and orchestration smoke (synthetic, no model)
+        env:
+          LLVM_PROFILE_FILE: ${{ runner.temp }}/eval-smoke-%p.profraw
+        run: |
+          swift run --skip-build LocalAgentKitEval run --model mock --limit 1 --output "$RUNNER_TEMP/eval-smoke.json"
+          eval_cli="$(swift build --show-bin-path)/LocalAgentKitEval"
+          python3 Scripts/eval_ci.py run --cli "$eval_cli" --output "$RUNNER_TEMP/eval-ci-smoke" --smoke
+          python3 Scripts/eval_ci.py run --cli "$eval_cli" --output "$RUNNER_TEMP/eval-ci-compare-smoke" --baseline "$RUNNER_TEMP/eval-ci-smoke" --smoke

@@ -1,0 +1,6258 @@
+{
+  "budget" : {
+    "conversation" : 0.4,
+    "plan" : 0.1,
+    "rag" : 0.2,
+    "systemAndTools" : 0.3
+  },
+  "createdAt" : "2026-10-24T04:50:05Z",
+  "fixture" : "phase0-context-load",
+  "fixtureVersion" : 1,
+  "groups" : {
+    "heavy\/context-only" : {
+      "attempts" : 18,
+      "budgetExhaustions" : 0,
+      "exhaustionRate" : 0.1111111111111111,
+      "generationAttempts" : 18,
+      "missed" : 8,
+      "modelExhaustionRate" : 0.1111111111111111,
+      "modelExhaustions" : 2,
+      "needsReview" : 3,
+      "otherErrors" : 0,
+      "recalled" : 5,
+      "refusals" : 0
+    },
+    "heavy\/registered" : {
+      "attempts" : 18,
+      "budgetExhaustions" : 0,
+      "exhaustionRate" : 0.1111111111111111,
+      "generationAttempts" : 18,
+      "missed" : 5,
+      "modelExhaustionRate" : 0.1111111111111111,
+      "modelExhaustions" : 2,
+      "needsReview" : 3,
+      "otherErrors" : 0,
+      "recalled" : 7,
+      "refusals" : 0
+    },
+    "light\/context-only" : {
+      "attempts" : 18,
+      "budgetExhaustions" : 0,
+      "exhaustionRate" : 0,
+      "generationAttempts" : 18,
+      "missed" : 2,
+      "modelExhaustionRate" : 0,
+      "modelExhaustions" : 0,
+      "needsReview" : 12,
+      "otherErrors" : 0,
+      "recalled" : 4,
+      "refusals" : 0
+    },
+    "light\/registered" : {
+      "attempts" : 18,
+      "budgetExhaustions" : 0,
+      "exhaustionRate" : 0,
+      "generationAttempts" : 18,
+      "missed" : 1,
+      "modelExhaustionRate" : 0,
+      "modelExhaustions" : 0,
+      "needsReview" : 12,
+      "otherErrors" : 0,
+      "recalled" : 5,
+      "refusals" : 0
+    },
+    "stress\/context-only" : {
+      "attempts" : 18,
+      "budgetExhaustions" : 0,
+      "exhaustionRate" : 0,
+      "generationAttempts" : 18,
+      "missed" : 10,
+      "modelExhaustionRate" : 0,
+      "modelExhaustions" : 0,
+      "needsReview" : 0,
+      "otherErrors" : 0,
+      "recalled" : 8,
+      "refusals" : 0
+    },
+    "stress\/registered" : {
+      "attempts" : 18,
+      "budgetExhaustions" : 0,
+      "exhaustionRate" : 0.05555555555555555,
+      "generationAttempts" : 18,
+      "missed" : 6,
+      "modelExhaustionRate" : 0.05555555555555555,
+      "modelExhaustions" : 1,
+      "needsReview" : 3,
+      "otherErrors" : 0,
+      "recalled" : 7,
+      "refusals" : 0
+    },
+    "typical\/context-only" : {
+      "attempts" : 18,
+      "budgetExhaustions" : 0,
+      "exhaustionRate" : 0,
+      "generationAttempts" : 18,
+      "missed" : 3,
+      "modelExhaustionRate" : 0,
+      "modelExhaustions" : 0,
+      "needsReview" : 6,
+      "otherErrors" : 0,
+      "recalled" : 9,
+      "refusals" : 0
+    },
+    "typical\/registered" : {
+      "attempts" : 18,
+      "budgetExhaustions" : 0,
+      "exhaustionRate" : 0.05555555555555555,
+      "generationAttempts" : 18,
+      "missed" : 5,
+      "modelExhaustionRate" : 0.05555555555555555,
+      "modelExhaustions" : 1,
+      "needsReview" : 5,
+      "otherErrors" : 0,
+      "recalled" : 7,
+      "refusals" : 0
+    }
+  },
+  "mode" : "sdk-budgeted-context",
+  "model" : "foundation",
+  "operatingSystem" : "Version 26.6.2 (Build 25G83)",
+  "outputReserveTokens" : 512,
+  "repetitions" : 3,
+  "results" : [
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 745,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 463
+        },
+        "total" : 745
+      },
+      "deliveredTokens" : 745,
+      "elapsedSeconds" : 1.158076709,
+      "fittedTokens" : 745,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 745,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 463
+        },
+        "total" : 745
+      },
+      "deliveredTokens" : 745,
+      "elapsedSeconds" : 0.672999208,
+      "fittedTokens" : 745,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 745,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 463
+        },
+        "total" : 745
+      },
+      "deliveredTokens" : 745,
+      "elapsedSeconds" : 0.678440917,
+      "fittedTokens" : 745,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 180,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 749,
+          "instructionsToolsAndQuestion" : 180,
+          "rag" : 467
+        },
+        "total" : 749
+      },
+      "deliveredTokens" : 749,
+      "elapsedSeconds" : 0.67022425,
+      "fittedTokens" : 749,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 180,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 749,
+          "instructionsToolsAndQuestion" : 180,
+          "rag" : 467
+        },
+        "total" : 749
+      },
+      "deliveredTokens" : 749,
+      "elapsedSeconds" : 0.679256292,
+      "fittedTokens" : 749,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 180,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 749,
+          "instructionsToolsAndQuestion" : 180,
+          "rag" : 467
+        },
+        "total" : 749
+      },
+      "deliveredTokens" : 749,
+      "elapsedSeconds" : 0.695205583,
+      "fittedTokens" : 749,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 178,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 747,
+          "instructionsToolsAndQuestion" : 178,
+          "rag" : 465
+        },
+        "total" : 747
+      },
+      "deliveredTokens" : 747,
+      "elapsedSeconds" : 0.724114167,
+      "fittedTokens" : 747,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "light",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 178,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 747,
+          "instructionsToolsAndQuestion" : 178,
+          "rag" : 465
+        },
+        "total" : 747
+      },
+      "deliveredTokens" : 747,
+      "elapsedSeconds" : 0.936488625,
+      "fittedTokens" : 747,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "You can pick up the visitor badges after 13:00.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 178,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 747,
+          "instructionsToolsAndQuestion" : 178,
+          "rag" : 465
+        },
+        "total" : 747
+      },
+      "deliveredTokens" : 747,
+      "elapsedSeconds" : 0.922660667,
+      "fittedTokens" : 747,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "light",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 745,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 463
+        },
+        "total" : 745
+      },
+      "deliveredTokens" : 745,
+      "elapsedSeconds" : 0.959776208,
+      "fittedTokens" : 745,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 745,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 463
+        },
+        "total" : 745
+      },
+      "deliveredTokens" : 745,
+      "elapsedSeconds" : 1.376494666,
+      "fittedTokens" : 745,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business. This allowance covers breakfast, lunch, dinner and non-alcoholic drinks. Amounts above the daily limit are not reimbursed and cannot be carried over to another day. Alcohol is not reimbursable under the travel meal allowance.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 745,
+          "instructionsToolsAndQuestion" : 176,
+          "rag" : 463
+        },
+        "total" : 745
+      },
+      "deliveredTokens" : 745,
+      "elapsedSeconds" : 0.814542167,
+      "fittedTokens" : 745,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 177,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 746,
+          "instructionsToolsAndQuestion" : 177,
+          "rag" : 464
+        },
+        "total" : 746
+      },
+      "deliveredTokens" : 746,
+      "elapsedSeconds" : 0.675962167,
+      "fittedTokens" : 746,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 177,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 746,
+          "instructionsToolsAndQuestion" : 177,
+          "rag" : 464
+        },
+        "total" : 746
+      },
+      "deliveredTokens" : 746,
+      "elapsedSeconds" : 0.670090875,
+      "fittedTokens" : 746,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 177,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 746,
+          "instructionsToolsAndQuestion" : 177,
+          "rag" : 464
+        },
+        "total" : 746
+      },
+      "deliveredTokens" : 746,
+      "elapsedSeconds" : 0.765938125,
+      "fittedTokens" : 746,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 175,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 744,
+          "instructionsToolsAndQuestion" : 175,
+          "rag" : 462
+        },
+        "total" : 744
+      },
+      "deliveredTokens" : 744,
+      "elapsedSeconds" : 0.865498875,
+      "fittedTokens" : 744,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I've started the plan, but I need to check the budget again and confirm headcount.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 175,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 744,
+          "instructionsToolsAndQuestion" : 175,
+          "rag" : 462
+        },
+        "total" : 744
+      },
+      "deliveredTokens" : 744,
+      "elapsedSeconds" : 0.708214625,
+      "fittedTokens" : 744,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 175,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 744,
+          "instructionsToolsAndQuestion" : 175,
+          "rag" : 462
+        },
+        "total" : 744
+      },
+      "deliveredTokens" : 744,
+      "elapsedSeconds" : 0.677032875,
+      "fittedTokens" : 744,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1805,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 1523
+        },
+        "total" : 1805
+      },
+      "deliveredTokens" : 1805,
+      "elapsedSeconds" : 1.4135775,
+      "fittedTokens" : 1805,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1805,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 1523
+        },
+        "total" : 1805
+      },
+      "deliveredTokens" : 1805,
+      "elapsedSeconds" : 1.374416625,
+      "fittedTokens" : 1805,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1805,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 1523
+        },
+        "total" : 1805
+      },
+      "deliveredTokens" : 1805,
+      "elapsedSeconds" : 1.385088125,
+      "fittedTokens" : 1805,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1240,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1809,
+          "instructionsToolsAndQuestion" : 1240,
+          "rag" : 1527
+        },
+        "total" : 1809
+      },
+      "deliveredTokens" : 1809,
+      "elapsedSeconds" : 1.4241617500000001,
+      "fittedTokens" : 1809,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1240,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1809,
+          "instructionsToolsAndQuestion" : 1240,
+          "rag" : 1527
+        },
+        "total" : 1809
+      },
+      "deliveredTokens" : 1809,
+      "elapsedSeconds" : 1.380334541,
+      "fittedTokens" : 1809,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1240,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1809,
+          "instructionsToolsAndQuestion" : 1240,
+          "rag" : 1527
+        },
+        "total" : 1809
+      },
+      "deliveredTokens" : 1809,
+      "elapsedSeconds" : 1.399137459,
+      "fittedTokens" : 1809,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1238,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1807,
+          "instructionsToolsAndQuestion" : 1238,
+          "rag" : 1525
+        },
+        "total" : 1807
+      },
+      "deliveredTokens" : 1807,
+      "elapsedSeconds" : 1.387129958,
+      "fittedTokens" : 1807,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "After 13:00.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1238,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1807,
+          "instructionsToolsAndQuestion" : 1238,
+          "rag" : 1525
+        },
+        "total" : 1807
+      },
+      "deliveredTokens" : 1807,
+      "elapsedSeconds" : 1.472309625,
+      "fittedTokens" : 1807,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "You can pick up the visitor badges after 13:00.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1238,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1807,
+          "instructionsToolsAndQuestion" : 1238,
+          "rag" : 1525
+        },
+        "total" : 1807
+      },
+      "deliveredTokens" : 1807,
+      "elapsedSeconds" : 1.330337917,
+      "fittedTokens" : 1807,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "light",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1805,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 1523
+        },
+        "total" : 1805
+      },
+      "deliveredTokens" : 1805,
+      "elapsedSeconds" : 1.718491542,
+      "fittedTokens" : 1805,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "According to the Expense Policy (s4.2), meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1805,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 1523
+        },
+        "total" : 1805
+      },
+      "deliveredTokens" : 1805,
+      "elapsedSeconds" : 1.6419161249999998,
+      "fittedTokens" : 1805,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "According to the Expense Policy, the daily meal allowance while travelling on company business is up to $75 per day.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1805,
+          "instructionsToolsAndQuestion" : 1236,
+          "rag" : 1523
+        },
+        "total" : 1805
+      },
+      "deliveredTokens" : 1805,
+      "elapsedSeconds" : 1.456515416,
+      "fittedTokens" : 1805,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "light",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1237,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1806,
+          "instructionsToolsAndQuestion" : 1237,
+          "rag" : 1524
+        },
+        "total" : 1806
+      },
+      "deliveredTokens" : 1806,
+      "elapsedSeconds" : 1.476512209,
+      "fittedTokens" : 1806,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1237,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1806,
+          "instructionsToolsAndQuestion" : 1237,
+          "rag" : 1524
+        },
+        "total" : 1806
+      },
+      "deliveredTokens" : 1806,
+      "elapsedSeconds" : 1.479510375,
+      "fittedTokens" : 1806,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1237,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1806,
+          "instructionsToolsAndQuestion" : 1237,
+          "rag" : 1524
+        },
+        "total" : 1806
+      },
+      "deliveredTokens" : 1806,
+      "elapsedSeconds" : 1.365586292,
+      "fittedTokens" : 1806,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1235,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1804,
+          "instructionsToolsAndQuestion" : 1235,
+          "rag" : 1522
+        },
+        "total" : 1804
+      },
+      "deliveredTokens" : 1804,
+      "elapsedSeconds" : 1.45884675,
+      "fittedTokens" : 1804,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know why the plan is stuck.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1235,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1804,
+          "instructionsToolsAndQuestion" : 1235,
+          "rag" : 1522
+        },
+        "total" : 1804
+      },
+      "deliveredTokens" : 1804,
+      "elapsedSeconds" : 1.379604375,
+      "fittedTokens" : 1804,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 282,
+          "instructionsToolsAndQuestion" : 1235,
+          "rag" : 287
+        },
+        "prefixTokens" : {
+          "history" : 1804,
+          "instructionsToolsAndQuestion" : 1235,
+          "rag" : 1522
+        },
+        "total" : 1804
+      },
+      "deliveredTokens" : 1804,
+      "elapsedSeconds" : 1.3836190830000001,
+      "fittedTokens" : 1804,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "light",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1696,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 861
+        },
+        "total" : 1696
+      },
+      "deliveredTokens" : 1696,
+      "elapsedSeconds" : 1.37399575,
+      "fittedTokens" : 1696,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1696,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 861
+        },
+        "total" : 1696
+      },
+      "deliveredTokens" : 1696,
+      "elapsedSeconds" : 1.368112458,
+      "fittedTokens" : 1696,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1696,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 861
+        },
+        "total" : 1696
+      },
+      "deliveredTokens" : 1696,
+      "elapsedSeconds" : 1.476785834,
+      "fittedTokens" : 1696,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know which room the Northwind workshop is in.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1700,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 865
+        },
+        "total" : 1700
+      },
+      "deliveredTokens" : 1700,
+      "elapsedSeconds" : 1.492471334,
+      "fittedTokens" : 1700,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Northwind's PO number for the new SLA was NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1700,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 865
+        },
+        "total" : 1700
+      },
+      "deliveredTokens" : 1700,
+      "elapsedSeconds" : 1.493591375,
+      "fittedTokens" : 1700,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Northwind's PO number for the new SLA was NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1700,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 865
+        },
+        "total" : 1700
+      },
+      "deliveredTokens" : 1700,
+      "elapsedSeconds" : 1.494276875,
+      "fittedTokens" : 1700,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1698,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 863
+        },
+        "total" : 1698
+      },
+      "deliveredTokens" : 1698,
+      "elapsedSeconds" : 1.3319759580000001,
+      "fittedTokens" : 1698,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "typical",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1698,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 863
+        },
+        "total" : 1698
+      },
+      "deliveredTokens" : 1698,
+      "elapsedSeconds" : 1.410044042,
+      "fittedTokens" : 1698,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "After 13:00.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1698,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 863
+        },
+        "total" : 1698
+      },
+      "deliveredTokens" : 1698,
+      "elapsedSeconds" : 1.3375627909999999,
+      "fittedTokens" : 1698,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "typical",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1696,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 861
+        },
+        "total" : 1696
+      },
+      "deliveredTokens" : 1696,
+      "elapsedSeconds" : 1.462090125,
+      "fittedTokens" : 1696,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "The daily meal allowance when travelling is up to $75 per day.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1696,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 861
+        },
+        "total" : 1696
+      },
+      "deliveredTokens" : 1696,
+      "elapsedSeconds" : 1.466750958,
+      "fittedTokens" : 1696,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1696,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 861
+        },
+        "total" : 1696
+      },
+      "deliveredTokens" : 1696,
+      "elapsedSeconds" : 1.467368084,
+      "fittedTokens" : 1696,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1697,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 862
+        },
+        "total" : 1697
+      },
+      "deliveredTokens" : 1697,
+      "elapsedSeconds" : 1.451127542,
+      "fittedTokens" : 1697,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1697,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 862
+        },
+        "total" : 1697
+      },
+      "deliveredTokens" : 1697,
+      "elapsedSeconds" : 1.4591409579999999,
+      "fittedTokens" : 1697,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1697,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 862
+        },
+        "total" : 1697
+      },
+      "deliveredTokens" : 1697,
+      "elapsedSeconds" : 1.4877443750000001,
+      "fittedTokens" : 1697,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1695,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 860
+        },
+        "total" : 1695
+      },
+      "deliveredTokens" : 1695,
+      "elapsedSeconds" : 1.6507945830000001,
+      "fittedTokens" : 1695,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "typical",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know. It could be because Tom hasn't approved the $540 budget yet.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1695,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 860
+        },
+        "total" : 1695
+      },
+      "deliveredTokens" : 1695,
+      "elapsedSeconds" : 1.6164819590000001,
+      "fittedTokens" : 1695,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "The plan is stuck because Tom is waiting for manager approval on the $540 total for the team dinner.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 1695,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 860
+        },
+        "total" : 1695
+      },
+      "deliveredTokens" : 1695,
+      "elapsedSeconds" : 1.728558167,
+      "fittedTokens" : 1695,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "I don't know why the plan is stuck. It's likely waiting on Priya Raman's approval for the $540 total.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2756,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 1921
+        },
+        "total" : 2756
+      },
+      "deliveredTokens" : 2756,
+      "elapsedSeconds" : 2.169295791,
+      "error" : "contextLimitExceeded",
+      "fittedTokens" : 2756,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "modelExceeded",
+      "probeID" : "pr-early",
+      "profileID" : "typical",
+      "recallAssessment" : "notScored",
+      "repetition" : 1,
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2756,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 1921
+        },
+        "total" : 2756
+      },
+      "deliveredTokens" : 2756,
+      "elapsedSeconds" : 2.264425708,
+      "fittedTokens" : 2756,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2756,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 1921
+        },
+        "total" : 2756
+      },
+      "deliveredTokens" : 2756,
+      "elapsedSeconds" : 2.394885084,
+      "fittedTokens" : 2756,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know which room the Northwind workshop is in.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2760,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 1925
+        },
+        "total" : 2760
+      },
+      "deliveredTokens" : 2760,
+      "elapsedSeconds" : 2.424082542,
+      "fittedTokens" : 2760,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2760,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 1925
+        },
+        "total" : 2760
+      },
+      "deliveredTokens" : 2760,
+      "elapsedSeconds" : 2.426620583,
+      "fittedTokens" : 2760,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2760,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 1925
+        },
+        "total" : 2760
+      },
+      "deliveredTokens" : 2760,
+      "elapsedSeconds" : 2.426816584,
+      "fittedTokens" : 2760,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2758,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 1923
+        },
+        "total" : 2758
+      },
+      "deliveredTokens" : 2758,
+      "elapsedSeconds" : 2.228384833,
+      "fittedTokens" : 2758,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "typical",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2758,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 1923
+        },
+        "total" : 2758
+      },
+      "deliveredTokens" : 2758,
+      "elapsedSeconds" : 2.225972417,
+      "fittedTokens" : 2758,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "typical",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2758,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 1923
+        },
+        "total" : 2758
+      },
+      "deliveredTokens" : 2758,
+      "elapsedSeconds" : 2.22969725,
+      "fittedTokens" : 2758,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "typical",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2756,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 1921
+        },
+        "total" : 2756
+      },
+      "deliveredTokens" : 2756,
+      "elapsedSeconds" : 2.611814625,
+      "fittedTokens" : 2756,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "The daily meal allowance when travelling is $75 per day, covering breakfast, lunch, dinner, and non-alcoholic drinks.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2756,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 1921
+        },
+        "total" : 2756
+      },
+      "deliveredTokens" : 2756,
+      "elapsedSeconds" : 2.603334791,
+      "fittedTokens" : 2756,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business. This allowance covers breakfast, lunch, dinner and non-alcoholic drinks.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2756,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 1921
+        },
+        "total" : 2756
+      },
+      "deliveredTokens" : 2756,
+      "elapsedSeconds" : 2.632445667,
+      "fittedTokens" : 2756,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "According to the Expense Policy (s4.2), meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2757,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 1922
+        },
+        "total" : 2757
+      },
+      "deliveredTokens" : 2757,
+      "elapsedSeconds" : 2.263348541,
+      "fittedTokens" : 2757,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2757,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 1922
+        },
+        "total" : 2757
+      },
+      "deliveredTokens" : 2757,
+      "elapsedSeconds" : 2.371499375,
+      "fittedTokens" : 2757,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2757,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 1922
+        },
+        "total" : 2757
+      },
+      "deliveredTokens" : 2757,
+      "elapsedSeconds" : 2.364274042,
+      "fittedTokens" : 2757,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "typical",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2755,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 1920
+        },
+        "total" : 2755
+      },
+      "deliveredTokens" : 2755,
+      "elapsedSeconds" : 2.454057083,
+      "fittedTokens" : 2755,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "typical",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know. Maybe there's a problem with the calendar or the restaurant.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2755,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 1920
+        },
+        "total" : 2755
+      },
+      "deliveredTokens" : 2755,
+      "elapsedSeconds" : 2.5084885,
+      "fittedTokens" : 2755,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "typical",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "The plan is stuck because Tom hasn't approved the $540 budget for the team dinner.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 835,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 566
+        },
+        "prefixTokens" : {
+          "history" : 2755,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 1920
+        },
+        "total" : 2755
+      },
+      "deliveredTokens" : 2755,
+      "elapsedSeconds" : 2.657166083,
+      "fittedTokens" : 2755,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "typical",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "I don't know. The plan is stuck because Tom is still waiting for manager approval for the $540 total.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2676,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1201
+        },
+        "total" : 2676
+      },
+      "deliveredTokens" : 2676,
+      "elapsedSeconds" : 2.119087125,
+      "error" : "contextLimitExceeded",
+      "fittedTokens" : 2677,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "modelExceeded",
+      "probeID" : "pr-early",
+      "profileID" : "heavy",
+      "recallAssessment" : "notScored",
+      "repetition" : 1,
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2676,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1201
+        },
+        "total" : 2676
+      },
+      "deliveredTokens" : 2676,
+      "elapsedSeconds" : 2.267915666,
+      "fittedTokens" : 2677,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2676,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1201
+        },
+        "total" : 2676
+      },
+      "deliveredTokens" : 2676,
+      "elapsedSeconds" : 2.106875875,
+      "error" : "contextLimitExceeded",
+      "fittedTokens" : 2677,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "modelExceeded",
+      "probeID" : "pr-early",
+      "profileID" : "heavy",
+      "recallAssessment" : "notScored",
+      "repetition" : 3,
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2680,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 1205
+        },
+        "total" : 2680
+      },
+      "deliveredTokens" : 2680,
+      "elapsedSeconds" : 2.384214709,
+      "fittedTokens" : 2681,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Northwind's PO number for the new SLA was NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2680,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 1205
+        },
+        "total" : 2680
+      },
+      "deliveredTokens" : 2680,
+      "elapsedSeconds" : 2.364225125,
+      "fittedTokens" : 2681,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2680,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 1205
+        },
+        "total" : 2680
+      },
+      "deliveredTokens" : 2680,
+      "elapsedSeconds" : 2.375,
+      "fittedTokens" : 2681,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Northwind's PO number for the new SLA was NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2678,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 1203
+        },
+        "total" : 2678
+      },
+      "deliveredTokens" : 2678,
+      "elapsedSeconds" : 2.188856375,
+      "fittedTokens" : 2679,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2678,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 1203
+        },
+        "total" : 2678
+      },
+      "deliveredTokens" : 2678,
+      "elapsedSeconds" : 2.18930375,
+      "fittedTokens" : 2679,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2678,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 1203
+        },
+        "total" : 2678
+      },
+      "deliveredTokens" : 2678,
+      "elapsedSeconds" : 2.187888125,
+      "fittedTokens" : 2679,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2676,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1201
+        },
+        "total" : 2676
+      },
+      "deliveredTokens" : 2676,
+      "elapsedSeconds" : 2.22427475,
+      "fittedTokens" : 2677,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2676,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1201
+        },
+        "total" : 2676
+      },
+      "deliveredTokens" : 2676,
+      "elapsedSeconds" : 2.5190227910000003,
+      "fittedTokens" : 2677,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "The daily meal allowance when travelling is $75 per day, covering breakfast, lunch, dinner, and non-alcoholic drinks.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2676,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1201
+        },
+        "total" : 2676
+      },
+      "deliveredTokens" : 2676,
+      "elapsedSeconds" : 2.363059,
+      "fittedTokens" : 2677,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2677,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 1202
+        },
+        "total" : 2677
+      },
+      "deliveredTokens" : 2677,
+      "elapsedSeconds" : 2.227400917,
+      "fittedTokens" : 2678,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "heavy",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2677,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 1202
+        },
+        "total" : 2677
+      },
+      "deliveredTokens" : 2677,
+      "elapsedSeconds" : 2.338112291,
+      "fittedTokens" : 2678,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "heavy",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2677,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 1202
+        },
+        "total" : 2677
+      },
+      "deliveredTokens" : 2677,
+      "elapsedSeconds" : 2.340331375,
+      "fittedTokens" : 2678,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "heavy",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2675,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 1200
+        },
+        "total" : 2675
+      },
+      "deliveredTokens" : 2675,
+      "elapsedSeconds" : 2.562383708,
+      "fittedTokens" : 2676,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know. The plan is stuck because we haven't started any of the tasks.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2675,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 1200
+        },
+        "total" : 2675
+      },
+      "deliveredTokens" : 2675,
+      "elapsedSeconds" : 2.23302875,
+      "fittedTokens" : 2676,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 2675,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 1200
+        },
+        "total" : 2675
+      },
+      "deliveredTokens" : 2675,
+      "elapsedSeconds" : 2.416236292,
+      "fittedTokens" : 2676,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know. Maybe the budget rule for team dinners is too strict.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3737,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2261
+        },
+        "total" : 3737
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 2.924054125,
+      "error" : "contextLimitExceeded",
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "modelExceeded",
+      "probeID" : "pr-early",
+      "profileID" : "heavy",
+      "recallAssessment" : "notScored",
+      "repetition" : 1,
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3737,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2261
+        },
+        "total" : 3737
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.138404584,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "The Northwind workshop is in Room Kestrel, level 3.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3737,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2261
+        },
+        "total" : 3737
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.153382416,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "unexpectedToolCall",
+      "probeID" : "pr-early",
+      "profileID" : "heavy",
+      "recallAssessment" : "notScored",
+      "repetition" : 3,
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3741,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 2265
+        },
+        "total" : 3741
+      },
+      "deliveredTokens" : 3576,
+      "elapsedSeconds" : 3.193505583,
+      "fittedTokens" : 3576,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Northwind's PO number for the new SLA was NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3741,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 2265
+        },
+        "total" : 3741
+      },
+      "deliveredTokens" : 3576,
+      "elapsedSeconds" : 3.209625625,
+      "fittedTokens" : 3576,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3741,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 2265
+        },
+        "total" : 3741
+      },
+      "deliveredTokens" : 3576,
+      "elapsedSeconds" : 3.174239541,
+      "fittedTokens" : 3576,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Northwind's PO number for the new SLA was NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3739,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 2263
+        },
+        "total" : 3739
+      },
+      "deliveredTokens" : 3574,
+      "elapsedSeconds" : 2.991221834,
+      "fittedTokens" : 3574,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3739,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 2263
+        },
+        "total" : 3739
+      },
+      "deliveredTokens" : 3574,
+      "elapsedSeconds" : 3.00355725,
+      "fittedTokens" : 3574,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3739,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 2263
+        },
+        "total" : 3739
+      },
+      "deliveredTokens" : 3574,
+      "elapsedSeconds" : 3.017797625,
+      "fittedTokens" : 3574,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3737,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2261
+        },
+        "total" : 3737
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.562946125,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "According to the Expense Policy (s4.2), meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3737,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2261
+        },
+        "total" : 3737
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.370158,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3737,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2261
+        },
+        "total" : 3737
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.3614374590000002,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "heavy",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3738,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 2262
+        },
+        "total" : 3738
+      },
+      "deliveredTokens" : 3573,
+      "elapsedSeconds" : 3.166712583,
+      "fittedTokens" : 3573,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "heavy",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3738,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 2262
+        },
+        "total" : 3738
+      },
+      "deliveredTokens" : 3573,
+      "elapsedSeconds" : 3.15082175,
+      "fittedTokens" : 3573,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "heavy",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3738,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 2262
+        },
+        "total" : 3738
+      },
+      "deliveredTokens" : 3573,
+      "elapsedSeconds" : 3.159621417,
+      "fittedTokens" : 3573,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "heavy",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "absent",
+      "sourceAtGeneration" : "absent",
+      "sourceIncludedBeforeFit" : false,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3736,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 2260
+        },
+        "total" : 3736
+      },
+      "deliveredTokens" : 3571,
+      "elapsedSeconds" : 3.232553542,
+      "fittedTokens" : 3571,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know. Maybe the manager hasn't approved the budget yet.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3736,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 2260
+        },
+        "total" : 3736
+      },
+      "deliveredTokens" : 3571,
+      "elapsedSeconds" : 3.33455725,
+      "fittedTokens" : 3571,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "heavy",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know. The team dinner plan is stuck because I couldn't find the budget rule for team dinners.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 906
+        },
+        "prefixTokens" : {
+          "history" : 3736,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 2260
+        },
+        "total" : 3736
+      },
+      "deliveredTokens" : 3571,
+      "elapsedSeconds" : 2.910656833,
+      "error" : "contextLimitExceeded",
+      "fittedTokens" : 3571,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "modelExceeded",
+      "probeID" : "pr-plan",
+      "profileID" : "heavy",
+      "recallAssessment" : "notScored",
+      "repetition" : 3,
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 2,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3188,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1713
+        },
+        "total" : 3188
+      },
+      "deliveredTokens" : 3188,
+      "elapsedSeconds" : 2.976724125,
+      "fittedTokens" : 3189,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "The Northwind workshop is in Room Kestrel on level 3.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3188,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1713
+        },
+        "total" : 3188
+      },
+      "deliveredTokens" : 3188,
+      "elapsedSeconds" : 2.776073292,
+      "fittedTokens" : 3189,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3188,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1713
+        },
+        "total" : 3188
+      },
+      "deliveredTokens" : 3188,
+      "elapsedSeconds" : 2.947150667,
+      "fittedTokens" : 3189,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "The Northwind workshop is in Room Kestrel on level 3.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3192,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 1717
+        },
+        "total" : 3192
+      },
+      "deliveredTokens" : 3192,
+      "elapsedSeconds" : 2.899346708,
+      "fittedTokens" : 3193,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3192,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 1717
+        },
+        "total" : 3192
+      },
+      "deliveredTokens" : 3192,
+      "elapsedSeconds" : 2.894613875,
+      "fittedTokens" : 3193,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3192,
+          "instructionsToolsAndQuestion" : 180,
+          "plan" : 299,
+          "rag" : 1717
+        },
+        "total" : 3192
+      },
+      "deliveredTokens" : 3192,
+      "elapsedSeconds" : 2.9054895,
+      "fittedTokens" : 3193,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Northwind's PO number for the new SLA was NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3190,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 1715
+        },
+        "total" : 3190
+      },
+      "deliveredTokens" : 3190,
+      "elapsedSeconds" : 2.728994791,
+      "fittedTokens" : 3191,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3190,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 1715
+        },
+        "total" : 3190
+      },
+      "deliveredTokens" : 3190,
+      "elapsedSeconds" : 2.743288708,
+      "fittedTokens" : 3191,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3190,
+          "instructionsToolsAndQuestion" : 178,
+          "plan" : 297,
+          "rag" : 1715
+        },
+        "total" : 3190
+      },
+      "deliveredTokens" : 3190,
+      "elapsedSeconds" : 2.717752334,
+      "fittedTokens" : 3191,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3188,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1713
+        },
+        "total" : 3188
+      },
+      "deliveredTokens" : 3188,
+      "elapsedSeconds" : 2.953881125,
+      "fittedTokens" : 3189,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3188,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1713
+        },
+        "total" : 3188
+      },
+      "deliveredTokens" : 3188,
+      "elapsedSeconds" : 2.944091708,
+      "fittedTokens" : 3189,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3188,
+          "instructionsToolsAndQuestion" : 176,
+          "plan" : 295,
+          "rag" : 1713
+        },
+        "total" : 3188
+      },
+      "deliveredTokens" : 3188,
+      "elapsedSeconds" : 2.941268709,
+      "fittedTokens" : 3189,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3189,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 1714
+        },
+        "total" : 3189
+      },
+      "deliveredTokens" : 3189,
+      "elapsedSeconds" : 2.752991542,
+      "fittedTokens" : 3190,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3189,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 1714
+        },
+        "total" : 3189
+      },
+      "deliveredTokens" : 3189,
+      "elapsedSeconds" : 2.8537793750000002,
+      "fittedTokens" : 3190,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3189,
+          "instructionsToolsAndQuestion" : 177,
+          "plan" : 296,
+          "rag" : 1714
+        },
+        "total" : 3189
+      },
+      "deliveredTokens" : 3189,
+      "elapsedSeconds" : 2.859247,
+      "fittedTokens" : 3190,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3187,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 1712
+        },
+        "total" : 3187
+      },
+      "deliveredTokens" : 3187,
+      "elapsedSeconds" : 2.858747459,
+      "fittedTokens" : 3188,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know why the plan is stuck.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3187,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 1712
+        },
+        "total" : 3187
+      },
+      "deliveredTokens" : 3187,
+      "elapsedSeconds" : 2.743644416,
+      "fittedTokens" : 3188,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 3187,
+          "instructionsToolsAndQuestion" : 175,
+          "plan" : 294,
+          "rag" : 1712
+        },
+        "total" : 3187
+      },
+      "deliveredTokens" : 3187,
+      "elapsedSeconds" : 2.763744667,
+      "fittedTokens" : 3188,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "context-only",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 0,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4249,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2773
+        },
+        "total" : 4249
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.170268291,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "unexpectedToolCall",
+      "probeID" : "pr-early",
+      "profileID" : "stress",
+      "recallAssessment" : "notScored",
+      "repetition" : 1,
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4248,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2773
+        },
+        "total" : 4248
+      },
+      "deliveredTokens" : 3571,
+      "elapsedSeconds" : 3.232638125,
+      "fittedTokens" : 3571,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-early",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "The Northwind workshop is in Room Kestrel on level 3.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4249,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2773
+        },
+        "total" : 4249
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 2.925324292,
+      "error" : "contextLimitExceeded",
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "modelExceeded",
+      "probeID" : "pr-early",
+      "profileID" : "stress",
+      "recallAssessment" : "notScored",
+      "repetition" : 3,
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4253,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 2777
+        },
+        "total" : 4253
+      },
+      "deliveredTokens" : 3576,
+      "elapsedSeconds" : 3.201561916,
+      "fittedTokens" : 3576,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Northwind's PO number for the new SLA was NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4252,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 2777
+        },
+        "total" : 4252
+      },
+      "deliveredTokens" : 3575,
+      "elapsedSeconds" : 3.257513709,
+      "fittedTokens" : 3575,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4253,
+          "instructionsToolsAndQuestion" : 1240,
+          "plan" : 1359,
+          "rag" : 2777
+        },
+        "total" : 4253
+      },
+      "deliveredTokens" : 3576,
+      "elapsedSeconds" : 3.245554083,
+      "fittedTokens" : 3576,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-mid",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "Northwind's PO number for the new SLA is NW-44817.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4251,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 2775
+        },
+        "total" : 4251
+      },
+      "deliveredTokens" : 3574,
+      "elapsedSeconds" : 3.011657167,
+      "fittedTokens" : 3574,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4250,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 2775
+        },
+        "total" : 4250
+      },
+      "deliveredTokens" : 3573,
+      "elapsedSeconds" : 3.024974458,
+      "fittedTokens" : 3573,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4251,
+          "instructionsToolsAndQuestion" : 1238,
+          "plan" : 1357,
+          "rag" : 2775
+        },
+        "total" : 4251
+      },
+      "deliveredTokens" : 3574,
+      "elapsedSeconds" : 3.035031167,
+      "fittedTokens" : 3574,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-recent",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I don't know.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4249,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2773
+        },
+        "total" : 4249
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.358528792,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 1,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4248,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2773
+        },
+        "total" : 4248
+      },
+      "deliveredTokens" : 3571,
+      "elapsedSeconds" : 3.339115041,
+      "fittedTokens" : 3571,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 2,
+      "response" : "Meals are reimbursed up to $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : true,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4249,
+          "instructionsToolsAndQuestion" : 1236,
+          "plan" : 1355,
+          "rag" : 2773
+        },
+        "total" : 4249
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.499427333,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-first",
+      "profileID" : "stress",
+      "recallAssessment" : "recalled",
+      "repetition" : 3,
+      "response" : "According to the Expense Policy s4.2 Meals while travelling, the daily meal allowance is $75 per day while travelling on company business.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4250,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 2774
+        },
+        "total" : 4250
+      },
+      "deliveredTokens" : 3573,
+      "elapsedSeconds" : 3.2076985000000002,
+      "fittedTokens" : 3573,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "stress",
+      "recallAssessment" : "needsReview",
+      "repetition" : 1,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "removed",
+      "sourceAtGeneration" : "removed",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4249,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 2774
+        },
+        "total" : 4249
+      },
+      "deliveredTokens" : 3572,
+      "elapsedSeconds" : 3.182532625,
+      "fittedTokens" : 3572,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "stress",
+      "recallAssessment" : "needsReview",
+      "repetition" : 2,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "removed",
+      "sourceAtGeneration" : "removed",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4250,
+          "instructionsToolsAndQuestion" : 1237,
+          "plan" : 1356,
+          "rag" : 2774
+        },
+        "total" : 4250
+      },
+      "deliveredTokens" : 3573,
+      "elapsedSeconds" : 3.176296833,
+      "fittedTokens" : 3573,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-chunk-late",
+      "profileID" : "stress",
+      "recallAssessment" : "needsReview",
+      "repetition" : 3,
+      "response" : "I don't know the guest wifi password at Harbour St.",
+      "sourceAfterFit" : "removed",
+      "sourceAtGeneration" : "removed",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4248,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 2772
+        },
+        "total" : 4248
+      },
+      "deliveredTokens" : 3571,
+      "elapsedSeconds" : 3.3713851249999998,
+      "fittedTokens" : 3571,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 1,
+      "response" : "I don't know. The team dinner plan is stuck because Tom hasn't approved the $540 total.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1475,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4247,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 2772
+        },
+        "total" : 4247
+      },
+      "deliveredTokens" : 3570,
+      "elapsedSeconds" : 3.312194375,
+      "fittedTokens" : 3570,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 2,
+      "response" : "I don't know. The plan is stuck because I couldn't send the invite to everyone.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    },
+    {
+      "answerMatches" : false,
+      "beforeFit" : {
+        "componentTokens" : {
+          "history" : 1476,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 119,
+          "rag" : 1418
+        },
+        "prefixTokens" : {
+          "history" : 4248,
+          "instructionsToolsAndQuestion" : 1235,
+          "plan" : 1354,
+          "rag" : 2772
+        },
+        "total" : 4248
+      },
+      "deliveredTokens" : 3571,
+      "elapsedSeconds" : 3.613114875,
+      "fittedTokens" : 3571,
+      "fittedTokensAreMeasured" : true,
+      "fittedWindow" : 4096,
+      "generationStarted" : true,
+      "outcome" : "text",
+      "probeID" : "pr-plan",
+      "profileID" : "stress",
+      "recallAssessment" : "missed",
+      "repetition" : 3,
+      "response" : "I've started a plan for Friday's team dinner, but it's stuck because I need to confirm the headcount, check the budget, book the restaurant, send the invite, and add it to everyone's calendar.",
+      "sourceAfterFit" : "retained",
+      "sourceAtGeneration" : "retained",
+      "sourceIncludedBeforeFit" : true,
+      "toolMode" : "registered",
+      "trim" : {
+        "compactedToolOutputs" : 0,
+        "droppedChunks" : 8,
+        "droppedToolNames" : [
+
+        ],
+        "planTruncated" : false,
+        "summarizedMessages" : 0
+      }
+    }
+  ],
+  "schemaVersion" : 5,
+  "summary" : {
+    "attempts" : 144,
+    "budgetExhaustions" : 0,
+    "exhaustionRate" : 0.041666666666666664,
+    "generationAttempts" : 144,
+    "missed" : 40,
+    "modelExhaustionRate" : 0.041666666666666664,
+    "modelExhaustions" : 6,
+    "needsReview" : 44,
+    "otherErrors" : 0,
+    "recalled" : 52,
+    "refusals" : 0
+  },
+  "synthetic" : false,
+  "timeoutSeconds" : 20
+}

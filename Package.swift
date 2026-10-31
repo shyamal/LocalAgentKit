@@ -33,6 +33,10 @@ let package = Package(
     .library(name: "LocalAgentKitTesting", targets: ["LocalAgentKitTesting"]),
     .executable(name: "LocalAgentKitEval", targets: ["LocalAgentKitEval"]),
   ],
+  // Development-only CLI dependency; no SDK library target depends on ArgumentParser.
+  dependencies: [
+    .package(url: "https://github.com/apple/swift-argument-parser", from: "1.7.0")
+  ],
   targets: [
     // Protocols + value types only. Zero Apple-framework dependencies —
     // enforced by the CI layering check (task M0-13).
@@ -79,14 +83,20 @@ let package = Package(
       dependencies: ["LocalAgentKitCore"]
     ),
 
-    // FR-029 reliability harness. swift-argument-parser and the eval
-    // library split land in task M1-EV-01 — this is the empty skeleton.
+    // Testable harness mechanics and durable Phase 0 resources, without CLI dependencies.
+    .target(
+      name: "LocalAgentKitEvalSupport",
+      dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTools"],
+      path: "Sources/LocalAgentKitEval",
+      resources: [.copy("Suites")]
+    ),
     .executableTarget(
       name: "LocalAgentKitEval",
-      dependencies: ["LocalAgentKitRuntime", "LocalAgentKitTesting"],
-      // The Phase 0 scenario suites (task P0-18). The spike that produced them was
-      // throwaway; the suites are the durable artefact and ship with the harness.
-      resources: [.copy("Suites")]
+      dependencies: [
+        "LocalAgentKitEvalSupport", "LocalAgentKitProviders", "LocalAgentKitTesting",
+        .product(name: "ArgumentParser", package: "swift-argument-parser"),
+      ],
+      path: "Sources/LocalAgentKitEvalCLI"
     ),
 
     .testTarget(
@@ -115,7 +125,7 @@ let package = Package(
     ),
     .testTarget(
       name: "LocalAgentKitEvalTests",
-      dependencies: ["LocalAgentKitEval"]
+      dependencies: ["LocalAgentKitEvalSupport", "LocalAgentKitTesting"]
     ),
   ]
 )

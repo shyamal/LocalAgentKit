@@ -11,15 +11,14 @@ private func text(_ segments: [Transcript.Segment]) -> String {
 }
 
 private func kind(_ entry: Transcript.Entry) -> String {
-  switch entry {
-  case .instructions: "instructions"
-  case .prompt: "prompt"
-  case .toolCalls: "toolCalls"
-  case .toolOutput: "toolOutput"
-  case .response: "response"
-  case .reasoning: "reasoning"
-  @unknown default: "other"
-  }
+  // Classify only entries emitted by this renderer. Other framework entry kinds must
+  // still fail the expected-sequence assertions, without requiring the newest SDK cases.
+  if case .instructions = entry { return "instructions" }
+  if case .prompt = entry { return "prompt" }
+  if case .toolCalls = entry { return "toolCalls" }
+  if case .toolOutput = entry { return "toolOutput" }
+  if case .response = entry { return "response" }
+  return "other"
 }
 
 private func user(_ content: String) -> ModelMessage { ModelMessage(role: .user, content: content) }

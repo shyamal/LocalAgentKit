@@ -29,6 +29,7 @@ public actor AgentRuntime {
   private let broker = HumanInputBroker()
   private let bus = EventBus()
   private let now: @Sendable () -> Date
+  private let timeZone: TimeZone
   private var activeRun: Task<AgentResponse, any Error>?
 
   /// - Parameters:
@@ -46,6 +47,7 @@ public actor AgentRuntime {
   /// - Throws: `.invalidConfiguration` for unusable limits, budget shares, an unsupported planner
   ///   choice, or `.never` network policy paired with a component that requires the network
   ///   (M1-SE-03).
+  /// - Parameter timeZone: The planner clock zone; defaults to the host zone.
   public init(
     configuration: AgentConfiguration,
     tools: any ToolSource,
@@ -56,6 +58,7 @@ public actor AgentRuntime {
     repairer: ArgumentRepairer = ArgumentRepairer(),
     auditLogger: AuditLogger = AuditLogger(),
     memory: ConversationMemory? = nil,
+    timeZone: TimeZone = .current,
     now: @escaping @Sendable () -> Date = { Date() }
   ) throws {
     if let issue = configuration.limits.issue { throw AgentError.invalidConfiguration(issue) }
@@ -80,6 +83,7 @@ public actor AgentRuntime {
     self.auditLogger = auditLogger
     self.memory = memory
     self.now = now
+    self.timeZone = timeZone
   }
 
   // MARK: Public surface
@@ -187,7 +191,8 @@ public actor AgentRuntime {
       auditLogger: configuration.security.auditSensitiveExecutions ? auditLogger : nil)
     let descriptors = await tools.descriptors()
 
-    var context = AgentContext(goal: goal, now: now(), conversation: conversation)
+    var context = AgentContext(
+      goal: goal, now: now(), timeZone: timeZone, conversation: conversation)
     let plan = try await planner.plan(context: &context, tools: descriptors, model: model)
     await bus.publish(.planCreated(plan))
 

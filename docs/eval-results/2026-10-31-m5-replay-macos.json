@@ -1,0 +1,100 @@
+{
+  "assessment" : {
+    "byTool" : {
+      "calculate" : {
+        "attempts" : 9,
+        "executed" : 9,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.1111111111111111,
+        "groundedSuccesses" : 1
+      },
+      "create_note" : {
+        "attempts" : 10,
+        "executed" : 10,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.1,
+        "groundedSuccesses" : 1
+      },
+      "create_reminder" : {
+        "attempts" : 7,
+        "executed" : 7,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0,
+        "groundedSuccesses" : 0
+      },
+      "list_calendar_events" : {
+        "attempts" : 4,
+        "executed" : 4,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_contacts" : {
+        "attempts" : 2,
+        "executed" : 2,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_documents" : {
+        "attempts" : 5,
+        "executed" : 5,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.6,
+        "groundedSuccesses" : 3
+      },
+      "search_files" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_notes" : {
+        "attempts" : 7,
+        "executed" : 7,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.7142857142857143,
+        "groundedSuccesses" : 5
+      }
+    },
+    "completedGoals" : 0,
+    "counts" : {
+      "attempts" : 44,
+      "executed" : 44,
+      "executionRate" : 1,
+      "groundedSuccessRate" : 0.22727272727272727,
+      "groundedSuccesses" : 10
+    },
+    "expectedRequiredSteps" : 93,
+    "expectedTrials" : 30,
+    "matchedRequiredSteps" : 9,
+    "metric" : "M5",
+    "missingGroundedToolCoverage" : [
+      "create_reminder",
+      "list_calendar_events",
+      "search_contacts",
+      "search_files"
+    ],
+    "notes" : [
+      "Execution means the fixture call completed; grounded success also requires valid, goal-matching arguments and dependency order.",
+      "Unemitted required calls remain visible in required-step and per-tool coverage; no calls means an unknown rate, never 100%.",
+      "This suite uses fixture tools (plus real calculator arithmetic), not the actual device tool backends. No verdict establishes the real-tool M5 target.",
+      "Completion, refusal, model and runtime failures remain in the source report; they are not excluded to improve a rate."
+    ],
+    "observedTrials" : 10,
+    "protocolComplete" : false,
+    "realToolTargetVerified" : false,
+    "requiredSteps" : 31,
+    "scope" : "fixture-tools\/stateMachine-open",
+    "target" : "Tool execution success >95% for supported built-in tools",
+    "verdict" : "incomplete"
+  },
+  "measuredAt" : "2026-10-12T06:05:05Z",
+  "model" : "foundation",
+  "operatingSystem" : "Version 26.6.2 (Build 25G83)",
+  "repetitions" : 1,
+  "schemaVersion" : 1,
+  "suite" : "phase0-multi-step",
+  "suiteVersion" : 1,
+  "synthetic" : false,
+  "timeoutSeconds" : 45
+}

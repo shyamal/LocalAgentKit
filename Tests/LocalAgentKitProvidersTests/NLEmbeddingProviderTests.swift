@@ -1,18 +1,19 @@
+import Foundation
 import LocalAgentKitCore
 import NaturalLanguage
 import Testing
 
 @testable import LocalAgentKitProviders
 
-/// `NLEmbedding` ships with the OS and needs no authorization or entitlement, unlike EventKit or
-/// Foundation Models — verified in a scratch check before writing this file — so these run
-/// unconditionally rather than behind a device-tests gate.
-@Suite struct NLEmbeddingProviderTests {
+/// Integration tests requiring installed linguistic model assets. Like the generative model
+/// tests, these are opt-in; the default unit suite must run on a host without those assets.
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["LOCALAGENTKIT_DEVICE_TESTS"] == "1"))
+struct NLEmbeddingProviderTests {
   private let provider = NLEmbeddingProvider()
 
   @Test func embedsToTheKnownDimension() async throws {
     let vector = try await provider.embed(text: "The quarterly budget review is on Tuesday.")
-    #expect(vector.count == 512)
+    #expect(vector.count == 512 || vector.count == 300)  // sentence or word fallback
     #expect(!provider.requiresNetwork)
   }
 
