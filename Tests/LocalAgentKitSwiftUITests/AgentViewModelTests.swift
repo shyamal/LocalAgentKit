@@ -35,6 +35,18 @@ private func waitUntil(
 }
 
 @Suite struct AgentViewModelTests {
+  @Test @MainActor func thermalStatusIsBridgedToObservableState() async throws {
+    let runtime = try AgentRuntime(
+      configuration: AgentConfiguration(model: MockModelProvider()), tools: StaticToolSource([]),
+      thermalStateSource: MockThermalStateSource(.critical))
+    let viewModel = AgentViewModel(runtime: runtime)
+    await Task.yield()
+    viewModel.send("Run")
+    await waitUntil { viewModel.thermalStatus?.state == .critical && viewModel.lastFailure != nil }
+    #expect(viewModel.thermalStatus?.allowsNewWork == false)
+    #expect(viewModel.lastFailure == AgentError.thermalPressureTooHigh.description)
+    #expect(viewModel.state == .idle)
+  }
   @Test @MainActor func startsIdleWithNoTurns() throws {
     let viewModel = try makeViewModel(ScriptedModelProvider([]))
     #expect(viewModel.state == .idle)

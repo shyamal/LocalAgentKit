@@ -5,7 +5,8 @@ import LocalAgentKitCore
 /// Offline mode is a guarantee, not a default.
 enum NetworkPolicyGuard {
   static func validate(
-    _ configuration: AgentConfiguration, instrumentation: (any RuntimeInstrumentation)? = nil
+    _ configuration: AgentConfiguration, instrumentation: (any RuntimeInstrumentation)? = nil,
+    thermalStateSource: (any ThermalStateSource)? = nil
   ) -> ConfigurationIssue? {
     guard configuration.networkPolicy == .never else { return nil }
     if configuration.model.requiresNetwork {
@@ -16,6 +17,9 @@ enum NetworkPolicyGuard {
     }
     if instrumentation?.requiresNetwork == true {
       return .networkRequiredButForbidden(component: "instrumentation")
+    }
+    if thermalStateSource?.requiresNetwork == true {
+      return .networkRequiredButForbidden(component: "thermalStateSource")
     }
     return nil
   }

@@ -56,6 +56,8 @@ public struct ToolExecutor: Sendable {
   private let events: EventBus
   private let remainingTime: (@Sendable () async -> Duration)?
   private let auditLogger: AuditLogger?
+  // Internal runtime admission check, performed after human permission and before side effects.
+  var executionCheck: (@Sendable () async throws -> Void)?
 
   /// - Parameters:
   ///   - source: Resolves registered tool implementations.
@@ -104,6 +106,7 @@ public struct ToolExecutor: Sendable {
     }
 
     // 3. Execute.
+    try await executionCheck?()
     await events.publish(.toolStarted(call))
     var result: ToolResult
     do {

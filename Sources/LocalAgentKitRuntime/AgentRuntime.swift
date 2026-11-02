@@ -31,6 +31,8 @@ public actor AgentRuntime {
   private let now: @Sendable () -> Date
   private let timeZone: TimeZone
   private let instrumentation: any RuntimeInstrumentation
+  private let thermalStateSource: (any ThermalStateSource)?
+  private let thermalPolicy: ThermalPolicy
   private var activeRun: Task<AgentResponse, any Error>?
 
   /// - Parameters:
@@ -56,6 +58,8 @@ public actor AgentRuntime {
   ///   (M1-SE-03).
   /// - Parameter timeZone: The planner clock zone; defaults to the host zone.
   /// - Parameter instrumentation: Optional content-free diagnostic intervals; defaults to no logging.
+  /// - Parameter thermalStateSource: Opt-in thermal sampling; nil leaves execution unchanged.
+  /// - Parameter thermalPolicy: Elevated-pressure caps and critical-pressure admission policy.
   public init(
     configuration: AgentConfiguration,
     tools: any ToolSource,
@@ -68,11 +72,16 @@ public actor AgentRuntime {
     memory: ConversationMemory? = nil,
     timeZone: TimeZone = .current,
     instrumentation: any RuntimeInstrumentation = NoOpRuntimeInstrumentation(),
+    thermalStateSource: (any ThermalStateSource)? = nil,
+    thermalPolicy: ThermalPolicy = .default,
     now: @escaping @Sendable () -> Date = { Date() }
   ) throws {
     if let issue = configuration.limits.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = budgeter.configuration.issue { throw AgentError.invalidConfiguration(issue) }
-    if let issue = NetworkPolicyGuard.validate(configuration, instrumentation: instrumentation) {
+    if let issue = thermalPolicy.issue { throw AgentError.invalidConfiguration(issue) }
+    if let issue = NetworkPolicyGuard.validate(
+      configuration, instrumentation: instrumentation, thermalStateSource: thermalStateSource)
+    {
       throw AgentError.invalidConfiguration(issue)
     }
     switch (configuration.planner, planner) {
@@ -93,6 +102,8 @@ public actor AgentRuntime {
     self.now = now
     self.timeZone = timeZone
     self.instrumentation = instrumentation
+    self.thermalStateSource = thermalStateSource
+    self.thermalPolicy = thermalPolicy
   }
 
   // MARK: Public surface
@@ -175,8 +186,12 @@ public actor AgentRuntime {
     let clock = RunClock(budget: configuration.limits.maxDuration)
     await bus.publish(.started)
     do {
+      let thermal = thermalStateSource.map {
+        ThermalController(source: $0, policy: thermalPolicy, events: bus)
+      }
+      _ = try await thermal?.checkpoint()
       let response = try await drive(
-        goal: goal, conversation: conversation, clock: clock, trace: trace)
+        goal: goal, conversation: conversation, clock: clock, trace: trace, thermal: thermal)
       await broker.cancelAll()
       await bus.publish(.completed(response))
       return response
@@ -193,17 +208,22 @@ public actor AgentRuntime {
   }
 
   private func drive(
-    goal: String, conversation: [ModelMessage], clock: RunClock, trace: RuntimeTrace
+    goal: String, conversation: [ModelMessage], clock: RunClock, trace: RuntimeTrace,
+    thermal: ThermalController?
   ) async throws -> AgentResponse {
     let limits = configuration.limits
     let model = BudgetedModel(
       base: configuration.model, budgeter: budgeter, limits: limits, clock: clock, events: bus,
-      retrievedChunks: try await retrieveChunks(for: goal, trace: trace), trace: trace)
-    let executor = ToolExecutor(
+      retrievedChunks: try await retrieveChunks(for: goal, trace: trace), trace: trace,
+      thermal: thermal)
+    var executor = ToolExecutor(
       source: tools, gate: TimedGate(inner: customGate ?? broker, clock: clock, trace: trace),
       events: bus,
       remainingTime: { await clock.remaining() },
       auditLogger: configuration.security.auditSensitiveExecutions ? auditLogger : nil)
+    if let thermal {
+      executor.executionCheck = { _ = try await thermal.checkpoint() }
+    }
     let descriptors = await tools.descriptors()
 
     var context = AgentContext(
@@ -222,6 +242,7 @@ public actor AgentRuntime {
 
     while true {
       try Task.checkCancellationAsAgentError()
+      _ = try await thermal?.checkpoint()
       guard iterations < limits.maxIterations else {
         throw AgentError.maximumIterationsReached(limit: limits.maxIterations)
       }

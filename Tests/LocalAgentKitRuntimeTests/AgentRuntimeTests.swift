@@ -32,6 +32,7 @@ private func label(_ event: AgentEvent) -> String {
   case .thinking: "thinking"
   case .planCreated: "planCreated"
   case .contextUtilization: "contextUtilization"
+  case .thermalStateChanged: "thermalStateChanged"
   case .toolRequested: "toolRequested"
   case .permissionRequired: "permissionRequired"
   case .toolStarted: "toolStarted"

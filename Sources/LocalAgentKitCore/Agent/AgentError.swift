@@ -84,6 +84,8 @@ public enum AgentError: Error, Sendable, Hashable, CustomStringConvertible {
   case runInProgress
   /// The current task or run was cancelled.
   case cancelled
+  /// Critical device pressure prevented new model or tool work; retry only after cooling.
+  case thermalPressureTooHigh
 
   /// A sentence a host app can show a person as-is, distinct from `debugDescription`-style dumps
   /// of the case and its payload. An app that wants its own copy can still switch over the case;
@@ -127,6 +129,8 @@ public enum AgentError: Error, Sendable, Hashable, CustomStringConvertible {
       "Another request is already running."
     case .cancelled:
       "The request was cancelled."
+    case .thermalPressureTooHigh:
+      "The device needs to cool down before the agent can continue."
     }
   }
 }
