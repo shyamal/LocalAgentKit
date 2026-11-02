@@ -47,6 +47,14 @@ narrower than FR-008's full Notes capability (M2-09: create *and* search, likely
 like `MemoryStore`'s other implementations). It exists so this demo's fourth turn has something
 real to write to, file-backed under Application Support; M2-09 supersedes it.
 
+## Thermal behavior
+
+The agent also samples device thermal state at work boundaries through
+`ProcessInfoThermalStateSource`. Fair/serious pressure tightens the next context
+budget; critical pressure rejects new model/tool work with a cooling message.
+It does not interrupt in-flight work or continuously observe idle periods.
+Physical-device battery improvement and overhead have not been measured.
+
 ## Permissions
 
 Calendar and Reminders need the user's authorization the first time each runs — both the modern

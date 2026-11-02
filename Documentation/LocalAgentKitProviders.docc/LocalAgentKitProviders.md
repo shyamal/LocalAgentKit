@@ -10,6 +10,11 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 ## Topics
 
+### Device thermal pressure
+
+- ``ProcessInfoThermalStateSource``
+- <doc:ThermalManagement>
+
 ### Runtime diagnostics
 
 - ``OSLogRuntimeInstrumentation``

@@ -13,6 +13,7 @@ verify wiring and behavior under a script; they do not measure model reliability
 ### Runtime trace tests
 
 - ``MockRuntimeInstrumentation``
+- ``MockThermalStateSource``
 
 ### Model doubles
 

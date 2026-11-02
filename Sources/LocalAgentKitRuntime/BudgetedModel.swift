@@ -16,6 +16,7 @@ struct BudgetedModel: LocalModelProvider {
   /// with conversation history for the same tokens.
   var retrievedChunks: [String] = []
   var trace: RuntimeTrace? = nil
+  var thermal: ThermalController? = nil
 
   var requiresNetwork: Bool { base.requiresNetwork }
   var contextWindowTokens: Int? { base.contextWindowTokens }
@@ -27,6 +28,10 @@ struct BudgetedModel: LocalModelProvider {
   func generate(request: ModelRequest) async throws -> ModelResponse {
     let interval = trace?.begin(.modelCall)
     defer { interval?.end() }
+    var effectiveLimits = limits
+    if let status = try await thermal?.checkpoint(), let cap = status.contextTokenCap {
+      effectiveLimits.maxContextTokens = min(limits.maxContextTokens ?? cap, cap)
+    }
     let remaining = await clock.remaining()
     guard remaining > .zero else { throw AgentError.executionTimeout(.run) }
     let perCall = limits.maxModelCallDuration
@@ -35,7 +40,15 @@ struct BudgetedModel: LocalModelProvider {
 
     var inputs = Self.inputs(from: request)
     inputs.retrievedChunks = retrievedChunks
-    let fitted = try await budgeter.fit(inputs, for: base, limits: limits, events: events)
+    var fitted = try await budgeter.fit(inputs, for: base, limits: effectiveLimits, events: events)
+    // Token counting can itself take time. Recheck immediately before generation and refit
+    // only on a stricter cap; two elevated caps bound the number of extra fits.
+    while let status = try await thermal?.checkpoint(), let cap = status.contextTokenCap,
+      cap < (effectiveLimits.maxContextTokens ?? Int.max)
+    {
+      effectiveLimits.maxContextTokens = cap
+      fitted = try await budgeter.fit(inputs, for: base, limits: effectiveLimits, events: events)
+    }
     await events.publish(.thinking)
 
     let model = base

@@ -69,6 +69,8 @@ public final class AgentViewModel {
   public private(set) var toolActivity: [ToolResult] = []
   /// Most recently observed model-context measurement, or nil before one arrives.
   public private(set) var contextUtilization: ContextUtilization?
+  /// Latest sampled thermal pressure and policy cap; nil when monitoring is not configured.
+  public private(set) var thermalStatus: ThermalStatus?
   /// Set when a run ends in an error or a guardrail refusal, for a host to surface separately
   /// from the chat transcript. Cleared at the start of the next `send`.
   public private(set) var lastFailure: String?
@@ -145,6 +147,8 @@ public final class AgentViewModel {
 
     case .contextUtilization(let utilization):
       contextUtilization = utilization
+    case .thermalStateChanged(let status):
+      thermalStatus = status
 
     case .toolStarted(let call):
       activeTool = call

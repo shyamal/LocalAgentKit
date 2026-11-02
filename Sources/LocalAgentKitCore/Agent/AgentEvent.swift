@@ -75,6 +75,8 @@ public enum AgentEvent: Sendable {
   case planCreated(AgentPlan)
   /// Context fitting produced a utilization measurement before a model call.
   case contextUtilization(ContextUtilization)
+  /// Initial thermal status or a sampled change at a work boundary, when monitoring is configured.
+  case thermalStateChanged(ThermalStatus)
   /// The executor received a tool call, before argument validation or authorization.
   case toolRequested(ToolCall)
   /// The run is suspended until the app resolves this call.

@@ -35,7 +35,7 @@ enum AgentSetup {
     let configuration = AgentConfiguration(model: FoundationModelProvider(), networkPolicy: .never)
     let runtime = try AgentRuntime(
       configuration: configuration, tools: StaticToolSource(tools),
-      memory: ConversationMemory())
+      memory: ConversationMemory(), thermalStateSource: ProcessInfoThermalStateSource())
     return await AgentViewModel(runtime: runtime)
   }
 

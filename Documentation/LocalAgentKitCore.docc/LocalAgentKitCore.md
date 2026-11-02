@@ -10,6 +10,13 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 
 ## Topics
 
+### Thermal admission and context caps
+
+- ``AgentThermalState``
+- ``ThermalStateSource``
+- ``ThermalPolicy``
+- ``ThermalStatus``
+
 ### Diagnostic intervals
 
 - ``RuntimeInstrumentation``

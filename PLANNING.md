@@ -291,6 +291,7 @@ Ingestion is explicitly a background, batchable, cancellable operation with prog
 |---|---|---|
 | **Foundation Models** | Primary inference; BYO-LLM + MLX registration | `FoundationModelProvider` |
 | ~~**Core AI**~~ | ~~Custom/local model execution~~ | **Dropped 2026-09-26 (decision 0004).** Core AI exists but is a tensor/NDArray runtime, not a text-generation API (findings §1); custom model execution goes through `LocalModelProvider`, or Apple's `LanguageModel` protocol on OS 27 (M1-PR-06) |
+| **Foundation / ProcessInfo** | Opt-in thermal snapshot adapter; policy and events remain in Core/Runtime | `ProcessInfoThermalStateSource` in Providers |
 | **OSLog** | Opt-in content-free runtime logging and signpost intervals | `OSLogRuntimeInstrumentation` in `LocalAgentKitProviders` |
 | **Natural Language** (`NLEmbedding`) | Default on-device embeddings for RAG v0.3 | `NLEmbeddingProvider` |
 | **SwiftData** | Memory persistence (working/conversation/semantic/episodic) | `SwiftDataMemoryStore` |
