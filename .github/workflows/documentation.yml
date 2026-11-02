@@ -44,11 +44,14 @@ jobs:
           (archive / 'index.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>LocalAgentKit documentation</title><meta http-equiv="refresh" content="0; url=documentation/"></head><body><a href="documentation/">Open LocalAgentKit documentation</a></body></html>\n')
           (archive / '.nojekyll').touch()
           PY
+      - name: Package reviewable archive preserving DocC filenames
+        run: COPYFILE_DISABLE=1 tar -czf "$RUNNER_TEMP/LocalAgentKit-documentation.tar.gz" -C .build/documentation LocalAgentKit.doccarchive
       - name: Retain reviewable archive
         uses: actions/upload-artifact@v4
         with:
           name: LocalAgentKit-documentation
-          path: .build/documentation/LocalAgentKit.doccarchive
+          path: ${{ runner.temp }}/LocalAgentKit-documentation.tar.gz
+          compression-level: 0
           if-no-files-found: error
       - name: Upload deployable Pages artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.LOCALAGENTKIT_DOCS_PUBLISH == 'true'
