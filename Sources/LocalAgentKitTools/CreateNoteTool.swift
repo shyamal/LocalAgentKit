@@ -3,11 +3,16 @@ import LocalAgentKitCore
 
 /// One saved note.
 public struct Note: Sendable, Hashable, Identifiable, Codable {
+  /// Stable saved-note identity.
   public var id: UUID
+  /// Short title shown to the user.
   public var title: String
+  /// Full saved text content.
   public var body: String
+  /// Timestamp recorded when the note is created.
   public var createdAt: Date
 
+  /// Creates a note with generated identity and current timestamp when omitted.
   public init(id: UUID = UUID(), title: String, body: String, createdAt: Date = Date()) {
     self.id = id
     self.title = title
@@ -28,6 +33,7 @@ public actor NoteStore {
   private var notes: [Note] = []
   private var loaded = false
 
+  /// Creates a lazy-loading store at an explicit JSON file URL.
   public init(url: URL) {
     self.url = url
   }
@@ -37,12 +43,16 @@ public actor NoteStore {
     self.url = directory.appendingPathComponent("notes.json")
   }
 
+  /// Appends a note and atomically rewrites the backing JSON file.
+  /// Filesystem and encoding errors propagate; the in-memory append is not rolled back on failure.
   public func save(_ note: Note) async throws {
     try load()
     notes.append(note)
     try persist()
   }
 
+  /// Lazily reads and returns stored notes in order.
+  /// Missing, unreadable or undecodable files currently yield an empty initial collection.
   public func all() async throws -> [Note] {
     try load()
     return notes
@@ -65,22 +75,31 @@ public actor NoteStore {
 
 /// Save a new note (FR-008). `.userConfirmation`: the runtime holds this for a human's yes.
 public struct CreateNoteTool: AgentTool {
+  /// Registered action name `create_note`.
   public let name = "create_note"
+  /// Prompt-facing note creation guidance.
   public let description = "Save a new note."
+  /// Required title and body text fields.
   public let schema = ToolSchema(
     parameters: [
       "title": ToolParameter(.string, description: "Short title for the note."),
       "body": ToolParameter(.string, description: "The full text of the note."),
     ], required: ["title", "body"])
+  /// Requires explicit human approval before writing a note through the runtime.
   public let permission = ToolPermission.userConfirmation
+  /// True: the backing actor serializes access to this tool's store.
   public let isParallelSafe = true
+  /// Advertises cancellation support to the executor; synchronous file writes cannot be interrupted.
   public let isCancellable = true
   private let store: NoteStore
 
+  /// Creates a tool writing to the supplied app-owned note store.
   public init(store: NoteStore) {
     self.store = store
   }
 
+  /// Validates nonempty title and body, saves a note, and returns its new ID.
+  /// Use the runtime for permission enforcement; direct calls write without prompting.
   public func execute(arguments: ToolArguments) async throws -> ToolResult {
     guard let title = arguments.string("title"), !title.isEmpty else {
       throw AgentError.invalidArguments(tool: name, violations: [.missingRequired(path: "title")])

@@ -11,7 +11,9 @@ public enum PlannerDecision: Sendable {
   case askUser(String)
 }
 
+/// Whether observing a result or handling a failure changed the displayed plan.
 public enum PlanRevision: Sendable {
+  /// Continue using the existing plan.
   case `continue`
   /// The plan changed. Only a model-driven planner produces this (M5-02).
   case replanned(AgentPlan)
@@ -27,6 +29,8 @@ public protocol AgentPlanner: Sendable {
     context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider
   ) async throws -> AgentPlan
 
+  /// Chooses a tool invocation, final answer or clarification request using the current run state.
+  /// The supplied model enforces the runtime's context budget and deadlines.
   func next(
     context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider
   ) async throws -> PlannerDecision

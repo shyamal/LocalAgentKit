@@ -13,6 +13,7 @@ import LocalAgentKitCore
 /// Every model answer is validated against a schema before it is used, and a refusal ends the run
 /// (never retried).
 public struct StateMachinePlanner: AgentPlanner {
+  /// Declared procedures; an empty collection enables open tool-selection mode.
   public let workflows: [Workflow]
   private let repairer: ArgumentRepairer
 
@@ -31,6 +32,7 @@ public struct StateMachinePlanner: AgentPlanner {
 
   // MARK: plan
 
+  /// Validates workflow/tool compatibility and selects a declared workflow, or enters open mode.
   public func plan(
     context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider
   ) async throws -> AgentPlan {
@@ -81,6 +83,7 @@ public struct StateMachinePlanner: AgentPlanner {
 
   // MARK: next
 
+  /// Resolves the next workflow step or asks narrow model questions in open mode.
   public func next(
     context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider
   ) async throws -> PlannerDecision {
@@ -247,6 +250,8 @@ public struct StateMachinePlanner: AgentPlanner {
 
   // MARK: observe / failure
 
+  /// Records the observation and advances or recovers the pending step.
+  /// Empty results follow the step's alternative and onEmpty policy, without retrying the empty call.
   public func observe(
     _ observation: ToolObservation, context: inout AgentContext
   ) throws -> PlanRevision {
@@ -288,6 +293,7 @@ public struct StateMachinePlanner: AgentPlanner {
     return .continue
   }
 
+  /// Applies declared failure recovery; permission denial and terminal errors are rethrown.
   public func handleFailure(
     _ error: AgentError, context: inout AgentContext
   ) throws -> PlanRevision {

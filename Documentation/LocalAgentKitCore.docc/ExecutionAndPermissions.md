@@ -10,6 +10,14 @@ confirmation. Schema validity does not make a call authorized, and text from an
 ingested document cannot grant permission. A pending human prompt suspends via a
 continuation rather than holding a thread or lock.
 
+## Audit data
+
+The runtime can record confirmed executions in its in-memory audit log. Argument
+signatures are stable renderings of argument values, not hashes or redacted data.
+They can contain sensitive text. Apply the same access and export controls as you
+would to the arguments themselves. The log does not store full tool results and
+does not replace the permission gate.
+
 ## Model limits
 
 Context budgeting allocates space to instructions and tools, conversation,

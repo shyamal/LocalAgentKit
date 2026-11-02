@@ -27,6 +27,7 @@ import NaturalLanguage
 public actor NLEmbeddingProvider: EmbeddingProvider {
   private let sentenceEmbedding: NLEmbedding?
   private let wordEmbedding: NLEmbedding?
+  /// False: embedding uses locally available NaturalLanguage assets.
   public nonisolated let requiresNetwork = false
 
   /// - Parameter language: `embed(text:)` throws `.retrievalFailure` if neither a sentence nor a
@@ -36,6 +37,8 @@ public actor NLEmbeddingProvider: EmbeddingProvider {
     self.wordEmbedding = NLEmbedding.wordEmbedding(for: language)
   }
 
+  /// Embeds text using a sentence vector, falling back to averaged available word vectors.
+  /// Throws a retrieval failure if neither path yields a vector; checks cancellation on entry.
   public func embed(text: String) async throws -> [Float] {
     try Task.checkCancellation()
     if let sentenceEmbedding, let vector = sentenceEmbedding.vector(for: text) {

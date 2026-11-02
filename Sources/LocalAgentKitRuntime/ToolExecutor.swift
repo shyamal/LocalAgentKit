@@ -3,7 +3,9 @@ import LocalAgentKitCore
 /// Where the executor finds tools. `ToolRegistry` (in `LocalAgentKitTools`) conforms; Runtime
 /// cannot depend on it, so it depends on this.
 public protocol ToolSource: Sendable {
+  /// Looks up an executable tool by its registered name, returning nil when absent.
   func tool(named name: String) async -> (any AgentTool)?
+  /// Returns the advertised contracts of available tools.
   func descriptors() async -> [ToolDescriptor]
 }
 
@@ -11,19 +13,25 @@ public protocol ToolSource: Sendable {
 public struct StaticToolSource: ToolSource {
   private let tools: [String: any AgentTool]
 
+  /// Creates a fixed source; a duplicate name keeps the last supplied tool.
   public init(_ tools: [any AgentTool]) {
     self.tools = Dictionary(tools.map { ($0.name, $0) }, uniquingKeysWith: { _, last in last })
   }
 
+  /// Looks up a tool from the fixed registration table.
   public func tool(named name: String) async -> (any AgentTool)? { tools[name] }
 
+  /// Returns descriptors sorted by registered tool name.
   public func descriptors() async -> [ToolDescriptor] {
     tools.values.map { ToolDescriptor($0) }.sorted { $0.name < $1.name }
   }
 }
 
+/// The result of a required human confirmation.
 public enum PermissionDecision: Sendable, Hashable {
+  /// The requested operation may proceed.
   case approved
+  /// The requested operation must not execute.
   case denied
 }
 
@@ -32,6 +40,8 @@ public enum PermissionDecision: Sendable, Hashable {
 /// The executor consults it **only** for tiers above `.readOnly`, so a gate cannot widen what runs
 /// unconfirmed, and it cannot be used to skip a confirmation.
 public protocol PermissionGate: Sendable {
+  /// Obtains a human decision for a call whose tier requires confirmation.
+  /// Implementations should suspend without holding a thread and respect cancellation.
   func decide(for call: ToolCall, tool: ToolDescriptor) async -> PermissionDecision
 }
 

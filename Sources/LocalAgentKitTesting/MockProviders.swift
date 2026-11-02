@@ -5,17 +5,21 @@ import LocalAgentKitCore
 public actor MockMemoryStore: MemoryStore {
   private var memories: [Memory]
 
+  /// Creates a non-durable memory store seeded with the supplied entries.
   public init(_ memories: [Memory] = []) {
     self.memories = memories
   }
 
+  /// All currently stored entries in insertion order.
   public var all: [Memory] { memories }
 
+  /// Replaces any memory with the same ID, then appends the supplied entry.
   public func save(_ memory: Memory) async throws {
     memories.removeAll { $0.id == memory.id }
     memories.append(memory)
   }
 
+  /// Returns case-insensitive substring matches in insertion order, up to the non-negative query limit.
   public func search(_ query: MemoryQuery) async throws -> [Memory] {
     let needle = query.text.lowercased()
     return Array(
@@ -23,6 +27,7 @@ public actor MockMemoryStore: MemoryStore {
         .prefix(query.limit))
   }
 
+  /// Removes all entries with the given identity; absent IDs do nothing.
   public func delete(id: UUID) async throws {
     memories.removeAll { $0.id == id }
   }
@@ -31,12 +36,16 @@ public actor MockMemoryStore: MemoryStore {
 /// Deterministic embeddings with no model: a bag-of-letters vector, so texts that share letters
 /// are closer. Good enough to test plumbing; not a retrieval-quality signal (that is M3-04).
 public struct MockEmbeddingProvider: EmbeddingProvider {
+  /// Configurable declaration for testing offline-policy construction checks.
   public let requiresNetwork: Bool
 
+  /// Creates a deterministic letter-count embedding provider with an optional network declaration.
   public init(requiresNetwork: Bool = false) {
     self.requiresNetwork = requiresNetwork
   }
 
+  /// Counts ASCII letters into a 26-component vector after a cancellation check.
+  /// This is deterministic plumbing data, not a semantic embedding-quality benchmark.
   public func embed(text: String) async throws -> [Float] {
     try Task.checkCancellation()
     var vector = [Float](repeating: 0, count: 26)
@@ -51,14 +60,19 @@ public struct MockEmbeddingProvider: EmbeddingProvider {
 public actor MockVectorStore: VectorStore {
   private var documents: [EmbeddedDocument] = []
 
+  /// Creates an empty in-memory vector-store test double.
   public init() {}
 
+  /// Inserted documents in insertion order, including duplicates.
   public var stored: [EmbeddedDocument] { documents }
 
+  /// Appends documents without deduplication or durable storage.
   public func insert(_ documents: [EmbeddedDocument]) async throws {
     self.documents += documents
   }
 
+  /// Returns documents by descending cosine similarity up to a non-negative limit.
+  /// Dimension mismatches and zero norms receive score zero in this test double.
   public func search(vector: [Float], limit: Int) async throws -> [SearchResult] {
     let scored = documents.map { SearchResult(document: $0, score: Self.cosine(vector, $0.vector)) }
     return Array(scored.sorted { $0.score > $1.score }.prefix(limit))

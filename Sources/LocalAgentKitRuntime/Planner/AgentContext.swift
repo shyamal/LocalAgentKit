@@ -25,17 +25,24 @@ public struct AgentContext: Sendable {
     var signature: String
   }
 
+  /// The user's current goal, updated if clarification expands it.
   public var goal: String
   /// The clock the model is told; it is never left to guess the date (findings §11c).
   public var now: Date
+  /// Time zone used when formatting the planner's reference clock.
   public var timeZone: TimeZone
   /// Earlier turns, so a follow-up such as "those meetings" can be resolved.
   public var conversation: [ModelMessage]
 
+  /// Structured results keyed by workflow binding names; read-only to external consumers.
   public internal(set) var bindings: [String: JSONValue] = [:]
+  /// Binding names in insertion order for deterministic prompt rendering.
   public internal(set) var bindingOrder: [String] = []
+  /// Bindings whose tool result explicitly reported no useful content.
   public internal(set) var emptyBindings: Set<String> = []
+  /// Completed tool calls and results observed so far, oldest first.
   public internal(set) var observations: [ToolObservation] = []
+  /// Identifiers of workflow steps skipped by guards or recovery.
   public internal(set) var skippedSteps: [String] = []
   var mode: Mode = .unplanned
   var cursor = 0
@@ -45,6 +52,7 @@ public struct AgentContext: Sendable {
   var executed: [ExecutedCall] = []
   var notes: [String] = []
 
+  /// Creates a fresh run context with a reference clock, time zone and earlier transcript.
   public init(
     goal: String, now: Date = Date(), timeZone: TimeZone = .current,
     conversation: [ModelMessage] = []

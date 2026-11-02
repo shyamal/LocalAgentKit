@@ -22,6 +22,8 @@ def build(output, base_path):
     if not matches:
         raise RuntimeError("Swift did not report its symbol graph directory.")
     source = Path(matches[-1])
+    subprocess.run(["python3", str(ROOT / "Scripts/check-api-docs.py"), str(source)],
+                   cwd=ROOT, check=True)
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".localagentkit-docc-", dir=output.parent) as temporary:
         work = Path(temporary)

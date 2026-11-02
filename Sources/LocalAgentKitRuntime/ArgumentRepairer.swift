@@ -4,8 +4,10 @@ import LocalAgentKitCore
 /// wrong and ask again, a limited number of times. Single-call accuracy on-device is 51–63%
 /// (findings §11), so this path is expected to run.
 public struct ArgumentRepairer: Sendable {
+  /// Maximum extra model attempts after initial argument validation fails; clamped to zero or greater.
   public let maxAttempts: Int
 
+  /// Creates an argument repair policy with a bounded number of extra attempts.
   public init(maxAttempts: Int = 2) {
     self.maxAttempts = max(0, maxAttempts)
   }

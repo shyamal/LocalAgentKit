@@ -13,11 +13,21 @@ import Observation
 public final class AgentViewModel {
   /// One line of the chat transcript.
   public struct Turn: Identifiable, Sendable, Equatable {
-    public enum Role: Sendable, Equatable { case user, assistant }
+    /// The user or assistant participant shown in a chat turn.
+    public enum Role: Sendable, Equatable {
+      /// A message entered by the person using the app.
+      case user
+      /// An answer produced by the agent.
+      case assistant
+    }
+    /// Stable identity for rendering and incremental answer updates.
     public var id = UUID()
+    /// Whether this line represents user input or assistant output.
     public var role: Role
+    /// Displayed text, appended as response fragments arrive.
     public var text: String
 
+    /// Creates a display turn with an optional identity for stable UI updates.
     public init(id: UUID = UUID(), role: Role, text: String) {
       self.id = id
       self.role = role
@@ -29,9 +39,13 @@ public final class AgentViewModel {
   /// suspension points `AgentRuntime` exposes (FR-010); everything a host needs to resolve them
   /// is on `AgentViewModel` itself (`approvePermission()`, `answerClarification(_:)`, …).
   public enum RunState: Sendable, Equatable {
+    /// No run is active; a new goal may be sent.
     case idle
+    /// The agent is planning, generating or executing.
     case running
+    /// A tool call is suspended until the person approves or denies it.
     case awaitingPermission(ToolCall)
+    /// A run is suspended until the person supplies clarification.
     case awaitingClarification(String)
   }
 
@@ -45,21 +59,26 @@ public final class AgentViewModel {
   private nonisolated(unsafe) var eventTask: Task<Void, Never>?
   private var streamingTurnID: UUID?
 
+  /// User input and assistant output for the current view-model session.
   public private(set) var turns: [Turn] = []
+  /// Current execution or human-input suspension state.
   public private(set) var state: RunState = .idle
   /// The tool currently executing, if any — for "visible tool activity" (M1-UI-03).
   public private(set) var activeTool: ToolCall?
   /// Every tool result observed this session, oldest first.
   public private(set) var toolActivity: [ToolResult] = []
+  /// Most recently observed model-context measurement, or nil before one arrives.
   public private(set) var contextUtilization: ContextUtilization?
   /// Set when a run ends in an error or a guardrail refusal, for a host to surface separately
   /// from the chat transcript. Cleared at the start of the next `send`.
   public private(set) var lastFailure: String?
 
+  /// True while executing or waiting for human input; false only in the idle state.
   public var isRunning: Bool {
     if case .idle = state { false } else { true }
   }
 
+  /// Connects to a runtime and starts consuming its events on the main actor.
   public init(runtime: AgentRuntime) {
     self.runtime = runtime
     eventTask = Task { [weak self] in
@@ -108,6 +127,7 @@ public final class AgentViewModel {
     Task { [runtime] in await runtime.answerClarification(text) }
   }
 
+  /// Requests cancellation of the runtime's active run, including human-input waits.
   public func cancel() {
     Task { [runtime] in await runtime.cancelCurrentRun() }
   }

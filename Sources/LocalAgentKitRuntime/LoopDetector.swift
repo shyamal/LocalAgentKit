@@ -2,6 +2,7 @@ import LocalAgentKitCore
 
 /// What the detector concluded after seeing a call.
 public enum LoopVerdict: Sendable, Hashable {
+  /// No repeated cycle has yet met the detection threshold.
   case proceed
   /// The recent calls repeat with the given period: 1 is the same call again and again,
   /// 2 is A, B, A, B, A.
@@ -14,9 +15,11 @@ public enum LoopVerdict: Sendable, Hashable {
 /// One repeat alone is not a loop, since retrying a call once is legitimate. A value type owned
 /// by the runtime actor, so it needs no locking.
 public struct LoopDetector: Sendable {
+  /// Largest repeating cycle length checked; at least one.
   public let maxPeriod: Int
   private var history: [String] = []
 
+  /// Creates an empty detector, clamping the maximum period to at least one.
   public init(maxPeriod: Int = 3) {
     self.maxPeriod = max(1, maxPeriod)
   }
@@ -37,6 +40,7 @@ public struct LoopDetector: Sendable {
     return .proceed
   }
 
+  /// Clears recorded call signatures before a new independent run.
   public mutating func reset() {
     history.removeAll()
   }

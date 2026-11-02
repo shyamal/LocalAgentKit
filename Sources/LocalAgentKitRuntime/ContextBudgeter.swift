@@ -5,8 +5,11 @@ import LocalAgentKitCore
 public struct ContextBudgetConfiguration: Sendable, Hashable {
   /// Instructions and tool definitions. Tools alone are ~26% of a 4,096-token window (findings §10).
   public var systemAndToolsShare: Double
+  /// Relative weight for retained conversation turns.
   public var conversationShare: Double
+  /// Relative weight for retrieved passages.
   public var retrievalShare: Double
+  /// Relative weight for serialized plan state.
   public var planShare: Double
   /// Tokens kept free for the model's answer. Input and output share the window, so a request at
   /// 90% can still fail if the reply runs long (findings §10).
@@ -16,8 +19,11 @@ public struct ContextBudgetConfiguration: Sendable, Hashable {
   public var fallbackWindowTokens: Int
   /// Tool outputs in older turns are cut to this many characters before any turn is dropped.
   public var olderToolOutputCharacterLimit: Int
+  /// Target token allowance supplied to the conversation summarizer; must be positive.
   public var summaryMaxTokens: Int
 
+  /// Creates relative context shares and reserve, fallback-window and compaction limits.
+  /// Inspect `issue` for invalid settings before fitting a request.
   public init(
     systemAndToolsShare: Double = 0.30,
     conversationShare: Double = 0.40,
@@ -38,8 +44,10 @@ public struct ContextBudgetConfiguration: Sendable, Hashable {
     self.summaryMaxTokens = summaryMaxTokens
   }
 
+  /// Default relative shares, a 512-token reply reserve and a 4096-token fallback window.
   public static let `default` = ContextBudgetConfiguration()
 
+  /// The first invalid share, reserve, fallback-window or summary limit, or nil when valid.
   public var issue: ConfigurationIssue? {
     let shares = [systemAndToolsShare, conversationShare, retrievalShare, planShare]
     if shares.contains(where: { $0 < 0 || !$0.isFinite }) || shares.reduce(0, +) <= 0 {
@@ -54,6 +62,7 @@ public struct ContextBudgetConfiguration: Sendable, Hashable {
 
 /// Everything that may go into one model call, before fitting.
 public struct ContextInputs: Sendable {
+  /// System instructions retained as the base of the assembled request.
   public var instructions: String
   /// In priority order: when tools must go, the last ones go first.
   public var tools: [ToolDescriptor]
@@ -64,8 +73,10 @@ public struct ContextInputs: Sendable {
   public var conversation: [ModelMessage]
   /// Retrieved passages, most relevant first: when chunks must go, the last ones go first.
   public var retrievedChunks: [String]
+  /// Optional serialized planning state included in the system context.
   public var planState: String?
 
+  /// Creates unfitted context from instructions, ordered tools, transcript, retrieval and plan state.
   public init(
     instructions: String,
     tools: [ToolDescriptor] = [],
@@ -85,21 +96,31 @@ public struct ContextInputs: Sendable {
 
 /// What the budgeter had to give up to fit.
 public struct TrimReport: Sendable, Hashable {
+  /// Number of older tool-output messages shortened.
   public var compactedToolOutputs = 0
+  /// Number of retrieved passages removed from the end of the ranking.
   public var droppedChunks = 0
+  /// Number of older transcript messages replaced by a summary.
   public var summarizedMessages = 0
+  /// Tool names removed to fit, excluding required tools.
   public var droppedToolNames: [String] = []
+  /// Whether fitting shortened the supplied plan state.
   public var planTruncated = false
 
+  /// Whether any compaction, removal, summarization or plan truncation occurred.
   public var isTrimmed: Bool {
     compactedToolOutputs > 0 || droppedChunks > 0 || summarizedMessages > 0
       || !droppedToolNames.isEmpty || planTruncated
   }
 }
 
+/// The fitted request together with its token utilization and degradation report.
 public struct BudgetedContext: Sendable {
+  /// Request safe to submit according to the budgeter's count or fallback estimate.
   public var request: ModelRequest
+  /// Input-token utilization measured against the model window.
   public var utilization: ContextUtilization
+  /// Changes made to the original context while fitting it.
   public var report: TrimReport
 }
 
@@ -114,10 +135,12 @@ public struct BudgetedContext: Sendable {
 /// result is then verified against a real count where one exists. Where the provider cannot
 /// count, only the estimate is available.
 public struct ContextBudgeter: Sendable {
+  /// Relative shares and degradation limits applied before each model call.
   public let configuration: ContextBudgetConfiguration
   private let summarizer: any ConversationSummarizer
   private static let maxPasses = 3
 
+  /// Creates a budgeter and its summarization strategy; fitting validates the configuration.
   public init(
     configuration: ContextBudgetConfiguration = .default,
     summarizer: any ConversationSummarizer = ExtractiveSummarizer()

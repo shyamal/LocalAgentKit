@@ -3,7 +3,8 @@
 M1-DC-01 adds six module catalogs, a merged package landing page, architecture
 notes, and a GitHub Pages workflow. App Intents remains a placeholder and is
 labelled as such. Generated symbol pages are not proof that every public API has
-complete prose; the guides and full API-comment audit remain M1-DC-02..04.
+complete prose; the M1-DC-04 audit adds comments for the authored SDK surface and
+a regression check. The guides' independent developer validation remains pending.
 
 ## Start using the SDK
 
@@ -29,7 +30,8 @@ python3 Scripts/check-docs.py .build/documentation/LocalAgentKit.doccarchive
 ```
 
 The builder extracts public symbols with `swift package dump-symbol-graph`,
-builds each implemented SDK library catalog with warnings as errors, and merges
+checks authored API comments, builds each implemented SDK library catalog with
+warnings as errors, and merges
 its archives with `docc merge`. Evaluation/dependency modules and the empty App
 Intents target are excluded. Existing authored API comment warnings are fixed,
 not filtered. Imported types use qualified code names where module-local symbol
@@ -39,7 +41,39 @@ A failed conversion leaves the previous archive intact. A successful build only
 replaces an existing archive after checking its LocalAgentKit metadata. Source
 catalogs and user files are never removed by the build. `check-docs.py` verifies
 all six module routes and every internal topic-reference route; it does not
-claim visual/browser verification or full API-comment coverage.
+claim visual/browser verification or semantic correctness of API prose.
+
+## Authored API documentation coverage
+
+`Scripts/check-api-docs.py` runs inside the builder against fresh symbol graphs.
+It requires a nonempty documentation comment for every source-authored public or
+open symbol in Core, Runtime, Providers, Tools, SwiftUI and Testing, including
+public extension members. It fails on absent primary graphs or modules with no
+authored symbols, so missing inputs cannot produce a false pass. Duplicate symbol
+identities across graphs count once.
+
+The 2026-11-02 local audit covers 633 symbols: Core 282, Runtime 183, Providers 21,
+Tools 67, SwiftUI 33 and Testing 47. Comments describe configuration, error and
+event payloads, permissions, cancellation declarations, retrieval behavior,
+storage limitations and test-double semantics. Source review also corrected the
+audit signature's privacy description: argument signatures contain argument text,
+and are not hashes or redacted values.
+
+Compiler-synthesized symbols without source locations, imported framework APIs,
+the empty AppIntents placeholder and internal evaluation-support/CLI targets are
+outside this authored SDK-surface count. Inherited documentation can satisfy the
+check when emitted by Swift. Nonempty comments alone do not establish correctness;
+the strict DocC build checks links, and code review must check the described
+behavior. API stability and release readiness are separate Milestone 6 work.
+
+Run the checker tests without compiling Swift:
+
+```bash
+python3 -m unittest discover -s Scripts/tests -p 'test_api_docs.py'
+```
+
+The documentation workflow runs these tests and the same API gate. A hosted run
+and live publication remain unverified by this local audit.
 
 For a local HTTP preview without the GitHub project prefix:
 

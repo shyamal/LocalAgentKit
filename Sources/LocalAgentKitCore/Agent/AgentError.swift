@@ -11,9 +11,12 @@ public enum TimeoutScope: Sendable, Hashable {
 /// it is why the error below is separate from a generic tool failure — an app can direct the user
 /// to Settings instead of just reporting an error.
 public enum DeviceCapability: Sendable, Hashable, CustomStringConvertible {
+  /// Access to calendar events.
   case calendar
+  /// Access to reminders.
   case reminders
 
+  /// The capability name suitable for a settings or authorization message.
   public var description: String {
     switch self {
     case .calendar: "Calendar"
@@ -26,12 +29,14 @@ public enum DeviceCapability: Sendable, Hashable, CustomStringConvertible {
 public enum ConfigurationIssue: Sendable, Hashable, CustomStringConvertible {
   /// `NetworkPolicy.never` with a component that needs the network (FR-023).
   case networkRequiredButForbidden(component: String)
+  /// An execution, chunking or budgeting limit is unusable; carries the reason.
   case invalidLimit(String)
   /// A planner workflow that cannot run against the registered tools.
   case invalidWorkflow(String)
   /// A configured choice with nothing behind it, such as a planner that has not shipped.
   case unsupported(String)
 
+  /// The configuration problem in human-readable form.
   public var description: String {
     switch self {
     case .networkRequiredButForbidden(let component):
@@ -45,25 +50,39 @@ public enum ConfigurationIssue: Sendable, Hashable, CustomStringConvertible {
 
 /// Typed errors (FR-025). Each of the four execution limits has its own case.
 public enum AgentError: Error, Sendable, Hashable, CustomStringConvertible {
+  /// Generation cannot proceed; the provider may supply a diagnostic reason.
   case modelUnavailable(reason: String?)
+  /// A call names a tool absent from the registered source.
   case toolNotFound(name: String)
+  /// Arguments failed validation for the named tool; violations describe repairs.
   case invalidArguments(tool: String, violations: [ArgumentViolation])
+  /// The required human confirmation was denied or unavailable.
   case permissionDenied(tool: String)
+  /// The named tool failed during execution; carries its diagnostic message.
   case toolFailed(tool: String, message: String)
+  /// The run or a single model call exceeded its deadline.
   case executionTimeout(TimeoutScope)
+  /// The run reached its configured planning-iteration limit.
   case maximumIterationsReached(limit: Int)
+  /// The run reached its configured tool-call limit.
   case maximumToolCallsReached(limit: Int)
   /// What remains after both trimming and summarizing failed — not the first line of defense (R2).
   case contextLimitExceeded
+  /// A terminal policy refusal; do not retry the same request automatically.
   case guardrailRefusal(GuardrailRefusal)
   /// The OS denied, restricted, or never granted access to a device capability (M1-TL-06).
   case deviceAuthorizationDenied(DeviceCapability)
+  /// Repeated calls to the named tool indicate the run is not making progress.
   case loopDetected(tool: String)
+  /// A memory operation failed; carries its diagnostic message.
   case memoryFailure(String)
+  /// Document ingestion, embedding or retrieval failed; carries its diagnostic message.
   case retrievalFailure(String)
+  /// Construction or preflight rejected the supplied configuration.
   case invalidConfiguration(ConfigurationIssue)
   /// `run` was called while another run was active. One runtime runs one goal at a time.
   case runInProgress
+  /// The current task or run was cancelled.
   case cancelled
 
   /// A sentence a host app can show a person as-is, distinct from `debugDescription`-style dumps

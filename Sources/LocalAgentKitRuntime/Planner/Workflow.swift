@@ -4,6 +4,7 @@ import LocalAgentKitCore
 /// only for what code cannot supply, because a single on-device call is right roughly half the
 /// time (findings §11).
 public enum ArgumentSource: Sendable, Hashable {
+  /// Use the supplied value directly, without model generation or a binding lookup.
   case literal(JSONValue)
   /// A value an earlier step produced: `"notes"`, or a path into it, `"notes.0.title"`. Carrying
   /// values in code instead of through the model removes the grounding failure, the largest
@@ -15,22 +16,37 @@ public enum ArgumentSource: Sendable, Hashable {
 
 /// A comparison for numeric guards.
 public enum Comparison: Sendable, Hashable {
-  case lessThan, atMost, equalTo, atLeast, greaterThan
+  /// The value is strictly less than the threshold.
+  case lessThan
+  /// The value is less than or equal to the threshold.
+  case atMost
+  /// The value exactly equals the threshold.
+  case equalTo
+  /// The value is greater than or equal to the threshold.
+  case atLeast
+  /// The value is strictly greater than the threshold.
+  case greaterThan
 }
 
 /// A condition evaluated **in code** against the run's bindings. The model ignored a goal's "only
 /// if" condition in 4 of 5 runs (findings §12), so conditions are never left to the prompt.
 /// A missing or unusable value makes a comparison false, never a crash.
 public indirect enum Guard: Sendable, Hashable {
+  /// Unconditionally include the step.
   case always
   /// The reference resolves to a value.
   case exists(String)
   /// Missing, null, blank, an empty collection, or the result of a tool that found nothing.
   case isEmpty(String)
+  /// Compare a resolved binding or path with an expected JSON value.
   case equals(String, JSONValue)
+  /// Apply a numeric comparison to a resolved binding or path.
   case number(String, Comparison, Double)
+  /// Invert another guard's result.
   case not(Guard)
+  /// Require every nested guard to hold; an empty list succeeds.
   case all([Guard])
+  /// Require at least one nested guard to hold; an empty list fails.
   case any([Guard])
 
   func evaluate(_ context: AgentContext) -> Bool {
@@ -64,9 +80,12 @@ public indirect enum Guard: Sendable, Hashable {
 
 /// One call to a tool.
 public struct ToolInvocation: Sendable, Hashable {
+  /// Registered name of the tool to invoke.
   public var tool: String
+  /// Argument names mapped to literal values, bindings or model-supplied values.
   public var arguments: [String: ArgumentSource]
 
+  /// Creates a planned invocation with named argument sources.
   public init(tool: String, arguments: [String: ArgumentSource] = [:]) {
     self.tool = tool
     self.arguments = arguments
@@ -81,17 +100,22 @@ public enum Recovery: Sendable, Hashable {
   case skip
 }
 
+/// One guarded workflow action with binding, retry and recovery policies.
 public struct WorkflowStep: Sendable, Hashable, Identifiable {
+  /// The executable operation represented by a workflow step.
   public enum Action: Sendable, Hashable {
+    /// Invoke a registered tool with resolved arguments.
     case tool(ToolInvocation)
     /// Write the final answer from the run's bindings, with the model told to use only those
     /// facts. Must be the last step.
     case respond(instruction: String)
   }
 
+  /// Unique step identifier within its workflow.
   public var id: String
   /// Shown in the plan the UI renders.
   public var summary: String
+  /// The tool invocation or final-answer operation to perform.
   public var action: Action
   /// The step is skipped when this is false.
   public var condition: Guard
@@ -99,11 +123,15 @@ public struct WorkflowStep: Sendable, Hashable, Identifiable {
   public var binds: String
   /// A declared alternative path, taken once if the step returns nothing or fails (FR-027).
   public var alternative: ToolInvocation?
+  /// Policy after an empty result and any declared alternative also returns empty.
   public var onEmpty: Recovery
+  /// Policy after a recoverable error exhausts retry and alternative handling.
   public var onFailure: Recovery
   /// Extra attempts after a tool failure. A permission denial is never retried or routed around.
   public var retries: Int
 
+  /// Creates a guarded action; the result binding defaults to the step ID.
+  /// Retries are bounded by the supplied count; alternatives run before final recovery.
   public init(
     id: String, summary: String, action: Action, condition: Guard = .always, binds: String? = nil,
     alternative: ToolInvocation? = nil, onEmpty: Recovery = .fail, onFailure: Recovery = .fail,
@@ -132,6 +160,7 @@ public struct WorkflowStep: Sendable, Hashable, Identifiable {
       onFailure: onFailure, retries: retries)
   }
 
+  /// Creates a final model-answer step, optionally guarded, with instructions for using the bindings.
   public static func respond(
     _ id: String = "respond", _ summary: String = "Write the answer", instruction: String,
     condition: Guard = .always
@@ -144,10 +173,14 @@ public struct WorkflowStep: Sendable, Hashable, Identifiable {
 /// A named, ordered procedure for a kind of goal. The planner picks one by a closed choice among
 /// the `name`s, using `description`; everything after that is deterministic.
 public struct Workflow: Sendable, Hashable {
+  /// Unique workflow choice exposed to the model.
   public var name: String
+  /// Prompt-facing guidance for selecting this procedure.
   public var description: String
+  /// Ordered procedure ending with a response step when an answer is required.
   public var steps: [WorkflowStep]
 
+  /// Creates a named procedure; planning validates it against the registered tools.
   public init(name: String, description: String, steps: [WorkflowStep]) {
     self.name = name
     self.description = description
