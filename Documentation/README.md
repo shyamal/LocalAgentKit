@@ -11,6 +11,12 @@ complete prose; the guides and full API-comment audit remain M1-DC-02..04.
 through the checked-in calculator example and the optional real-model path.
 Newcomer timing validation remains pending (M1-DC-02).
 
+[Write a custom tool](LocalAgentKitTools.docc/WriteACustomTool.md) includes a
+temperature converter, runtime integration and standalone tests. Its 70 application
+source lines are locally checked; independent developer validation remains pending.
+The documentation workflow runs both guide executables with scripted providers
+and the custom-tool tests, so example code is compiled alongside the catalogs.
+
 ## Build locally
 
 Use macOS with Xcode 27 and its full SDK selected. Xcode 27.2 (27B52) was used for

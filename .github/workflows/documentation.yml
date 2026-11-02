@@ -26,6 +26,12 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
+      - name: Run guide examples and custom-tool tests (scripted, no model)
+        run: |
+          swift run --package-path Examples/FirstAgent FirstAgent
+          swift run --package-path Examples/CustomTool CustomTool
+          swift test --package-path Examples/CustomTool
+          xcrun swift-format lint --configuration .swift-format --strict --recursive Examples/FirstAgent/Sources Examples/FirstAgent/Package.swift Examples/CustomTool/Sources Examples/CustomTool/Tests Examples/CustomTool/Package.swift
       - name: Build catalogs with warnings as errors
         run: python3 Scripts/build-docs.py --hosting-base-path "$DOCS_BASE_PATH"
       - name: Validate merged static routes

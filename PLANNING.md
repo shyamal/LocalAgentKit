@@ -383,6 +383,12 @@ Distinct from developer tooling — these are `AgentTool` conformances.
 
 Every tool must declare: `name`, `description`, `schema`, `permission`, whether it is **parallel-safe**, and whether it is **cancellable**. The last two are additions to the PRD's `AgentTool` protocol that the runtime needs in order to schedule and cancel correctly.
 
+M1-DC-03's `Examples/CustomTool` demonstrates an application-owned
+`TemperatureTool` (`convert_temperature`, `.none`, no framework dependency).
+It is a teaching example, not a new SDK-shipped built-in. Its implementation and
+runtime entry point total 70 application source lines; independent developer
+validation of M2 remains pending.
+
 ### 4.4 Repository scaffolding still to create
 
 Nothing but the PRD exists yet. The bootstrap list:
