@@ -36,6 +36,8 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [x] **M0-16** Verify the Xcode beta toolchain builds the package side-by-side with the release toolchain (needed for R4 later) *(DONE 2026-09-10: Xcode 27.0 beta (27A5252f, Swift 6.4) installed alongside 26.6; `swift build` warning-free and `swift test` green under both toolchains. This also unblocked the beta SDK check in Phase 0 — see the environment table in docs/phase-0-findings.md.)*
 - [x] **M0-17** Keep the toolchain gates working after Xcode 27.0 went GA *(unplanned; serves NFR tooling/CI. DONE 2026-09-18: `Xcode.app` auto-updated on 2026-09-15 to Xcode 27.0 (27A266a, Swift 6.4), whose swift-format rejects `.swift-format` for a missing `orderedImports.shouldGroupImports` key; added it with the tool's own default (`true`). Clean build, tests, layering, and `--strict` lint all pass on 27.0. CI still selects `Xcode_26*` on the runner — left as is, flagged.)*
 
+- [~] **M0-18** Align primary CI with the required SDK and execute OS 27 fixture tests *(Unplanned follow-up to M0-17; NFR tooling/CI. Replace stale macos-15/Xcode_26 selection with documented xcode-27 hosted image; preflight host/Xcode/SDK/Swift versions, run all Python checks, and retain local-development deployment floor. LOCAL IMPLEMENTATION VERIFIED 2026-11-02: 24 Python tests, actionlint, warning-free package build, default/offline suite (500 reported, 27 gated skips on local macOS 26), formatting/layering and 98.41% Core/Runtime coverage pass. Actual preflight correctly rejects local host 26.6.2 despite SDK 27.2. Hosted run remains pending; task stays in progress.)*
+
 **Exit:** empty package builds green in CI with strict concurrency, formatting, and the layering check all enforced.
 
 ---

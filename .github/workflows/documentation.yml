@@ -22,10 +22,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Toolchain
-        run: |
-          xcodebuild -version
-          swift --version
+      - name: Verify CI host and toolchain
+        run: python3 Scripts/check-ci-toolchain.py
       - name: Run guide examples and custom-tool tests (scripted, no model)
         run: |
           swift run --package-path Examples/FirstAgent FirstAgent

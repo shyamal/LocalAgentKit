@@ -5,13 +5,13 @@
 This project is pre-alpha — see [`README.md`](./README.md) for current status. Two things matter more here than in most repos:
 
 1. **Check [`TASKS.md`](./TASKS.md) first.** Work is tracked as task IDs (`M1-RT-07`) grouped into milestones. If what you want to build already has an ID, use it. If it doesn't, add one in the right milestone before opening a PR — untracked work is invisible to the roadmap.
-2. **Respect the 🔒 gates.** Milestone 1 (the actual SDK) is gated on the Phase 0 feasibility spike, which has not run yet. Don't build agent-loop or model-integration code ahead of it — see [`PLANNING.md`](./PLANNING.md) §5 for why, and [`CLAUDE.md`](./CLAUDE.md) for the current gate list. If you think a gate should be crossed, say so in an issue rather than doing it in a PR.
+2. **Respect the 🔒 gates.** Phase 0 has reported; Milestone 1 is active. Keep remaining measurement and release gates explicit — see [`PLANNING.md`](./PLANNING.md) §5 for why, and [`CLAUDE.md`](./CLAUDE.md) for the current gate list. If you think a gate should be crossed, say so in an issue rather than doing it in a PR.
 
-No license has been chosen yet (task M0-10) and there is no CI running (tasks M0-11–M0-16). Both are Milestone 0 work; contributions before they land are at your own risk.
+No license has been chosen yet (M0-10 remains deferred). CI workflow definitions are present; verify actual hosted results on each PR before treating them as evidence.
 
 ## Prerequisites
 
-- Apple silicon Mac, latest Xcode, Swift 6.x
+- Apple silicon Mac, Xcode 27 SDK and Swift 6.2+; runtime deployment remains iOS/macOS 26.4+
 - A physical Apple Intelligence-capable device for anything touching model inference, thermals, or battery — the simulator can't measure these
 
 See `README.md` → Platform requirements.
@@ -69,3 +69,18 @@ Swift 6, strict concurrency, complete checking. No `@unchecked Sendable`, no sil
 ## Security
 
 No disclosure process exists yet (task M0-09). Until then, avoid filing sensitive security issues as public GitHub issues.
+
+## CI toolchain
+
+Primary CI and DocC use GitHub's `xcode-27` hosted image and its selected default
+Xcode, rather than selecting an unverified installation path. The image is listed
+in [GitHub runner-images](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md).
+`Scripts/check-ci-toolchain.py` requires Xcode/SDK 27 and Swift 6.2+, plus macOS 27
+so the asset-free LanguageModel adapter tests execute instead of skipping. This is
+a CI host requirement, not an increase to the library deployment floor.
+
+A macOS 26.4+ development machine with the Xcode 27 SDK can still build and run
+supported paths. Its OS 27 tests skip locally; use the documented simulator helper
+for those tests. Running the CI preflight on such a machine deliberately fails the
+host check. Hosted workflow execution remains separate validation after changes
+are pushed; local tests do not prove the hosted image or job succeeded.
