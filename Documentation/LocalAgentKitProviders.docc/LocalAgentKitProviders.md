@@ -10,6 +10,11 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 ## Topics
 
+### App-owned OS 27 models
+
+- ``LanguageModelProvider``
+- <doc:BringYourOwnLanguageModel>
+
 ### Incremental answers
 
 - <doc:ResponseStreaming>

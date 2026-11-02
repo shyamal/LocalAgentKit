@@ -21,8 +21,7 @@ import LocalAgentKitCore
 /// Only malformed output is retried, once, on a fresh session.
 public struct FoundationModelProvider: LocalModelProvider {
   private let model: SystemLanguageModel
-  private let bridge: SchemaBridge
-  private let maxDecodingRetries: Int
+  private let adapter: FoundationModelSessionAdapter
 
   /// - Parameters:
   ///   - model: The on-device system language model used for generation.
@@ -34,8 +33,16 @@ public struct FoundationModelProvider: LocalModelProvider {
     maxDecodingRetries: Int = 1
   ) {
     self.model = model
-    self.bridge = SchemaBridge(optionalPolicy: optionalArguments)
-    self.maxDecodingRetries = max(0, maxDecodingRetries)
+    self.adapter = FoundationModelSessionAdapter(
+      bridge: SchemaBridge(optionalPolicy: optionalArguments),
+      maxDecodingRetries: max(0, maxDecodingRetries),
+      requireAvailable: { try Self.requireAvailable(model) },
+      sessionFactory: { tools, instructions, transcript in
+        if let transcript {
+          return LanguageModelSession(model: model, tools: tools, transcript: transcript)
+        }
+        return LanguageModelSession(model: model, tools: tools, instructions: instructions)
+      })
   }
 
   /// False: generation uses the local system model rather than a network service.
@@ -51,143 +58,27 @@ public struct FoundationModelProvider: LocalModelProvider {
 
   /// Counts the rendered transcript and tool definitions; returns nil if rendering or counting fails.
   public func tokenCount(for request: ModelRequest) async -> Int? {
-    guard let rendered = try? TranscriptRenderer.render(request),
-      let definitions = try? definitions(for: request.tools)
-    else { return nil }
-    var entries: [Transcript.Entry] = []
-    if let instructions = TranscriptRenderer.instructionsEntry(
-      rendered.instructions, tools: definitions)
-    {
-      entries.append(instructions)
-    }
-    entries += rendered.entries
-    entries.append(TranscriptRenderer.promptEntry(rendered.prompt))
+    guard let entries = try? adapter.tokenEntries(for: request) else { return nil }
     return try? await model.tokenCount(for: entries)
   }
 
-  /// Generates using a fresh system-model session, handing requested tools back to the runtime.
-  /// Throws mapped AgentError values; only malformed output is retried within the decoding limit.
+  /// Generates with fresh sessions, validated hand-back tools and bounded malformed-output repair.
   public func generate(request: ModelRequest) async throws -> ModelResponse {
-    try requireAvailable()
-    let rendered = try TranscriptRenderer.render(request)
-    var attempt = 0
-    while true {
-      if Task.isCancelled { throw AgentError.cancelled }
-      do {
-        return try await respond(to: rendered, request: request)
-      } catch {
-        let mapped = await FoundationModelErrors.map(error)
-        guard mapped.isRetryable, attempt < maxDecodingRetries else { throw mapped.error }
-        attempt += 1
-      }
-    }
+    try await adapter.generate(request: request)
   }
 
-  // MARK: One attempt
-
-  /// Streams append-only text fragments from a fresh session for tool-free requests.
-  /// Requests declaring tools use the ordinary capture-and-hand-back path without fragments.
-  /// Malformed output is retried only before any fragment has been delivered; refusals remain terminal.
+  /// Streams append-only fragments for tool-free requests; tool requests retain the hand-back path.
   public func generate(
     request: ModelRequest, onToken: @escaping @Sendable (String) async -> Void
   ) async throws -> ModelResponse {
-    guard request.tools.isEmpty else { return try await generate(request: request) }
-    try requireAvailable()
-    let rendered = try TranscriptRenderer.render(request)
-    var attempt = 0
-    while true {
-      if Task.isCancelled { throw AgentError.cancelled }
-      var emitted = false
-      do {
-        let session = makeSession(rendered, tools: [], definitions: [])
-        var accumulator = StreamingTextAccumulator()
-        for try await snapshot in session.streamResponse(to: rendered.prompt) {
-          if Task.isCancelled { throw AgentError.cancelled }
-          let delta = try accumulator.append(snapshot.content)
-          if !delta.isEmpty {
-            emitted = true
-            await onToken(delta)
-          }
-        }
-        if Task.isCancelled { throw AgentError.cancelled }
-        return .text(accumulator.text)
-      } catch {
-        let mapped = await FoundationModelErrors.map(error)
-        guard !emitted, mapped.isRetryable, attempt < maxDecodingRetries else { throw mapped.error }
-        attempt += 1
-      }
-    }
+    try await adapter.generate(request: request, onToken: onToken)
   }
 
-  private func respond(to rendered: RenderedRequest, request: ModelRequest) async throws
-    -> ModelResponse
-  {
-    let recorder = CallRecorder()
-    let tools = try request.tools.map {
-      CapturingTool($0, schema: try bridge.generationSchema(for: $0), recorder: recorder)
-    }
-    // A fresh session per request, never reused: reusing one after an abandoned request crashed
-    // the process on macOS 26 (findings §9a), and the runtime owns the conversation anyway.
-    let session = try makeSession(
-      rendered, tools: tools, definitions: definitions(for: request.tools))
-
-    do {
-      let response = try await session.respond(to: rendered.prompt)
-      if Task.isCancelled { throw AgentError.cancelled }
-      let calls = await recorder.recorded
-      return calls.isEmpty
-        ? .text(response.content) : modelResponse(for: calls, tools: request.tools)
-    } catch let error as LanguageModelSession.ToolCallError where error.underlyingError is HandBack
-    {
-      if Task.isCancelled { throw AgentError.cancelled }
-      return modelResponse(for: await recorder.recorded, tools: request.tools)
-    }
-  }
-
-  private func makeSession(
-    _ rendered: RenderedRequest, tools: [CapturingTool], definitions: [Transcript.ToolDefinition]
-  ) -> LanguageModelSession {
-    if rendered.entries.isEmpty {
-      return LanguageModelSession(
-        model: model, tools: tools,
-        instructions: rendered.instructions.isEmpty ? nil : rendered.instructions)
-    }
-    var entries: [Transcript.Entry] = []
-    if let instructions = TranscriptRenderer.instructionsEntry(
-      rendered.instructions, tools: definitions)
-    {
-      entries.append(instructions)
-    }
-    entries += rendered.entries
-    return LanguageModelSession(
-      model: model, tools: tools, transcript: Transcript(entries: entries))
-  }
-
-  private func definitions(for tools: [ToolDescriptor]) throws -> [Transcript.ToolDefinition] {
-    try tools.map {
-      Transcript.ToolDefinition(
-        name: $0.name, description: $0.description, parameters: try bridge.generationSchema(for: $0)
-      )
-    }
-  }
-
-  /// One call, or several, as the model asked. An optional argument that was presented as required
-  /// and came back empty is dropped, so the runtime sees what the tool actually declared.
   func modelResponse(for calls: [ToolCall], tools: [ToolDescriptor]) -> ModelResponse {
-    let cleaned = calls.map { call -> ToolCall in
-      guard let descriptor = tools.first(where: { $0.name == call.name }),
-        bridge.optionalPolicy.presentsOptionalAsRequired
-      else { return call }
-      var call = call
-      for (name, value) in call.arguments.values where !descriptor.schema.required.contains(name) {
-        if value == .null || value == .string("") { call.arguments.values[name] = nil }
-      }
-      return call
-    }
-    return cleaned.count == 1 ? .toolCall(cleaned[0]) : .multipleToolCalls(cleaned)
+    adapter.modelResponse(for: calls, tools: tools)
   }
 
-  private func requireAvailable() throws {
+  private static func requireAvailable(_ model: SystemLanguageModel) throws {
     switch model.availability {
     case .available:
       return
