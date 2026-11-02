@@ -30,7 +30,9 @@ struct FirstAgent {
     }
     let runtime = try AgentRuntime(
       configuration: AgentConfiguration(model: model, networkPolicy: .never),
-      tools: StaticToolSource([CalculatorTool()]))
+      tools: StaticToolSource([CalculatorTool()]),
+      instrumentation: CommandLine.arguments.contains("--trace")
+        ? OSLogRuntimeInstrumentation() : NoOpRuntimeInstrumentation())
     let stream = await runtime.events()
     let observer = Task {
       for await event in stream {

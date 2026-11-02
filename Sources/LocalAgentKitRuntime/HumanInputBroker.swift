@@ -76,8 +76,11 @@ actor HumanInputBroker: PermissionGate {
 struct TimedGate: PermissionGate {
   let inner: any PermissionGate
   let clock: RunClock
+  var trace: RuntimeTrace? = nil
 
   func decide(for call: ToolCall, tool: ToolDescriptor) async -> PermissionDecision {
+    let interval = trace?.begin(.permission)
+    defer { interval?.end() }
     let start = ContinuousClock.now
     let decision = await inner.decide(for: call, tool: tool)
     await clock.extend(by: ContinuousClock.now - start)

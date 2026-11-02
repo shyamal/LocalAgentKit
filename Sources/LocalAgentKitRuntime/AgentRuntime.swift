@@ -30,6 +30,7 @@ public actor AgentRuntime {
   private let bus = EventBus()
   private let now: @Sendable () -> Date
   private let timeZone: TimeZone
+  private let instrumentation: any RuntimeInstrumentation
   private var activeRun: Task<AgentResponse, any Error>?
 
   /// - Parameters:
@@ -54,6 +55,7 @@ public actor AgentRuntime {
   ///   choice, or `.never` network policy paired with a component that requires the network
   ///   (M1-SE-03).
   /// - Parameter timeZone: The planner clock zone; defaults to the host zone.
+  /// - Parameter instrumentation: Optional content-free diagnostic intervals; defaults to no logging.
   public init(
     configuration: AgentConfiguration,
     tools: any ToolSource,
@@ -65,11 +67,12 @@ public actor AgentRuntime {
     auditLogger: AuditLogger = AuditLogger(),
     memory: ConversationMemory? = nil,
     timeZone: TimeZone = .current,
+    instrumentation: any RuntimeInstrumentation = NoOpRuntimeInstrumentation(),
     now: @escaping @Sendable () -> Date = { Date() }
   ) throws {
     if let issue = configuration.limits.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = budgeter.configuration.issue { throw AgentError.invalidConfiguration(issue) }
-    if let issue = NetworkPolicyGuard.validate(configuration) {
+    if let issue = NetworkPolicyGuard.validate(configuration, instrumentation: instrumentation) {
       throw AgentError.invalidConfiguration(issue)
     }
     switch (configuration.planner, planner) {
@@ -89,6 +92,7 @@ public actor AgentRuntime {
     self.memory = memory
     self.now = now
     self.timeZone = timeZone
+    self.instrumentation = instrumentation
   }
 
   // MARK: Public surface
@@ -165,10 +169,14 @@ public actor AgentRuntime {
   // MARK: The run
 
   private func execute(goal: String, conversation: [ModelMessage]) async throws -> AgentResponse {
+    let trace = RuntimeTrace(sink: instrumentation)
+    let interval = trace.begin(.run)
+    defer { interval.end() }
     let clock = RunClock(budget: configuration.limits.maxDuration)
     await bus.publish(.started)
     do {
-      let response = try await drive(goal: goal, conversation: conversation, clock: clock)
+      let response = try await drive(
+        goal: goal, conversation: conversation, clock: clock, trace: trace)
       await broker.cancelAll()
       await bus.publish(.completed(response))
       return response
@@ -185,21 +193,27 @@ public actor AgentRuntime {
   }
 
   private func drive(
-    goal: String, conversation: [ModelMessage], clock: RunClock
+    goal: String, conversation: [ModelMessage], clock: RunClock, trace: RuntimeTrace
   ) async throws -> AgentResponse {
     let limits = configuration.limits
     let model = BudgetedModel(
       base: configuration.model, budgeter: budgeter, limits: limits, clock: clock, events: bus,
-      retrievedChunks: try await retrieveChunks(for: goal))
+      retrievedChunks: try await retrieveChunks(for: goal, trace: trace), trace: trace)
     let executor = ToolExecutor(
-      source: tools, gate: TimedGate(inner: customGate ?? broker, clock: clock), events: bus,
+      source: tools, gate: TimedGate(inner: customGate ?? broker, clock: clock, trace: trace),
+      events: bus,
       remainingTime: { await clock.remaining() },
       auditLogger: configuration.security.auditSensitiveExecutions ? auditLogger : nil)
     let descriptors = await tools.descriptors()
 
     var context = AgentContext(
       goal: goal, now: now(), timeZone: timeZone, conversation: conversation)
-    let plan = try await planner.plan(context: &context, tools: descriptors, model: model)
+    let plan: AgentPlan
+    do {
+      let interval = trace.begin(.planning)
+      defer { interval.end() }
+      plan = try await planner.plan(context: &context, tools: descriptors, model: model)
+    }
     await bus.publish(.planCreated(plan))
 
     var loopDetector = LoopDetector()
@@ -221,7 +235,12 @@ public actor AgentRuntime {
       case .askUser(let question):
         await bus.publish(.clarificationRequested(question))
         let start = ContinuousClock.now
-        let answer = await broker.awaitClarification()
+        let answer: String?
+        do {
+          let interval = trace.begin(.clarification)
+          defer { interval.end() }
+          answer = await broker.awaitClarification()
+        }
         await clock.extend(by: ContinuousClock.now - start)
         guard let answer else { throw AgentError.cancelled }
         context.conversation += [
@@ -236,7 +255,7 @@ public actor AgentRuntime {
         }
         let revision = try await perform(
           call, executor: executor, descriptors: descriptors, model: model,
-          context: &context, toolCalls: &toolCalls)
+          context: &context, toolCalls: &toolCalls, trace: trace)
         if case .replanned(let revised) = revision { await bus.publish(.planCreated(revised)) }
       }
     }
@@ -246,9 +265,11 @@ public actor AgentRuntime {
   /// Best-effort: with no embedding provider and vector store both configured, or if retrieval
   /// itself fails, the run proceeds with none rather than treating document search as
   /// load-bearing. Genuine cancellation still propagates rather than being swallowed.
-  private func retrieveChunks(for goal: String) async throws -> [String] {
+  private func retrieveChunks(for goal: String, trace: RuntimeTrace) async throws -> [String] {
     guard let embedding = configuration.embedding, let vectorStore = configuration.vectorStore
     else { return [] }
+    let interval = trace.begin(.retrieval)
+    defer { interval.end() }
     do {
       return try await RetrievalPipeline(embeddingProvider: embedding, vectorStore: vectorStore)
         .retrieve(for: goal)
@@ -263,8 +284,10 @@ public actor AgentRuntime {
   /// planner, which recovers deterministically or rethrows.
   private func perform(
     _ call: ToolCall, executor: ToolExecutor, descriptors: [ToolDescriptor],
-    model: BudgetedModel, context: inout AgentContext, toolCalls: inout Int
+    model: BudgetedModel, context: inout AgentContext, toolCalls: inout Int, trace: RuntimeTrace
   ) async throws -> PlanRevision {
+    let interval = trace.begin(.toolCall)
+    defer { interval.end() }
     let limits = configuration.limits
     func count() throws {
       guard toolCalls < limits.maxToolCalls else {
