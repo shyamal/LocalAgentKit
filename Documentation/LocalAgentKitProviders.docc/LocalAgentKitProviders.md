@@ -10,6 +10,10 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 ## Topics
 
+### Incremental answers
+
+- <doc:ResponseStreaming>
+
 ### Device thermal pressure
 
 - ``ProcessInfoThermalStateSource``

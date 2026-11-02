@@ -1,3 +1,4 @@
+import Foundation
 import LocalAgentKitCore
 
 /// The model as the planner sees it: the provider wrapped so that **every** call is budgeted,
@@ -52,16 +53,31 @@ struct BudgetedModel: LocalModelProvider {
     await events.publish(.thinking)
 
     let model = base
-    let fittedRequest = fitted.request
+    var fittedRequest = fitted.request
+    fittedRequest.purpose = request.purpose
+    let finalRequest = fittedRequest
+    let channel: UUID?
+    if request.purpose == .answer, request.tools.isEmpty {
+      channel = await events.openResponseChannel()
+    } else {
+      channel = nil
+    }
     do {
-      return try await withDeadline(allowed, scope: scope) {
-        try await model.generate(request: fittedRequest)
+      let response = try await withDeadline(allowed, scope: scope) {
+        if let channel {
+          return try await model.generate(request: finalRequest) { token in
+            guard !Task.isCancelled else { return }
+            await events.publishResponseToken(token, channel: channel)
+          }
+        }
+        return try await model.generate(request: finalRequest)
       }
-    } catch let error as AgentError {
-      throw error
-    } catch is CancellationError {
-      throw AgentError.cancelled
+      if let channel { await events.closeResponseChannel(channel) }
+      return response
     } catch {
+      if let channel { await events.closeResponseChannel(channel) }
+      if let error = error as? AgentError { throw error }
+      if error is CancellationError { throw AgentError.cancelled }
       throw AgentError.modelUnavailable(reason: String(describing: error))
     }
   }

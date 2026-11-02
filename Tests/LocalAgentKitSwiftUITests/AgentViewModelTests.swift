@@ -35,6 +35,39 @@ private func waitUntil(
 }
 
 @Suite struct AgentViewModelTests {
+  @Test @MainActor func aStreamedAnswerUsesOneAssistantTurn() async throws {
+    let model = ScriptedModelProvider([
+      .respond(choice("finish")), .stream(["Hel", "lo"], then: .text("Hello")),
+    ])
+    let viewModel = try makeViewModel(model)
+    viewModel.send("Say hello")
+    await waitUntil { viewModel.state == .idle && viewModel.turns.count == 2 }
+    #expect(viewModel.turns.map(\.text) == ["Say hello", "Hello"])
+  }
+
+  @Test(arguments: ["error", "refusal", "clarification"])
+  @MainActor func unsuccessfulStreamsDiscardThePartialTurn(_ outcome: String) async throws {
+    let final: ScriptedModelProvider.Step
+    switch outcome {
+    case "refusal":
+      final = .streamFailure(
+        ["PARTIAL"], error: .guardrailRefusal(GuardrailRefusal(explanation: "Declined")))
+    case "clarification": final = .stream(["PARTIAL"], then: .clarification("Which item?"))
+    default: final = .streamFailure(["PARTIAL"], error: .modelUnavailable(reason: "Stopped"))
+    }
+    let viewModel = try makeViewModel(ScriptedModelProvider([.respond(choice("finish")), final]))
+    viewModel.send("Run")
+    if outcome == "clarification" {
+      await waitUntil { if case .awaitingClarification = viewModel.state { true } else { false } }
+      #expect(viewModel.turns.last?.text == "Which item?")
+      viewModel.cancel()
+      await waitUntil { viewModel.state == .idle }
+    } else {
+      await waitUntil { viewModel.state == .idle && viewModel.lastFailure != nil }
+      #expect(viewModel.lastFailure != nil)
+    }
+    #expect(!viewModel.turns.contains { $0.text.contains("PARTIAL") })
+  }
   @Test @MainActor func thermalStatusIsBridgedToObservableState() async throws {
     let runtime = try AgentRuntime(
       configuration: AgentConfiguration(model: MockModelProvider()), tools: StaticToolSource([]),

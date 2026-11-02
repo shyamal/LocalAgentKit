@@ -161,15 +161,15 @@ public final class AgentViewModel {
       state = .awaitingPermission(call)
 
     case .clarificationRequested(let question):
+      discardStreamingTurn()
       state = .awaitingClarification(question)
       turns.append(Turn(role: .assistant, text: question))
 
     case .responseToken(let token):
-      // Not yet emitted by any provider (streaming is M1-PR-05) — implemented so the transcript
-      // is ready the moment one starts.
       appendStreamingToken(token)
 
     case .guardrailRefused(let refusal):
+      discardStreamingTurn()
       lastFailure = refusal.explanation ?? "I can't help with that."
       turns.append(Turn(role: .assistant, text: lastFailure!))
       state = .idle
@@ -186,11 +186,17 @@ public final class AgentViewModel {
       activeTool = nil
 
     case .error(let error):
+      discardStreamingTurn()
       lastFailure = String(describing: error)
       streamingTurnID = nil
       state = .idle
       activeTool = nil
     }
+  }
+
+  private func discardStreamingTurn() {
+    if let id = streamingTurnID { turns.removeAll { $0.id == id } }
+    streamingTurnID = nil
   }
 
   private func appendStreamingToken(_ token: String) {

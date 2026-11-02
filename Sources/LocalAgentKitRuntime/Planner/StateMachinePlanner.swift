@@ -345,22 +345,21 @@ public struct StateMachinePlanner: AgentPlanner {
     _ instruction: String, context: AgentContext, model: any LocalModelProvider
   ) async throws -> PlannerDecision {
     let response = try await model.generate(
-      request: ModelRequest(messages: [
-        ModelMessage(
-          role: .system,
-          content: Self.lines([
-            context.referenceLine,
-            "Answer using only the facts provided. If they do not contain the answer, say so.",
-          ])),
-        ModelMessage(
-          role: .user,
-          content: Self.lines([
-            context.recentConversationText,
-            context.factsText(),
-            "Request: \(context.goal)",
-            instruction,
-          ])),
-      ]))
+      request: ModelRequest(
+        messages: [
+          ModelMessage(
+            role: .system,
+            content: Self.lines([
+              context.referenceLine,
+              "Answer using only the facts provided. If they do not contain the answer, say so.",
+            ])),
+          ModelMessage(
+            role: .user,
+            content: Self.lines([
+              context.recentConversationText, context.factsText(),
+              "Request: \(context.goal)", instruction,
+            ])),
+        ], purpose: .answer))
     switch response {
     case .text(let text) where !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty:
       return .complete(text)
