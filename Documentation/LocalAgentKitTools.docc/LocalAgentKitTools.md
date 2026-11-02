@@ -11,6 +11,10 @@ input; they cannot authorize writes.
 
 ## Topics
 
+### Extend the agent
+
+- <doc:WriteACustomTool>
+
 ### Built-in actions
 
 - ``CalculatorTool``
