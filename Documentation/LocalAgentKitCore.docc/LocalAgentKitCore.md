@@ -10,6 +10,13 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 
 ## Topics
 
+### Diagnostic intervals
+
+- ``RuntimeInstrumentation``
+- ``RuntimeTraceEvent``
+- ``RuntimeOperation``
+- ``NoOpRuntimeInstrumentation``
+
 ### Architecture
 
 - <doc:ExecutionAndPermissions>

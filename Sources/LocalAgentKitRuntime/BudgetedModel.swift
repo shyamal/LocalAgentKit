@@ -15,6 +15,7 @@ struct BudgetedModel: LocalModelProvider {
   /// model makes — RAG passages get the budgeter's own `retrievalShare` rather than competing
   /// with conversation history for the same tokens.
   var retrievedChunks: [String] = []
+  var trace: RuntimeTrace? = nil
 
   var requiresNetwork: Bool { base.requiresNetwork }
   var contextWindowTokens: Int? { base.contextWindowTokens }
@@ -24,6 +25,8 @@ struct BudgetedModel: LocalModelProvider {
   }
 
   func generate(request: ModelRequest) async throws -> ModelResponse {
+    let interval = trace?.begin(.modelCall)
+    defer { interval?.end() }
     let remaining = await clock.remaining()
     guard remaining > .zero else { throw AgentError.executionTimeout(.run) }
     let perCall = limits.maxModelCallDuration

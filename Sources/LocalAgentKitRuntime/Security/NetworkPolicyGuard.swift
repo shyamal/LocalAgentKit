@@ -4,13 +4,18 @@ import LocalAgentKitCore
 /// component that itself requires the network is a startup error, not a runtime surprise.
 /// Offline mode is a guarantee, not a default.
 enum NetworkPolicyGuard {
-  static func validate(_ configuration: AgentConfiguration) -> ConfigurationIssue? {
+  static func validate(
+    _ configuration: AgentConfiguration, instrumentation: (any RuntimeInstrumentation)? = nil
+  ) -> ConfigurationIssue? {
     guard configuration.networkPolicy == .never else { return nil }
     if configuration.model.requiresNetwork {
       return .networkRequiredButForbidden(component: "model")
     }
     if configuration.embedding?.requiresNetwork == true {
       return .networkRequiredButForbidden(component: "embedding")
+    }
+    if instrumentation?.requiresNetwork == true {
+      return .networkRequiredButForbidden(component: "instrumentation")
     }
     return nil
   }

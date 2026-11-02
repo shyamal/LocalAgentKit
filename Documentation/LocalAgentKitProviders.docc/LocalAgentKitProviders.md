@@ -10,6 +10,11 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 ## Topics
 
+### Runtime diagnostics
+
+- ``OSLogRuntimeInstrumentation``
+- <doc:RuntimeDiagnostics>
+
 ### Generation
 
 - ``FoundationModelProvider``

@@ -87,6 +87,10 @@ non-agentic path instead of retrying it. For `contextLimitExceeded`, reduce hist
 retrieved text or tool descriptions; raising iteration limits does not enlarge the
 model window. A loop or execution limit is a failed run, not a successful answer.
 
+Add `--trace` to either example mode to opt into local OSLog and signpost
+intervals. It leaves the default output and model selection intact. See the
+Providers catalog's Runtime diagnostics article for recording settings and scope.
+
 ## 4. Move into an app
 
 Add this checkout as a local Swift package in Xcode. Select the Core, Runtime,

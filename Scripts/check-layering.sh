@@ -6,7 +6,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-FORBIDDEN='^import (FoundationModels|CoreAI|SwiftData|Vision|Speech|EventKit|Contacts|SwiftUI)'
+FORBIDDEN='^import (FoundationModels|CoreAI|SwiftData|Vision|Speech|EventKit|Contacts|SwiftUI|OSLog|os)'
 
 MATCHES="$(grep -rnE "$FORBIDDEN" Sources/LocalAgentKitCore Sources/LocalAgentKitRuntime || true)"
 
