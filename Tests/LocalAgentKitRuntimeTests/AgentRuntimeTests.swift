@@ -183,7 +183,7 @@ private func fails(_ error: AgentError, _ body: () async throws -> some Any) asy
     #expect(throws: AgentError.self) {
       try makeRuntime(model, limits: ExecutionLimits(maxIterations: 0))
     }
-    #expect(throws: AgentError.self) {
+    #expect(throws: Never.self) {
       try AgentRuntime(
         configuration: AgentConfiguration(model: model, planner: .modelDriven),
         tools: StaticToolSource([]))

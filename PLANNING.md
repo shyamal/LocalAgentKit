@@ -227,6 +227,16 @@ protocol AgentPlanner: Sendable {
 
 **Phase 0 chose: `StateMachinePlanner` is `.default` in v0.1** (2026-09-23, P0-15 — see [`docs/decisions/0002-planner-default.md`](./docs/decisions/0002-planner-default.md)). Multi-step completion measured **14–28% against the >95% M5 bar**, and the dominant model-side failure is grounding: the right tool is called, but values from earlier tool results don't carry into the next call. Both planners still ship; the config picks. This was the one-line change the design left room for, instead of an architecture rewrite. `ModelDrivenPlanner` is promoted only if M5-03 re-measures above the bar. P0-17 then scoped the requirements themselves (decision 0003): FR-026's capabilities — sequencing, conditionals, dependencies, retries, completion detection — ship in v0.1 implemented deterministically, and FR-027 ships as deterministic recovery; the model-driven halves are Milestone 5.
 
+M1-RT-12 implementation (2026-11-02): `.modelDriven` selects an experimental
+bounded linear-sequence planner. It asks for tool names, step instructions and a
+final-answer instruction, validates the proposal, then compiles it to the existing
+workflow execution path. Argument generation still uses observed facts, schema
+repair and the runtime-budgeted model. No model-generated conditions, explicit
+binding expressions, alternatives or open-ended replanning are implemented; those
+remain M5-01/M5-02. Permission enforcement and terminal refusal behavior are shared
+with the default planner. No real-model reliability result is claimed for this
+configuration; M5-03 is still required before changing the default.
+
 ### 2.5 Concurrency model
 
 Swift 6 strict concurrency, full checking, no exceptions:

@@ -23,9 +23,14 @@ before every model call; a provider can still report overflow during generation.
 
 - ``AgentPlanner``
 - ``StateMachinePlanner``
+- ``ModelDrivenPlanner``
 - ``Workflow``
 - ``ToolExecutor``
 - ``PermissionGate``
+
+### Experimental planning
+
+- <doc:ExperimentalModelPlanning>
 
 ### Budget and bound work
 

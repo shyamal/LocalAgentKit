@@ -10,7 +10,8 @@ public enum NetworkPolicy: Sendable, Hashable {
 public enum PlannerChoice: Sendable, Hashable {
   /// Deterministic control flow, the model consulted per decision. The v0.1 default.
   case stateMachine
-  /// The model emits and revises whole plans. Promoted only if M5-03 clears the >95% bar.
+  /// Experimental model-proposed linear tool sequences; open-ended replanning is deferred.
+  /// Promoted only if M5-03 clears the >95% bar.
   case modelDriven
 }
 
@@ -48,7 +49,7 @@ public struct AgentConfiguration: Sendable {
   public var security: SecurityPolicy
   /// Whether registered components may require network access.
   public var networkPolicy: NetworkPolicy
-  /// Planner selection; model-driven mode requires an explicit planner implementation.
+  /// Planner selection; experimental model-driven planning is opt-in.
   public var planner: PlannerChoice
 
   /// Creates a configuration with a required model and optional storage, retrieval and execution policies.

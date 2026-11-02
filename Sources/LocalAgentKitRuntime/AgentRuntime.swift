@@ -38,9 +38,10 @@ public actor AgentRuntime {
   ///   - budgeter: Fits every model request to the configured context allowance.
   ///   - repairer: Repairs invalid tool arguments within its attempt limit.
   ///   - now: Supplies the run clock, allowing a fixed instant in tests.
-  ///   - workflows: Declared for the default `StateMachinePlanner`; ignored if `planner` is given.
-  ///   - planner: Overrides the configured planner. Required for `.modelDriven`, which has not
-  ///     shipped (M1-RT-12).
+  ///   - workflows: Declared for the built-in `StateMachinePlanner`; ignored by `.modelDriven`
+  ///     or when an explicit `planner` is given.
+  ///   - planner: Overrides the configured planner. Nil uses the selected built-in planner;
+  ///     `.modelDriven` opts into experimental whole-sequence planning.
   ///   - gate: Decides permission prompts. With nil, a prompt suspends the run until the app calls
   ///     ``resolvePermission(callID:approved:)`` in response to `.permissionRequired`.
   ///   - auditLogger: Where confirmed executions are recorded when
@@ -77,8 +78,7 @@ public actor AgentRuntime {
     case (.stateMachine, nil):
       self.planner = StateMachinePlanner(workflows: workflows)
     case (.modelDriven, nil):
-      throw AgentError.invalidConfiguration(
-        .unsupported("ModelDrivenPlanner has not shipped; pass a planner or use .stateMachine"))
+      self.planner = ModelDrivenPlanner()
     }
     self.configuration = configuration
     self.tools = tools
