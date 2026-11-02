@@ -6,37 +6,23 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   build-and-test:
-    # Requires Xcode 26.x — swift-tools-version 6.2 and the iOS(.v26)/
-    # macOS(.v26) platform constants in Package.swift need it. Which GitHub
-    # runner image ships that, under which /Applications/Xcode_*.app path,
-    # is NOT verified here — this repo was authored without network access
-    # to check actions/runner-images. `macos-15` and the glob below are a
-    # reasonable guess, not a confirmed fact; the first real CI run is the
-    # actual verification. If "Select Xcode 26" fails, check
-    # https://github.com/actions/runner-images for the current image's
-    # Xcode list and update `runs-on` / the glob accordingly.
-    runs-on: macos-15
+    # SDK 27 declarations require Xcode 27; macOS 27 executes the custom-model fixtures.
+    # https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md
+    runs-on: xcode-27
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-      - name: Select Xcode 26
-        run: |
-          shopt -s nullglob
-          candidates=(/Applications/Xcode_26*.app)
-          if [ ${#candidates[@]} -eq 0 ]; then
-            echo "No Xcode 26.x found on this runner image. Available Xcode installs:" >&2
-            find /Applications -maxdepth 1 -name 'Xcode*.app' >&2 || true
-            exit 1
-          fi
-          XCODE_PATH=$(printf '%s\n' "${candidates[@]}" | sort -V | tail -n1)
-          echo "Selecting $XCODE_PATH"
-          sudo xcode-select -switch "$XCODE_PATH/Contents/Developer"
-
-      - name: Swift version
-        run: swift --version
+      - name: Verify CI host and toolchain
+        run: python3 Scripts/check-ci-toolchain.py
 
       - name: Build (all targets, strict concurrency)
         # Swift 6 language mode (implied by swift-tools-version 6.2, applied
@@ -70,8 +56,8 @@ jobs:
       - name: Default suite without socket networking or model assets
         run: bash Scripts/check-offline-tests.sh
 
-      - name: Evaluation automation tests (no model, no network)
-        run: python3 -m unittest discover -s Scripts/tests -p 'test_eval_ci.py'
+      - name: Python automation and documentation/toolchain checks (no model, no network)
+        run: python3 -m unittest discover -s Scripts/tests -p 'test_*.py'
 
       - name: Evaluation CLI and orchestration smoke (synthetic, no model)
         env:
