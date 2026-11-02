@@ -8,15 +8,20 @@ import LocalAgentKitCore
 public actor InMemoryVectorStore: VectorStore {
   private var documents: [EmbeddedDocument] = []
 
+  /// Creates an empty non-durable passage store.
   public init() {}
 
+  /// Number of stored passages, including any duplicate IDs inserted by the caller.
   public var count: Int { documents.count }
 
+  /// Appends passages without deduplication; checks cancellation before insertion.
   public func insert(_ documents: [EmbeddedDocument]) async throws {
     try Task.checkCancellation()
     self.documents += documents
   }
 
+  /// Returns up to `limit` passages by descending cosine similarity.
+  /// Non-positive limits return no hits; incompatible dimensions and zero vectors are skipped.
   public func search(vector: [Float], limit: Int) async throws -> [SearchResult] {
     try Task.checkCancellation()
     guard limit > 0 else { return [] }

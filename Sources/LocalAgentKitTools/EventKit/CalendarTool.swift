@@ -3,18 +3,25 @@ import LocalAgentKitCore
 
 /// Read the user's calendar events (FR-008). `.readOnly`.
 public struct CalendarTool: AgentTool {
+  /// Registered action name `list_calendar_events`.
   public let name = "list_calendar_events"
+  /// Prompt-facing guidance for reading events that overlap an interval.
   public let description = "List the user's calendar events that overlap a time range."
+  /// Requires start and end date-time strings.
   public let schema = ToolSchema(
     parameters: [
       "start": ToolParameter(.string, description: "Range start, an ISO 8601 date-time."),
       "end": ToolParameter(.string, description: "Range end, an ISO 8601 date-time."),
     ], required: ["start", "end"])
+  /// Read-only agent tier; EventKit authorization is still required.
   public let permission = ToolPermission.readOnly
+  /// True: device-store access is serialized by its actor.
   public let isParallelSafe = true
+  /// Advertises cancellation support to the executor; system operations may finish after cancellation.
   public let isCancellable = true
   private let store: any EventStoring
 
+  /// Creates a tool backed by the device's EventKit store.
   public init() {
     self.init(store: EventStoreProvider())
   }
@@ -23,6 +30,8 @@ public struct CalendarTool: AgentTool {
     self.store = store
   }
 
+  /// Parses interval dates and reads authorized calendar events.
+  /// Returns compact text and structured events; authorization and date errors are typed AgentError values.
   public func execute(arguments: ToolArguments) async throws -> ToolResult {
     guard let start = try parseDate(arguments, "start") else {
       throw AgentError.invalidArguments(tool: name, violations: [.missingRequired(path: "start")])

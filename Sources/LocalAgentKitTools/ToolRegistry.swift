@@ -11,8 +11,10 @@ public actor ToolRegistry: ToolSource {
   /// that show a tool listing to a person).
   private var order: [String] = []
 
+  /// Creates an empty mutable registry.
   public init() {}
 
+  /// Registers initial tools in array order; duplicate names retain one registration.
   public init(_ tools: [any AgentTool]) {
     for tool in tools {
       if self.tools[tool.name] == nil { order.append(tool.name) }
@@ -38,6 +40,7 @@ public actor ToolRegistry: ToolSource {
     return true
   }
 
+  /// Looks up an executable tool by its registered name.
   public func tool(named name: String) -> (any AgentTool)? {
     tools[name]
   }
@@ -47,6 +50,8 @@ public actor ToolRegistry: ToolSource {
     order.compactMap { name in tools[name].map { ToolDescriptor($0) } }
   }
 
+  /// Number of unique registered tool names.
   public var count: Int { tools.count }
+  /// Tool names in registration order.
   public var names: [String] { order }
 }

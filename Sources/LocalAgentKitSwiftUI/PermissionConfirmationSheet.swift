@@ -13,12 +13,14 @@ public struct PermissionConfirmationSheet: View {
   private let onApprove: () -> Void
   private let onDeny: () -> Void
 
+  /// Creates a confirmation UI for a pending call with callbacks for each human decision.
   public init(call: ToolCall, onApprove: @escaping () -> Void, onDeny: @escaping () -> Void) {
     self.call = call
     self.onApprove = onApprove
     self.onDeny = onDeny
   }
 
+  /// The tool name, argument preview and approve/deny controls rendered by the sheet.
   public var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       Text("Confirm Action")
@@ -68,6 +70,7 @@ public struct PermissionConfirmationSheet: View {
   }
 }
 
+/// Optional permission-confirmation presentation for a host SwiftUI view.
 extension View {
   /// Presents `PermissionConfirmationSheet` whenever `viewModel.state` is `.awaitingPermission`.
   /// Dismissing the sheet any other way (a swipe down) denies the pending call — a suspended

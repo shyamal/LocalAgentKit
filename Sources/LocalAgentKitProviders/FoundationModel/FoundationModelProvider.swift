@@ -38,7 +38,9 @@ public struct FoundationModelProvider: LocalModelProvider {
     self.maxDecodingRetries = max(0, maxDecodingRetries)
   }
 
+  /// False: generation uses the local system model rather than a network service.
   public var requiresNetwork: Bool { false }
+  /// Context size advertised by the installed system model.
   public var contextWindowTokens: Int? { model.contextSize }
 
   /// Starts loading the model so the first real request is faster. The model is a system-managed,
@@ -47,6 +49,7 @@ public struct FoundationModelProvider: LocalModelProvider {
     LanguageModelSession(model: model).prewarm()
   }
 
+  /// Counts the rendered transcript and tool definitions; returns nil if rendering or counting fails.
   public func tokenCount(for request: ModelRequest) async -> Int? {
     guard let rendered = try? TranscriptRenderer.render(request),
       let definitions = try? definitions(for: request.tools)
@@ -62,6 +65,8 @@ public struct FoundationModelProvider: LocalModelProvider {
     return try? await model.tokenCount(for: entries)
   }
 
+  /// Generates using a fresh system-model session, handing requested tools back to the runtime.
+  /// Throws mapped AgentError values; only malformed output is retried within the decoding limit.
   public func generate(request: ModelRequest) async throws -> ModelResponse {
     try requireAvailable()
     let rendered = try TranscriptRenderer.render(request)

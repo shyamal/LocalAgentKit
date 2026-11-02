@@ -5,6 +5,7 @@ import LocalAgentKitCore
 public enum OptionalArgumentPolicy: Sendable, Hashable {
   /// Optional stays optional on OS 27 and later, and is presented as required before that.
   case automatic
+  /// Preserves declared optionality on every OS, bypassing the compatibility policy.
   case asDeclared
   /// Every argument is presented as required. An optional one the model has nothing for comes
   /// back empty and is dropped before the runtime sees it.

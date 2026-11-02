@@ -2,6 +2,7 @@
 public enum NetworkPolicy: Sendable, Hashable {
   /// Offline is a guarantee: a component that requires the network is a construction error.
   case never
+  /// Allows components that declare a network requirement; does not force network use.
   case allowed
 }
 
@@ -19,10 +20,12 @@ public struct SecurityPolicy: Sendable, Hashable {
   /// Append sensitive tool executions to the audit log (FR-022).
   public var auditSensitiveExecutions: Bool
 
+  /// Creates an audit policy; sensitive executions are recorded by default.
   public init(auditSensitiveExecutions: Bool = true) {
     self.auditSensitiveExecutions = auditSensitiveExecutions
   }
 
+  /// Records confirmed executions in the runtime audit log.
   public static let `default` = SecurityPolicy()
 }
 
@@ -30,15 +33,26 @@ public struct SecurityPolicy: Sendable, Hashable {
 ///
 /// There is no `.default`: Core cannot name a concrete model, so the model is required.
 public struct AgentConfiguration: Sendable {
+  /// Provider used for generation and optional token counting.
   public var model: any LocalModelProvider
+  /// Reserved persistent-memory component; the current runtime does not query this store.
+  /// Configure ConversationMemory on the runtime for cross-turn history.
   public var memory: (any MemoryStore)?
+  /// Query embedding component; automatic retrieval requires a vector store as well.
   public var embedding: (any EmbeddingProvider)?
+  /// Searchable embeddings; automatic retrieval requires an embedding provider as well.
   public var vectorStore: (any VectorStore)?
+  /// Bounds one run, each model call and the assembled context.
   public var limits: ExecutionLimits
+  /// Controls audit recording; cannot weaken tool permission tiers.
   public var security: SecurityPolicy
+  /// Whether registered components may require network access.
   public var networkPolicy: NetworkPolicy
+  /// Planner selection; model-driven mode requires an explicit planner implementation.
   public var planner: PlannerChoice
 
+  /// Creates a configuration with a required model and optional storage, retrieval and execution policies.
+  /// The runtime validates limits and declared network requirements when constructed.
   public init(
     model: any LocalModelProvider,
     memory: (any MemoryStore)? = nil,

@@ -2,20 +2,28 @@ import LocalAgentKitCore
 
 /// Search inside the contents of the user's indexed documents (FR-008, FR-013). `.readOnly`.
 public struct DocumentSearchTool: AgentTool {
+  /// Registered action name `search_documents`.
   public let name = "search_documents"
+  /// Prompt-facing guidance for finding passages in indexed documents.
   public let description =
     "Search inside the contents of the user's indexed documents and return the most relevant "
     + "passages. Use to answer questions about what a document says."
+  /// Requires nonempty query text, also checked by execution.
   public let schema = ToolSchema(
     parameters: [
       "query": ToolParameter(.string, description: "What to look for in the document contents.")
     ], required: ["query"])
+  /// Read-only retrieval of passages already indexed by the host.
   public let permission = ToolPermission.readOnly
+  /// True when the injected embedding and vector-store components safely support concurrent calls.
   public let isParallelSafe = true
+  /// Advertises cancellation support; retrieval propagates cancellation rather than returning no hits.
   public let isCancellable = true
   private let pipeline: RetrievalPipeline
   private let limit: Int
 
+  /// Creates a search tool sharing ingestion's embedding space and vector store.
+  /// The result limit is clamped to at least one.
   public init(
     embeddingProvider: any EmbeddingProvider, vectorStore: any VectorStore, limit: Int = 5
   ) {
@@ -24,6 +32,8 @@ public struct DocumentSearchTool: AgentTool {
     self.limit = max(1, limit)
   }
 
+  /// Retrieves passages for the query; ordinary retrieval failures degrade to an empty result.
+  /// Invalid arguments and cancellation remain errors instead of being hidden as no results.
   public func execute(arguments: ToolArguments) async throws -> ToolResult {
     guard let query = arguments.string("query"), !query.isEmpty else {
       throw AgentError.invalidArguments(tool: name, violations: [.missingRequired(path: "query")])

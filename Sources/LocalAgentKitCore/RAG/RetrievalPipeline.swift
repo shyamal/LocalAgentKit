@@ -3,9 +3,12 @@
 /// exactly what `ContextInputs.retrievedChunks` expects — the link between retrieval and
 /// `ContextBudgeter`'s prompt-injection path.
 public struct RetrievalPipeline: Sendable {
+  /// Provider shared by document and query embedding operations.
   public let embeddingProvider: any EmbeddingProvider
+  /// Destination for ingested passages and source of search results.
   public let vectorStore: any VectorStore
 
+  /// Connects embedding and vector storage components using the same embedding space.
   public init(embeddingProvider: any EmbeddingProvider, vectorStore: any VectorStore) {
     self.embeddingProvider = embeddingProvider
     self.vectorStore = vectorStore

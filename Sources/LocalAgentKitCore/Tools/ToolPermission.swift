@@ -15,6 +15,7 @@ public enum ToolPermission: Int, Sendable, Hashable, Codable, Comparable, CaseIt
   /// Removes or overwrites data irreversibly.
   case destructive
 
+  /// Orders tiers from pure computation through destructive operations.
   public static func < (lhs: ToolPermission, rhs: ToolPermission) -> Bool {
     lhs.rawValue < rhs.rawValue
   }

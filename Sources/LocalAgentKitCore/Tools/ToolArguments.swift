@@ -1,13 +1,17 @@
 /// The arguments of one tool call, as the model produced them.
 public struct ToolArguments: Sendable, Hashable, Codable {
+  /// Raw argument names and JSON values supplied by the model.
   public var values: [String: JSONValue]
 
+  /// Creates an argument object, empty by default.
   public init(_ values: [String: JSONValue] = [:]) {
     self.values = values
   }
 
+  /// Returns a named raw value, or nil when the argument is absent.
   public subscript(name: String) -> JSONValue? { values[name] }
 
+  /// Returns a string argument; other JSON types return nil.
   public func string(_ name: String) -> String? {
     if case .string(let value) = values[name] { value } else { nil }
   }
@@ -21,6 +25,7 @@ public struct ToolArguments: Sendable, Hashable, Codable {
     }
   }
 
+  /// Returns a numeric argument as Double, accepting both integer and Double values.
   public func double(_ name: String) -> Double? {
     switch values[name] {
     case .double(let value): value
@@ -29,6 +34,7 @@ public struct ToolArguments: Sendable, Hashable, Codable {
     }
   }
 
+  /// Returns a Boolean argument; other JSON types return nil.
   public func bool(_ name: String) -> Bool? {
     if case .bool(let value) = values[name] { value } else { nil }
   }

@@ -12,10 +12,14 @@ public protocol ConversationSummarizer: Sendable {
 /// and on macOS 26 the model ignores facts already in its window (findings §14), so the default
 /// keeps what was asked and which tools ran, and does not paraphrase.
 public struct ExtractiveSummarizer: ConversationSummarizer {
+  /// Prefix marking a summary as shortened older conversation rather than new user input.
   public static let header = "Summary of earlier conversation (older turns were shortened):"
 
+  /// Creates a local summarizer that does not call a model.
   public init() {}
 
+  /// Keeps recent speaker-labelled excerpts within an estimated token allowance.
+  /// Always retains the summary header, even if that header alone exceeds a very small allowance.
   public func summarize(_ messages: [ModelMessage], maxTokens: Int) async throws -> String {
     var lines: [String] = []
     for message in messages {

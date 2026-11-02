@@ -3,9 +3,12 @@ import LocalAgentKitCore
 /// A model whose behavior is a closure, for tests that care about what the model is *asked*
 /// rather than about a fixed sequence of answers. Records every request.
 public actor MockModelProvider: LocalModelProvider {
+  /// Asynchronous response factory receiving each recorded model request.
   public typealias Handler = @Sendable (ModelRequest) async throws -> ModelResponse
 
+  /// Configurable network declaration used to test offline-policy rejection.
   public nonisolated let requiresNetwork: Bool
+  /// Optional window advertised to context-budget tests.
   public nonisolated let contextWindowTokens: Int?
   private let handler: Handler
   private let tokenCounter: (@Sendable (ModelRequest) -> Int?)?
@@ -28,6 +31,7 @@ public actor MockModelProvider: LocalModelProvider {
     self.handler = handler
   }
 
+  /// Invokes the configured token counter, or returns nil when none is supplied.
   public func tokenCount(for request: ModelRequest) async -> Int? {
     tokenCounter?(request)
   }
@@ -35,6 +39,7 @@ public actor MockModelProvider: LocalModelProvider {
   /// Every request received, oldest first.
   public var requests: [ModelRequest] { recorded }
 
+  /// Records the request, checks cancellation and invokes the response handler.
   public func generate(request: ModelRequest) async throws -> ModelResponse {
     recorded.append(request)
     do {
@@ -50,8 +55,11 @@ public actor MockModelProvider: LocalModelProvider {
 /// Running past the end of the script is a loud failure, so a loop that makes an unexpected extra
 /// call cannot pass by accident.
 public actor ScriptedModelProvider: LocalModelProvider {
+  /// One response, failure or delay consumed by a scripted model call.
   public enum Step: Sendable {
+    /// Return this model response immediately after the entry cancellation check.
     case respond(ModelResponse)
+    /// Throw this typed error immediately after the entry cancellation check.
     case fail(AgentError)
     /// Waits, then answers. Uses the suspending clock, so a test can pair it with a short limit.
     case delay(Duration, then: ModelResponse)
@@ -60,11 +68,14 @@ public actor ScriptedModelProvider: LocalModelProvider {
     case hang
   }
 
+  /// Configurable network requirement used by policy tests.
   public nonisolated let requiresNetwork: Bool
+  /// Optional context window used by budgeting tests.
   public nonisolated let contextWindowTokens: Int?
   private var script: [Step]
   private var recorded: [ModelRequest] = []
 
+  /// Creates a consumable script with configurable network and context-window declarations.
   public init(
     _ script: [Step], requiresNetwork: Bool = false, contextWindowTokens: Int? = nil
   ) {
@@ -73,14 +84,18 @@ public actor ScriptedModelProvider: LocalModelProvider {
     self.contextWindowTokens = contextWindowTokens
   }
 
+  /// Creates a script of immediate responses with local-network defaults.
   public init(responses: [ModelResponse]) {
     self.init(responses.map(Step.respond))
   }
 
+  /// Requests received in generation order, including the one that exhausts the script.
   public var requests: [ModelRequest] { recorded }
   /// Steps not yet played. A test that expects the loop to consume the whole script asserts zero.
   public var remainingSteps: Int { script.count }
 
+  /// Records a request and consumes one step; an exhausted script throws modelUnavailable.
+  /// Cancellation is normalized to AgentError.cancelled.
   public func generate(request: ModelRequest) async throws -> ModelResponse {
     recorded.append(request)
     guard !script.isEmpty else {

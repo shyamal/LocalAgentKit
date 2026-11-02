@@ -9,8 +9,10 @@ public actor EventBus {
   private var nextID = 0
   private var isFinished = false
 
+  /// Creates a multicast event bus with no subscribers or replay history.
   public init() {}
 
+  /// Number of currently registered event-stream continuations.
   public var subscriberCount: Int { subscribers.count }
 
   /// A new stream of events. It ends when the bus finishes or the consumer stops iterating.
@@ -29,6 +31,7 @@ public actor EventBus {
     return stream
   }
 
+  /// Yields an event to all current subscribers; ignores it after the bus is finished.
   public func publish(_ event: AgentEvent) {
     guard !isFinished else { return }
     for continuation in subscribers.values {
