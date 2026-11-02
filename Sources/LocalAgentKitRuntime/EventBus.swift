@@ -1,6 +1,6 @@
 import LocalAgentKitCore
 
-/// Multicasts ``AgentEvent``s so a UI and a logger can both subscribe (FR-019).
+/// Multicasts `LocalAgentKitCore.AgentEvent`s so a UI and a logger can both subscribe (FR-019).
 ///
 /// A subscriber sees events published after it subscribes; there is no replay. Buffering is
 /// unbounded per subscriber, which is safe because a run is short and bounded.

@@ -2,9 +2,9 @@ import LocalAgentKitCore
 import LocalAgentKitRuntime
 
 /// Registers and looks up the tools an agent has (FR-007): registration, lookup, removal, and the
-/// metadata/schema/permission surface via ``ToolDescriptor``.
+/// metadata/schema/permission surface via `LocalAgentKitCore.ToolDescriptor`.
 ///
-/// Conforms to `ToolSource` (Runtime), so a registry can be handed to ``AgentRuntime`` directly.
+/// Conforms to `ToolSource` (Runtime), so a registry can be handed to `LocalAgentKitRuntime.AgentRuntime` directly.
 public actor ToolRegistry: ToolSource {
   private var tools: [String: any AgentTool] = [:]
   /// Insertion order, so `descriptors()` is stable across calls (and across runs, for prompts

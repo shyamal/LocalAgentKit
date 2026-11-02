@@ -13,6 +13,10 @@ public struct ArgumentRepairer: Sendable {
   /// Asks the model for a corrected call until it validates or attempts run out.
   ///
   /// - Parameters:
+  ///   - call: The invalid call to repair.
+  ///   - violations: Validation failures to present to the model.
+  ///   - descriptor: The tool schema against which repairs are validated.
+  ///   - model: The runtime-budgeted model used for repair requests.
   ///   - history: The conversation up to, and not including, the invalid call.
   /// - Returns: A call that passes `descriptor.schema`.
   /// - Throws: `.invalidArguments` when attempts are exhausted or the model stops calling the

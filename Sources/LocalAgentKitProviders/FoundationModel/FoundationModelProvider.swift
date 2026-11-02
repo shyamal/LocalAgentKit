@@ -2,7 +2,7 @@ import Foundation
 import FoundationModels
 import LocalAgentKitCore
 
-/// Apple's on-device model as a ``LocalModelProvider`` (FR-004).
+/// Apple's on-device model as a `LocalAgentKitCore.LocalModelProvider` (FR-004).
 ///
 /// It sits on top of Foundation Models and does not re-implement it. It does three jobs the
 /// framework does not do for an agent runtime, each backed by a Phase 0 finding:
@@ -25,6 +25,7 @@ public struct FoundationModelProvider: LocalModelProvider {
   private let maxDecodingRetries: Int
 
   /// - Parameters:
+  ///   - model: The on-device system language model used for generation.
   ///   - optionalArguments: See ``OptionalArgumentPolicy``.
   ///   - maxDecodingRetries: Extra attempts when the model's output is malformed.
   public init(

@@ -25,6 +25,7 @@ public actor ConversationMemory {
   /// - Parameters:
   ///   - approximateShareTokens: A rough estimate of `ContextBudgeter`'s conversation share.
   ///     Doesn't need to be exact — it only sizes when cross-run pruning kicks in.
+  ///   - summarizer: Compacts older messages when retention limits are reached.
   ///   - retentionMultiple: History is pruned once it exceeds this many multiples of the share.
   public init(
     approximateShareTokens: Int = 1600, retentionMultiple: Int = 4,

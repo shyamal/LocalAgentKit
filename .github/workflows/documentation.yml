@@ -1,0 +1,71 @@
+name: Documentation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    # Documented GitHub-hosted image with the OS 27 SDK APIs used by Providers.
+    # https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md
+    runs-on: xcode-27
+    timeout-minutes: 30
+    env:
+      DOCS_BASE_PATH: ${{ vars.LOCALAGENTKIT_DOCS_BASE_PATH || '/LocalAgentKit' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+      - name: Build catalogs with warnings as errors
+        run: python3 Scripts/build-docs.py --hosting-base-path "$DOCS_BASE_PATH"
+      - name: Validate merged static routes
+        run: python3 Scripts/check-docs.py .build/documentation/LocalAgentKit.doccarchive
+      - name: Prepare Pages landing redirect
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          archive = Path('.build/documentation/LocalAgentKit.doccarchive')
+          (archive / 'index.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>LocalAgentKit documentation</title><meta http-equiv="refresh" content="0; url=documentation/"></head><body><a href="documentation/">Open LocalAgentKit documentation</a></body></html>\n')
+          (archive / '.nojekyll').touch()
+          PY
+      - name: Retain reviewable archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: LocalAgentKit-documentation
+          path: .build/documentation/LocalAgentKit.doccarchive
+          if-no-files-found: error
+      - name: Upload deployable Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.LOCALAGENTKIT_DOCS_PUBLISH == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .build/documentation/LocalAgentKit.doccarchive
+
+  publish:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.LOCALAGENTKIT_DOCS_PUBLISH == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: documentation-pages
+      cancel-in-progress: false
+    steps:
+      - name: Configure existing Pages site
+        uses: actions/configure-pages@v5
+      - name: Publish documentation
+        id: deployment
+        uses: actions/deploy-pages@v4

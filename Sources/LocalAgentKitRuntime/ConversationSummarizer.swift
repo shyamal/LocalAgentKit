@@ -2,6 +2,7 @@ import LocalAgentKitCore
 
 /// Condenses older conversation turns when the context is full (M1-RT-05).
 public protocol ConversationSummarizer: Sendable {
+  /// - Parameter messages: Earlier conversation messages to compact.
   /// - Parameter maxTokens: An upper bound on the summary's size, which the caller relies on.
   func summarize(_ messages: [ModelMessage], maxTokens: Int) async throws -> String
 }
