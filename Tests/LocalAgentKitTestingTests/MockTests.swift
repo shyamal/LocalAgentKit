@@ -7,6 +7,19 @@ import Testing
 private let request = ModelRequest(messages: [ModelMessage(role: .user, content: "hi")])
 
 @Suite struct ScriptedModelProviderTests {
+  @Test(arguments: [false, true]) func cancellationFromTheLastFragmentIsHonored(_ failing: Bool)
+    async
+  {
+    let step: ScriptedModelProvider.Step =
+      failing
+      ? .streamFailure(["one"], error: .contextLimitExceeded)
+      : .stream(["one"], then: .text("one"))
+    let model = ScriptedModelProvider([step])
+    let task = Task {
+      try await model.generate(request: request) { _ in withUnsafeCurrentTask { $0?.cancel() } }
+    }
+    await #expect(throws: AgentError.cancelled) { try await task.value }
+  }
   @Test func playsStepsInOrderAndRecordsRequests() async throws {
     let call = ToolCall(id: "1", name: "echo")
     let model = ScriptedModelProvider(responses: [.toolCall(call), .text("done")])

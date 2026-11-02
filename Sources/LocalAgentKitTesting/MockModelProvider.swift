@@ -57,6 +57,11 @@ public actor MockModelProvider: LocalModelProvider {
 public actor ScriptedModelProvider: LocalModelProvider {
   /// One response, failure or delay consumed by a scripted model call.
   public enum Step: Sendable {
+    /// Delivers ordered text fragments to a streaming caller, then returns the supplied response.
+    /// Ordinary generation returns only the response, keeping internal decisions private.
+    case stream([String], then: ModelResponse)
+    /// Delivers fragments to a streaming caller, then fails with a typed error.
+    case streamFailure([String], error: AgentError)
     /// Return this model response immediately after the entry cancellation check.
     case respond(ModelResponse)
     /// Throw this typed error immediately after the entry cancellation check.
@@ -97,6 +102,19 @@ public actor ScriptedModelProvider: LocalModelProvider {
   /// Records a request and consumes one step; an exhausted script throws modelUnavailable.
   /// Cancellation is normalized to AgentError.cancelled.
   public func generate(request: ModelRequest) async throws -> ModelResponse {
+    try await consume(request: request, onToken: nil)
+  }
+
+  /// Consumes the next step and delivers its fragments only for an explicitly streaming call.
+  public func generate(
+    request: ModelRequest, onToken: @escaping @Sendable (String) async -> Void
+  ) async throws -> ModelResponse {
+    try await consume(request: request, onToken: onToken)
+  }
+
+  private func consume(
+    request: ModelRequest, onToken: (@Sendable (String) async -> Void)?
+  ) async throws -> ModelResponse {
     recorded.append(request)
     guard !script.isEmpty else {
       throw AgentError.modelUnavailable(reason: "ScriptedModelProvider: script exhausted")
@@ -105,6 +123,20 @@ public actor ScriptedModelProvider: LocalModelProvider {
     do {
       try Task.checkCancellation()
       switch step {
+      case .stream(let tokens, let response):
+        for token in tokens {
+          try Task.checkCancellation()
+          await onToken?(token)
+        }
+        try Task.checkCancellation()
+        return response
+      case .streamFailure(let tokens, let error):
+        for token in tokens {
+          try Task.checkCancellation()
+          await onToken?(token)
+        }
+        try Task.checkCancellation()
+        throw error
       case .respond(let response):
         return response
       case .fail(let error):

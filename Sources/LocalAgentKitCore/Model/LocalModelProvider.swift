@@ -46,15 +46,26 @@ public struct ModelMessage: Sendable, Hashable {
 
 /// One model call. The runtime assembles it after `ContextBudgeter` has fitted it to the window.
 public struct ModelRequest: Sendable, Hashable {
+  /// Whether output is internal decision data or user-visible answer text.
+  public enum Purpose: Sendable, Hashable {
+    /// Planner choices, arguments and other internal output; never streamed to the user.
+    case decision
+    /// A final-answer request eligible for streaming when it declares no tools.
+    case answer
+  }
   /// Ordered transcript entries supplied to the model.
   public var messages: [ModelMessage]
   /// Tool definitions available for this request; empty permits no declared tools.
   public var tools: [ToolDescriptor]
+  /// Explicit intent; defaults to internal output so custom planners cannot accidentally leak decisions.
+  public var purpose: Purpose
 
   /// Creates a request from a transcript and optional tool descriptors.
-  public init(messages: [ModelMessage], tools: [ToolDescriptor] = []) {
+  public init(messages: [ModelMessage], tools: [ToolDescriptor] = [], purpose: Purpose = .decision)
+  {
     self.messages = messages
     self.tools = tools
+    self.purpose = purpose
   }
 }
 
@@ -92,9 +103,21 @@ public protocol LocalModelProvider: Sendable {
 
   /// Honors `Task` cancellation. Throws ``AgentError`` — a provider maps platform errors itself.
   func generate(request: ModelRequest) async throws -> ModelResponse
+  /// Generates a response with append-only answer fragments when supported.
+  /// Fragments are text chunks, not necessarily individual tokenizer tokens. Await the callback
+  /// to preserve order and backpressure; fallback implementations may emit no fragments.
+  func generate(
+    request: ModelRequest, onToken: @escaping @Sendable (String) async -> Void
+  ) async throws -> ModelResponse
 }
 
 extension LocalModelProvider {
+  /// Falls back to ordinary generation without synthesizing incremental output.
+  public func generate(
+    request: ModelRequest, onToken: @escaping @Sendable (String) async -> Void
+  ) async throws -> ModelResponse {
+    try await generate(request: request)
+  }
   /// Default for a provider that does not require network access.
   public var requiresNetwork: Bool { false }
   /// Unknown by default; the budgeter uses its configured fallback window.

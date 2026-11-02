@@ -85,6 +85,40 @@ public struct FoundationModelProvider: LocalModelProvider {
 
   // MARK: One attempt
 
+  /// Streams append-only text fragments from a fresh session for tool-free requests.
+  /// Requests declaring tools use the ordinary capture-and-hand-back path without fragments.
+  /// Malformed output is retried only before any fragment has been delivered; refusals remain terminal.
+  public func generate(
+    request: ModelRequest, onToken: @escaping @Sendable (String) async -> Void
+  ) async throws -> ModelResponse {
+    guard request.tools.isEmpty else { return try await generate(request: request) }
+    try requireAvailable()
+    let rendered = try TranscriptRenderer.render(request)
+    var attempt = 0
+    while true {
+      if Task.isCancelled { throw AgentError.cancelled }
+      var emitted = false
+      do {
+        let session = makeSession(rendered, tools: [], definitions: [])
+        var accumulator = StreamingTextAccumulator()
+        for try await snapshot in session.streamResponse(to: rendered.prompt) {
+          if Task.isCancelled { throw AgentError.cancelled }
+          let delta = try accumulator.append(snapshot.content)
+          if !delta.isEmpty {
+            emitted = true
+            await onToken(delta)
+          }
+        }
+        if Task.isCancelled { throw AgentError.cancelled }
+        return .text(accumulator.text)
+      } catch {
+        let mapped = await FoundationModelErrors.map(error)
+        guard !emitted, mapped.isRetryable, attempt < maxDecodingRetries else { throw mapped.error }
+        attempt += 1
+      }
+    }
+  }
+
   private func respond(to rendered: RenderedRequest, request: ModelRequest) async throws
     -> ModelResponse
   {

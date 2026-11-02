@@ -211,6 +211,14 @@ Four design decisions worth stating explicitly:
 3. **Context budgeting happens before every model call, not on failure.** R2 says apps hit context-length errors in production. `contextLimitExceeded` is the outcome after trimming and summarization have both failed — not the first line of defense.
 4. **The permission gate sits between argument validation and execution.** A schema-valid tool call from an injected instruction is still stopped there. That ordering *is* the prompt-injection mitigation.
 
+M1-PR-05 streaming: final answers use `ModelRequest.Purpose.answer`; other requests
+remain internal decisions. Only tool-free answer requests emit append-only
+`responseToken` fragments. A default provider overload preserves non-streaming
+implementations; FoundationModelProvider converts cumulative snapshots from a
+fresh session into suffixes. The event bus closes each response channel before
+terminal delivery so callbacks from abandoned operations cannot enter later turns.
+Partial UI text is discarded on failure/refusal/clarification; completion is final.
+
 ### 2.4 Planner: two implementations behind one protocol
 
 The single biggest open risk (R1) is whether a compact on-device model can drive multi-step planning. The architecture refuses to bet on the answer:

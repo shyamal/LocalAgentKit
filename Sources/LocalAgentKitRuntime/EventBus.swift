@@ -1,3 +1,4 @@
+import Foundation
 import LocalAgentKitCore
 
 /// Multicasts `LocalAgentKitCore.AgentEvent`s so a UI and a logger can both subscribe (FR-019).
@@ -8,6 +9,20 @@ public actor EventBus {
   private var subscribers: [Int: AsyncStream<AgentEvent>.Continuation] = [:]
   private var nextID = 0
   private var isFinished = false
+  private var responseChannels: Set<UUID> = []
+
+  func openResponseChannel() -> UUID {
+    let id = UUID()
+    if !isFinished { responseChannels.insert(id) }
+    return id
+  }
+
+  func publishResponseToken(_ token: String, channel: UUID) {
+    guard responseChannels.contains(channel), !token.isEmpty else { return }
+    publish(.responseToken(token))
+  }
+
+  func closeResponseChannel(_ channel: UUID) { responseChannels.remove(channel) }
 
   /// Creates a multicast event bus with no subscribers or replay history.
   public init() {}
@@ -41,6 +56,7 @@ public actor EventBus {
 
   /// Ends every subscriber's stream. Later publishes are ignored.
   public func finish() {
+    responseChannels.removeAll()
     isFinished = true
     for continuation in subscribers.values {
       continuation.finish()

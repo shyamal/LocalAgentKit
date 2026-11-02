@@ -39,9 +39,55 @@ private func firstToolCall(
 @Suite(.enabled(if: deviceTestsEnabled), .serialized) struct FoundationModelDeviceTests {
   private let provider = FoundationModelProvider()
 
+  @Test func streamsAppendOnlyAnswerFragments() async throws {
+    let tokens = DeviceStreamTokens()
+    let response = try await provider.generate(
+      request: ModelRequest(
+        messages: [
+          ModelMessage(role: .user, content: "Write three short sentences about a sunny morning.")
+        ],
+        purpose: .answer)
+    ) { fragment in await tokens.append(fragment) }
+    guard case .text(let answer) = response else {
+      Issue.record("Expected streamed text")
+      return
+    }
+    let fragments = await tokens.fragments
+    #expect(!fragments.isEmpty)
+    #expect(!answer.isEmpty)
+    #expect(fragments.joined() == answer)
+  }
+
   @Test func reportsTheRealContextWindow() {
     #expect(provider.contextWindowTokens == 4096)
     #expect(!provider.requiresNetwork)
+  }
+
+  @Test func cancellingAStreamDoesNotPoisonTheNextSession() async throws {
+    let provider = self.provider
+    let cancelled = Task {
+      try await provider.generate(
+        request: ModelRequest(messages: [
+          ModelMessage(role: .user, content: "Describe a sunny morning in five sentences.")
+        ])
+      ) { _ in withUnsafeCurrentTask { $0?.cancel() } }
+    }
+    do {
+      _ = try await cancelled.value
+      Issue.record("Expected cancellation after the first fragment")
+    } catch let error as AgentError { #expect(error == .cancelled) }
+    let tokens = DeviceStreamTokens()
+    let response = try await provider.generate(
+      request: ModelRequest(messages: [
+        ModelMessage(role: .user, content: "Say hello in one sentence.")
+      ])
+    ) { await tokens.append($0) }
+    guard case .text(let text) = response else {
+      Issue.record("Expected text from a fresh session")
+      return
+    }
+    #expect(!text.isEmpty)
+    #expect(await tokens.fragments.joined() == text)
   }
 
   /// The mechanism the whole provider rests on: the tool is not run, the call comes back.
@@ -174,4 +220,9 @@ private func firstToolCall(
     let response = try await runtime.run("What do my notes say about the budget review?")
     #expect(!response.text.isEmpty)
   }
+}
+
+private actor DeviceStreamTokens {
+  var fragments: [String] = []
+  func append(_ fragment: String) { fragments.append(fragment) }
 }

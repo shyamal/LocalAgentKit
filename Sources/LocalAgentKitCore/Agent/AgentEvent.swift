@@ -87,7 +87,8 @@ public enum AgentEvent: Sendable {
   case toolCompleted(ToolResult)
   /// The completed tool call and result are ready for planner observation.
   case observationReceived(ToolObservation)
-  /// An incremental answer fragment; emitted only when the producer supports streaming.
+  /// An append-only provisional answer fragment, not necessarily one tokenizer token.
+  /// Only explicitly marked, tool-free answer requests stream; discard provisional text on failure.
   case responseToken(String)
   /// The run is suspended until the app answers.
   case clarificationRequested(String)
