@@ -177,7 +177,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 
 ### Documentation
 - [~] **M1-DC-01** DocC catalog + CI publish *(IMPLEMENTED LOCALLY 2026-10-31: six SDK module catalogs, architecture/status articles, public symbol extraction, strict per-module DocC builds, merged static archive and internal route checks. PR/main documentation workflow and opt-in Pages deploy prepared; public comment link/parameter warnings fixed. Repeat strict build, 7,195 static topic routes, actionlint, all 444 tests/offline, format/layering and 98.45% coverage pass. Pages API returned 404; hosted build and actual publication remain unverified. Guides and complete public API prose audit remain M1-DC-02..04. See Documentation/README.md.)*
-- [ ] **M1-DC-02** "Build your first agent" guide — validate it against the 30-minute M1 target with someone who has not seen the code
+- [~] **M1-DC-02** "Build your first agent" guide — validate it against the 30-minute M1 target with someone who has not seen the code *(Guide and standalone calculator example added; scripted run produces tool result 60 and one tool call. Strict six-module DocC build and 6,351 internal reference routes, warning-free build, all 444 default tests, format/layering and coverage gate pass. Newcomer timing and real-model setup validation remain pending.)*
 - [ ] **M1-DC-03** "Write a custom tool" guide — verify the <100-line M2 target end to end
 - [ ] **M1-DC-04** Document every public API surface
 

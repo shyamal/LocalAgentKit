@@ -8,47 +8,38 @@ A privacy-first, on-device AI agent framework for Apple platforms. Apple's Found
 
 ## Status
 
-**Pre-alpha. There is no shipped functionality yet.** This repository currently contains a buildable but empty package skeleton — every target compiles, but holds only a placeholder file. Real implementation is gated on a feasibility spike (Phase 0) that has not yet run: see [`TASKS.md`](./TASKS.md) for the full plan and [`PLANNING.md`](./PLANNING.md) §5 for why that gate exists. Do not depend on this package yet.
+**Pre-alpha; APIs may change.** Phase 0 has reported and Milestone 1 has a working
+runtime, tools, local retrieval, SwiftUI integration and an evaluation harness.
+Some capabilities and validation remain unfinished; see [`TASKS.md`](./TASKS.md)
+for current gates and measured limitations.
 
 ## Why
 
 Cloud-based AI integration (OpenAI, Anthropic, Gemini, and similar) means sensitive data can leave the device, per-request costs, a network dependency, added latency, and vendor lock-in. Apple's platform now offers a supported on-device alternative for model access itself — but every application still has to build the agent loop, planning, tool permissions, memory, and RAG from scratch. LocalAgentKit provides those as a reusable framework, on top of whichever model provider you choose.
 
-## Quick start (target API — not yet implemented)
+## Quick start
 
-This is the developer experience the SDK is being built toward. None of it runs yet.
+Follow [Build your first agent](Documentation/LocalAgentKitRuntime.docc/BuildYourFirstAgent.md)
+for setup, an explanation of the loop, and the real-model path. From this checkout:
 
-```swift
-import LocalAgentKit
-
-let agent = LocalAgent(configuration: .default)
-
-agent.register(CalendarTool())
-agent.register(ReminderTool())
-agent.register(DocumentSearchTool())
-
-let response = try await agent.run("Prepare me for tomorrow's meetings.")
-print(response.text)
+```bash
+swift run --package-path Examples/FirstAgent FirstAgent
 ```
 
-You should not need to implement the agent loop, context management, tool routing, tool schemas, memory retrieval, permission workflows, or event streaming yourself — unless you want custom behavior.
-
-### Install (once published)
-
-```swift
-.package(url: "<repository URL>", from: "1.0.0")
-```
-
-No version has been tagged yet.
+This runs a scripted model through the real runtime and calculator, without model
+assets. Add `--device` to use the local Mac's on-device model. There is no tagged
+release yet; the example depends on this checkout as a local Swift package.
 
 ## Platform requirements
 
-- iOS 26+ / macOS 26+ (visionOS and iPadOS to follow)
-- Apple silicon Mac for development
-- A physical Apple Intelligence-capable device for on-device model, thermal, and battery testing — the simulator can't measure any of these
-- Swift 6.x, strict concurrency
+- iOS 26.4+ / macOS 26.4+
+- Xcode 27 SDK and Swift 6.2+ to build the current source
+- Apple Intelligence-capable hardware with model assets ready for real generation
+- A physical supported iPhone for iOS model, thermal and battery testing; iOS Simulator cannot run real generation
 
-The iOS/macOS 26 floor and the exact Foundation Models / Core AI API surface are described from the PRD's account of WWDC 2026 announcements and are **not yet verified** against a shipping SDK — see `PLANNING.md` §6, open question 1.
+The scripted first-agent example runs on Mac without Apple Intelligence assets.
+The platform floor and SDK findings are recorded in `docs/decisions/` and
+`docs/phase-0-findings.md`.
 
 ## Documentation
 
@@ -63,7 +54,7 @@ LocalAgentKit is an agent infrastructure SDK, not a consumer chatbot. It will no
 
 ## Contributing
 
-Not yet open for contributions — see [`TASKS.md`](./TASKS.md) Milestone 0 for the remaining bootstrap work (`CONTRIBUTING.md`, `LICENSE`, and CI are still pending).
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for contribution and verification guidance.
 
 ## License
 

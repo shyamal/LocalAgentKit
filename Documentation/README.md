@@ -5,6 +5,12 @@ notes, and a GitHub Pages workflow. App Intents remains a placeholder and is
 labelled as such. Generated symbol pages are not proof that every public API has
 complete prose; the guides and full API-comment audit remain M1-DC-02..04.
 
+## Start using the SDK
+
+[Build your first agent](LocalAgentKitRuntime.docc/BuildYourFirstAgent.md) walks
+through the checked-in calculator example and the optional real-model path.
+Newcomer timing validation remains pending (M1-DC-02).
+
 ## Build locally
 
 Use macOS with Xcode 27 and its full SDK selected. Xcode 27.2 (27B52) was used for

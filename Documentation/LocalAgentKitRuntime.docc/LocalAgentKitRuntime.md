@@ -13,6 +13,7 @@ before every model call; a provider can still report overflow during generation.
 
 ### Run an agent
 
+- <doc:BuildYourFirstAgent>
 - ``AgentRuntime``
 - ``StaticToolSource``
 - ``ConversationMemory``
