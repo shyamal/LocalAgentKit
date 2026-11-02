@@ -72,8 +72,9 @@ Run the checker tests without compiling Swift:
 python3 -m unittest discover -s Scripts/tests -p 'test_api_docs.py'
 ```
 
-The documentation workflow runs these tests and the same API gate. A hosted run
-and live publication remain unverified by this local audit.
+The documentation workflow runs these tests and the same API gate. The hosted documentation build and API gate passed on 2026-11-02; artifact
+upload failed on DocC filenames containing colons. Live publication remains
+unverified.
 
 For a local HTTP preview without the GitHub project prefix:
 
@@ -88,7 +89,17 @@ Open `http://localhost:8000/documentation/`. Stop the server with Ctrl-C.
 
 `.github/workflows/documentation.yml` builds and validates on pull requests and
 pushes to `main`; it also supports manual dispatch. Every build retains a
-`LocalAgentKit-documentation` artifact. No model assets, physical device, or
+`LocalAgentKit-documentation` artifact containing `LocalAgentKit-documentation.tar.gz`.
+The tar archive preserves DocC filenames containing colons and hidden files such
+as `.nojekyll`, which must survive transport intact. After downloading and
+unzipping the Actions artifact, extract it with:
+
+```bash
+tar -xzf LocalAgentKit-documentation.tar.gz
+```
+
+This produces `LocalAgentKit.doccarchive/`, suitable for local preview. The Pages
+upload continues to use the original archive directory. No model assets, physical device, or
 self-hosted evaluation runner is needed.
 
 The build uses GitHub's documented hosted
