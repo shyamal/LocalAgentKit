@@ -35,9 +35,14 @@ canned note). Turn 2's answer quality depends on whether anything you actually a
 turn 1 resembles that bundled content.
 
 **End-to-end reliability is bounded by what Phase 0 measured, not guaranteed.** The canonical first prompt uses an application-selected calendar workflow:
-code computes tomorrow in the runtime timezone, reads once, then asks the model
-to answer from that observation. This also handles an empty calendar. Other wording
-and subsequent turns use `StateMachinePlanner` open mode. Single-call tool accuracy measured 51–63% in Phase 0
+code computes tomorrow in the runtime timezone, reads once, then displays the actual calendar result with local event times and
+the queried date/timezone; the model does not rewrite this answer. This also handles an empty calendar. The canonical second prompt also uses a single-search workflow: the model
+extracts search terms from the earlier meetings, the tool runs once, and its
+actual passages and query are displayed directly. The model does not rewrite
+retrieval results; ranked passages are not guaranteed relevant matches. Empty results finish without a retry. The canonical checklist prompt uses one
+answer step with the recent conversation and no tools. The canonical save prompt passes the completed checklist text directly to
+`create_note`, preserving the approval gate and avoiding model reconstruction.
+Without a completed checklist it does not write. Other wording uses open mode. Single-call tool accuracy measured 51–63% in Phase 0
 (`docs/phase-0-findings.md` §11); a real run may need the argument-repair path, or may occasionally
 pick the wrong tool. That's the honest, measured state of R1, not a demo bug.
 
@@ -111,3 +116,14 @@ xcodebuild -project LocalAgentDemo.xcodeproj -scheme LocalAgentDemo -destination
 ```bash
 xcodebuild -project LocalAgentDemo.xcodeproj -scheme LocalAgentDemoUIKitCheck -destination 'generic/platform=iOS Simulator' -derivedDataPath .build-uikit CODE_SIGN_IDENTITY=- build
 ```
+
+## Planner regression tests
+
+```bash
+swift test --package-path Examples/LocalAgentDemo
+```
+
+This small Swift package compiles the actual `AgentSetup.swift` used by the app.
+Tests drive `DemoPlanner` through the runtime using scripted models and fixture
+tools, without calendar access, model assets or note writes. CI runs these tests;
+they verify bounded execution, not real-model retrieval quality.
