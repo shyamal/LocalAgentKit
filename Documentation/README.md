@@ -18,6 +18,10 @@ source lines are locally checked; independent developer validation remains pendi
 The documentation workflow runs both guide executables with scripted providers
 and the custom-tool tests, so example code is compiled alongside the catalogs.
 
+The [independent developer validation procedure](../docs/developer-validation.md)
+defines timing, code counting, evidence and a session report for both guides.
+No independent session has been recorded yet.
+
 ## Build locally
 
 Use macOS with Xcode 27 and its full SDK selected. Xcode 27.2 (27B52) was used for
@@ -73,8 +77,9 @@ python3 -m unittest discover -s Scripts/tests -p 'test_api_docs.py'
 ```
 
 The documentation workflow runs these tests and the same API gate. The hosted documentation build and API gate passed on 2026-11-02; artifact
-upload failed on DocC filenames containing colons. Live publication remains
-unverified.
+upload initially failed on DocC filenames containing colons. PR #28 packaged
+the archive and hosted run 41490218884 passed, including artifact upload. Live
+publication remains unverified.
 
 For a local HTTP preview without the GitHub project prefix:
 
