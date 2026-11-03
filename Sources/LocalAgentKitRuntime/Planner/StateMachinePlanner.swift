@@ -16,6 +16,7 @@ public struct StateMachinePlanner: AgentPlanner {
   /// Declared procedures; an empty collection enables open tool-selection mode.
   public let workflows: [Workflow]
   private let repairer: ArgumentRepairer
+  private let preselected: Bool
 
   private static let choiceName = "choose_workflow"
   private static let actionName = "choose_next_action"
@@ -27,6 +28,15 @@ public struct StateMachinePlanner: AgentPlanner {
   ///   answer to a narrow question does not validate.
   public init(workflows: [Workflow] = [], maxRepairs: Int = 2) {
     self.workflows = workflows
+    self.preselected = false
+    self.repairer = ArgumentRepairer(maxAttempts: maxRepairs)
+  }
+
+  /// Runs an application-selected workflow without asking the model to choose one.
+  /// Tool arguments, permissions, budgeting and runtime limits still apply.
+  public init(workflow: Workflow, maxRepairs: Int = 2) {
+    self.workflows = [workflow]
+    self.preselected = true
     self.repairer = ArgumentRepairer(maxAttempts: maxRepairs)
   }
 
@@ -46,6 +56,16 @@ public struct StateMachinePlanner: AgentPlanner {
     context.mode = .open
     context.cursor = 0
     context.pending = nil
+
+    if preselected, let chosen = workflows.first {
+      context.mode = .workflow(chosen)
+      return AgentPlan(
+        steps: chosen.steps.map { step in
+          var toolName: String?
+          if case .tool(let invocation) = step.action { toolName = invocation.tool }
+          return PlanStep(id: step.id, summary: step.summary, toolName: toolName)
+        })
+    }
 
     if !workflows.isEmpty {
       let names = workflows.map(\.name) + [Self.none]
@@ -241,6 +261,17 @@ public struct StateMachinePlanner: AgentPlanner {
       context.executed.contains(where: { $0.tool == tool.name && $0.signature == signature })
     {
       context.notes.append("\(tool.name) was already done with these arguments.")
+      return try await answer("", context: context, model: model)
+    }
+    // One repeated read is allowed (for example, refreshing a value). A third identical
+    // successful read adds no new request information: answer from the observations before
+    // handing another call to the runtime's independent loop detector.
+    if tool.permission <= .readOnly, context.executed.count >= 2,
+      context.executed.suffix(2).allSatisfy({
+        $0.tool == tool.name && $0.signature == signature
+      })
+    {
+      context.notes.append("Use the existing results of \(tool.name); do not request it again.")
       return try await answer("", context: context, model: model)
     }
     context.pending = AgentContext.PendingStep(
