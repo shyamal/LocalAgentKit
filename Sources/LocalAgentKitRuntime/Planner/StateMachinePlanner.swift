@@ -375,6 +375,20 @@ public struct StateMachinePlanner: AgentPlanner {
   private func answer(
     _ instruction: String, context: AgentContext, model: any LocalModelProvider
   ) async throws -> PlannerDecision {
+    // Keep conversation entries intact here. Clipping each to 200 characters loses
+    // retrieved facts and checklist items before the budgeter can measure or trim them.
+    // Separate messages let the budgeter remove older turns while retaining recent text.
+    let history = context.conversation.compactMap { message -> ModelMessage? in
+      switch message.role {
+      case .user, .assistant:
+        return ModelMessage(role: message.role, content: message.content)
+      case .system:
+        return ModelMessage(
+          role: .user, content: "Earlier conversation summary: " + message.content)
+      case .tool:
+        return nil
+      }
+    }
     let response = try await model.generate(
       request: ModelRequest(
         messages: [
@@ -383,13 +397,13 @@ public struct StateMachinePlanner: AgentPlanner {
             content: Self.lines([
               context.referenceLine,
               "Answer using only the facts provided. If they do not contain the answer, say so.",
-            ])),
+            ]))
+        ] + history + [
           ModelMessage(
             role: .user,
             content: Self.lines([
-              context.recentConversationText, context.factsText(),
-              "Request: \(context.goal)", instruction,
-            ])),
+              context.factsText(), "Request: \(context.goal)", instruction,
+            ]))
         ], purpose: .answer))
     switch response {
     case .text(let text) where !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty:

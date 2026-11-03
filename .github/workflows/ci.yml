@@ -31,6 +31,9 @@ jobs:
         # here. A concurrency violation is a build error, not a warning.
         run: swift build
 
+      - name: Demo planner regression tests (no model assets)
+        run: swift test --package-path Examples/LocalAgentDemo
+
       - name: Layering check
         # Fails if LocalAgentKitCore/LocalAgentKitRuntime import an Apple
         # framework. Runs before the test suite: a layering violation is a

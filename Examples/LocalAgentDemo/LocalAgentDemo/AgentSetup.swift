@@ -75,12 +75,72 @@ enum AgentSetup {
   }
 }
 
-/// The canonical calendar demo turn is a single read, not an open-ended search.
-/// Other wording and all other turns retain the general planner.
-private struct DemoPlanner: AgentPlanner {
+/// Canonical calendar and related-notes turns use bounded read workflows;
+/// the checklist uses one answer step and save carries its exact text through approval.
+/// Other prompts retain the general planner.
+struct DemoPlanner: AgentPlanner {
   private func planner(_ context: AgentContext) throws -> StateMachinePlanner {
     let words = context.goal.lowercased().split(whereSeparator: { !$0.isLetter }).joined(
       separator: " ")
+    if words == "save that as a note" {
+      let history = context.conversation
+      guard
+        let requestIndex = history.lastIndex(where: {
+          $0.role == .user
+            && $0.content.lowercased().split(whereSeparator: { !$0.isLetter }).joined(
+              separator: " ") == "create a preparation checklist"
+        }),
+        let checklist = history.dropFirst(requestIndex + 1).first(where: { $0.role == .assistant }),
+        !checklist.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      else {
+        return StateMachinePlanner(
+          workflow: Workflow(
+            name: "missing_checklist", description: "Explain the missing checklist.",
+            steps: [
+              .respond(
+                instruction:
+                  "There is no completed preparation checklist in this conversation to save. Ask the user to create one first; do not claim to have saved a note."
+              )
+            ]))
+      }
+      return StateMachinePlanner(
+        workflow: Workflow(
+          name: "save_checklist", description: "Save the completed checklist after approval.",
+          steps: [
+            .tool(
+              "save", "Save the checklist", "create_note",
+              [
+                "title": .literal(.string("Preparation checklist")),
+                "body": .literal(.string(checklist.content)),
+              ], retries: 0)
+          ]))
+    }
+    if words == "create a preparation checklist" {
+      return StateMachinePlanner(
+        workflow: Workflow(
+          name: "preparation_checklist", description: "Write a checklist from the conversation.",
+          steps: [
+            .respond(
+              instruction:
+                "Create a preparation checklist using only the meetings and notes in the recent conversation. If details are missing, say so rather than inventing them."
+            )
+          ]))
+    }
+    if words == "find my notes related to those meetings" {
+      return StateMachinePlanner(
+        workflow: Workflow(
+          name: "meeting_notes", description: "Search meeting notes once, then answer.",
+          steps: [
+            .tool(
+              "notes", "Find notes for the meetings", "search_documents",
+              [
+                "query": .model(
+                  hint:
+                    "Search terms from the meetings in the recent conversation. Use their titles and topics."
+                )
+              ], onEmpty: .skip, retries: 0)
+          ]))
+    }
     guard words == "what meetings do i have tomorrow" else { return StateMachinePlanner() }
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = context.timeZone
@@ -98,8 +158,7 @@ private struct DemoPlanner: AgentPlanner {
           [
             "start": .literal(.string(formatter.string(from: interval.start))),
             "end": .literal(.string(formatter.string(from: interval.end))),
-          ], onEmpty: .skip, retries: 0),
-        .respond(instruction: "Report the calendar results. If there are no events, say so."),
+          ], onEmpty: .skip, retries: 0)
       ])
     return StateMachinePlanner(workflow: workflow)
   }
@@ -112,7 +171,38 @@ private struct DemoPlanner: AgentPlanner {
   func next(context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider)
     async throws -> PlannerDecision
   {
-    try await planner(context).next(context: &context, tools: tools, model: model)
+    if context.workflowName == "meeting_notes", let observation = context.observations.last {
+      let query = observation.call.arguments.string("query") ?? ""
+      return .complete("Note search results for “\(query)”:\n\(observation.result.text)")
+    }
+    if context.workflowName == "tomorrow_meetings", let observation = context.observations.last {
+      let formatter = DateFormatter()
+      formatter.locale = Locale(identifier: "en_US_POSIX")
+      formatter.timeZone = context.timeZone
+      formatter.dateFormat = "yyyy-MM-dd"
+      let start = observation.call.arguments.string("start")
+        .flatMap { ISO8601DateFormatter().date(from: $0) }
+      let day = start.map { formatter.string(from: $0) } ?? "unknown date"
+      var text = observation.result.text
+      if case .array(let events) = observation.result.structured {
+        formatter.dateFormat = "HH:mm"
+        let rendered = events.compactMap { event -> String? in
+          guard case .object(let fields) = event,
+            case .string(let title) = fields["title"],
+            case .string(let startText) = fields["start"],
+            case .string(let endText) = fields["end"],
+            let start = ISO8601DateFormatter().date(from: startText),
+            let end = ISO8601DateFormatter().date(from: endText)
+          else { return nil }
+          return "\(title): \(formatter.string(from: start)) – \(formatter.string(from: end))"
+        }
+        if rendered.count == events.count, !rendered.isEmpty {
+          text = rendered.joined(separator: "\n")
+        }
+      }
+      return .complete("Calendar results for \(day) (\(context.timeZone.identifier)):\n\(text)")
+    }
+    return try await planner(context).next(context: &context, tools: tools, model: model)
   }
   func observe(_ observation: ToolObservation, context: inout AgentContext) throws -> PlanRevision {
     try planner(context).observe(observation, context: &context)
