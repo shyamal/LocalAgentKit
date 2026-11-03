@@ -21,7 +21,7 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 - [x] **M0-05** Confirm `swift build` and `swift test` succeed on the empty skeleton before any real code lands
 
 ### Project documents
-- [x] **M0-06** `README.md` — one-line positioning, quick start, install snippet, platform requirements
+- [x] **M0-06** `README.md` — one-line positioning, quick start, install snippet, platform requirements *(REFRESHED 2026-11-03: public SDK overview, live guides, source installation, implemented modules, example modes, platform boundaries, Apache-2.0 and remaining pre-alpha limitations; local links and published guide routes checked.)*
 - [x] **M0-07** `CLAUDE.md` — build/test commands, the layering rule, naming conventions, PR definition-of-done
 - [x] **M0-08** `CONTRIBUTING.md` — how to add a tool, how to add a provider (M13 depends on this being genuinely easy)
 - [x] **M0-09** `SECURITY.md` — disclosure policy, threat model pointer (PRD §19)
