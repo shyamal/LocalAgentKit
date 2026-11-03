@@ -1,4 +1,5 @@
 import LocalAgentKitCore
+import LocalAgentKitProviders
 import LocalAgentKitRuntime
 import LocalAgentKitTesting
 import TemperatureTools
@@ -6,12 +7,17 @@ import TemperatureTools
 @main
 struct CustomTool {
   static func main() async throws {
-    let model = ScriptedModelProvider(responses: [
-      call("choose_next_action", ["action": .string("convert_temperature")]),
-      call("provide_convert_temperature_arguments", ["celsius": .int(20)]),
-      call("choose_next_action", ["action": .string("finish")]),
-      .text("20 degrees Celsius is 68 degrees Fahrenheit."),
-    ])
+    let model: any LocalModelProvider
+    if CommandLine.arguments.contains("--device") {
+      model = FoundationModelProvider()
+    } else {
+      model = ScriptedModelProvider(responses: [
+        call("choose_next_action", ["action": .string("convert_temperature")]),
+        call("provide_convert_temperature_arguments", ["celsius": .int(20)]),
+        call("choose_next_action", ["action": .string("finish")]),
+        .text("20 degrees Celsius is 68 degrees Fahrenheit."),
+      ])
+    }
     let runtime = try AgentRuntime(
       configuration: AgentConfiguration(model: model, networkPolicy: .never),
       tools: StaticToolSource([TemperatureTool()]))

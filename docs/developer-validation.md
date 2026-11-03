@@ -50,7 +50,7 @@ Count all application source required for the demonstration, including imports,
 blank lines, schema, registration, event consumption and any scripted model setup.
 Exclude the package manifest, tests and SDK source, matching the guide's existing
 counting convention. List every counted file and retain `wc -l` output. Success
-requires fewer than 100 lines and a working tool; the checked-in 70-line example
+requires fewer than 100 lines and a working tool; the checked-in 76-line example
 is a baseline, not this participant's result. Record manifest and test size
 separately so exclusions are visible.
 
