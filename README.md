@@ -65,4 +65,5 @@ See [NOTICE](NOTICE) for project attribution.
 ## API documentation
 
 See [documentation catalogs and publishing setup](Documentation/README.md) for the
-local DocC build and CI workflow. Hosted publication is not yet verified.
+local DocC build and CI workflow. [Published API documentation](https://shyamal.github.io/LocalAgentKit/)
+is available; deployment and all 14 route/data checks passed on 2026-11-03.
