@@ -13,6 +13,7 @@ let package = Package(
       name: "CustomTool",
       dependencies: [
         "TemperatureTools",
+        .product(name: "LocalAgentKitProviders", package: "LocalAgentKit"),
         .product(name: "LocalAgentKitRuntime", package: "LocalAgentKit"),
         .product(name: "LocalAgentKitTesting", package: "LocalAgentKit"),
       ]),

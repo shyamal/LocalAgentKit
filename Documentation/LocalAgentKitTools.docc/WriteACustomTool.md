@@ -24,7 +24,7 @@ Tool calls: 1
 ```
 
 The final sentence is scripted; the first line is the tool's computed result.
-The two application source files total 70 physical lines, including imports,
+The two application source files total 76 physical lines, including imports,
 blank lines, schema, registration, event handling and the model script. The
 package manifest and tests are excluded from that count. The tool itself is
 30 lines. This demonstrates the local code-size target; independent newcomer
@@ -92,11 +92,26 @@ The example's script selects `convert_temperature`, fills
 answer. These are the default planner's decision and argument requests, not
 additional executable tools you must register.
 
-To try a real model, add the `LocalAgentKitProviders` product to this example's
-executable dependencies, import it and replace the scripted provider with
-`FoundationModelProvider()`. Use supported Apple Intelligence hardware with model
-assets ready, as described in the first-agent guide. That path is optional and
-has not been validated for this example; model tool selection is not guaranteed.
+To try the local Mac's real model, run:
+
+```bash
+swift run --package-path Examples/CustomTool CustomTool --device
+```
+
+This selects `FoundationModelProvider()` with the same runtime and application
+owned tool. It does not deploy to an iPhone. The default mode remains scripted
+and needs no model assets. The executable links Providers in both modes, requiring
+the Xcode 27 SDK described in the first-agent guide.
+
+Use supported Apple Intelligence hardware with model assets ready. Check the
+`Tool:` line for the computed result and the tool-call count; the model's final
+wording alone does not prove execution. Model tool selection is not guaranteed.
+A local maintainer smoke run on 2026-11-03 executed the converter twice and
+returned 68.0 both times, but the generated explanation contained an incorrect
+formula. This verifies integration, not explanation accuracy or a reliability rate.
+
+A refusal or execution error ends the run without falling back to a scripted
+answer. See the first-agent guide for availability and context-limit failures.
 
 ## Verify behavior before exposing a capability
 
