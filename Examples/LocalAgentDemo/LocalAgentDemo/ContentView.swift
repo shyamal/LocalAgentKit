@@ -18,11 +18,29 @@ struct ContentView: View {
               TurnView(turn: turn)
                 .id(turn.id)
             }
+            ForEach(viewModel.toolActivity.indices, id: \.self) { index in
+              let result = viewModel.toolActivity[index]
+              if result.toolName == "create_note", !result.isEmpty {
+                Label(result.text, systemImage: "checkmark.circle.fill")
+                  .font(.callout)
+                  .foregroundStyle(.green)
+                  .textSelection(.enabled)
+                  .id("saved-note-\(index)")
+              }
+            }
             if let activeTool = viewModel.activeTool {
               ToolActivityView(call: activeTool)
             }
           }
           .padding()
+        }
+        .onChange(of: viewModel.toolActivity.count) {
+          if let index = viewModel.toolActivity.indices.last,
+            viewModel.toolActivity[index].toolName == "create_note",
+            !viewModel.toolActivity[index].isEmpty
+          {
+            withAnimation { proxy.scrollTo("saved-note-\(index)", anchor: .bottom) }
+          }
         }
         .onChange(of: viewModel.turns.count) {
           if let last = viewModel.turns.last?.id {
@@ -78,7 +96,9 @@ private struct TurnView: View {
       if turn.role == .assistant { Spacer(minLength: 40) }
       Text(turn.text)
         .padding(10)
-        .background(turn.role == .user ? Color.accentColor.opacity(0.15) : Color.secondary.opacity(0.12))
+        .background(
+          turn.role == .user ? Color.accentColor.opacity(0.15) : Color.secondary.opacity(0.12)
+        )
         .clipShape(RoundedRectangle(cornerRadius: 12))
       if turn.role == .user { Spacer(minLength: 40) }
     }

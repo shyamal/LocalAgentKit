@@ -459,10 +459,21 @@ private func fails(_ error: AgentError, _ body: () async throws -> some Any) asy
 
   @Test func loopDetectionStopsARepeatingAgent() async throws {
     let tool = MockTool(name: "tool_a", permission: .none)
+    // Explicit workflows bypass open-mode duplicate-read completion. The runtime must
+    // still independently stop their repeated calls.
+    let workflow = Workflow(
+      name: "repeat", description: "Repeat the read",
+      steps: [
+        .tool("one", "Read", "tool_a"), .tool("two", "Read", "tool_a"),
+        .tool("three", "Read", "tool_a"),
+      ])
     let model = ScriptedModelProvider(responses: [
-      choice("tool_a"), choice("tool_a"), choice("tool_a"), choice("finish"), .text("x"),
+      .toolCall(
+        ToolCall(
+          id: "plan", name: "choose_workflow",
+          arguments: ToolArguments(["workflow": .string("repeat")])))
     ])
-    let runtime = try makeRuntime(model, tools: [tool])
+    let runtime = try makeRuntime(model, tools: [tool], workflows: [workflow])
     #expect(await fails(.loopDetected(tool: "tool_a")) { try await runtime.run("go") })
     #expect(await tool.executions.count == 2)  // the third identical call never ran
   }

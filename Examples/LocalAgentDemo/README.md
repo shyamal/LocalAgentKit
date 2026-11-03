@@ -34,11 +34,16 @@ not a scripted match between two independent real data sources (your actual cale
 canned note). Turn 2's answer quality depends on whether anything you actually asked about in
 turn 1 resembles that bundled content.
 
-**End-to-end reliability is bounded by what Phase 0 measured, not guaranteed.** The agent uses
-`StateMachinePlanner`'s open mode (no hand-authored `Workflow` — each turn is its own short goal,
-which is exactly what open mode is for). Single-call tool accuracy measured 51–63% in Phase 0
+**End-to-end reliability is bounded by what Phase 0 measured, not guaranteed.** The canonical first prompt uses an application-selected calendar workflow:
+code computes tomorrow in the runtime timezone, reads once, then asks the model
+to answer from that observation. This also handles an empty calendar. Other wording
+and subsequent turns use `StateMachinePlanner` open mode. Single-call tool accuracy measured 51–63% in Phase 0
 (`docs/phase-0-findings.md` §11); a real run may need the argument-repair path, or may occasionally
 pick the wrong tool. That's the honest, measured state of R1, not a demo bug.
+
+For the physical-device milestone exit check, follow
+[Device validation](DEVICE-VALIDATION.md). It covers conversation continuity,
+confirmation before saving, stored-note verification and denial.
 
 ## `CreateNoteTool`
 
@@ -46,6 +51,10 @@ This is a minimal, MVP-only note-saving tool (`Sources/LocalAgentKitTools/Create
 narrower than FR-008's full Notes capability (M2-09: create *and* search, likely SwiftData-backed
 like `MemoryStore`'s other implementations). It exists so this demo's fourth turn has something
 real to write to, file-backed under Application Support; M2-09 supersedes it.
+
+Successful note saves also display the actual `create_note` tool result with a
+checkmark, independently of the model's final wording. Approval alone does not
+show success; the tool must complete without an empty result.
 
 ## Thermal behavior
 

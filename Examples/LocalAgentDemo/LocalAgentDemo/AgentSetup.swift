@@ -35,7 +35,8 @@ enum AgentSetup {
     let configuration = AgentConfiguration(model: FoundationModelProvider(), networkPolicy: .never)
     let runtime = try AgentRuntime(
       configuration: configuration, tools: StaticToolSource(tools),
-      memory: ConversationMemory(), thermalStateSource: ProcessInfoThermalStateSource())
+      planner: DemoPlanner(), memory: ConversationMemory(),
+      thermalStateSource: ProcessInfoThermalStateSource())
     return await AgentViewModel(runtime: runtime)
   }
 
@@ -71,5 +72,52 @@ enum AgentSetup {
       FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
       ?? FileManager.default.temporaryDirectory
     return base.appendingPathComponent("LocalAgentDemo", isDirectory: true)
+  }
+}
+
+/// The canonical calendar demo turn is a single read, not an open-ended search.
+/// Other wording and all other turns retain the general planner.
+private struct DemoPlanner: AgentPlanner {
+  private func planner(_ context: AgentContext) throws -> StateMachinePlanner {
+    let words = context.goal.lowercased().split(whereSeparator: { !$0.isLetter }).joined(
+      separator: " ")
+    guard words == "what meetings do i have tomorrow" else { return StateMachinePlanner() }
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = context.timeZone
+    guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: context.now),
+      let interval = calendar.dateInterval(of: .day, for: tomorrow)
+    else {
+      throw AgentError.toolFailed(tool: "list_calendar_events", message: "Cannot resolve tomorrow.")
+    }
+    let formatter = ISO8601DateFormatter()
+    let workflow = Workflow(
+      name: "tomorrow_meetings", description: "Read tomorrow's calendar once, then answer.",
+      steps: [
+        .tool(
+          "calendar", "Read tomorrow's meetings", "list_calendar_events",
+          [
+            "start": .literal(.string(formatter.string(from: interval.start))),
+            "end": .literal(.string(formatter.string(from: interval.end))),
+          ], onEmpty: .skip, retries: 0),
+        .respond(instruction: "Report the calendar results. If there are no events, say so."),
+      ])
+    return StateMachinePlanner(workflow: workflow)
+  }
+
+  func plan(context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider)
+    async throws -> AgentPlan
+  {
+    try await planner(context).plan(context: &context, tools: tools, model: model)
+  }
+  func next(context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider)
+    async throws -> PlannerDecision
+  {
+    try await planner(context).next(context: &context, tools: tools, model: model)
+  }
+  func observe(_ observation: ToolObservation, context: inout AgentContext) throws -> PlanRevision {
+    try planner(context).observe(observation, context: &context)
+  }
+  func handleFailure(_ error: AgentError, context: inout AgentContext) throws -> PlanRevision {
+    try planner(context).handleFailure(error, context: &context)
   }
 }

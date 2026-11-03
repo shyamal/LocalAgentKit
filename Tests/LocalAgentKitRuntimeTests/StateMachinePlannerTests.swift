@@ -537,6 +537,49 @@ private struct AlwaysDeny: PermissionGate {
     call("choose_next_action", ["action": .string(action)])
   }
 
+  @Test(arguments: [false, true])
+  func selectedWorkflowReadsOnceAndAnswersWithoutModelSelection(empty: Bool) async throws {
+    let tool = MockTool(name: "read_calendar", permission: .readOnly)
+    let workflow = Workflow(
+      name: "calendar", description: "Read once",
+      steps: [
+        .tool("read", "Read", "read_calendar", onEmpty: .skip, retries: 0),
+        .respond(instruction: "Answer from the calendar."),
+      ])
+    let model = ScriptedModelProvider(responses: [.text(empty ? "No meetings." : "Standup at 9.")])
+    let planner = StateMachinePlanner(workflow: workflow)
+    var context = AgentContext(goal: "What meetings do I have tomorrow?")
+    let tools = [ToolDescriptor(tool)]
+    _ = try await planner.plan(context: &context, tools: tools, model: model)
+    guard
+      case .callTool(let call) = try await planner.next(
+        context: &context, tools: tools, model: model)
+    else {
+      Issue.record("Expected one calendar call")
+      return
+    }
+    _ = try planner.observe(
+      ToolObservation(
+        call: call,
+        result: ToolResult(
+          callID: call.id, toolName: call.name,
+          text: empty ? "No events found." : "Standup 9am", isEmpty: empty)), context: &context)
+    guard
+      case .complete(let answer) = try await planner.next(
+        context: &context, tools: tools, model: model)
+    else {
+      Issue.record("Expected completion after the calendar observation")
+      return
+    }
+    #expect(answer == (empty ? "No meetings." : "Standup at 9."))
+    let requests = await model.requests
+    #expect(requests.count == 1)
+    #expect(requests.first?.purpose == .answer)
+    #expect(
+      requests.first?.messages.last?.content.contains(empty ? "(nothing found)" : "Standup 9am")
+        == true)
+  }
+
   @Test func noWorkflowsMeansEveryGoalRunsOpen() async throws {
     let events = MockTool(
       name: "read_calendar", schema: stringSchema("day"), permission: .readOnly,
@@ -602,6 +645,41 @@ private struct AlwaysDeny: PermissionGate {
     ])
     _ = await Driver(planner: StateMachinePlanner(), tools: [tool], model: model).run("time twice")
     #expect(await tool.executions.count == 2)
+  }
+
+  @Test func aThirdIdenticalSuccessfulReadAnswersFromExistingFacts() async throws {
+    let events = MockTool(
+      name: "list_calendar_events", schema: stringSchema("day"), permission: .readOnly,
+      handler: text("Standup 9am"))
+    let arguments = call("provide_list_calendar_events_arguments", ["day": "2026-09-22"])
+    let model = ScriptedModelProvider(responses: [
+      choice("list_calendar_events"), arguments,
+      choice("list_calendar_events"), arguments,
+      choice("list_calendar_events"), arguments,
+      .text("You have standup at 9."),
+    ])
+    let outcome = await Driver(planner: StateMachinePlanner(), tools: [events], model: model)
+      .run("What meetings do I have tomorrow?")
+    #expect(completed(outcome) == "You have standup at 9.")
+    #expect(await events.executions.count == 2)
+    let request = try #require(await model.requests.last)
+    #expect(request.tools.isEmpty)
+    #expect(request.messages.last?.content.contains("Standup 9am") == true)
+    #expect(request.purpose == .answer)
+  }
+
+  @Test func aDifferentReadArgumentStillExecutesAfterTwoIdenticalReads() async throws {
+    let events = MockTool(name: "read_calendar", schema: stringSchema("day"), permission: .readOnly)
+    let first = call("provide_read_calendar_arguments", ["day": "Monday"])
+    let model = ScriptedModelProvider(responses: [
+      choice("read_calendar"), first, choice("read_calendar"), first,
+      choice("read_calendar"), call("provide_read_calendar_arguments", ["day": "Tuesday"]),
+      choice("finish"), .text("Compared both days."),
+    ])
+    let outcome = await Driver(planner: StateMachinePlanner(), tools: [events], model: model)
+      .run("Compare Monday and Tuesday")
+    #expect(completed(outcome) == "Compared both days.")
+    #expect(await events.executions.count == 3)
   }
 
   @Test func aFailedToolIsReportedToTheNextChoiceThenRemoved() async throws {
