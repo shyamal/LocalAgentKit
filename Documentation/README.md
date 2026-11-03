@@ -79,7 +79,8 @@ python3 -m unittest discover -s Scripts/tests -p 'test_api_docs.py'
 The documentation workflow runs these tests and the same API gate. The hosted documentation build and API gate passed on 2026-11-02; artifact
 upload initially failed on DocC filenames containing colons. PR #28 packaged
 the archive and hosted run 41490218884 passed, including artifact upload. Live
-publication remains unverified.
+publication was verified on 2026-11-03 by run 41583379244 and an independent
+14-route HTTP check at https://shyamal.github.io/LocalAgentKit/.
 
 For a local HTTP preview without the GitHub project prefix:
 
@@ -132,10 +133,13 @@ To check a published site manually, including its project prefix:
 python3 Scripts/check-published-docs.py https://shyamal.github.io/LocalAgentKit/
 ```
 
-That URL is the expected default location, not a claim that the site is live.
+That URL is the live site, verified on 2026-11-03.
 Local verification served the generated archive over HTTP and passed all 14
 routes; seven network-free checker tests cover failure and URL handling.
-No site or repository setting was changed by this work.
+The owner authorized public repository visibility and Pages activation on
+2026-11-03. Pages now uses Actions with HTTPS enforced and
+`LOCALAGENTKIT_DOCS_PUBLISH=true`. Run 41583379244 deployed successfully;
+the independent HTTP checker passed all 14 routes.
 
 The default hosting prefix is `/LocalAgentKit`. For a custom domain or another
 prefix, set `LOCALAGENTKIT_DOCS_BASE_PATH` (`/` for a domain root). The retained
