@@ -33,7 +33,7 @@ jobs:
       - name: Build catalogs with warnings as errors
         run: python3 Scripts/build-docs.py --hosting-base-path "$DOCS_BASE_PATH"
       - name: API documentation checker tests
-        run: python3 -m unittest discover -s Scripts/tests -p 'test_api_docs.py'
+        run: python3 -m unittest discover -s Scripts/tests -p 'test_*.py'
       - name: Validate merged static routes
         run: python3 Scripts/check-docs.py .build/documentation/LocalAgentKit.doccarchive
       - name: Prepare Pages landing redirect
@@ -64,6 +64,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:
@@ -72,9 +73,17 @@ jobs:
     concurrency:
       group: documentation-pages
       cancel-in-progress: false
+    timeout-minutes: 10
     steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Configure existing Pages site
         uses: actions/configure-pages@v5
       - name: Publish documentation
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify published module pages and render data
+        env:
+          DOCS_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python3 Scripts/check-published-docs.py "$DOCS_URL"
