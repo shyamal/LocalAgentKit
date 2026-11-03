@@ -119,6 +119,22 @@ GitHub Actions as its publishing source, and the repository Actions variable
 `LOCALAGENTKIT_DOCS_PUBLISH` set to `true`. The publish job alone receives
 `pages: write` and `id-token: write`; PR jobs never publish. The process follows
 [GitHub's custom Pages workflow guidance](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
+After deployment, the workflow runs `Scripts/check-published-docs.py` against the
+URL returned by `deploy-pages`. It checks the package and six module HTML pages
+plus their DocC JSON titles (14 routes), with bounded response size and per-request
+timeouts. A missing page or HTML error response in place of render data fails the
+publish job. This checks route/data availability; it does not execute the browser
+JavaScript or prove every static asset and deep link renders correctly.
+
+To check a published site manually, including its project prefix:
+
+```bash
+python3 Scripts/check-published-docs.py https://shyamal.github.io/LocalAgentKit/
+```
+
+That URL is the expected default location, not a claim that the site is live.
+Local verification served the generated archive over HTTP and passed all 14
+routes; seven network-free checker tests cover failure and URL handling.
 No site or repository setting was changed by this work.
 
 The default hosting prefix is `/LocalAgentKit`. For a custom domain or another
