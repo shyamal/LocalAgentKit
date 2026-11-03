@@ -7,7 +7,9 @@ This project is pre-alpha — see [`README.md`](./README.md) for current status.
 1. **Check [`TASKS.md`](./TASKS.md) first.** Work is tracked as task IDs (`M1-RT-07`) grouped into milestones. If what you want to build already has an ID, use it. If it doesn't, add one in the right milestone before opening a PR — untracked work is invisible to the roadmap.
 2. **Respect the 🔒 gates.** Phase 0 has reported; Milestone 1 is active. Keep remaining measurement and release gates explicit — see [`PLANNING.md`](./PLANNING.md) §5 for why, and [`CLAUDE.md`](./CLAUDE.md) for the current gate list. If you think a gate should be crossed, say so in an issue rather than doing it in a PR.
 
-No license has been chosen yet (M0-10 remains deferred). CI workflow definitions are present; verify actual hosted results on each PR before treating them as evidence.
+LocalAgentKit is licensed under the [Apache License, Version 2.0](LICENSE).
+Contributions intentionally submitted for inclusion are covered by its contribution
+terms unless explicitly stated otherwise or governed by a separate agreement. CI workflow definitions are present; verify actual hosted results on each PR before treating them as evidence.
 
 ## Prerequisites
 

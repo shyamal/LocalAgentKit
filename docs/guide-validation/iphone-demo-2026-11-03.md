@@ -25,11 +25,20 @@ This is a device smoke check, not independent onboarding or harness reliability.
   decoded note records. No additional write was observed. This depends on the
   user performing the requested denial; UI interaction was not captured directly.
 
+## Persistence follow-up
+
+After the feedback build was installed over the existing app and launched, a
+further container read found one saved note. All previously checked records were
+preserved and unchanged. This verifies persistence across that update/relaunch;
+it does not verify that the saved body equals the generated checklist.
+
 ## Remaining checks
 
-The demo now renders successful create_note tool-result text explicitly, separate
-from generated answers. That new display still needs confirmation on the phone.
-Also pending: saved-body/checklist comparison, persistence after relaunch,
+The user confirmed that an approved save in the updated app displayed “Saved
+note…” with a checkmark. The explicit tool-result feedback display is verified
+on the phone.
+
+Still pending: saved-body/checklist comparison,
 relevant nonempty calendar-to-notes continuity, and a complete four-turn run with
 those conditions. The milestone exit remains pending.
 
