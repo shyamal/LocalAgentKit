@@ -58,7 +58,8 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for contribution and verification gui
 
 ## License
 
-Not yet decided.
+Licensed under the [Apache License, Version 2.0](LICENSE).
+See [NOTICE](NOTICE) for project attribution.
 
 
 ## API documentation

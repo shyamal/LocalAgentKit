@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-**No dedicated security contact exists yet.** This repository has no public host or maintainer contact channel configured (task M0-10, license, is still pending, and typically lands alongside a repo going public). Until a channel is set up here:
+**No dedicated security contact exists yet.** A private reporting channel has not yet been verified for this repository. Until a channel is set up here:
 
 - If this repository is hosted on GitHub by the time you're reading this, use **GitHub's private security advisory** feature ("Report a vulnerability" under the Security tab) rather than a public issue.
 - Do not open a public issue for a suspected vulnerability.
