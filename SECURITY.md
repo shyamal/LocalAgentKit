@@ -2,12 +2,10 @@
 
 ## Reporting a vulnerability
 
-**No dedicated security contact exists yet.** A private reporting channel has not yet been verified for this repository. Until a channel is set up here:
-
-- If this repository is hosted on GitHub by the time you're reading this, use **GitHub's private security advisory** feature ("Report a vulnerability" under the Security tab) rather than a public issue.
-- Do not open a public issue for a suspected vulnerability.
-
-This section needs a real disclosure channel (email or advisory link) filled in before the project accepts outside contributions — see `CONTRIBUTING.md`.
+Report suspected vulnerabilities through [GitHub private vulnerability reporting](https://github.com/shyamal/LocalAgentKit/security/advisories/new).
+This channel was enabled and verified on 2026-11-03. Do not open public issues
+for suspected vulnerabilities. Include reproduction steps, affected versions and
+the security boundary involved; avoid sending unrelated personal data.
 
 ## Scope
 

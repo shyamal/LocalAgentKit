@@ -1,14 +1,14 @@
 # Pre-publication review — 2026-11-03
 
 Repository: `shyamal/LocalAgentKit`. Reviewed remote main `bb4b8fb` and fetched
-GitHub branch/tag/PR-head history. Repository visibility remains private; no
-publication or repository setting was changed during this review.
+GitHub branch/tag/PR-head history. The initial review kept the repository private. After the review, the owner
+explicitly authorized publication; visibility was changed to public on 2026-11-03.
 
 ## Result
 
-No credential matches were found by Gitleaks 8.30.1. Publication readiness still
-requires a verified private security reporting channel and
-acceptance of the author identity already present in Git history. This is a
+No credential matches were found by Gitleaks 8.30.1. The owner subsequently authorized publication with the reviewed author identity
+in history. Private vulnerability reporting was enabled and verified after the
+visibility change. This is a
 publication/privacy review, not a complete library security audit.
 
 ## Findings
@@ -21,15 +21,11 @@ includes the unchanged official license, project NOTICE and updated README and
 contributor guidance. The change must land on GitHub before its license detection
 can be checked.
 
-### Private vulnerability reporting is not verified
+### Private vulnerability reporting (resolved after publication)
 
-SECURITY.md still says no dedicated contact exists, while directing readers to
-GitHub's private reporting feature. The API returned 404 for that feature on the
-current private repository; this does not establish that it will be enabled after
-a visibility change. Establish an actual private contact, or enable and verify
-GitHub private vulnerability reporting when available, then replace the placeholder
-policy with the working contact/link. Do not tell reporters to use an unavailable
-channel.
+The initial private-repository API returned 404. After the authorized visibility
+change, GitHub private vulnerability reporting was enabled and its API returned
+`enabled: true`. SECURITY.md now links the working private reporting channel.
 
 ### Git author identity will be visible
 
