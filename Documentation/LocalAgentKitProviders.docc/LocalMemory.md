@@ -59,7 +59,10 @@ chat history. Explicit conversation restore/checkpoint operations are available 
 Automatic context retrieval and demo resume remain M2-07 and M2-14. Runtime task
 working memory is separate from this durable store. Explicit durable facts and
 preferences use Core's `SemanticMemory` and `MemoryStore.searchSemantic`; versioned
-category metadata shares the existing schema. Episodic behavior remains M2-06.
+category metadata shares the existing schema. `EpisodicMemory` and
+`MemoryStore.searchEpisodic` explicitly retain past events/actions with separate
+occurrence and recording dates, using that same schema. Neither category is
+recorded automatically by the runtime.
 The existing `MockMemoryStore`
 implements the same save/search/delete seam for unit tests, with its own matching
 and ordering behavior.
