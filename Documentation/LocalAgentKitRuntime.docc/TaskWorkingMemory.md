@@ -15,6 +15,9 @@ let meeting = context.value(for: "meeting")
 Workflow tool steps bind their structured result (or text) into this same memory.
 Open planning records successful observations under their tool-call IDs, retaining
 repeated calls separately. Failed or denied calls do not create facts.
+Open-mode prompts retain the observation text, including units and explanations,
+while memory snapshots retain the structured value. Custom task facts are also
+included without duplicating the observed tool-call bindings.
 Later steps can reference nested paths such as `matches.0.title`. A tool may mark
 a root empty even if its text explains why nothing was found. Zero and false are
 valid facts, not empty values. Replacing a root preserves its position; removing

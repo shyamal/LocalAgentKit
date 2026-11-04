@@ -209,6 +209,7 @@ and the deferred developer trials remain open.
 - [ ] **M2-12** Decide audit-log retention + export format — resolves open question 7 (Persona 3 will ask)
 - [ ] **M2-13** Memory-layer unit tests to the coverage gate
 - [ ] **M2-14** Demo app: conversation survives restart
+- [x] **M2-15** Preserve readable open-mode observations alongside typed working memory (FR-011). Fixed the lost-units regression exposed by the custom-tool documentation test; custom task facts remain visible without duplicate call bindings. Verified 2026-11-04: focused regression, all four custom-tool tests, warning-free build, full/offline suites, strict formatting/layering/DocC, 31 Python tests and 98.43% Core/Runtime coverage (2386/2424). Semantic memory M2-05 follows this repair.
 
 **Exit:** context survives app restart; all four memory categories usable through one protocol.
 

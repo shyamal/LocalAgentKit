@@ -119,17 +119,22 @@ public struct AgentContext: Sendable {
   /// What has been found so far, newest last, clipped so a planner prompt stays small.
   func factsText(characterLimit: Int = 1500) -> String {
     var lines: [String] = []
-    if bindingOrder.isEmpty {
+    if bindingOrder.isEmpty || workflowName == nil {
       lines = observations.map { observation in
         "- \(observation.call.name): " + Self.clip(observation.result.text, 300)
       }
-    } else {
-      lines = bindingOrder.map { name in
-        let text =
-          emptyBindings.contains(name)
-          ? "(nothing found)" : Self.clip(PromptText.render(bindings[name] ?? .null), 300)
-        return "- \(name): \(text)"
-      }
+    }
+    // Open-mode bindings retain typed values; observations retain their human-readable units
+    // and explanations. Include custom facts without duplicating observed call IDs.
+    let observedIDs = Set(observations.map { $0.call.id })
+    let keys =
+      workflowName == nil
+      ? bindingOrder.filter { !observedIDs.contains($0) } : bindingOrder
+    lines += keys.map { name in
+      let text =
+        emptyBindings.contains(name)
+        ? "(nothing found)" : Self.clip(PromptText.render(bindings[name] ?? .null), 300)
+      return "- \(name): \(text)"
     }
     lines += notes.map { "- note: " + $0 }
     var kept: [String] = []
