@@ -20,7 +20,7 @@ struct EvalCommand: AsyncParsableCommand {
       print(
         "Tool catalog: \(tools.count) tools, \(tools.filter(\.needsConfirmation).count) needing confirmation"
       )
-      for name in SuiteLoader.phase0Names + ["notes-local", "contacts-local"] {
+      for name in SuiteLoader.phase0Names + ["notes-local", "contacts-local", "files-local"] {
         let suite = try SuiteLoader.suite(named: name)
         print("\(name): \(suite.goalCount) goals (\(suite.task))")
       }
@@ -41,7 +41,9 @@ struct EvalCommand: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
       abstract: "Run model probes or fixture-backed agent evaluations.")
     @Option(
-      help: "Suite: single-tool, refusal, multi-step, context-load, notes-local or contacts-local.")
+      help:
+        "Suite: single-tool, refusal, multi-step, context-load, notes-local, contacts-local or files-local."
+    )
     var suite =
       "single-tool"
     @Option(help: "mock is a synthetic smoke check; foundation uses the on-device model.")
@@ -80,11 +82,14 @@ struct EvalCommand: AsyncParsableCommand {
         throw ValidationError("Repetitions must be 1...100 and limit must be positive.")
       }
       guard
-        ["single-tool", "refusal", "multi-step", "context-load", "notes-local", "contacts-local"]
-          .contains(suite)
+        [
+          "single-tool", "refusal", "multi-step", "context-load", "notes-local", "contacts-local",
+          "files-local",
+        ]
+        .contains(suite)
       else {
         throw ValidationError(
-          "Supported suites: single-tool, refusal, multi-step, context-load, notes-local, contacts-local."
+          "Supported suites: single-tool, refusal, multi-step, context-load, notes-local, contacts-local, files-local."
         )
       }
     }
