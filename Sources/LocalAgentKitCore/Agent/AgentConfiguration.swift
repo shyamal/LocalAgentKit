@@ -36,9 +36,11 @@ public struct SecurityPolicy: Sendable, Hashable {
 public struct AgentConfiguration: Sendable {
   /// Provider used for generation and optional token counting.
   public var model: any LocalModelProvider
-  /// Reserved persistent-memory component; the current runtime does not query this store.
-  /// Configure ConversationMemory on the runtime for cross-turn history.
+  /// Persistent memories searched once per run under memoryRetrieval, then budgeted with RAG.
+  /// ConversationMemory on the runtime separately supplies cross-turn history.
   public var memory: (any MemoryStore)?
+  /// Persistent-memory query strategy, limit and exact metadata constraints.
+  public var memoryRetrieval: MemoryRetrievalConfiguration
   /// Query embedding component; automatic retrieval requires a vector store as well.
   public var embedding: (any EmbeddingProvider)?
   /// Searchable embeddings; automatic retrieval requires an embedding provider as well.
@@ -62,10 +64,12 @@ public struct AgentConfiguration: Sendable {
     limits: ExecutionLimits = .default,
     security: SecurityPolicy = .default,
     networkPolicy: NetworkPolicy = .never,
-    planner: PlannerChoice = .stateMachine
+    planner: PlannerChoice = .stateMachine,
+    memoryRetrieval: MemoryRetrievalConfiguration = MemoryRetrievalConfiguration()
   ) {
     self.model = model
     self.memory = memory
+    self.memoryRetrieval = memoryRetrieval
     self.embedding = embedding
     self.vectorStore = vectorStore
     self.limits = limits

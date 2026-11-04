@@ -64,5 +64,6 @@ Invalid matched rows are reported rather than silently skipped. Existing store
 failures and cancellation propagate through the typed helpers.
 
 Saving/searching does not change runtime state or insert episodes into model
-prompts. Budgeted retrieval remains M2-07. Episodes share the existing small-store
+prompts by itself. Setting `AgentConfiguration.memory` activates budgeted runtime
+retrieval under `MemoryRetrievalConfiguration`. Episodes share the existing small-store
 metadata scan behavior described in the provider's local-memory guide.

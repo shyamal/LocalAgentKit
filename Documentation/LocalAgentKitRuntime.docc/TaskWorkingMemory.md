@@ -48,9 +48,10 @@ the next run. Observing a terminal snapshot does not resume or replay a task.
 
 Task facts do not call `MemoryStore`, populate conversation history, or survive
 app restart. ConversationMemory supports explicit persisted checkpoints (M2-04); working
-facts are excluded from them. Automatic durable memory retrieval into model
-context remains M2-07, and demo resume wiring remains M2-14. Working/semantic/episodic
-category behavior should not be inferred from storing an app-defined metadata key.
+facts are excluded from them. Configuring `AgentConfiguration.memory` enables
+separate budgeted retrieval of durable text/semantic/episodic records (M2-07).
+Demo resume wiring remains M2-14. Category behavior uses the typed encoding, not
+an arbitrary app-defined metadata key.
 
 Built-in planner prompts render relevant binding facts through the existing
 bounded fact renderer and context budgeter. Keeping a value in working memory

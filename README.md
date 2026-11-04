@@ -31,7 +31,8 @@ question. Experimental model-driven planning is opt-in.
 - **Context management:** budgeting before model calls, trimming and summarization,
   and conversation memory across turns within a runtime session.
 - **Durable memory:** explicit conversation checkpoints, facts/preferences and past
-  events/actions through SwiftData stores; automatic prompt retrieval and demo resume are still planned.
+  events/actions through SwiftData stores. Configured memory is retrieved under the
+  context budget; automatic demo resume is still planned.
 - **Local retrieval:** document loading, chunking, Natural Language embeddings with
   a word-vector fallback, an in-memory vector store, and document search.
 - **App integration:** observable SwiftUI state, permission sheets, streamed answers,

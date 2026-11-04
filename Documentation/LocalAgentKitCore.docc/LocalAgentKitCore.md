@@ -52,6 +52,7 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 - ``VectorStore``
 - ``MemoryStore``
 - ``MemoryQuery``
+- ``MemoryRetrievalConfiguration``
 - ``SemanticMemory``
 - ``EpisodicMemory``
 - <doc:PastEventsAndActions>

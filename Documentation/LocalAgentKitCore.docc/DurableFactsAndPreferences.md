@@ -54,6 +54,8 @@ local stores. Reopen the same file URL to retrieve saved facts after restart.
 ## Context integration
 
 Saving or searching facts does not change runtime task state, emit runtime events,
-or insert anything into model prompts. Budgeted automatic retrieval remains M2-07.
+or insert anything into model prompts by itself. Configuring `AgentConfiguration.memory`
+activates runtime retrieval under `MemoryRetrievalConfiguration` and the context
+budgeter; the default query matches the entire goal.
 Use explicit saves after the app's own approval flow. Resetting conversation or
 working memory does not delete durable facts; delete their IDs when requested.

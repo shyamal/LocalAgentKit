@@ -12,6 +12,9 @@ enum NetworkPolicyGuard {
     if configuration.model.requiresNetwork {
       return .networkRequiredButForbidden(component: "model")
     }
+    if configuration.memory?.requiresNetwork == true {
+      return .networkRequiredButForbidden(component: "memory")
+    }
     if configuration.embedding?.requiresNetwork == true {
       return .networkRequiredButForbidden(component: "embedding")
     }

@@ -53,10 +53,12 @@ independent writers are not part of this contract.
 
 ## Integration status
 
-Supplying `AgentConfiguration.memory` does not yet activate retrieval or persisted
-chat history. Explicit conversation restore/checkpoint operations are available through
+Supplying `AgentConfiguration.memory` activates one search per run, controlled by
+`MemoryRetrievalConfiguration`; results are fitted alongside RAG under the retrieval
+budget before every model call. It does not persist chat history. Explicit
+conversation restore/checkpoint operations are available through
 `ConversationMemory` and `SwiftDataConversationStore`, using a separate file.
-Automatic context retrieval and demo resume remain M2-07 and M2-14. Runtime task
+Automatic demo resume remains M2-14. Runtime task
 working memory is separate from this durable store. Explicit durable facts and
 preferences use Core's `SemanticMemory` and `MemoryStore.searchSemantic`; versioned
 category metadata shares the existing schema. `EpisodicMemory` and
