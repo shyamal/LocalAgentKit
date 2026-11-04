@@ -66,3 +66,12 @@ The probe records model calls and checks schemas; it does not execute note tools
 or prove permission enforcement. See NotesCapabilityTests for actual persistence,
 approval/denial, invalid arguments, cancellation and adversarial-note coverage.
 The catalog already contains create_note/search_notes with their distinct tiers.
+
+## Supplemental local contacts (M2-10)
+
+`contacts/contacts-local.json` adds name/role search goals with sensitive approval
+expectations without changing the Phase 0 baseline. Use
+`swift run LocalAgentKitEval run --suite contacts-local --model mock` for a synthetic
+plumbing check; `--model foundation` probes the on-device model explicitly.
+Neither mode reads the device contact store or executes the selected tools.
+ContactsToolTests verifies actual approval ordering and backend calls with mocks.

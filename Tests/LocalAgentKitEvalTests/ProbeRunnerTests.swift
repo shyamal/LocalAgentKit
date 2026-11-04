@@ -6,6 +6,25 @@ import Testing
 @testable import LocalAgentKitEvalSupport
 
 @Suite struct ProbeRunnerTests {
+  @Test func contactScenariosProbeSelectionWithoutReadingContacts() async throws {
+    let metadata = try SuiteLoader.suite(named: "contacts-local")
+    #expect(metadata.task == "M2-10")
+    #expect(metadata.goalCount == 2)
+    let model = ScriptedModelProvider(responses: [
+      .toolCall(
+        ToolCall(id: "name", name: "search_contacts", arguments: ToolArguments(["query": "Priya"]))),
+      .toolCall(
+        ToolCall(
+          id: "role", name: "search_contacts", arguments: ToolArguments(["query": "designer"]))),
+    ])
+    let rows = try await ProbeRunner.run(suiteName: "contacts-local", model: model)
+    #expect(rows.map(\.goalID) == ["contacts-01", "contacts-02"])
+    #expect(rows.flatMap(\.calls).allSatisfy { $0.name == "search_contacts" })
+    #expect(rows.allSatisfy { $0.failureKind == nil })
+    #expect(
+      try SuiteLoader.tools().first { $0.name == "search_contacts" }?.needsConfirmation == true)
+  }
+
   @Test func notesCapabilityScenariosRunWithoutChangingPhaseZeroFixtures() async throws {
     let metadata = try SuiteLoader.suite(named: "notes-local")
     #expect(metadata.task == "M2-09")

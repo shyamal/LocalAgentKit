@@ -1,0 +1,16 @@
+{
+  "suite": "contacts-local", "task": "M2-10", "version": 1, "toolCatalog": "tools.json",
+  "context": { "referenceDateTime": "2026-09-21T10:00", "referenceWeekday": "Monday", "timeZone": "UTC", "locale": "en_US" },
+  "goals": [
+    {
+      "id": "contacts-01", "goal": "Find Priya Rao in my local contacts.",
+      "expected": { "tool": "search_contacts", "arguments": { "query": { "match": "containsAll", "terms": ["Priya"] } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    },
+    {
+      "id": "contacts-02", "goal": "Search my contacts for someone whose job title contains designer.",
+      "expected": { "tool": "search_contacts", "arguments": { "query": { "match": "containsAny", "terms": ["designer", "design"] } } },
+      "maxIterations": 1, "expectsConfirmation": true
+    }
+  ]
+}

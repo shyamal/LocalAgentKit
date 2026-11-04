@@ -400,11 +400,13 @@ Distinct from developer tooling — these are `AgentTool` conformances.
 | `ReminderTool` (create) | `.userConfirmation` | EventKit | **MVP** |
 | `DocumentSearchTool` | `.readOnly` | RAG | **MVP** |
 | `NotesTool.tools` → `CreateNoteTool` / `SearchNotesTool` | `.userConfirmation` / `.readOnly` | App-local JSON `NoteStore` | v0.2 |
-| `ContactsTool` (search) | `.sensitive` | Contacts | v0.2 |
+| `ContactsTool` (`search_contacts`) | `.sensitive` | Contacts; Core `ContactSearching` / Testing mock | v0.2 |
 | `FilesTool` (search) | `.readOnly` | FileManager | v0.2 |
 | *File delete, message send, etc.* | `.destructive` | — | Post-MVP; used to exercise the destructive tier |
 
 M2-09 retains the demo's existing notes.json encoding/location rather than replacing it with a second SwiftData backend. The shared NoteStore actor offers title/body search and fail-closed reads, with cache publication only after atomic writes. Search returns bounded previews; both tools are exported via NotesTool.tools. The demo registers the pair while its canonical related-notes turn still searches bundled RAG fixtures. The supplemental notes-local probe leaves the Phase 0 baseline unchanged.
+
+M2-10 adds sensitive ContactsTool search behind Core ContactSearching/ContactSummary and MockContactStore. The lazy actor-owned Contacts backend reads only after agent approval, enforces independent OS authorization, supports iOS limited access and returns bounded name/company/job-title/email/phone cards. It scans accessible unified contacts locally for name/company/role substring matches; no framework objects cross into Core/Runtime. Host purpose strings/macOS capabilities and a real app-bundle consent check are documented; no device-data read or physical consent validation was performed during implementation.
 
 Every tool must declare: `name`, `description`, `schema`, `permission`, whether it is **parallel-safe**, and whether it is **cancellable**. The last two are additions to the PRD's `AgentTool` protocol that the runtime needs in order to schedule and cancel correctly.
 
