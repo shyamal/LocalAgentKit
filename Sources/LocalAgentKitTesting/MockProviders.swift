@@ -19,12 +19,18 @@ public actor MockMemoryStore: MemoryStore {
     memories.append(memory)
   }
 
-  /// Returns case-insensitive substring matches in insertion order, up to the non-negative query limit.
+  /// Returns case-insensitive content matches satisfying exact metadata constraints, in insertion
+  /// order. Constraints apply before the limit; non-positive limits return no results.
   public func search(_ query: MemoryQuery) async throws -> [Memory] {
+    if Task.isCancelled { throw AgentError.cancelled }
+    guard query.limit > 0 else { return [] }
     let needle = query.text.lowercased()
     return Array(
-      memories.filter { needle.isEmpty || $0.content.lowercased().contains(needle) }
-        .prefix(query.limit))
+      memories.filter { memory in
+        (needle.isEmpty || memory.content.lowercased().contains(needle))
+          && query.metadata.allSatisfy { memory.metadata[$0.key] == $0.value }
+      }
+      .prefix(query.limit))
   }
 
   /// Removes all entries with the given identity; absent IDs do nothing.

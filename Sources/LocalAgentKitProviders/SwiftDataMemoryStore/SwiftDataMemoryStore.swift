@@ -53,7 +53,7 @@ public struct SwiftDataMemoryStore: MemoryStore {
 
   /// Finds localized case/diacritic-insensitive content substrings, newest first.
   /// Empty text matches all memories. Ties use UUID string ascending; non-positive limits
-  /// return no results. Metadata is not searched. Matching rows are materialized in memory
+  /// return no results. Query metadata is matched exactly before limiting. Matching rows are materialized in memory
   /// before sorting and limiting; this is a small-store implementation, not full-text search.
   /// - Throws: Typed memory errors (including corrupt returned metadata) or cancellation.
   public func search(_ query: MemoryQuery) async throws -> [Memory] {
@@ -103,7 +103,7 @@ private actor MemoryDatabase {
 
   /// Finds localized case/diacritic-insensitive content substrings, newest first.
   /// Empty text matches all memories. Equal timestamps are ordered by UUID string ascending.
-  /// Limits of zero or less return no results; metadata is not searched.
+  /// Limits of zero or less return no results; exact metadata constraints apply before limiting.
   /// - Throws: Typed memory errors, including corrupt metadata in a returned record, or cancellation.
   func search(_ query: MemoryQuery) async throws -> [Memory] {
     try checkCancellation()
@@ -123,7 +123,19 @@ private actor MemoryDatabase {
         $0.createdAt == $1.createdAt
           ? $0.id.uuidString < $1.id.uuidString : $0.createdAt > $1.createdAt
       }
-      return try ordered.prefix(query.limit).map { try $0.memory() }
+      if query.metadata.isEmpty {
+        return try ordered.prefix(query.limit).map { try $0.memory() }
+      }
+      var matches: [Memory] = []
+      for record in ordered {
+        try checkCancellation()
+        let memory = try record.memory()
+        if query.metadata.allSatisfy({ memory.metadata[$0.key] == $0.value }) {
+          matches.append(memory)
+          if matches.count == query.limit { break }
+        }
+      }
+      return matches
     } catch {
       throw mapped(error, operation: "search")
     }

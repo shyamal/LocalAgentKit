@@ -22,27 +22,34 @@ public struct Memory: Sendable, Hashable, Identifiable, Codable {
   }
 }
 
-/// A text query and result limit for a memory-store search.
+/// A text query, exact metadata constraints and result limit for a memory-store search.
 public struct MemoryQuery: Sendable, Hashable {
   /// Text the store uses to find relevant memories.
   public var text: String
   /// Maximum number of results requested; use a non-negative value.
   public var limit: Int
 
+  /// Exact, case-sensitive metadata key/value constraints, combined with AND before limiting.
+  /// An empty dictionary does not restrict metadata. Text matching remains provider-defined.
+  public var metadata: [String: String]
+
   /// Creates a memory query, requesting at most five results by default.
-  public init(text: String, limit: Int = 5) {
+  public init(text: String, limit: Int = 5, metadata: [String: String] = [:]) {
     self.text = text
     self.limit = limit
+    self.metadata = metadata
   }
 }
 
-/// Persistent agent memory (FR-012). The SwiftData implementation lands in v0.2.
+/// Persistent agent memory (FR-012), with local SwiftData and mock implementations.
 public protocol MemoryStore: Sendable {
   /// Persists a memory; implementations define replacement behavior for existing IDs.
   /// Throw a typed memory failure when persistence cannot complete.
   func save(_ memory: Memory) async throws
   /// Returns memories matching the query within its requested limit.
-  /// Matching and ordering are implementation-specific; failures should be typed memory errors.
+  /// All exact metadata constraints must match before applying the limit; non-positive limits
+  /// return no results. Text matching and ordering are implementation-specific; failures are typed
+  /// memory errors. Custom stores must honor metadata constraints to support semantic searches.
   func search(_ query: MemoryQuery) async throws -> [Memory]
   /// Deletes the memory identified by `id`; implementations define missing-ID behavior.
   func delete(id: UUID) async throws
