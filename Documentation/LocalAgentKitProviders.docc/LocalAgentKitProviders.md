@@ -1,6 +1,6 @@
 # ``LocalAgentKitProviders``
 
-Concrete on-device model, embedding, and vector-store implementations.
+Concrete on-device model, local memory, embedding, and vector-store implementations.
 
 ## Overview
 
@@ -37,3 +37,8 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 - ``NLEmbeddingProvider``
 - ``InMemoryVectorStore``
+
+### Local text memory
+
+- ``SwiftDataMemoryStore``
+- <doc:LocalMemory>
