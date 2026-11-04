@@ -52,8 +52,9 @@ independent writers are not part of this contract.
 ## Integration status
 
 Supplying `AgentConfiguration.memory` does not yet activate retrieval or persisted
-chat history. Conversation persistence and budgeted context integration remain
-M2-04 and M2-07. Runtime task working memory is separate from this durable store. Semantic and
+chat history. Explicit conversation restore/checkpoint operations are available through
+`ConversationMemory` and `SwiftDataConversationStore`, using a separate file.
+Automatic context retrieval and demo resume remain M2-07 and M2-14. Runtime task working memory is separate from this durable store. Semantic and
 episodic category behavior remains later work; metadata keys are app-defined. The existing `MockMemoryStore`
 implements the same save/search/delete seam for unit tests, with its own matching
 and ordering behavior.

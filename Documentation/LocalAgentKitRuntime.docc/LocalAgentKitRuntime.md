@@ -17,6 +17,7 @@ before every model call; a provider can still report overflow during generation.
 - ``AgentRuntime``
 - ``StaticToolSource``
 - ``ConversationMemory``
+- <doc:PersistentConversations>
 - <doc:TaskWorkingMemory>
 - ``EventBus``
 

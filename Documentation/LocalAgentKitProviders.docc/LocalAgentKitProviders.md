@@ -41,4 +41,5 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 ### Local text memory
 
 - ``SwiftDataMemoryStore``
+- ``SwiftDataConversationStore``
 - <doc:LocalMemory>

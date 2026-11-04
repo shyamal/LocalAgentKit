@@ -94,7 +94,8 @@ Select the products you need; there is no umbrella `LocalAgentKit` module.
 The generic `LanguageModelProvider` adapter requires iOS/macOS 27 and an
 application-supplied model backend; no MLX model or weights are bundled.
 `LocalAgentKitAppIntents` is a reserved placeholder, not a working integration.
-Persistent cross-session memory and broader multimodal support remain roadmap work.
+Conversation checkpoints are available through explicit restore/save calls;
+automatic demo resume and broader multimodal support remain roadmap work.
 
 ## Examples
 

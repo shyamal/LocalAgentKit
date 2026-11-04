@@ -44,8 +44,9 @@ the next run. Observing a terminal snapshot does not resume or replay a task.
 ## Storage and context boundaries
 
 Task facts do not call `MemoryStore`, populate conversation history, or survive
-app restart. Persisted conversation history remains M2-04; automatic durable
-memory retrieval into model context remains M2-07. Working/semantic/episodic
+app restart. ConversationMemory supports explicit persisted checkpoints (M2-04); working
+facts are excluded from them. Automatic durable memory retrieval into model
+context remains M2-07, and demo resume wiring remains M2-14. Working/semantic/episodic
 category behavior should not be inferred from storing an app-defined metadata key.
 
 Built-in planner prompts render relevant binding facts through the existing
