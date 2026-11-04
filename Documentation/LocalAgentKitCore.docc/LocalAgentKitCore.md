@@ -51,6 +51,7 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 - ``EmbeddingProvider``
 - ``VectorStore``
 - ``MemoryStore``
+- ``WorkingMemory``
 
 ### Observable outcomes
 

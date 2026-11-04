@@ -33,6 +33,7 @@ public actor AgentRuntime {
   private let instrumentation: any RuntimeInstrumentation
   private let thermalStateSource: (any ThermalStateSource)?
   private let thermalPolicy: ThermalPolicy
+  private var taskMemory = WorkingMemory()
   private var activeRun: Task<AgentResponse, any Error>?
 
   /// - Parameters:
@@ -152,6 +153,17 @@ public actor AgentRuntime {
     }
   }
 
+  /// A copy of current task facts. Empty before the first run, reset on each new run,
+  /// and retained after completion/failure until the next run. This is not persisted or
+  /// automatically transferred to another run; conversation memory is a separate facility.
+  public func workingMemory() -> WorkingMemory { taskMemory }
+
+  private func publishWorkingMemory(_ value: WorkingMemory) async {
+    guard taskMemory != value else { return }
+    taskMemory = value
+    await bus.publish(.workingMemoryUpdated(value))
+  }
+
   /// Cancels the active run, if any. It ends with `.cancelled`.
   public func cancelCurrentRun() {
     activeRun?.cancel()
@@ -184,7 +196,9 @@ public actor AgentRuntime {
     let interval = trace.begin(.run)
     defer { interval.end() }
     let clock = RunClock(budget: configuration.limits.maxDuration)
+    taskMemory = WorkingMemory()
     await bus.publish(.started)
+    await bus.publish(.workingMemoryUpdated(taskMemory))
     do {
       let thermal = thermalStateSource.map {
         ThermalController(source: $0, policy: thermalPolicy, events: bus)
@@ -228,57 +242,66 @@ public actor AgentRuntime {
 
     var context = AgentContext(
       goal: goal, now: now(), timeZone: timeZone, conversation: conversation)
-    let plan: AgentPlan
     do {
-      let interval = trace.begin(.planning)
-      defer { interval.end() }
-      plan = try await planner.plan(context: &context, tools: descriptors, model: model)
-    }
-    await bus.publish(.planCreated(plan))
-
-    var loopDetector = LoopDetector()
-    var iterations = 0
-    var toolCalls = 0
-
-    while true {
-      try Task.checkCancellationAsAgentError()
-      _ = try await thermal?.checkpoint()
-      guard iterations < limits.maxIterations else {
-        throw AgentError.maximumIterationsReached(limit: limits.maxIterations)
+      let plan: AgentPlan
+      do {
+        let interval = trace.begin(.planning)
+        defer { interval.end() }
+        plan = try await planner.plan(context: &context, tools: descriptors, model: model)
       }
-      guard await clock.remaining() > .zero else { throw AgentError.executionTimeout(.run) }
-      iterations += 1
+      await publishWorkingMemory(context.workingMemory)
+      await bus.publish(.planCreated(plan))
 
-      switch try await planner.next(context: &context, tools: descriptors, model: model) {
-      case .complete(let text):
-        return AgentResponse(text: text, iterations: iterations, toolCallCount: toolCalls)
+      var loopDetector = LoopDetector()
+      var iterations = 0
+      var toolCalls = 0
 
-      case .askUser(let question):
-        await bus.publish(.clarificationRequested(question))
-        let start = ContinuousClock.now
-        let answer: String?
-        do {
-          let interval = trace.begin(.clarification)
-          defer { interval.end() }
-          answer = await broker.awaitClarification()
+      while true {
+        try Task.checkCancellationAsAgentError()
+        _ = try await thermal?.checkpoint()
+        guard iterations < limits.maxIterations else {
+          throw AgentError.maximumIterationsReached(limit: limits.maxIterations)
         }
-        await clock.extend(by: ContinuousClock.now - start)
-        guard let answer else { throw AgentError.cancelled }
-        context.conversation += [
-          ModelMessage(role: .assistant, content: question),
-          ModelMessage(role: .user, content: answer),
-        ]
-        context.goal += "\n(Clarification: \(answer))"
+        guard await clock.remaining() > .zero else { throw AgentError.executionTimeout(.run) }
+        iterations += 1
 
-      case .callTool(let call):
-        if case .loop(_, let toolName) = loopDetector.record(call) {
-          throw AgentError.loopDetected(tool: toolName)
+        let decision = try await planner.next(context: &context, tools: descriptors, model: model)
+        await publishWorkingMemory(context.workingMemory)
+        switch decision {
+        case .complete(let text):
+          return AgentResponse(text: text, iterations: iterations, toolCallCount: toolCalls)
+
+        case .askUser(let question):
+          await bus.publish(.clarificationRequested(question))
+          let start = ContinuousClock.now
+          let answer: String?
+          do {
+            let interval = trace.begin(.clarification)
+            defer { interval.end() }
+            answer = await broker.awaitClarification()
+          }
+          await clock.extend(by: ContinuousClock.now - start)
+          guard let answer else { throw AgentError.cancelled }
+          context.conversation += [
+            ModelMessage(role: .assistant, content: question),
+            ModelMessage(role: .user, content: answer),
+          ]
+          context.goal += "\n(Clarification: \(answer))"
+
+        case .callTool(let call):
+          if case .loop(_, let toolName) = loopDetector.record(call) {
+            throw AgentError.loopDetected(tool: toolName)
+          }
+          let revision = try await perform(
+            call, executor: executor, descriptors: descriptors, model: model,
+            context: &context, toolCalls: &toolCalls, trace: trace)
+          await publishWorkingMemory(context.workingMemory)
+          if case .replanned(let revised) = revision { await bus.publish(.planCreated(revised)) }
         }
-        let revision = try await perform(
-          call, executor: executor, descriptors: descriptors, model: model,
-          context: &context, toolCalls: &toolCalls, trace: trace)
-        if case .replanned(let revised) = revision { await bus.publish(.planCreated(revised)) }
       }
+    } catch {
+      await publishWorkingMemory(context.workingMemory)
+      throw error
     }
   }
 

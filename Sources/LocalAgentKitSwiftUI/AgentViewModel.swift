@@ -67,6 +67,8 @@ public final class AgentViewModel {
   public private(set) var activeTool: ToolCall?
   /// Every tool result observed this session, oldest first.
   public private(set) var toolActivity: [ToolResult] = []
+  /// Latest ephemeral task facts, reset when a new run starts.
+  public private(set) var workingMemory = WorkingMemory()
   /// Most recently observed model-context measurement, or nil before one arrives.
   public private(set) var contextUtilization: ContextUtilization?
   /// Latest sampled thermal pressure and policy cap; nil when monitoring is not configured.
@@ -141,6 +143,10 @@ public final class AgentViewModel {
     case .started:
       state = .running
       streamingTurnID = nil
+      workingMemory = WorkingMemory()
+
+    case .workingMemoryUpdated(let memory):
+      workingMemory = memory
 
     case .thinking, .planCreated, .toolRequested, .observationReceived:
       break
