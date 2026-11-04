@@ -51,6 +51,9 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 - ``EmbeddingProvider``
 - ``VectorStore``
 - ``MemoryStore``
+- ``MemoryQuery``
+- ``SemanticMemory``
+- <doc:DurableFactsAndPreferences>
 - ``ConversationStore``
 - ``ConversationSnapshot``
 - ``WorkingMemory``

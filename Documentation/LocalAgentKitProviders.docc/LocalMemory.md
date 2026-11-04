@@ -32,13 +32,15 @@ will migrate automatically.
 - Saving an existing ID replaces its content, creation date and metadata. Each
   mutation explicitly commits; autosave is disabled.
 - Search matches localized case/diacritic-insensitive substrings in content.
-  Metadata is not searched. Empty text matches all memories. Results are newest
+  Text does not search metadata; `MemoryQuery.metadata` applies exact key/value
+  constraints before the limit. Empty text matches all memories. Results are newest
   first, with UUID-string ascending for equal timestamps. Non-positive limits
   return an empty array.
 - This implementation materializes matching rows before sorting and limiting;
   it is intended for small local stores. It is not semantic/vector search.
 - Deleting an absent ID succeeds without a write.
-- Corrupt metadata in a returned record is a typed failure, not silently replaced
+- Corrupt metadata in a returned record, or a candidate scanned for metadata
+  filtering, is a typed failure, not silently replaced
   with an empty dictionary. Initialization and operation failures map to
   `AgentError.memoryFailure`.
 - Cancellation is checked before database work and before committing mutations.
@@ -54,7 +56,10 @@ independent writers are not part of this contract.
 Supplying `AgentConfiguration.memory` does not yet activate retrieval or persisted
 chat history. Explicit conversation restore/checkpoint operations are available through
 `ConversationMemory` and `SwiftDataConversationStore`, using a separate file.
-Automatic context retrieval and demo resume remain M2-07 and M2-14. Runtime task working memory is separate from this durable store. Semantic and
-episodic category behavior remains later work; metadata keys are app-defined. The existing `MockMemoryStore`
+Automatic context retrieval and demo resume remain M2-07 and M2-14. Runtime task
+working memory is separate from this durable store. Explicit durable facts and
+preferences use Core's `SemanticMemory` and `MemoryStore.searchSemantic`; versioned
+category metadata shares the existing schema. Episodic behavior remains M2-06.
+The existing `MockMemoryStore`
 implements the same save/search/delete seam for unit tests, with its own matching
 and ordering behavior.
