@@ -37,6 +37,8 @@ question. Experimental model-driven planning is opt-in.
   a word-vector fallback, an in-memory vector store, and document search.
 - **Contact search:** explicit approval before local contact reads, separate OS
   authorization, and bounded contact-card results.
+- **File search:** bounded, read-only filename/metadata search inside host-supplied
+  folders, with explicit partial-scan results.
 - **Local notes:** confirmed creation and read-only search of app-owned saved notes,
   with bounded search previews and compatible JSON persistence.
 - **App integration:** observable SwiftUI state, permission sheets, streamed answers,

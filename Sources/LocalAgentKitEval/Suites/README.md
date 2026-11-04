@@ -75,3 +75,11 @@ expectations without changing the Phase 0 baseline. Use
 plumbing check; `--model foundation` probes the on-device model explicitly.
 Neither mode reads the device contact store or executes the selected tools.
 ContactsToolTests verifies actual approval ordering and backend calls with mocks.
+
+## Supplemental scoped files (M2-11)
+
+`files/files-local.json` covers filename and extension-category tool selection.
+Run `swift run LocalAgentKitEval run --suite files-local --model mock` for a synthetic
+plumbing check. The probe executes no filesystem search and leaves Phase 0
+baselines unchanged. FilesToolTests scans temporary fixture directories to verify
+scope, traversal exclusions, partial results and cancellation separately.

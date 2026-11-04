@@ -6,6 +6,27 @@ import Testing
 @testable import LocalAgentKitEvalSupport
 
 @Suite struct ProbeRunnerTests {
+  @Test func fileScenariosProbeSelectionWithoutScanningFiles() async throws {
+    let metadata = try SuiteLoader.suite(named: "files-local")
+    #expect(metadata.task == "M2-11")
+    #expect(metadata.goalCount == 2)
+    let model = ScriptedModelProvider(responses: [
+      .toolCall(
+        ToolCall(
+          id: "pdf", name: "search_files",
+          arguments: ToolArguments(["query": "Budget", "file_type": "pdf"]))),
+      .toolCall(
+        ToolCall(
+          id: "sheet", name: "search_files",
+          arguments: ToolArguments(["query": "Forecast", "file_type": "spreadsheet"]))),
+    ])
+    let rows = try await ProbeRunner.run(suiteName: "files-local", model: model)
+    #expect(rows.map(\.goalID) == ["files-01", "files-02"])
+    #expect(rows.flatMap(\.calls).allSatisfy { $0.name == "search_files" })
+    #expect(rows.allSatisfy { $0.failureKind == nil })
+    #expect(try SuiteLoader.tools().first { $0.name == "search_files" }?.needsConfirmation == false)
+  }
+
   @Test func contactScenariosProbeSelectionWithoutReadingContacts() async throws {
     let metadata = try SuiteLoader.suite(named: "contacts-local")
     #expect(metadata.task == "M2-10")

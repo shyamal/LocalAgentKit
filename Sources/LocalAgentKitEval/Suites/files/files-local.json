@@ -1,0 +1,16 @@
+{
+  "suite": "files-local", "task": "M2-11", "version": 1, "toolCatalog": "tools.json",
+  "context": { "referenceDateTime": "2026-09-21T10:00", "referenceWeekday": "Monday", "timeZone": "UTC", "locale": "en_US" },
+  "goals": [
+    {
+      "id": "files-01", "goal": "Find PDF files named Budget in the app-approved folders, without reading their contents.",
+      "expected": { "tool": "search_files", "arguments": { "query": { "match": "containsAll", "terms": ["Budget"] }, "file_type": { "match": "exact", "value": "pdf" } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    },
+    {
+      "id": "files-02", "goal": "Find spreadsheets whose filenames contain Forecast in the app-approved folders.",
+      "expected": { "tool": "search_files", "arguments": { "query": { "match": "containsAll", "terms": ["Forecast"] }, "file_type": { "match": "exact", "value": "spreadsheet" } } },
+      "maxIterations": 1, "expectsConfirmation": false
+    }
+  ]
+}

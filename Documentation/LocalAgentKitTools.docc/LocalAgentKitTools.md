@@ -20,6 +20,8 @@ input; they cannot authorize writes.
 - ``CalculatorTool``
 - ``CalendarTool``
 - ``ContactsTool``
+- ``FilesTool``
+- <doc:FileSearch>
 - <doc:ContactSearch>
 - ``ReminderTool``
 - ``CreateNoteTool``
