@@ -43,3 +43,4 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 - ``SwiftDataMemoryStore``
 - ``SwiftDataConversationStore``
 - <doc:LocalMemory>
+- <doc:MemoryMigrations>

@@ -63,8 +63,8 @@ backend. These host-invoked operations have their own policy; they are not impli
 agent model/tool work. The supplied SwiftData store is local and disables CloudKit.
 
 The provider uses an internal versioned SwiftData schema and version-1 JSON
-checkpoint payload. Schema migration policy remains M2-08; unsupported payload
-versions fail closed. The SDK does not bundle model sessions or execution state
+checkpoint payload. An explicit migration plan and existing-file version/family
+preflight protect opening; unsupported payload versions independently fail closed. The SDK does not bundle model sessions or execution state
 into checkpoints. Working memory still resets per run.
 
 Cancellation is checked before persistence work and after awaited operations.

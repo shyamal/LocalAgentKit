@@ -24,8 +24,9 @@ Non-file URLs and initialization failures throw `AgentError.memoryFailure`.
 
 The schema is `MemorySchemaV1` (1.0.0), internal to Providers. It preserves UUID,
 content, creation date and app-defined string metadata encoded as JSON data.
-Migration policy remains M2-08; this version does not claim future schema upgrades
-will migrate automatically.
+An explicit migration plan retains this immutable V1 schema. Existing-file version
+and entity-family checks reject unsupported stores before writable opening; see
+<doc:MemoryMigrations> for ownership, upgrade and recovery rules.
 
 ## Operation behavior
 
