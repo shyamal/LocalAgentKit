@@ -186,10 +186,18 @@ public actor AgentRuntime {
     await broker.answer(text)
   }
 
-  /// Every confirmed execution recorded so far (M1-SE-02). Empty unless
-  /// `configuration.security.auditSensitiveExecutions` is true.
+  /// Retained confirmed successful executions (M1-SE-02), bounded by the injected logger policy.
+  /// Collection of new executor records follows configuration.security.auditSensitiveExecutions.
+  /// A shared logger may also contain earlier records; disabling collection does not clear it.
   public func auditEntries() async -> [AuditEntry] {
     await auditLogger.allEntries()
+  }
+
+  /// Exports a version-one audit snapshot without writing or sending it. Argument signatures are
+  /// omitted unless explicitly requested; the host owns destination, consent and durable retention.
+  /// - Throws: memoryFailure for values that cannot be encoded as JSON.
+  public func exportAuditJSON(includeArguments: Bool = false) async throws -> Data {
+    try await auditLogger.exportJSON(includeArguments: includeArguments)
   }
 
   // MARK: The run

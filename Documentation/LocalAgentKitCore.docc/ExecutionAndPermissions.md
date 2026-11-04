@@ -12,11 +12,14 @@ continuation rather than holding a thread or lock.
 
 ## Audit data
 
-The runtime can record confirmed executions in its in-memory audit log. Argument
-signatures are stable renderings of argument values, not hashes or redacted data.
+The runtime records successful confirmed executions above read-only in a bounded,
+session-only audit window (default 1,000 records, 4,096 characters per signature).
+Argument signatures are renderings of argument values, possibly truncated, not hashes
+or redacted data.
 They can contain sensitive text. Apply the same access and export controls as you
-would to the arguments themselves. The log does not store full tool results and
-does not replace the permission gate.
+would to the arguments themselves. JSON export omits arguments by default and performs no I/O; the host owns any durable
+retention and destination. The log does not store full tool results, provide a complete
+attempt history or replace the permission gate.
 
 ## Model limits
 
