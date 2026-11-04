@@ -26,10 +26,13 @@ public struct SwiftDataConversationStore: ConversationStore {
         }
         try FileManager.default.createDirectory(
           at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try StoreCompatibility.validate(url, schemas: ConversationMigrationPlan.schemas)
         configuration = ModelConfiguration(schema: schema, url: url, cloudKitDatabase: .none)
       }
       database = ConversationDatabase(
-        container: try ModelContainer(for: schema, configurations: [configuration]))
+        container: try ModelContainer(
+          for: schema, migrationPlan: ConversationMigrationPlan.self,
+          configurations: [configuration]))
     } catch let error as AgentError { throw error } catch {
       throw AgentError.memoryFailure(
         "Could not open conversation storage: \(error.localizedDescription)")

@@ -32,9 +32,11 @@ public struct SwiftDataMemoryStore: MemoryStore {
         }
         try FileManager.default.createDirectory(
           at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try StoreCompatibility.validate(url, schemas: MemoryMigrationPlan.schemas)
         configuration = ModelConfiguration(schema: schema, url: url, cloudKitDatabase: .none)
       }
-      let container = try ModelContainer(for: schema, configurations: [configuration])
+      let container = try ModelContainer(
+        for: schema, migrationPlan: MemoryMigrationPlan.self, configurations: [configuration])
       self.database = MemoryDatabase(container: container)
     } catch let error as AgentError {
       throw error
