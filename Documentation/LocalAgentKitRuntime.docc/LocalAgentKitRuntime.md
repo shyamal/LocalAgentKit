@@ -19,6 +19,7 @@ before every model call; a provider can still report overflow during generation.
 - ``ConversationMemory``
 - <doc:PersistentConversations>
 - <doc:TaskWorkingMemory>
+- <doc:BudgetedMemoryRetrieval>
 - ``EventBus``
 
 ### Plan and execute

@@ -43,6 +43,10 @@ public struct MemoryQuery: Sendable, Hashable {
 
 /// Persistent agent memory (FR-012), with local SwiftData and mock implementations.
 public protocol MemoryStore: Sendable {
+  /// Whether any configuration of this implementation may contact a network service.
+  /// Custom network-backed stores must override the local-only default honestly.
+  var requiresNetwork: Bool { get }
+
   /// Persists a memory; implementations define replacement behavior for existing IDs.
   /// Throw a typed memory failure when persistence cannot complete.
   func save(_ memory: Memory) async throws
@@ -53,4 +57,9 @@ public protocol MemoryStore: Sendable {
   func search(_ query: MemoryQuery) async throws -> [Memory]
   /// Deletes the memory identified by `id`; implementations define missing-ID behavior.
   func delete(id: UUID) async throws
+}
+
+extension MemoryStore {
+  /// Local-only default; network-backed stores must explicitly return true.
+  public var requiresNetwork: Bool { false }
 }

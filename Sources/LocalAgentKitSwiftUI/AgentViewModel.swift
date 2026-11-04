@@ -148,7 +148,8 @@ public final class AgentViewModel {
     case .workingMemoryUpdated(let memory):
       workingMemory = memory
 
-    case .thinking, .planCreated, .toolRequested, .observationReceived:
+    case .thinking, .planCreated, .toolRequested, .observationReceived, .memoriesRetrieved,
+      .memoryRetrievalFailed:
       break
 
     case .contextUtilization(let utilization):

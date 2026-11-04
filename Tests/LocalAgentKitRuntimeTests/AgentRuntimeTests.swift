@@ -31,6 +31,8 @@ private func label(_ event: AgentEvent) -> String {
   case .started: "started"
   case .thinking: "thinking"
   case .workingMemoryUpdated: "workingMemoryUpdated"
+  case .memoriesRetrieved: "memoriesRetrieved"
+  case .memoryRetrievalFailed: "memoryRetrievalFailed"
   case .planCreated: "planCreated"
   case .contextUtilization: "contextUtilization"
   case .thermalStateChanged: "thermalStateChanged"

@@ -78,6 +78,9 @@ public actor AgentRuntime {
     now: @escaping @Sendable () -> Date = { Date() }
   ) throws {
     if let issue = configuration.limits.issue { throw AgentError.invalidConfiguration(issue) }
+    if let issue = configuration.memoryRetrieval.issue {
+      throw AgentError.invalidConfiguration(issue)
+    }
     if let issue = budgeter.configuration.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = thermalPolicy.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = NetworkPolicyGuard.validate(
@@ -226,9 +229,11 @@ public actor AgentRuntime {
     thermal: ThermalController?
   ) async throws -> AgentResponse {
     let limits = configuration.limits
+    let passages = try await retrieveChunks(for: goal, trace: trace)
+    let memories = try await retrieveMemories(for: goal, clock: clock, trace: trace)
     let model = BudgetedModel(
       base: configuration.model, budgeter: budgeter, limits: limits, clock: clock, events: bus,
-      retrievedChunks: try await retrieveChunks(for: goal, trace: trace), trace: trace,
+      retrievedChunks: passages + memories, trace: trace,
       thermal: thermal)
     var executor = ToolExecutor(
       source: tools, gate: TimedGate(inner: customGate ?? broker, clock: clock, trace: trace),
@@ -302,6 +307,43 @@ public actor AgentRuntime {
     } catch {
       await publishWorkingMemory(context.workingMemory)
       throw error
+    }
+  }
+
+  /// Persistent memory is best-effort, but cancellation and the run deadline remain terminal.
+  private func retrieveMemories(for goal: String, clock: RunClock, trace: RuntimeTrace)
+    async throws -> [String]
+  {
+    let policy = configuration.memoryRetrieval
+    guard let store = configuration.memory, policy.limit > 0 else { return [] }
+    let interval = trace.begin(.retrieval)
+    defer { interval.end() }
+    do {
+      if Task.isCancelled { throw AgentError.cancelled }
+      let remaining = await clock.remaining()
+      guard remaining > .zero else { throw AgentError.executionTimeout(.run) }
+      let query = MemoryQuery(
+        text: policy.query == .goal ? goal : "", limit: policy.limit, metadata: policy.metadata)
+      let records = try await withDeadline(remaining, scope: .run) { try await store.search(query) }
+      if Task.isCancelled { throw AgentError.cancelled }
+      // Defend against custom stores returning too many rows or ignoring metadata constraints.
+      let selected = records.filter { record in
+        policy.metadata.allSatisfy { record.metadata[$0.key] == $0.value }
+      }.prefix(policy.limit)
+      let passages = try selected.map { try Self.memoryPassage($0) }
+      await bus.publish(.memoriesRetrieved(count: passages.count))
+      return passages
+    } catch {
+      let failure: AgentError
+      if error is CancellationError || Task.isCancelled { throw AgentError.cancelled }
+      if let typed = error as? AgentError {
+        if typed == .cancelled || typed == .executionTimeout(.run) { throw typed }
+        failure = typed
+      } else {
+        failure = .memoryFailure(String(describing: error))
+      }
+      await bus.publish(.memoryRetrievalFailed(failure))
+      return []
     }
   }
 

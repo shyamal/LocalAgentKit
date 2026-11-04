@@ -3,7 +3,7 @@ import LocalAgentKitCore
 import SwiftData
 
 /// Local SwiftData-backed text memory. One actor owns its context; model objects never escape.
-/// CloudKit is disabled and storage placement is explicit. Runtime context retrieval remains separate (M2-07).
+/// CloudKit is disabled and storage placement is explicit. Configure AgentConfiguration.memory to enable budgeted runtime retrieval.
 public struct SwiftDataMemoryStore: MemoryStore {
   /// Explicitly chooses transient storage or an app-owned persistent file.
   public enum Storage: Sendable {

@@ -3,10 +3,13 @@ import LocalAgentKitCore
 
 /// A memory store backed by an array. `search` matches case-insensitive substrings.
 public actor MockMemoryStore: MemoryStore {
+  /// Configurable declaration for offline-policy tests; the mock itself makes no network calls.
+  public nonisolated let requiresNetwork: Bool
   private var memories: [Memory]
 
   /// Creates a non-durable memory store seeded with the supplied entries.
-  public init(_ memories: [Memory] = []) {
+  public init(_ memories: [Memory] = [], requiresNetwork: Bool = false) {
+    self.requiresNetwork = requiresNetwork
     self.memories = memories
   }
 

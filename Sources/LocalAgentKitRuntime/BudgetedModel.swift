@@ -12,7 +12,8 @@ struct BudgetedModel: LocalModelProvider {
   let limits: ExecutionLimits
   let clock: RunClock
   let events: EventBus
-  /// Retrieved once per run (M1-RG-05), before the loop starts, and given to every call this
+  /// RAG and persistent memory retrieved once per run (M1-RG-05/M2-07), before the loop starts,
+  /// and given to every call this
   /// model makes — RAG passages get the budgeter's own `retrievalShare` rather than competing
   /// with conversation history for the same tokens.
   var retrievedChunks: [String] = []

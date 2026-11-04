@@ -75,6 +75,10 @@ public enum AgentEvent: Sendable {
   case planCreated(AgentPlan)
   /// Task facts changed or were reset for a new run. This is an in-memory value snapshot.
   case workingMemoryUpdated(WorkingMemory)
+  /// Persistent memories selected before fitting; this count does not guarantee prompt inclusion.
+  case memoriesRetrieved(count: Int)
+  /// Best-effort persistent retrieval failed; the run continues without those memories.
+  case memoryRetrievalFailed(AgentError)
   /// Context fitting produced a utilization measurement before a model call.
   case contextUtilization(ContextUtilization)
   /// Initial thermal status or a sampled change at a work boundary, when monitoring is configured.
