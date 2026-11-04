@@ -53,6 +53,8 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 - ``MemoryStore``
 - ``MemoryQuery``
 - ``SemanticMemory``
+- ``EpisodicMemory``
+- <doc:PastEventsAndActions>
 - <doc:DurableFactsAndPreferences>
 - ``ConversationStore``
 - ``ConversationSnapshot``
