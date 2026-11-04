@@ -65,6 +65,27 @@ import Testing
     #expect(memory.values.values.contains(.string("Budget review")))
   }
 
+  @Test func openFactsPreserveObservationTextAlongsideTypedAndCustomFacts() throws {
+    var context = AgentContext(goal: "Convert temperature")
+    context.mode = .open
+    context.workingMemory.set(.string("only this task"), forKey: "task")
+    let call = ToolCall(id: "conversion#1", name: "convert_temperature", arguments: ToolArguments())
+    context.pending = AgentContext.PendingStep(
+      stepID: call.id, invocation: ToolInvocation(tool: call.name), attempt: 0, isAlternative: false
+    )
+    let observation = ToolObservation(
+      call: call,
+      result: ToolResult(
+        callID: call.id, toolName: call.name, text: "68.0 degrees Fahrenheit",
+        structured: .double(68)))
+    _ = try StateMachinePlanner().observe(observation, context: &context)
+    let facts = context.factsText()
+    #expect(facts.contains("convert_temperature: 68.0 degrees Fahrenheit"))
+    #expect(facts.contains("task: only this task"))
+    #expect(!facts.contains("conversion#1:"))
+    #expect(context.workingMemory.value(for: call.id) == .double(68))
+  }
+
   @Test func taskMemoryResetsBetweenRunsAndIsNotWrittenToPersistentMemory() async throws {
     let persistent = MockMemoryStore()
     let runtime = try AgentRuntime(
