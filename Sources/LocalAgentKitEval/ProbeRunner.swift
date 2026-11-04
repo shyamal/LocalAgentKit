@@ -45,7 +45,7 @@ public enum ProbeRunner {
     repetitions: Int = 1, limit: Int? = nil, goalID: String? = nil,
     timeout: Duration = .seconds(60)
   ) async throws -> [ProbeResult] {
-    guard ["single-tool", "refusal"].contains(suiteName) else {
+    guard ["single-tool", "refusal", "notes-local"].contains(suiteName) else {
       throw ProbeError.unsupportedSuite(suiteName)
     }
     guard (1...100).contains(repetitions), timeout > .zero, limit.map({ $0 > 0 }) ?? true else {

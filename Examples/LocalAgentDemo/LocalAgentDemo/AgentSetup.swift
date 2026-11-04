@@ -16,13 +16,13 @@ enum AgentSetup {
     await seedNotes(embedding: embedding, vectorStore: vectorStore)
 
     let noteStore = NoteStore(directory: applicationSupportDirectory())
-    let tools: [any AgentTool] = [
-      CalculatorTool(),
-      CalendarTool(),
-      ReminderTool(),
-      DocumentSearchTool(embeddingProvider: embedding, vectorStore: vectorStore, limit: 3),
-      CreateNoteTool(store: noteStore),
-    ]
+    let tools: [any AgentTool] =
+      [
+        CalculatorTool(),
+        CalendarTool(),
+        ReminderTool(),
+        DocumentSearchTool(embeddingProvider: embedding, vectorStore: vectorStore, limit: 3),
+      ] + NotesTool.tools(store: noteStore)
 
     // `AgentConfiguration.embedding`/`.vectorStore` are deliberately left unset here — setting
     // both would turn on `AgentRuntime`'s *automatic* per-run retrieval (M1-RG-05: it embeds the
