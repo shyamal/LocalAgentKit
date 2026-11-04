@@ -6,7 +6,7 @@ public enum TimeoutScope: Sendable, Hashable {
   case modelCall
 }
 
-/// A device capability gated by system-level authorization (Calendar, Reminders, …). Distinct
+/// A device capability gated by system-level authorization (Calendar, Reminders, Contacts, …). Distinct
 /// from ``ToolPermission``, which is the app's own tier: this is the OS's decision, not ours, and
 /// it is why the error below is separate from a generic tool failure — an app can direct the user
 /// to Settings instead of just reporting an error.
@@ -15,12 +15,15 @@ public enum DeviceCapability: Sendable, Hashable, CustomStringConvertible {
   case calendar
   /// Access to reminders.
   case reminders
+  /// Access to the device contact store.
+  case contacts
 
   /// The capability name suitable for a settings or authorization message.
   public var description: String {
     switch self {
     case .calendar: "Calendar"
     case .reminders: "Reminders"
+    case .contacts: "Contacts"
     }
   }
 }

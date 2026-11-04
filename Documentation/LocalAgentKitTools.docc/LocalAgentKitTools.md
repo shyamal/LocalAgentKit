@@ -1,6 +1,6 @@
 # ``LocalAgentKitTools``
 
-Built-in tool implementations for arithmetic, calendar access, reminders, retrieval, and local note creation/search.
+Built-in tool implementations for arithmetic, calendar access, reminders, contacts, retrieval, and local note creation/search.
 
 ## Overview
 
@@ -19,6 +19,8 @@ input; they cannot authorize writes.
 
 - ``CalculatorTool``
 - ``CalendarTool``
+- ``ContactsTool``
+- <doc:ContactSearch>
 - ``ReminderTool``
 - ``CreateNoteTool``
 - ``SearchNotesTool``

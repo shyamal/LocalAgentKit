@@ -45,6 +45,9 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 - ``ToolPermission``
 - ``ToolCall``
 - ``ToolObservation``
+- ``ContactSearching``
+- ``ContactSummary``
+- ``DeviceCapability``
 
 ### Retrieval and memory
 
