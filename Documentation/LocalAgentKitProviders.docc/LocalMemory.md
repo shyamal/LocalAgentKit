@@ -53,7 +53,7 @@ independent writers are not part of this contract.
 
 Supplying `AgentConfiguration.memory` does not yet activate retrieval or persisted
 chat history. Conversation persistence and budgeted context integration remain
-M2-04 and M2-07. Category-specific working, semantic and episodic behavior is also
-separate; metadata keys remain app-defined. The existing `MockMemoryStore`
+M2-04 and M2-07. Runtime task working memory is separate from this durable store. Semantic and
+episodic category behavior remains later work; metadata keys are app-defined. The existing `MockMemoryStore`
 implements the same save/search/delete seam for unit tests, with its own matching
 and ordering behavior.

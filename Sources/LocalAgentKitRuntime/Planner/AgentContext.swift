@@ -34,12 +34,15 @@ public struct AgentContext: Sendable {
   /// Earlier turns, so a follow-up such as "those meetings" can be resolved.
   public var conversation: [ModelMessage]
 
-  /// Structured results keyed by workflow binding names; read-only to external consumers.
-  public internal(set) var bindings: [String: JSONValue] = [:]
-  /// Binding names in insertion order for deterministic prompt rendering.
-  public internal(set) var bindingOrder: [String] = []
-  /// Bindings whose tool result explicitly reported no useful content.
-  public internal(set) var emptyBindings: Set<String> = []
+  /// Current task facts. Each runtime run starts with an empty value; custom planners may
+  /// mutate it, and workflow bindings share this same storage.
+  public var workingMemory = WorkingMemory()
+  /// Structured workflow results, backed by workingMemory.
+  public var bindings: [String: JSONValue] { workingMemory.values }
+  /// Workflow root keys in insertion order.
+  public var bindingOrder: [String] { workingMemory.orderedKeys }
+  /// Workflow roots explicitly reported empty by a tool.
+  public var emptyBindings: Set<String> { workingMemory.emptyKeys }
   /// Completed tool calls and results observed so far, oldest first.
   public internal(set) var observations: [ToolObservation] = []
   /// Identifiers of workflow steps skipped by guards or recovery.
@@ -72,40 +75,13 @@ public struct AgentContext: Sendable {
 
   /// Resolves `"name"` or `"name.path.0"` to a value.
   public func value(for reference: String) -> JSONValue? {
-    let parts = reference.split(separator: ".").map(String.init)
-    guard let root = parts.first, var value = bindings[root] else { return nil }
-    for part in parts.dropFirst() {
-      switch value {
-      case .object(let object):
-        guard let next = object[part] else { return nil }
-        value = next
-      case .array(let items):
-        guard let index = Int(part), items.indices.contains(index) else { return nil }
-        value = items[index]
-      default:
-        return nil
-      }
-    }
-    return value
+    workingMemory.value(for: reference)
   }
 
-  func isEmpty(_ reference: String) -> Bool {
-    let root = String(reference.split(separator: ".").first ?? "")
-    guard let value = value(for: reference) else { return true }
-    if reference == root && emptyBindings.contains(root) { return true }
-    switch value {
-    case .null: return true
-    case .string(let text): return text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    case .array(let items): return items.isEmpty
-    case .object(let object): return object.isEmpty
-    default: return false
-    }
-  }
+  func isEmpty(_ reference: String) -> Bool { workingMemory.isEmpty(reference) }
 
   mutating func bind(_ name: String, _ value: JSONValue, isEmpty: Bool) {
-    if bindings[name] == nil { bindingOrder.append(name) }
-    bindings[name] = value
-    if isEmpty { emptyBindings.insert(name) } else { emptyBindings.remove(name) }
+    workingMemory.set(value, forKey: name, isEmpty: isEmpty)
   }
 
   mutating func nextCallID(_ stepID: String) -> String {

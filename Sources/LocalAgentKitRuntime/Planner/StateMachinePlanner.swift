@@ -295,7 +295,11 @@ public struct StateMachinePlanner: AgentPlanner {
 
     guard case .workflow(let workflow) = context.mode, context.cursor < workflow.steps.count
     else {
-      // Open mode: the observation is recorded above and shows up in the next prompt's facts.
+      // Open mode keeps each successful observation under its call ID, retaining repeated
+      // reads separately. Failed/denied calls never become task facts.
+      context.bind(
+        observation.call.id, observation.result.structured ?? .string(observation.result.text),
+        isEmpty: observation.result.isEmpty)
       return .continue
     }
     let step = workflow.steps[context.cursor]

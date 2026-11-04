@@ -73,6 +73,8 @@ public enum AgentEvent: Sendable {
   case thinking
   /// The initial plan is available for display.
   case planCreated(AgentPlan)
+  /// Task facts changed or were reset for a new run. This is an in-memory value snapshot.
+  case workingMemoryUpdated(WorkingMemory)
   /// Context fitting produced a utilization measurement before a model call.
   case contextUtilization(ContextUtilization)
   /// Initial thermal status or a sampled change at a work boundary, when monitoring is configured.

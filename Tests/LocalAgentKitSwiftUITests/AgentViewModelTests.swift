@@ -35,6 +35,27 @@ private func waitUntil(
 }
 
 @Suite struct AgentViewModelTests {
+  @Test @MainActor func taskFactsAreShownAndResetOnTheNextRun() async throws {
+    let read = MockTool(name: "read", handler: { _ in "Budget review" })
+    let workflow = Workflow(
+      name: "read", description: "Read", steps: [.tool("fact", "Read", "read")])
+    let model = ScriptedModelProvider(responses: [
+      call("choose_workflow", ["workflow": .string("read")]),
+      call("choose_workflow", ["workflow": .string("none")]), choice("finish"), .text("Fresh run"),
+    ])
+    let runtime = try AgentRuntime(
+      configuration: AgentConfiguration(model: model),
+      tools: StaticToolSource([read]), workflows: [workflow])
+    let viewModel = AgentViewModel(runtime: runtime)
+    viewModel.send("Read the meeting")
+    await waitUntil { viewModel.state == .idle && viewModel.turns.count == 2 }
+    #expect(viewModel.workingMemory.value(for: "fact") == .string("Budget review"))
+    viewModel.send("Start fresh")
+    await waitUntil { viewModel.state == .idle && viewModel.turns.count == 4 }
+    #expect(viewModel.workingMemory.values.isEmpty)
+    await runtime.finishEvents()
+  }
+
   @Test @MainActor func aStreamedAnswerUsesOneAssistantTurn() async throws {
     let model = ScriptedModelProvider([
       .respond(choice("finish")), .stream(["Hel", "lo"], then: .text("Hello")),

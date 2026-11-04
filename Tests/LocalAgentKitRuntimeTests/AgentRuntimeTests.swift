@@ -30,6 +30,7 @@ private func label(_ event: AgentEvent) -> String {
   switch event {
   case .started: "started"
   case .thinking: "thinking"
+  case .workingMemoryUpdated: "workingMemoryUpdated"
   case .planCreated: "planCreated"
   case .contextUtilization: "contextUtilization"
   case .thermalStateChanged: "thermalStateChanged"
@@ -48,7 +49,11 @@ private func label(_ event: AgentEvent) -> String {
 
 private func labels(_ stream: AsyncStream<AgentEvent>) async -> [String] {
   var result: [String] = []
-  for await event in stream { result.append(label(event)) }
+  for await event in stream {
+    // These legacy assertions describe execution events; task snapshots have their own suite.
+    if case .workingMemoryUpdated = event { continue }
+    result.append(label(event))
+  }
   return result
 }
 
