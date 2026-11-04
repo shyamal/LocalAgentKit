@@ -55,3 +55,14 @@ swift Scripts/validate-eval-suites.swift Sources/LocalAgentKitEval/Suites/phase0
 ```
 
 This is a structural check that runs in CI. It flags unknown tools or arguments, malformed dates and datetimes, enum violations, `absent` on required arguments, `expectsConfirmation` that contradicts the tool's permission tier, and, for multi-step goals, step counts outside 3–5, `dependsOn` pointing forward, `groundedIn` outside the step's dependency chain, fixtured `calculate`, tools both forbidden and required, `maxIterations` below the step count, for refusal goals, unknown domains, malformed outcomes, and controls not paired with a sensitive goal, and, for the context-load fixture, misnumbered exchanges, tool traffic that doesn't pair up, probes whose fact isn't actually in their source, and profiles larger than the material. It does not run a model.
+
+## Supplemental local notes (M2-09)
+
+`notes/notes-local.json` adds create/search goals without changing the Phase 0
+scenario files or their baseline version. Run a synthetic plumbing check with
+`swift run LocalAgentKitEval run --suite notes-local --model mock` (the report is
+marked synthetic); `--model foundation` requests real on-device model selection.
+The probe records model calls and checks schemas; it does not execute note tools
+or prove permission enforcement. See NotesCapabilityTests for actual persistence,
+approval/denial, invalid arguments, cancellation and adversarial-note coverage.
+The catalog already contains create_note/search_notes with their distinct tiers.

@@ -35,6 +35,8 @@ question. Experimental model-driven planning is opt-in.
   context budget; automatic demo resume is still planned.
 - **Local retrieval:** document loading, chunking, Natural Language embeddings with
   a word-vector fallback, an in-memory vector store, and document search.
+- **Local notes:** confirmed creation and read-only search of app-owned saved notes,
+  with bounded search previews and compatible JSON persistence.
 - **App integration:** observable SwiftUI state, permission sheets, streamed answers,
   and optional local diagnostics and thermal-policy handling.
 - **Testing:** mock and scripted providers, plus a CLI harness for measuring tool

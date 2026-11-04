@@ -399,10 +399,12 @@ Distinct from developer tooling — these are `AgentTool` conformances.
 | `CalendarTool` (read) | `.readOnly` | EventKit | **MVP** |
 | `ReminderTool` (create) | `.userConfirmation` | EventKit | **MVP** |
 | `DocumentSearchTool` | `.readOnly` | RAG | **MVP** |
-| `NotesTool` (create/search) | `.userConfirmation` / `.readOnly` | Local store | v0.2 |
+| `NotesTool.tools` → `CreateNoteTool` / `SearchNotesTool` | `.userConfirmation` / `.readOnly` | App-local JSON `NoteStore` | v0.2 |
 | `ContactsTool` (search) | `.sensitive` | Contacts | v0.2 |
 | `FilesTool` (search) | `.readOnly` | FileManager | v0.2 |
 | *File delete, message send, etc.* | `.destructive` | — | Post-MVP; used to exercise the destructive tier |
+
+M2-09 retains the demo's existing notes.json encoding/location rather than replacing it with a second SwiftData backend. The shared NoteStore actor offers title/body search and fail-closed reads, with cache publication only after atomic writes. Search returns bounded previews; both tools are exported via NotesTool.tools. The demo registers the pair while its canonical related-notes turn still searches bundled RAG fixtures. The supplemental notes-local probe leaves the Phase 0 baseline unchanged.
 
 Every tool must declare: `name`, `description`, `schema`, `permission`, whether it is **parallel-safe**, and whether it is **cancellable**. The last two are additions to the PRD's `AgentTool` protocol that the runtime needs in order to schedule and cancel correctly.
 

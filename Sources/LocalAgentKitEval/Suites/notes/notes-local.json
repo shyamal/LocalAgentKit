@@ -1,0 +1,37 @@
+{
+  "suite": "notes-local",
+  "task": "M2-09",
+  "version": 1,
+  "toolCatalog": "tools.json",
+  "context": {
+    "referenceDateTime": "2026-09-21T10:00",
+    "referenceWeekday": "Monday",
+    "timeZone": "UTC",
+    "locale": "en_US"
+  },
+  "goals": [
+    {
+      "id": "notes-01",
+      "goal": "Save a local note titled Budget review with the text Prepare the headcount numbers with Priya.",
+      "expected": {
+        "tool": "create_note",
+        "arguments": {
+          "title": { "match": "containsAll", "terms": ["Budget", "review"] },
+          "body": { "match": "containsAll", "terms": ["headcount", "Priya"] }
+        }
+      },
+      "maxIterations": 1,
+      "expectsConfirmation": true
+    },
+    {
+      "id": "notes-02",
+      "goal": "Search the local notes saved in this app for Budget review.",
+      "expected": {
+        "tool": "search_notes",
+        "arguments": { "query": { "match": "containsAny", "terms": ["Budget", "review"] } }
+      },
+      "maxIterations": 1,
+      "expectsConfirmation": false
+    }
+  ]
+}

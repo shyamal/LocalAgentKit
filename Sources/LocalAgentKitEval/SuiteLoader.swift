@@ -1,6 +1,6 @@
 import Foundation
 
-/// Loads the bundled Phase 0 scenario suites (task P0-18).
+/// Loads the durable Phase 0 suites and supplemental capability scenarios.
 ///
 /// The Phase 0 spike that produced these suites was throwaway; the suites are not. This reads
 /// what every suite shares — identity, the tool catalog it targets, and its scenario ids — so the
@@ -128,7 +128,9 @@ public enum SuiteLoader {
   }
 
   private static func decode<T: Decodable>(_ type: T.Type, named name: String) throws -> T {
-    guard let url = Bundle.module.url(forResource: "Suites/phase0/\(name)", withExtension: "json")
+    guard
+      let url = Bundle.module.url(forResource: "Suites/phase0/\(name)", withExtension: "json")
+        ?? Bundle.module.url(forResource: "Suites/notes/\(name)", withExtension: "json")
     else {
       throw Error.resourceMissing(name)
     }

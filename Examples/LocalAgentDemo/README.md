@@ -50,16 +50,18 @@ For the physical-device milestone exit check, follow
 [Device validation](DEVICE-VALIDATION.md). It covers conversation continuity,
 confirmation before saving, stored-note verification and denial.
 
-## `CreateNoteTool`
+## Saved local notes
 
-This is a minimal, MVP-only note-saving tool (`Sources/LocalAgentKitTools/CreateNoteTool.swift`),
-narrower than FR-008's full Notes capability (M2-09: create *and* search, likely SwiftData-backed
-like `MemoryStore`'s other implementations). It exists so this demo's fourth turn has something
-real to write to, file-backed under Application Support; M2-09 supersedes it.
+`NotesTool.tools` registers `CreateNoteTool` (confirmation required) and
+`SearchNotesTool` (read-only) over the same file-backed `NoteStore`. Existing
+Application Support `notes.json` data remains compatible. Other prompts can search
+saved notes, for example “Search my saved notes for Budget review.” Open-model
+selection remains subject to the measured reliability limits above.
 
-Successful note saves also display the actual `create_note` tool result with a
-checkmark, independently of the model's final wording. Approval alone does not
-show success; the tool must complete without an empty result.
+The canonical second turn still searches bundled RAG fixture notes; it does not
+search this saved-note store. The canonical fourth turn saves the exact completed
+checklist after approval. Corrupt/unreadable saved-note files now report a typed
+failure instead of being silently replaced with an empty collection.
 
 ## Thermal behavior
 

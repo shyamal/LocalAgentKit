@@ -6,6 +6,27 @@ import Testing
 @testable import LocalAgentKitEvalSupport
 
 @Suite struct ProbeRunnerTests {
+  @Test func notesCapabilityScenariosRunWithoutChangingPhaseZeroFixtures() async throws {
+    let metadata = try SuiteLoader.suite(named: "notes-local")
+    #expect(metadata.task == "M2-09")
+    #expect(metadata.goals?.map(\.id) == ["notes-01", "notes-02"])
+    let model = ScriptedModelProvider(responses: [
+      .toolCall(
+        ToolCall(
+          id: "create", name: "create_note",
+          arguments: ToolArguments([
+            "title": "Budget review", "body": "Prepare the headcount numbers with Priya.",
+          ]))),
+      .toolCall(
+        ToolCall(
+          id: "search", name: "search_notes", arguments: ToolArguments(["query": "Budget review"]))),
+    ])
+    let rows = try await ProbeRunner.run(suiteName: "notes-local", model: model)
+    #expect(rows.map(\.goalID) == ["notes-01", "notes-02"])
+    #expect(rows.flatMap(\.calls).map(\.name) == ["create_note", "search_notes"])
+    #expect(rows.allSatisfy { $0.failureKind == nil })
+  }
+
   @Test func capturesToolCallsWithoutExecutingOrRepairingThem() async throws {
     let call = ToolCall(
       id: "c", name: "create_reminder", arguments: ToolArguments(["title": "Call plumber"]))
