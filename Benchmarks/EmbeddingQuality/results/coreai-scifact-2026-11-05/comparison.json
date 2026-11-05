@@ -1,0 +1,54 @@
+{
+  "coreAIParity": {
+    "absoluteTolerance": 0.0001,
+    "maximumAbsoluteError": 2.682209014892578e-07,
+    "vectorCount": 5483
+  },
+  "corpusSHA256": "1ae85162f749ef5dfdbd3c0d9ffdc019dc202810e20753226c52e1f9ed9976ca",
+  "documentCount": 5183,
+  "metrics": {
+    "coreAI": {
+      "ndcgAtK": 0.5967290066905538,
+      "recallAtK": 0.6603333333333333,
+      "reciprocalRank": 0.6112998025157093
+    },
+    "mlxFourBit": {
+      "ndcgAtK": 0.5876611859307844,
+      "recallAtK": 0.6405000000000001,
+      "reciprocalRank": 0.6064625992228926
+    },
+    "mlxOriginal": {
+      "ndcgAtK": 0.596292574178649,
+      "recallAtK": 0.6603333333333333,
+      "reciprocalRank": 0.6106628152583731
+    },
+    "naturalLanguageSentence": {
+      "ndcgAtK": 0.041081187190629094,
+      "recallAtK": 0.05,
+      "reciprocalRank": 0.057212306801894555
+    },
+    "naturalLanguageWordAverage": {
+      "ndcgAtK": 0.1773706575343434,
+      "recallAtK": 0.19583333333333333,
+      "reciprocalRank": 0.20288669209223664
+    },
+    "pytorchReference": {
+      "ndcgAtK": 0.5967290066905538,
+      "recallAtK": 0.6603333333333333,
+      "reciprocalRank": 0.6112998025157093
+    }
+  },
+  "mlxOriginalDrift": {
+    "comparisonAbsoluteTolerance": 0.0001,
+    "maximumAbsoluteError": 0.0011292919516563416,
+    "sourceFilesMatchReference": true,
+    "tokenIdentityCheckedOnLargestDriftRows": 5,
+    "vectorCount": 5483,
+    "withinComparisonTolerance": false,
+    "worstID": "d-40234452"
+  },
+  "positiveJudgmentCount": 339,
+  "queryCount": 300,
+  "schemaVersion": 1,
+  "scope": "Full scientific corpus, not production answerability/calibration, resource costs or broad language quality; earlier four-bit artifact has separate provenance."
+}

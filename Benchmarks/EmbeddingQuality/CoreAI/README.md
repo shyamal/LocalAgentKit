@@ -125,7 +125,9 @@ specialization preference, not proof every operation executes on GPU. Tokens are
 precomputed by the pinned host tokenizer; this is not a shipped Swift tokenizer or
 production `EmbeddingProvider`. Timing, battery, process peak memory and broad
 application/multilingual/independent-corpus Core AI quality remain unmeasured.
-M3-04 and PLANNING question 4 remain open.
+The full independent comparison in [IndependentQuality.md](IndependentQuality.md)
+and decision 0009 complete M3-04/PLANNING question 4. Provider integration (M3-11),
+calibration (M3-07) and resource/application checks remain separate work.
 
 ## Verification of this follow-up
 

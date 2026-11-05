@@ -69,6 +69,26 @@ class CoreAIParityTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.inspect()
 
+    def test_compact_quality_reports_keep_full_rank_mrr_and_parity(self):
+        self.corpus['documents'] = [{'id': 'd' + str(i)} for i in range(5)]
+        self.corpus['queries'] = [{'id': 'q', 'relevant': ['d4']}]
+        vectors = {'q': [1.] + [0.] * 383}
+        for i in range(5):
+            value = 1 - i * 0.1
+            vectors['d' + str(i)] = [value, math.sqrt(1 - value * value)] + [0.] * 382
+        self.reference['vectors'] = vectors
+        self.report['coreAI']['export'] = copy.deepcopy(self.reference)
+        self.report['coreAI']['comparedVectorCount'] = 6
+        full = self.inspect()
+        compact = inspect_parity.inspect(self.corpus, 'hash', self.report, self.reference, self.run, ranking_limit=3)
+        for provider in ['pytorchReference', 'coreAI']:
+            report = compact['qualityScores'][provider]
+            self.assertEqual(report['metrics'], full['qualityScores'][provider]['metrics'])
+            self.assertEqual(report['queries'][0]['firstRelevantRank'], 5)
+            self.assertEqual(len(report['queries'][0]['ranking']), 3)
+            self.assertEqual(report['metrics']['reciprocalRank'], 0.2)
+        self.assertEqual(compact['maximumAbsoluteError'], 0)
+
     def test_cli_saves_failure_evidence_but_exits_nonzero(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

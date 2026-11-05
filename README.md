@@ -159,7 +159,7 @@ see [SECURITY.md](SECURITY.md).
 - [Architecture and decisions](PLANNING.md)
 - [Tasks and validation gates](TASKS.md)
 - [Evaluation harness](docs/evaluation-harness.md)
-- [Embedding-quality baseline](Benchmarks/EmbeddingQuality) — exploratory M3-04 measurements; gate remains open.
+- [Embedding-quality measurements](Benchmarks/EmbeddingQuality) and [provider policy](docs/decisions/0009-embedding-quality-and-provider-policy.md) — M3-04 benchmark complete; opt-in integration tracked separately.
 
 ## License
 

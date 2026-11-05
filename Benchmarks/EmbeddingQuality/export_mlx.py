@@ -30,7 +30,13 @@ def main():
     parser.add_argument('--cache-dir', required=True)
     parser.add_argument('--allow-truncation', action='store_true',
                         help='Explicitly truncate overlength inputs to 256 model tokens and record counts.')
+    parser.add_argument('--original-minilm', action='store_true',
+                        help='Use the pinned unquantized original checkpoint, not the default 4-bit conversion.')
     args = parser.parse_args()
+    model_id, revision = MODEL, REVISION
+    if args.original_minilm:
+        model_id = 'sentence-transformers/all-MiniLM-L6-v2'
+        revision = '1110a243fdf4706b3f48f1d95db1a4f5529b4d41'
     from huggingface_hub import snapshot_download
     import mlx.core as mx
     from mlx_embeddings.utils import load
@@ -38,7 +44,7 @@ def main():
 
     corpus, digest = load_corpus(args.corpus, allow_no_answer=True)
     # Only data/weights/tokenizer files: never download training scripts or execute model code.
-    location = snapshot_download(MODEL, revision=REVISION, cache_dir=args.cache_dir,
+    location = snapshot_download(model_id, revision=revision, cache_dir=args.cache_dir,
                                  allow_patterns=['*.json', '*.safetensors', 'vocab.txt'])
     model, tokenizer = load(location, tokenizer_config={'trust_remote_code': False})
     vectors = {}
@@ -57,10 +63,10 @@ def main():
     elapsed = time.monotonic() - start
     files = {str(p.relative_to(location)): hashlib.sha256(p.read_bytes()).hexdigest()
              for p in sorted(Path(location).rglob('*')) if p.is_file()}
-    export = {'schemaVersion': 1, 'corpusSHA256': digest, 'provider': MODEL,
-              'metadata': {'revision': REVISION, 'execution': 'MLX Metal, not Core AI',
+    export = {'schemaVersion': 1, 'corpusSHA256': digest, 'provider': model_id,
+              'metadata': {'revision': revision, 'execution': 'MLX Metal, not Core AI',
                            'pooling': 'library BERT mean pooled, normalized text_embeds',
-                           'quantization': '4-bit',
+                           'quantization': 'none (original weights)' if args.original_minilm else '4-bit',
                            'truncationAllowed': args.allow_truncation,
                            'truncatedInputs': truncated, 'maximumUntruncatedTokens': maximum, 'os': platform.platform(),
                            'python': platform.python_version(),

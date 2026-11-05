@@ -59,6 +59,8 @@ async def run(args):
             vector = value[0].tolist()
             maximum = max(maximum, max(abs(a - b) for a, b in zip(vector, reference['vectors'][row['id']])))
             vectors[row['id']] = vector
+            if len(vectors) % 500 == 0:
+                print(f'Executed {len(vectors)} Core AI tensors', flush=True)
     if maximum > TOLERANCE or any(abs(math.hypot(*v) - 1) > 1e-4 for v in vectors.values()):
         raise ValueError('Numerical parity/normalization failed; no vectors published')
     metadata = dict(fixture['metadata'], execution='Official coreai-core Python runtime, default specialization',

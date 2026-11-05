@@ -1,10 +1,10 @@
 import LocalAgentKitCore
 import NaturalLanguage
 
-/// The default on-device embedding provider (FR-014), backed by `NLEmbedding`. This is the v0.1
-/// default per `PLANNING.md` §3; its retrieval quality against a small MLX embedding model is
-/// measured later, gated at M3-04 — a full model swap before then would be replacing a measured
-/// baseline with an unmeasured guess.
+/// The system-asset embedding baseline (FR-014), backed by `NLEmbedding`. M3-04's measured
+/// quality limits and provider policy are recorded in decision 0009. Existing APIs and demo
+/// wiring remain compatible; an opt-in MiniLM/Core AI integration is tracked by M3-11.
+/// The benchmark does not certify this provider for every corpus or language.
 ///
 /// `NLEmbedding` is not `Sendable`; wrapping it in an actor keeps it from ever crossing an
 /// isolation boundary, the pattern `EventStoreProvider` uses for EventKit.

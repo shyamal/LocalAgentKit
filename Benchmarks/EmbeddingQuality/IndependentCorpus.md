@@ -117,7 +117,9 @@ done
 Model and system-asset revisions remain those of the original baseline. The recorded
 elapsed embedding passes have no controlled warmup/load and are not M3-08 latency,
 memory or battery measurements. Library offline flags are not traffic-capture
-proof. No physical-iPhone run or Core AI execution is claimed; M3-04 remains open.
+proof. This particular run claims no physical-iPhone or Core AI execution. Later
+Core AI measurements and decision 0009 complete M3-04; they preserve these scope
+limits and leave integration/calibration/resource tasks open.
 
 ## Verification
 

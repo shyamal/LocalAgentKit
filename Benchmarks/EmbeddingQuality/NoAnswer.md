@@ -70,7 +70,9 @@ all usable queries. The same numeric threshold is not calibrated equivalently
 across embedding spaces. These illustrative profiles select no winning cutoff or
 provider default; tuning against this fixture would not establish generalization.
 A separate representative calibration set and held-out application data are still
-needed. M3-04 remains open, including device and Core AI/deployment-path evidence.
+needed under M3-07. Subsequent independent/Core AI measurements complete the
+M3-04 benchmark under decision 0009; this diagnostic still supplies no calibrated
+production threshold.
 
 ## Reproduce
 

@@ -100,8 +100,9 @@ complete export/round-trip, unavailable/failing path isolation, invalid vectors,
 duplicate IDs and cancellation after an uncooperative embed or a typed cancellation.
 Three host-inspector functions cover scoring/multiple matches, absent paths, stale
 run IDs and malformed/partial reports. CI runs these without a phone or network.
-M3-04 remains open for representative application/multilingual calibration, further
-device/resource coverage and the explicit Core AI/deployment-path decision.
+Decision 0009 completes the M3-04 benchmark using the subsequent full independent
+comparison. Integration (M3-11), calibration (M3-07), scale/resources (M3-08/M6-05)
+and real-PDF acceptance (M3-10) remain separate; this fixture run does not pass them.
 
 Full verification also passes: warning-free package build, 635 main Swift test
 functions, the network-disabled suite, existing examples, six new probe functions,
