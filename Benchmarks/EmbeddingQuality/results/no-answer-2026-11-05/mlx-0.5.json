@@ -1,0 +1,459 @@
+{
+  "answerableQueryCount": 20,
+  "corpusSHA256": "7e50ec57af4f761b835b7d75a16ce8398ccc3d526734a76c24186f2566817568",
+  "counts": {
+    "acceptedAnswerable": 18,
+    "acceptedAnswerableWithoutSupport": 0,
+    "acceptedNoAnswer": 5,
+    "acceptedWithSupportingHit": 18,
+    "rejectedAnswerable": 2,
+    "rejectedNoAnswer": 5
+  },
+  "documentCount": 24,
+  "k": 3,
+  "metadata": {
+    "embeddingElapsedSeconds": 0.08450925000943244,
+    "execution": "MLX Metal, not Core AI",
+    "filesSHA256": {
+      "config.json": "a36c0ff7777341d61d43b1ecfb8c97c858c034da40acbcff2a8b1a406a09e229",
+      "config_sentence_transformers.json": "061ca9d39661d6c6d6de5ba27f79a1cd5770ea247f8d46412a68a498dc5ac9f3",
+      "data_config.json": "32edcb108fc2516b920734a862ae0692bcae1c5d45d5f8d972cb0d53434a4c54",
+      "model.safetensors": "47d121d5e99f8e21076ede2dd78a3884adcd0e7584fe4920f44b3e8bb60a1cae",
+      "model.safetensors.index.json": "1edb461fa3ad43038d48e8226e67b53c0e49bc2344c59eb32ab6f4a6a33aa607",
+      "modules.json": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf",
+      "sentence_bert_config.json": "fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7",
+      "special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer.json": "da0e79933b9ed51798a3ae27893d3c5fa4a201126cef75586296df9b4d2c62a0",
+      "tokenizer_config.json": "ccb4eb21a03e1442ee5c3f85431b9c307960a04579942537d74778dc8080a48c",
+      "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "maximumUntruncatedTokens": 27,
+    "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "huggingface-hub": "2.4.0",
+      "mlx": "0.32.4",
+      "mlx-embeddings": "0.1.0",
+      "transformers": "5.22.1"
+    },
+    "pooling": "library BERT mean pooled, normalized text_embeds",
+    "python": "3.14.6",
+    "quantization": "4-bit",
+    "revision": "128ca2da88d925829a17fb5ddfdc86b42eb58fb2",
+    "truncatedInputs": {
+      "documents": 0,
+      "queries": 0
+    },
+    "truncationAllowed": false
+  },
+  "metrics": {
+    "acceptedQueryEvidencePrecision": 0.782608695652174,
+    "answerableRejectionRate": 0.1,
+    "noAnswerFalseAcceptRate": 0.5,
+    "thresholdedRecallAtK": 0.9
+  },
+  "noAnswerQueryCount": 10,
+  "provider": "mlx-community/all-MiniLM-L6-v2-4bit",
+  "queries": [
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "budget",
+          "score": 0.6376015599426945
+        }
+      ],
+      "answerable": true,
+      "id": "q-budget",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6376015599426945
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-join",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.4550538098766044
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "offboarding",
+          "score": 0.5606500845528432
+        }
+      ],
+      "answerable": true,
+      "id": "q-leave-company",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5606500845528432
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "release",
+          "score": 0.6334640544100948
+        }
+      ],
+      "answerable": true,
+      "id": "q-release",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6334640544100948
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "backup",
+          "score": 0.5232471761239955
+        }
+      ],
+      "answerable": true,
+      "id": "q-backup",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5232471761239955
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.6631745680581932
+        }
+      ],
+      "answerable": true,
+      "id": "q-password",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6631745680581932
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "travel",
+          "score": 0.5647770810527942
+        }
+      ],
+      "answerable": true,
+      "id": "q-travel",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5647770810527942
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "refund",
+          "score": 0.7102543780281393
+        },
+        {
+          "id": "invoice",
+          "score": 0.5107847367669178
+        }
+      ],
+      "answerable": true,
+      "id": "q-refund",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.7102543780281393
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-vacation",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.38311863905081817
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.6542917501007378
+        }
+      ],
+      "answerable": true,
+      "id": "q-sick",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6542917501007378
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "meeting",
+          "score": 0.5869485836804157
+        },
+        {
+          "id": "design-old",
+          "score": 0.5759779014224853
+        }
+      ],
+      "answerable": true,
+      "id": "q-room",
+      "supportingHitCount": 2,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5869485836804157
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "security",
+          "score": 0.5116629829921302
+        }
+      ],
+      "answerable": true,
+      "id": "q-phish",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5116629829921302
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "shipping",
+          "score": 0.6457546350974063
+        }
+      ],
+      "answerable": true,
+      "id": "q-delivery",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6457546350974063
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "recipe",
+          "score": 0.6713310456442385
+        }
+      ],
+      "answerable": true,
+      "id": "q-tomato",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6713310456442385
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "parking",
+          "score": 0.6301275044263213
+        }
+      ],
+      "answerable": true,
+      "id": "q-visitor",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6301275044263213
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "wifi",
+          "score": 0.6662198831853701
+        }
+      ],
+      "answerable": true,
+      "id": "q-wireless",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6662198831853701
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "invoice",
+          "score": 0.7236546919367648
+        }
+      ],
+      "answerable": true,
+      "id": "q-pay",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.7236546919367648
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "invoice-fraud",
+          "score": 0.5983048801271706
+        },
+        {
+          "id": "invoice",
+          "score": 0.5269376479618053
+        }
+      ],
+      "answerable": true,
+      "id": "q-bank",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5983048801271706
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "retention",
+          "score": 0.5996172253491497
+        }
+      ],
+      "answerable": true,
+      "id": "q-delete",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5996172253491497
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "deadline",
+          "score": 0.7667057892243123
+        }
+      ],
+      "answerable": true,
+      "id": "q-atlas",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.7667057892243123
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "budget-old",
+          "score": 0.5845985221571779
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-budget-amount",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.5845985221571779
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-phone",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.42605803337616444
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "design-old",
+          "score": 0.5089349169461096
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-meeting-link",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.5089349169461096
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "deadline",
+          "score": 0.5384959025630602
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-atlas-contract",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.5384959025630602
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "wifi",
+          "score": 0.5932869408856328
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-wifi-code",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.5932869408856328
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "shipping",
+          "score": 0.5599474436076126
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-tracking",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.5599474436076126
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-ceo",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.32396508552040354
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-moons",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.15533963865971095
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-library",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.3378683637764006
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-backup-password",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.4116178379236548
+    }
+  ],
+  "queryCount": 30,
+  "schemaVersion": 1,
+  "task": "cosine-threshold-evidence-acceptance",
+  "threshold": 0.5
+}

@@ -99,6 +99,12 @@ SciFact import, full-candidate published-label evaluation, explicit MiniLM
 truncation accounting and compact full-ranking reports. The original synthetic
 corpus/results remain unchanged and independently reproducible.
 
+## Missing-answer diagnostic
+
+[NoAnswer.md](NoAnswer.md) measures explicitly annotated missing-answer queries
+with fixed illustrative cosine cutoffs and false-accept/rejection accounting. It
+is a separate authored diagnostic and selects no SDK default or calibrated cutoff.
+
 ## Gate follow-up
 
 M3-04 and PLANNING question 4 remain open. Before making the deployment/provider

@@ -1,0 +1,695 @@
+{
+  "answerableQueryCount": 20,
+  "corpusSHA256": "7e50ec57af4f761b835b7d75a16ce8398ccc3d526734a76c24186f2566817568",
+  "counts": {
+    "acceptedAnswerable": 20,
+    "acceptedAnswerableWithoutSupport": 9,
+    "acceptedNoAnswer": 10,
+    "acceptedWithSupportingHit": 11,
+    "rejectedAnswerable": 0,
+    "rejectedNoAnswer": 0
+  },
+  "documentCount": 24,
+  "k": 3,
+  "metadata": {
+    "dimension": "512",
+    "embeddingElapsed": "0.224784583 seconds",
+    "language": "en",
+    "os": "Version 26.6.2 (Build 25G83)",
+    "revision": "1"
+  },
+  "metrics": {
+    "acceptedQueryEvidencePrecision": 0.36666666666666664,
+    "answerableRejectionRate": 0.0,
+    "noAnswerFalseAcceptRate": 1.0,
+    "thresholdedRecallAtK": 0.55
+  },
+  "noAnswerQueryCount": 10,
+  "provider": "natural-language-sentence",
+  "queries": [
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "budget",
+          "score": 0.40787540614113366
+        },
+        {
+          "id": "leave",
+          "score": 0.3366293080088656
+        },
+        {
+          "id": "password",
+          "score": 0.29617170297497675
+        }
+      ],
+      "answerable": true,
+      "id": "q-budget",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.40787540614113366
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "leave",
+          "score": 0.5092106987694613
+        },
+        {
+          "id": "shipping",
+          "score": 0.4516311532411871
+        },
+        {
+          "id": "refund",
+          "score": 0.42336047902087776
+        }
+      ],
+      "answerable": true,
+      "id": "q-join",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.5092106987694613
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.45814414738344766
+        },
+        {
+          "id": "offboarding",
+          "score": 0.3783027916219029
+        },
+        {
+          "id": "security",
+          "score": 0.3488550100038923
+        }
+      ],
+      "answerable": true,
+      "id": "q-leave-company",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.45814414738344766
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.3900338184132608
+        },
+        {
+          "id": "security",
+          "score": 0.3762620839634792
+        },
+        {
+          "id": "offboarding",
+          "score": 0.351123963008223
+        }
+      ],
+      "answerable": true,
+      "id": "q-release",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.3900338184132608
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.5283331602973699
+        },
+        {
+          "id": "sick",
+          "score": 0.4752758827324922
+        },
+        {
+          "id": "offboarding",
+          "score": 0.44502257953518387
+        }
+      ],
+      "answerable": true,
+      "id": "q-backup",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.5283331602973699
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.6096928109709515
+        },
+        {
+          "id": "password",
+          "score": 0.4556956363684574
+        },
+        {
+          "id": "security",
+          "score": 0.44760294106881593
+        }
+      ],
+      "answerable": true,
+      "id": "q-password",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.6096928109709515
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "invoice-fraud",
+          "score": 0.4270049654690864
+        },
+        {
+          "id": "password",
+          "score": 0.41156550269491715
+        },
+        {
+          "id": "invoice",
+          "score": 0.3802508421940231
+        }
+      ],
+      "answerable": true,
+      "id": "q-travel",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.4270049654690864
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "offboarding",
+          "score": 0.42266952961097165
+        },
+        {
+          "id": "refund",
+          "score": 0.3642254553625561
+        },
+        {
+          "id": "sick",
+          "score": 0.3626461376102024
+        }
+      ],
+      "answerable": true,
+      "id": "q-refund",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.42266952961097165
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.3587189738287796
+        },
+        {
+          "id": "password",
+          "score": 0.25066893522513156
+        },
+        {
+          "id": "leave",
+          "score": 0.23424512379035747
+        }
+      ],
+      "answerable": true,
+      "id": "q-vacation",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.3587189738287796
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.5137385851292389
+        },
+        {
+          "id": "leave",
+          "score": 0.40423078938378565
+        },
+        {
+          "id": "refund",
+          "score": 0.37893830643498105
+        }
+      ],
+      "answerable": true,
+      "id": "q-sick",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5137385851292389
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.4263116773209422
+        },
+        {
+          "id": "refund",
+          "score": 0.38121762111026114
+        },
+        {
+          "id": "budget",
+          "score": 0.37700292746968617
+        }
+      ],
+      "answerable": true,
+      "id": "q-room",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.4263116773209422
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.45872362649607373
+        },
+        {
+          "id": "invoice",
+          "score": 0.44000247822549166
+        },
+        {
+          "id": "offboarding",
+          "score": 0.41877583840438465
+        }
+      ],
+      "answerable": true,
+      "id": "q-phish",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.45872362649607373
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "shipping",
+          "score": 0.4264396240110307
+        },
+        {
+          "id": "travel",
+          "score": 0.3816573317254381
+        },
+        {
+          "id": "leave",
+          "score": 0.36653521053036775
+        }
+      ],
+      "answerable": true,
+      "id": "q-delivery",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.4264396240110307
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "recipe",
+          "score": 0.5702463970022779
+        },
+        {
+          "id": "garden",
+          "score": 0.2863566574103041
+        },
+        {
+          "id": "security",
+          "score": 0.2752016778652419
+        }
+      ],
+      "answerable": true,
+      "id": "q-tomato",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5702463970022779
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "parking",
+          "score": 0.5047626223008915
+        },
+        {
+          "id": "offboarding",
+          "score": 0.40652898080016175
+        },
+        {
+          "id": "sick",
+          "score": 0.3431126195344907
+        }
+      ],
+      "answerable": true,
+      "id": "q-visitor",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5047626223008915
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "wifi",
+          "score": 0.40389358204348436
+        },
+        {
+          "id": "budget",
+          "score": 0.38097116437915596
+        },
+        {
+          "id": "offboarding",
+          "score": 0.3764039338281422
+        }
+      ],
+      "answerable": true,
+      "id": "q-wireless",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.40389358204348436
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.384700714649616
+        },
+        {
+          "id": "password",
+          "score": 0.3753246493798975
+        },
+        {
+          "id": "offboarding",
+          "score": 0.33698932210829424
+        }
+      ],
+      "answerable": true,
+      "id": "q-pay",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.384700714649616
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "invoice",
+          "score": 0.48010340087669734
+        },
+        {
+          "id": "refund",
+          "score": 0.4788548276280246
+        },
+        {
+          "id": "budget",
+          "score": 0.45617849357663576
+        }
+      ],
+      "answerable": true,
+      "id": "q-bank",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.48010340087669734
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.43249483707206604
+        },
+        {
+          "id": "security",
+          "score": 0.35605703154046203
+        },
+        {
+          "id": "sick",
+          "score": 0.3521270213730577
+        }
+      ],
+      "answerable": true,
+      "id": "q-delete",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.43249483707206604
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.3801301071246607
+        },
+        {
+          "id": "offboarding",
+          "score": 0.3604930397377838
+        },
+        {
+          "id": "deadline",
+          "score": 0.35832382653848055
+        }
+      ],
+      "answerable": true,
+      "id": "q-atlas",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.3801301071246607
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "refund",
+          "score": 0.48781052752373494
+        },
+        {
+          "id": "retention",
+          "score": 0.4799940306176074
+        },
+        {
+          "id": "budget",
+          "score": 0.46154342252025954
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-budget-amount",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.48781052752373494
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "budget",
+          "score": 0.28787626527601373
+        },
+        {
+          "id": "shipping",
+          "score": 0.26603796001229335
+        },
+        {
+          "id": "invoice",
+          "score": 0.25307718235105503
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-phone",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.28787626527601373
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.42309996120744336
+        },
+        {
+          "id": "budget",
+          "score": 0.3915826960673105
+        },
+        {
+          "id": "offboarding",
+          "score": 0.3891026856105403
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-meeting-link",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.42309996120744336
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "wifi",
+          "score": 0.3687757040104665
+        },
+        {
+          "id": "shipping",
+          "score": 0.348374035601493
+        },
+        {
+          "id": "refund",
+          "score": 0.34599736934944314
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-atlas-contract",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.3687757040104665
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "wifi",
+          "score": 0.4613734452379344
+        },
+        {
+          "id": "security",
+          "score": 0.4325781277668887
+        },
+        {
+          "id": "retention",
+          "score": 0.42886662999054437
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-wifi-code",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.4613734452379344
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "shipping",
+          "score": 0.3641362665390971
+        },
+        {
+          "id": "sick",
+          "score": 0.35409595020565976
+        },
+        {
+          "id": "invoice",
+          "score": 0.33732878784595505
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-tracking",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.3641362665390971
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "leave",
+          "score": 0.42193428736586397
+        },
+        {
+          "id": "refund",
+          "score": 0.4198147193387147
+        },
+        {
+          "id": "password",
+          "score": 0.41722384385236355
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-ceo",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.42193428736586397
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.252273977334302
+        },
+        {
+          "id": "security",
+          "score": 0.18919403415023162
+        },
+        {
+          "id": "recipe",
+          "score": 0.18457717674023422
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-moons",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.252273977334302
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "offboarding",
+          "score": 0.39353870482198006
+        },
+        {
+          "id": "security",
+          "score": 0.2956581630024513
+        },
+        {
+          "id": "budget",
+          "score": 0.2748106108464452
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-library",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.39353870482198006
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.5180397230741386
+        },
+        {
+          "id": "security",
+          "score": 0.43398801545661697
+        },
+        {
+          "id": "offboarding",
+          "score": 0.4219723887110999
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-backup-password",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.5180397230741386
+    }
+  ],
+  "queryCount": 30,
+  "schemaVersion": 1,
+  "task": "cosine-threshold-evidence-acceptance",
+  "threshold": 0.0
+}

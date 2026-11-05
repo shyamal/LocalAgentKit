@@ -36,7 +36,7 @@ def main():
     from mlx_embeddings.utils import load
     from score import load_corpus
 
-    corpus, digest = load_corpus(args.corpus)
+    corpus, digest = load_corpus(args.corpus, allow_no_answer=True)
     # Only data/weights/tokenizer files: never download training scripts or execute model code.
     location = snapshot_download(MODEL, revision=REVISION, cache_dir=args.cache_dir,
                                  allow_patterns=['*.json', '*.safetensors', 'vocab.txt'])

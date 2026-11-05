@@ -6,7 +6,7 @@ import math
 from pathlib import Path
 
 
-def load_corpus(path):
+def load_corpus(path, allow_no_answer=False):
     raw = Path(path).read_bytes()
     corpus = json.loads(raw)
     if corpus.get('schemaVersion') != 1:
@@ -22,9 +22,15 @@ def load_corpus(path):
     document_ids = {i['id'] for i in documents}
     for query in queries:
         relevant = query['relevant']
-        if (not isinstance(relevant, list) or not relevant or
+        if 'answerable' in query and type(query['answerable']) is not bool:
+            raise ValueError('answerable must be an explicit boolean')
+        if (not isinstance(relevant, list) or
                 len(set(relevant)) != len(relevant) or not set(relevant) <= document_ids):
             raise ValueError('Every query needs unique, existing relevant document IDs')
+        if not relevant and not (allow_no_answer and query.get('answerable') is False):
+            raise ValueError('Empty relevance requires an explicit no-answer annotation and opt-in')
+        if relevant and query.get('answerable') is False:
+            raise ValueError('No-answer queries cannot have supporting passage IDs')
     return corpus, hashlib.sha256(raw).hexdigest()
 
 

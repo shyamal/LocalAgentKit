@@ -1,0 +1,340 @@
+{
+  "answerableQueryCount": 20,
+  "corpusSHA256": "7e50ec57af4f761b835b7d75a16ce8398ccc3d526734a76c24186f2566817568",
+  "counts": {
+    "acceptedAnswerable": 6,
+    "acceptedAnswerableWithoutSupport": 3,
+    "acceptedNoAnswer": 1,
+    "acceptedWithSupportingHit": 3,
+    "rejectedAnswerable": 14,
+    "rejectedNoAnswer": 9
+  },
+  "documentCount": 24,
+  "k": 3,
+  "metadata": {
+    "dimension": "512",
+    "embeddingElapsed": "0.224784583 seconds",
+    "language": "en",
+    "os": "Version 26.6.2 (Build 25G83)",
+    "revision": "1"
+  },
+  "metrics": {
+    "acceptedQueryEvidencePrecision": 0.42857142857142855,
+    "answerableRejectionRate": 0.7,
+    "noAnswerFalseAcceptRate": 0.1,
+    "thresholdedRecallAtK": 0.15
+  },
+  "noAnswerQueryCount": 10,
+  "provider": "natural-language-sentence",
+  "queries": [
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-budget",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.40787540614113366
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "leave",
+          "score": 0.5092106987694613
+        }
+      ],
+      "answerable": true,
+      "id": "q-join",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.5092106987694613
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-leave-company",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.45814414738344766
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-release",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.3900338184132608
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.5283331602973699
+        }
+      ],
+      "answerable": true,
+      "id": "q-backup",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.5283331602973699
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.6096928109709515
+        }
+      ],
+      "answerable": true,
+      "id": "q-password",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.6096928109709515
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-travel",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.4270049654690864
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-refund",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.42266952961097165
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-vacation",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.3587189738287796
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.5137385851292389
+        }
+      ],
+      "answerable": true,
+      "id": "q-sick",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5137385851292389
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-room",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.4263116773209422
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-phish",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.45872362649607373
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-delivery",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.4264396240110307
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "recipe",
+          "score": 0.5702463970022779
+        }
+      ],
+      "answerable": true,
+      "id": "q-tomato",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5702463970022779
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "parking",
+          "score": 0.5047626223008915
+        }
+      ],
+      "answerable": true,
+      "id": "q-visitor",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.5047626223008915
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-wireless",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.40389358204348436
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-pay",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.384700714649616
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-bank",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.48010340087669734
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-delete",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.43249483707206604
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": true,
+      "id": "q-atlas",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.3801301071246607
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-budget-amount",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.48781052752373494
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-phone",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.28787626527601373
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-meeting-link",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.42309996120744336
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-atlas-contract",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.3687757040104665
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-wifi-code",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.4613734452379344
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-tracking",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.3641362665390971
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-ceo",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.42193428736586397
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-moons",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.252273977334302
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-library",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.39353870482198006
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.5180397230741386
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-backup-password",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.5180397230741386
+    }
+  ],
+  "queryCount": 30,
+  "schemaVersion": 1,
+  "task": "cosine-threshold-evidence-acceptance",
+  "threshold": 0.5
+}
