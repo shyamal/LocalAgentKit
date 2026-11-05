@@ -35,7 +35,8 @@ retrieval error instead of silently ingesting nothing. A mixed text/image PDF
 contains only its available text layers; extracting some text does not establish
 that the entire visible document was captured. OCR is separate work (M4-02).
 Unified file/memory dispatch is available through ``DocumentExtractor`` (M3-02);
-see <doc:DocumentExtraction>. Structure-aware chunking remains M3-03.
+see <doc:DocumentExtraction>. Core chunking now prefers the available paragraph
+boundaries (M3-03), without reconstructing PDF layout.
 
 ## Limits and failures
 

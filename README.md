@@ -34,7 +34,7 @@ question. Experimental model-driven planning is opt-in.
   events/actions through SwiftData stores. Configured memory is retrieved under the
   context budget. The demo restores recent completed turns after restart.
 - **Local retrieval:** unified PDF/TXT/Markdown and in-memory text extraction, bounded file reads,
-  chunking, Natural Language embeddings with
+  structure-aware paragraph/section chunking, Natural Language embeddings with
   a word-vector fallback, an in-memory vector store, and document search.
 - **Contact search:** explicit approval before local contact reads, separate OS
   authorization, and bounded contact-card results.

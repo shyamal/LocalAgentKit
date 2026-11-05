@@ -17,7 +17,10 @@ let markdown = try DocumentExtractor.load(
 ```
 
 File dispatch uses the case-insensitive extension: `.pdf`, `.txt`, `.text`, `.md`
-and `.markdown`. There is no MIME/content sniffing, HTML/RTF conversion or remote
+and `.markdown`. Set `preserveMarkdownStructure: true` when loading Markdown files
+to retain heading/fence markers for the default structure-aware chunker. Memory
+Markdown can be passed as plain text to retain its source. The default file behavior
+still applies light Markdown cleanup. There is no MIME/content sniffing, HTML/RTF conversion or remote
 URL fetching. Files must be regular local files; hosts own picker/security-scoped
 access and provider-backed file availability. A local URL does not prove cloud
 content is resident. Filenames without extensions become document titles; memory
@@ -53,7 +56,8 @@ exceeded limits and PDF failures throw `AgentError.retrievalFailure`. Cancellati
 throws `AgentError.cancelled`, checked before work, between file reads and around
 decoding/cleanup. It cannot interrupt native operations or string cleanup already
 in progress. Extraction is synchronous; hosts choose its execution context.
-Background ingestion/progress is M3-06, and structure-aware chunking is M3-03.
+Background ingestion/progress remains M3-06. The default Core chunker now prefers
+paragraphs and available Markdown sections (M3-03).
 
 Core `DocumentLoader.load(contentsOf:)` remains source compatible and keeps its
 previous unbounded text-file behavior. Core-only hosts can also call its pure

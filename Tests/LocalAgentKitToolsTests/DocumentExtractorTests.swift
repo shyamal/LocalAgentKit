@@ -18,6 +18,23 @@ import Testing
     }
   }
 
+  @Test func markdownStructureCanReachTheDefaultChunkerWithoutCleanup() async throws {
+    let source = "# Budget\nReview costs\n\n# Actions\nPrepare slides"
+    let url = try file(Data(source.utf8), ext: "md")
+    defer { try? FileManager.default.removeItem(at: url) }
+    let document = try DocumentExtractor.load(contentsOf: url, preserveMarkdownStructure: true)
+    #expect(document.text == source)
+    let store = MockVectorStore()
+    let pipeline = RetrievalPipeline(embeddingProvider: MockEmbeddingProvider(), vectorStore: store)
+    try await pipeline.ingest(document)
+    let stored = await store.stored
+    #expect(stored.map(\.text) == ["# Budget\n\nReview costs", "# Actions\n\nPrepare slides"])
+    #expect(stored.map { $0.metadata["sectionHeading"] } == ["# Budget", "# Actions"])
+    #expect(
+      try DocumentExtractor.load(contentsOf: url).text
+        == "Budget\nReview costs\n\nActions\nPrepare slides")
+  }
+
   @Test func memoryTextPreservesTitleAndUsesTheSameMarkdownCleanup() throws {
     let input = "# Meeting\n- **Budget** [notes](https://example.com)"
     let plain = try DocumentExtractor.load(text: input, title: "Supplied title")
