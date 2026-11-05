@@ -15,10 +15,25 @@ public enum DocumentLoader {
     else {
       throw AgentError.retrievalFailure("could not read \(url.lastPathComponent) as UTF-8 text")
     }
-    let isMarkdown = ext == "md" || ext == "markdown"
-    return Document(
-      title: url.deletingPathExtension().lastPathComponent,
-      text: isMarkdown ? stripMarkdown(text) : text)
+    return load(
+      text: text, title: url.deletingPathExtension().lastPathComponent,
+      format: ext == "md" || ext == "markdown" ? .markdown : .plainText)
+  }
+
+  /// Interpretation of already-decoded text; no format sniffing is performed.
+  public enum TextFormat: Sendable {
+    /// Preserves the supplied text exactly.
+    case plainText
+    /// Applies the same light Markdown cleanup as Markdown file loading.
+    case markdown
+  }
+
+  /// Creates a document from decoded text without I/O. Empty text is preserved.
+  /// Markdown cleanup is a retrieval convenience, not an HTML sanitizer or full parser.
+  public static func load(
+    text: String, title: String, format: TextFormat = .plainText
+  ) -> Document {
+    Document(title: title, text: format == .markdown ? stripMarkdown(text) : text)
   }
 
   /// A light pass that removes Markdown syntax noise — headers, emphasis markers, link brackets,

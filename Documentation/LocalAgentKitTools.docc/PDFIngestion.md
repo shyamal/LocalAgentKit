@@ -34,7 +34,8 @@ This is text-layer extraction, not OCR. Image-only/blank files fail with a typed
 retrieval error instead of silently ingesting nothing. A mixed text/image PDF
 contains only its available text layers; extracting some text does not establish
 that the entire visible document was captured. OCR is separate work (M4-02).
-Structure-aware extraction/chunking and unified format dispatch remain M3-02/03.
+Unified file/memory dispatch is available through ``DocumentExtractor`` (M3-02);
+see <doc:DocumentExtraction>. Structure-aware chunking remains M3-03.
 
 ## Limits and failures
 

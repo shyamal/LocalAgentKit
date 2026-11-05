@@ -34,5 +34,7 @@ input; they cannot authorize writes.
 
 ### Load documents
 
+- ``DocumentExtractor``
+- <doc:DocumentExtraction>
 - ``PDFDocumentLoader``
 - <doc:PDFIngestion>
