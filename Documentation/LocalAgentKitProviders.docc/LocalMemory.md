@@ -59,7 +59,7 @@ Supplying `AgentConfiguration.memory` activates one search per run, controlled b
 budget before every model call. It does not persist chat history. Explicit
 conversation restore/checkpoint operations are available through
 `ConversationMemory` and `SwiftDataConversationStore`, using a separate file.
-Automatic demo resume remains M2-14. Runtime task
+The demo restores recent completed turns using that dedicated file (M2-14). Runtime task
 working memory is separate from this durable store. Explicit durable facts and
 preferences use Core's `SemanticMemory` and `MemoryStore.searchSemantic`; versioned
 category metadata shares the existing schema. `EpisodicMemory` and

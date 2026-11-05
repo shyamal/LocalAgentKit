@@ -129,3 +129,24 @@ This small Swift package compiles the actual `AgentSetup.swift` used by the app.
 Tests drive `DemoPlanner` through the runtime using scripted models and fixture
 tools, without calendar access, model assets or note writes. CI runs these tests;
 they verify bounded execution, not real-model retrieval quality.
+
+## Conversation resume
+
+The app restores recent completed turns from its dedicated local Application Support
+`LocalAgentDemo/conversation.store` using a stable app-owned conversation identity.
+It saves after each successful run has recorded history, and disables new sends
+until that save finishes. A save failure keeps the answer visible and shows an error;
+it never retries the tool action. Store-opening failures surface at startup without
+silently deleting the previous conversation. The existing `notes.json` is separate.
+
+This is bounded conversation memory, not an unlimited chat archive. Older turns may
+be pruned into a summary retained as model context rather than displayed as chat
+bubbles. Failed or partial turns, tool activity, audit logs and pending approvals
+are not restored. Restart never replays a goal or resumes a pending write. Saving a
+restored checklist still requires fresh approval. Wait until “Saving conversation…”
+finishes before terminating the app; an interrupted save may leave the previous
+completed checkpoint. Uninstalling the app removes its local data.
+
+Regression tests cover restored model context and displayed turns, ordered saving,
+save failures, corrupt-store preservation and fresh approval for restored checklists.
+See `docs/demo-conversation-resume.md` for native restart verification and limits.

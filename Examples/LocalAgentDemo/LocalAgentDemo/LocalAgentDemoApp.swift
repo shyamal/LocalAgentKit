@@ -7,6 +7,7 @@ import SwiftUI
 @main
 struct LocalAgentDemoApp: App {
   @State private var state: AppState = .loading
+  @State private var setupInProgress = false
 
   var body: some Scene {
     WindowGroup {
@@ -17,11 +18,15 @@ struct LocalAgentDemoApp: App {
         case .ready(let viewModel):
           ContentView(viewModel: viewModel)
         case .failed(let message):
-          ContentUnavailableView("Couldn't start the agent", systemImage: "exclamationmark.triangle", description: Text(message))
+          ContentUnavailableView(
+            "Couldn't start the agent", systemImage: "exclamationmark.triangle",
+            description: Text(message))
         }
       }
       .task {
-        guard case .loading = state else { return }
+        guard case .loading = state, !setupInProgress else { return }
+        setupInProgress = true
+        defer { setupInProgress = false }
         do {
           state = .ready(try await AgentSetup.makeViewModel())
         } catch {

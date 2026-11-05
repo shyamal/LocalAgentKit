@@ -43,6 +43,8 @@ public final class AgentViewModel {
     case idle
     /// The agent is planning, generating or executing.
     case running
+    /// The runtime has ended; completed-history bookkeeping or a host callback is finishing.
+    case finishing
     /// A tool call is suspended until the person approves or denies it.
     case awaitingPermission(ToolCall)
     /// A run is suspended until the person supplies clarification.
@@ -50,6 +52,8 @@ public final class AgentViewModel {
   }
 
   private let runtime: AgentRuntime
+  private let onRunCompleted: (@Sendable () async throws -> Void)?
+  private var sendInProgress = false
   // `deinit` on a `@MainActor` class is itself nonisolated (it may run on any thread), so this
   // can't be a normal isolated stored property if `deinit` is to cancel it. Excluded from
   // `@Observable` tracking too, since it's plumbing, not UI state — and observation tracking
@@ -59,7 +63,7 @@ public final class AgentViewModel {
   private nonisolated(unsafe) var eventTask: Task<Void, Never>?
   private var streamingTurnID: UUID?
 
-  /// User input and assistant output for the current view-model session.
+  /// User input and assistant output, including any completed turns supplied during restoration.
   public private(set) var turns: [Turn] = []
   /// Current execution or human-input suspension state.
   public private(set) var state: RunState = .idle
@@ -73,18 +77,28 @@ public final class AgentViewModel {
   public private(set) var contextUtilization: ContextUtilization?
   /// Latest sampled thermal pressure and policy cap; nil when monitoring is not configured.
   public private(set) var thermalStatus: ThermalStatus?
-  /// Set when a run ends in an error or a guardrail refusal, for a host to surface separately
+  /// Set when a run or its host completion callback fails, or a guardrail refuses, to surface separately
   /// from the chat transcript. Cleared at the start of the next `send`.
   public private(set) var lastFailure: String?
 
-  /// True while executing or waiting for human input; false only in the idle state.
+  /// True while executing, waiting for input or finishing the host completion callback.
   public var isRunning: Bool {
-    if case .idle = state { false } else { true }
+    if sendInProgress { return true }
+    if case .idle = state { return false } else { return true }
   }
 
-  /// Connects to a runtime and starts consuming its events on the main actor.
-  public init(runtime: AgentRuntime) {
+  /// Connects to a runtime, optionally displaying restored completed turns.
+  /// `initialTurns` affects display only; restore the runtime memory separately.
+  /// `onRunCompleted` runs only after `runtime.run` returns successfully (including history recording).
+  /// Sending remains disabled until it returns; failure is surfaced without rolling back the reply.
+  /// The host owns callback storage/network policy. No persistence is enabled by default.
+  public init(
+    runtime: AgentRuntime, initialTurns: [Turn] = [],
+    onRunCompleted: (@Sendable () async throws -> Void)? = nil
+  ) {
     self.runtime = runtime
+    self.turns = initialTurns
+    self.onRunCompleted = onRunCompleted
     eventTask = Task { [weak self] in
       guard let stream = await self?.runtime.events() else { return }
       for await event in stream {
@@ -106,7 +120,21 @@ public final class AgentViewModel {
     lastFailure = nil
     turns.append(Turn(role: .user, text: goal))
     state = .running
-    Task { [runtime] in try? await runtime.run(goal) }
+    sendInProgress = true
+    Task { [runtime, onRunCompleted, weak self] in
+      do {
+        _ = try await runtime.run(goal)
+      } catch {
+        self?.finishSend()
+        return  // The runtime's terminal event supplies its error/refusal presentation.
+      }
+      do {
+        try await onRunCompleted?()
+      } catch {
+        self?.lastFailure = "The reply is available, but finishing this turn failed: \(error)"
+      }
+      self?.finishSend()
+    }
   }
 
   /// Approves the tool currently held for confirmation. Does nothing if none is pending.
@@ -134,6 +162,11 @@ public final class AgentViewModel {
   /// Requests cancellation of the runtime's active run, including human-input waits.
   public func cancel() {
     Task { [runtime] in await runtime.cancelCurrentRun() }
+  }
+
+  private func finishSend() {
+    sendInProgress = false
+    if case .finishing = state { state = .idle }
   }
 
   // MARK: Event handling
@@ -179,7 +212,7 @@ public final class AgentViewModel {
       discardStreamingTurn()
       lastFailure = refusal.explanation ?? "I can't help with that."
       turns.append(Turn(role: .assistant, text: lastFailure!))
-      state = .idle
+      state = sendInProgress ? .finishing : .idle
       activeTool = nil
 
     case .completed(let response):
@@ -189,14 +222,14 @@ public final class AgentViewModel {
         turns.append(Turn(role: .assistant, text: response.text))
       }
       streamingTurnID = nil
-      state = .idle
+      state = sendInProgress ? .finishing : .idle
       activeTool = nil
 
     case .error(let error):
       discardStreamingTurn()
       lastFailure = String(describing: error)
       streamingTurnID = nil
-      state = .idle
+      state = sendInProgress ? .finishing : .idle
       activeTool = nil
     }
   }

@@ -11,6 +11,8 @@ import LocalAgentKitTools
 /// genuinely on-device.
 enum AgentSetup {
   static func makeViewModel() async throws -> AgentViewModel {
+    let conversation = try await DemoConversationSession.open(
+      directory: applicationSupportDirectory())
     let embedding = NLEmbeddingProvider()
     let vectorStore = InMemoryVectorStore()
     await seedNotes(embedding: embedding, vectorStore: vectorStore)
@@ -35,9 +37,9 @@ enum AgentSetup {
     let configuration = AgentConfiguration(model: FoundationModelProvider(), networkPolicy: .never)
     let runtime = try AgentRuntime(
       configuration: configuration, tools: StaticToolSource(tools),
-      planner: DemoPlanner(), memory: ConversationMemory(),
+      planner: DemoPlanner(), memory: conversation.memory,
       thermalStateSource: ProcessInfoThermalStateSource())
-    return await AgentViewModel(runtime: runtime)
+    return await conversation.viewModel(runtime: runtime)
   }
 
   /// A handful of bundled notes representing "the user's notes" for the demo's second turn
@@ -72,6 +74,39 @@ enum AgentSetup {
       FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
       ?? FileManager.default.temporaryDirectory
     return base.appendingPathComponent("LocalAgentDemo", isDirectory: true)
+  }
+}
+
+/// App-owned identity and dedicated local checkpoint file, independent of notes.json.
+struct DemoConversationSession: Sendable {
+  let memory: ConversationMemory
+  private let store: SwiftDataConversationStore
+  let conversationID: UUID
+
+  static func open(directory: URL) async throws -> DemoConversationSession {
+    guard let id = UUID(uuidString: "D07E0000-0000-4000-8000-000000000001") else {
+      throw AgentError.memoryFailure("Invalid built-in demo conversation identity.")
+    }
+    let store = try SwiftDataConversationStore(
+      storage: .file(directory.appendingPathComponent("conversation.store")))
+    let memory = try await ConversationMemory.restore(from: store, conversationID: id)
+    return DemoConversationSession(memory: memory, store: store, conversationID: id)
+  }
+
+  func checkpoint() async throws {
+    try await memory.checkpoint(to: store, conversationID: conversationID)
+  }
+
+  @MainActor func viewModel(runtime: AgentRuntime) async -> AgentViewModel {
+    let turns = await memory.history().compactMap { message -> AgentViewModel.Turn? in
+      switch message.role {
+      case .user: AgentViewModel.Turn(role: .user, text: message.content)
+      case .assistant: AgentViewModel.Turn(role: .assistant, text: message.content)
+      default: nil  // Summaries remain model context, not fabricated chat bubbles.
+      }
+    }
+    return AgentViewModel(
+      runtime: runtime, initialTurns: turns, onRunCompleted: { try await self.checkpoint() })
   }
 }
 

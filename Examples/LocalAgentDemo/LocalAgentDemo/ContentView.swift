@@ -11,6 +11,10 @@ struct ContentView: View {
 
   var body: some View {
     VStack(spacing: 0) {
+      Text("Recent completed turns are saved on this device.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .padding(.top, 4)
       ScrollViewReader { proxy in
         ScrollView {
           LazyVStack(alignment: .leading, spacing: 12) {
@@ -47,6 +51,12 @@ struct ContentView: View {
             withAnimation { proxy.scrollTo(last, anchor: .bottom) }
           }
         }
+      }
+
+      if case .finishing = viewModel.state {
+        ProgressView("Saving conversation…")
+          .font(.footnote)
+          .padding(.horizontal)
       }
 
       if let failure = viewModel.lastFailure {

@@ -28,8 +28,8 @@ try await memory.checkpoint(to: checkpoints, conversationID: conversationID)
 
 Await `runtime.run` before checkpointing. Its `.completed` event can arrive before
 history recording finishes, so checkpointing directly from that event can save
-an older history. This task adds explicit persistence, not automatic saving on
-every event. Automatic demo resume wiring remains M2-14.
+an older history. The demo uses the SwiftUI view model’s optional completion
+callback to checkpoint after the awaited run, rather than from an event.
 
 A missing identity starts empty. Corrupt data, unknown checkpoint formats and
 identity mismatches throw typed memory failures; they are not treated as a new

@@ -32,7 +32,7 @@ question. Experimental model-driven planning is opt-in.
   and conversation memory across turns within a runtime session.
 - **Durable memory:** explicit conversation checkpoints, facts/preferences and past
   events/actions through SwiftData stores. Configured memory is retrieved under the
-  context budget; automatic demo resume is still planned.
+  context budget. The demo restores recent completed turns after restart.
 - **Local retrieval:** document loading, chunking, Natural Language embeddings with
   a word-vector fallback, an in-memory vector store, and document search.
 - **Contact search:** explicit approval before local contact reads, separate OS
@@ -106,7 +106,7 @@ The generic `LanguageModelProvider` adapter requires iOS/macOS 27 and an
 application-supplied model backend; no MLX model or weights are bundled.
 `LocalAgentKitAppIntents` is a reserved placeholder, not a working integration.
 Conversation checkpoints are available through explicit restore/save calls;
-automatic demo resume and broader multimodal support remain roadmap work.
+broader multimodal support remains roadmap work.
 
 ## Examples
 
