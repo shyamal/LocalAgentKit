@@ -51,6 +51,9 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 
 ### Retrieval and memory
 
+- ``Chunker``
+- ``ChunkerConfiguration``
+- <doc:StructuralChunking>
 - ``EmbeddingProvider``
 - ``VectorStore``
 - ``MemoryStore``

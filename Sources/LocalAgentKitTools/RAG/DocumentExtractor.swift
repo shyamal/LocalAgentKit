@@ -10,6 +10,8 @@ public enum DocumentExtractor {
   /// Supports `.pdf`, `.txt`, `.text`, `.md` and `.markdown`; there is no content sniffing.
   /// The filename without its extension becomes the title. PDF passwords and copying rules
   /// are handled by `PDFDocumentLoader`; `password` is ignored for text formats.
+  /// Set `preserveMarkdownStructure` to retain Markdown headings/fences for structural chunking;
+  /// the default keeps the existing light cleanup. It has no effect on PDF or plain text.
   /// Shared byte/character limits apply to all files; page limits apply only to PDFs.
   /// Text character limits apply before Markdown cleanup. Empty text files are preserved,
   /// while PDFs without a text layer fail. Limits must all be positive for every format.
@@ -17,7 +19,7 @@ public enum DocumentExtractor {
   /// native parsing or string processing already in progress. Limits do not bound native allocations.
   /// - Throws: `AgentError.cancelled` or `.retrievalFailure` for invalid input, limits or decoding.
   public static func load(
-    contentsOf url: URL, password: String? = nil,
+    contentsOf url: URL, password: String? = nil, preserveMarkdownStructure: Bool = false,
     limits: PDFDocumentLoader.Limits = .init()
   ) throws -> Document {
     try validate(limits)
@@ -38,7 +40,8 @@ public enum DocumentExtractor {
     }
     return try load(
       text: text, title: url.deletingPathExtension().lastPathComponent,
-      format: ext == "md" || ext == "markdown" ? .markdown : .plainText,
+      format: !preserveMarkdownStructure && (ext == "md" || ext == "markdown")
+        ? .markdown : .plainText,
       maximumCharacters: limits.maximumCharacters)
   }
 
