@@ -1,0 +1,39 @@
+{
+  "corpusSHA256": "7e50ec57af4f761b835b7d75a16ce8398ccc3d526734a76c24186f2566817568",
+  "date": "2026-11-05",
+  "exportsSHA256": {
+    "mlx": "43f3b2b18f5eb982f00e931b4275e469c22921e95280467d4c6b58d354f54bf3",
+    "sentence": "d6e182dd32d00c80edaf4ab5411e2cdc1fb4fa6598e672c1a33f0bbec9374c21",
+    "word": "1635c349329050fcbe3c2711df84e9cca749aa100b7d53853769cdd906c2fca1"
+  },
+  "reportsSHA256": {
+    "mlx-0.0.json": "9ac55e2cd02b16d18edfc1ae53e5e19f1ee15d3ede5c4555690ff403e8b133d9",
+    "mlx-0.5.json": "38c0c7df8f84451c0cae460398002ab90d73731684ad027bfb1df0abd3549a70",
+    "mlx-0.75.json": "d1acaf0afbcd8806029b009615e5345058eeb3d9fe17bf97a000f71ef7b240c1",
+    "sentence-0.0.json": "80890ebd8a2f49da303d56b608f62138d42afdcd9e45c547f51f3cb6996f07cb",
+    "sentence-0.5.json": "76e0fd07c06802afb70a0569e8eb594f502b5c1c225af86a445f6354351dc217",
+    "sentence-0.75.json": "f15a2bae73e3665702f0ff333b621d3aa85911ba10c8f8f897d92f1fa2f70532",
+    "word-0.0.json": "254c0a6db63671dc413a437adf9886e7349ffa51834ccc26e70c8d0fe26666ae",
+    "word-0.5.json": "c8622aba9d04a352a6a0ba9de626e185b8bbbb7eec10387548f072d8d4ca8a22",
+    "word-0.75.json": "60c241e19dc94b70b1c34caf861d46c2caf99a66ff0b83b50b6096a28dfd212d"
+  },
+  "scope": "Authored missing-fact evidence diagnostic; not independent calibration, generated-answer correctness, device or Core AI evidence",
+  "sourceBase": "a0c471ef4da16bbeb6922a71586c5d032068748f",
+  "sourceFilesSHA256": {
+    "Benchmarks/EmbeddingQuality/corpus-no-answer.json": "7e50ec57af4f761b835b7d75a16ce8398ccc3d526734a76c24186f2566817568",
+    "Benchmarks/EmbeddingQuality/export-natural-language.swift": "72fa24e5e8f4bf80d2cc375036de8f69a5f9b2dc5bd6d15b3328c4caa53c6550",
+    "Benchmarks/EmbeddingQuality/export_mlx.py": "861b47ebdb66352605fd22182cfec30b23b147120c74ac3c022df04649224348",
+    "Benchmarks/EmbeddingQuality/requirements-mlx.txt": "5c00d3634bc076f3e1161d7618851765c56e7de0bc5b626d8b4b2b194aa1a2b3",
+    "Benchmarks/EmbeddingQuality/score.py": "606c4cffda15f1613591df7b207f993c8f6c8c490d4139e964c54422d5e82607",
+    "Benchmarks/EmbeddingQuality/score_abstention.py": "4c4d965820484b1da42d8613ebe6db90a2e28e10992f5d114cb9ebbcae6b15fa",
+    "Scripts/tests/test_embedding_abstention.py": "0a6a08206ee91e97b5bb596c520e4134de2dceb77c8d3b4160bd8860b41c5e1b"
+  },
+  "thresholdPlan": {
+    "selection": "Illustrative fixed values chosen before measurement; no calibration or recommended default.",
+    "thresholds": [
+      0.0,
+      0.5,
+      0.75
+    ]
+  }
+}

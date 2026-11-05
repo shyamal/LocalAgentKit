@@ -1,0 +1,653 @@
+{
+  "answerableQueryCount": 20,
+  "corpusSHA256": "7e50ec57af4f761b835b7d75a16ce8398ccc3d526734a76c24186f2566817568",
+  "counts": {
+    "acceptedAnswerable": 20,
+    "acceptedAnswerableWithoutSupport": 6,
+    "acceptedNoAnswer": 8,
+    "acceptedWithSupportingHit": 14,
+    "rejectedAnswerable": 0,
+    "rejectedNoAnswer": 2
+  },
+  "documentCount": 24,
+  "k": 3,
+  "metadata": {
+    "dimension": "300",
+    "embeddingElapsed": "0.029400375 seconds",
+    "language": "en",
+    "os": "Version 26.6.2 (Build 25G83)",
+    "revision": "1"
+  },
+  "metrics": {
+    "acceptedQueryEvidencePrecision": 0.5,
+    "answerableRejectionRate": 0.0,
+    "noAnswerFalseAcceptRate": 0.8,
+    "thresholdedRecallAtK": 0.7
+  },
+  "noAnswerQueryCount": 10,
+  "provider": "natural-language-word-average",
+  "queries": [
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "design-old",
+          "score": 0.8305760989253579
+        },
+        {
+          "id": "deadline",
+          "score": 0.824614478493238
+        },
+        {
+          "id": "leave",
+          "score": 0.8222586203488033
+        }
+      ],
+      "answerable": true,
+      "id": "q-budget",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.8305760989253579
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "leave",
+          "score": 0.8765383141628798
+        },
+        {
+          "id": "design-old",
+          "score": 0.8518162764002553
+        },
+        {
+          "id": "retention",
+          "score": 0.8296587881282991
+        }
+      ],
+      "answerable": true,
+      "id": "q-join",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.8765383141628798
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "offboarding",
+          "score": 0.8733032511876565
+        },
+        {
+          "id": "sick",
+          "score": 0.8612376187368131
+        },
+        {
+          "id": "leave",
+          "score": 0.8382545678266372
+        }
+      ],
+      "answerable": true,
+      "id": "q-leave-company",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.8733032511876565
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "release",
+          "score": 0.8819270013527524
+        },
+        {
+          "id": "leave",
+          "score": 0.8305301436607261
+        },
+        {
+          "id": "invoice-fraud",
+          "score": 0.824474306490907
+        }
+      ],
+      "answerable": true,
+      "id": "q-release",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.8819270013527524
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "retention",
+          "score": 0.8205156555621231
+        },
+        {
+          "id": "offboarding",
+          "score": 0.8130826357979345
+        },
+        {
+          "id": "password",
+          "score": 0.8042125389202088
+        }
+      ],
+      "answerable": true,
+      "id": "q-backup",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.8205156555621231
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.8323012000378329
+        },
+        {
+          "id": "password",
+          "score": 0.8128542602299561
+        },
+        {
+          "id": "leave",
+          "score": 0.8050328399759611
+        }
+      ],
+      "answerable": true,
+      "id": "q-password",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.8323012000378329
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "refund",
+          "score": 0.8500673206042059
+        },
+        {
+          "id": "sick",
+          "score": 0.8325542505260303
+        },
+        {
+          "id": "offboarding",
+          "score": 0.824590243310621
+        }
+      ],
+      "answerable": true,
+      "id": "q-travel",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.8500673206042059
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "refund",
+          "score": 0.8394586675088981
+        },
+        {
+          "id": "leave",
+          "score": 0.8355874362955844
+        },
+        {
+          "id": "invoice",
+          "score": 0.8302625350060324
+        }
+      ],
+      "answerable": true,
+      "id": "q-refund",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.8394586675088981
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.8216348350795618
+        },
+        {
+          "id": "leave",
+          "score": 0.7989150807493819
+        },
+        {
+          "id": "retention",
+          "score": 0.7800015495062771
+        }
+      ],
+      "answerable": true,
+      "id": "q-vacation",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.8216348350795618
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "leave",
+          "score": 0.8631588190696392
+        },
+        {
+          "id": "sick",
+          "score": 0.8554086276541869
+        },
+        {
+          "id": "garden",
+          "score": 0.7839131411430336
+        }
+      ],
+      "answerable": true,
+      "id": "q-sick",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.8631588190696392
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "meeting",
+          "score": 0.8994947840340904
+        },
+        {
+          "id": "design-old",
+          "score": 0.8979187863316319
+        },
+        {
+          "id": "budget-old",
+          "score": 0.8583949603875353
+        }
+      ],
+      "answerable": true,
+      "id": "q-room",
+      "supportingHitCount": 2,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.8994947840340904
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.8089439907540099
+        },
+        {
+          "id": "security",
+          "score": 0.7987066099798668
+        },
+        {
+          "id": "password",
+          "score": 0.7977253809586415
+        }
+      ],
+      "answerable": true,
+      "id": "q-phish",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.8089439907540099
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "leave",
+          "score": 0.8461462175250476
+        },
+        {
+          "id": "sick",
+          "score": 0.8421360250773818
+        },
+        {
+          "id": "retention",
+          "score": 0.8403907968980231
+        }
+      ],
+      "answerable": true,
+      "id": "q-delivery",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.8461462175250476
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "recipe",
+          "score": 0.9149974171844104
+        }
+      ],
+      "answerable": true,
+      "id": "q-tomato",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.9149974171844104
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "parking",
+          "score": 0.876557328746186
+        },
+        {
+          "id": "leave",
+          "score": 0.8301797444756913
+        },
+        {
+          "id": "sick",
+          "score": 0.8165392675363429
+        }
+      ],
+      "answerable": true,
+      "id": "q-visitor",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.876557328746186
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "offboarding",
+          "score": 0.7922106829226849
+        },
+        {
+          "id": "wifi",
+          "score": 0.7842443974142729
+        },
+        {
+          "id": "security",
+          "score": 0.7710404303311823
+        }
+      ],
+      "answerable": true,
+      "id": "q-wireless",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.7922106829226849
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "invoice",
+          "score": 0.7900088309870242
+        },
+        {
+          "id": "invoice-fraud",
+          "score": 0.7868592927367509
+        },
+        {
+          "id": "refund",
+          "score": 0.7860194507176538
+        }
+      ],
+      "answerable": true,
+      "id": "q-pay",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.7900088309870242
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "invoice-fraud",
+          "score": 0.7889679546009721
+        },
+        {
+          "id": "invoice",
+          "score": 0.759200196279594
+        },
+        {
+          "id": "refund",
+          "score": 0.7531588745245301
+        }
+      ],
+      "answerable": true,
+      "id": "q-bank",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.7889679546009721
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "sick",
+          "score": 0.8180157514807227
+        },
+        {
+          "id": "offboarding",
+          "score": 0.805432282765456
+        },
+        {
+          "id": "password",
+          "score": 0.795193175910777
+        }
+      ],
+      "answerable": true,
+      "id": "q-delete",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": 0.0,
+      "topScore": 0.8180157514807227
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "deadline",
+          "score": 0.9090288163718989
+        },
+        {
+          "id": "budget-old",
+          "score": 0.8102197012842258
+        },
+        {
+          "id": "onboarding",
+          "score": 0.8013748737984921
+        }
+      ],
+      "answerable": true,
+      "id": "q-atlas",
+      "supportingHitCount": 1,
+      "thresholdedRecallAtK": 1.0,
+      "topScore": 0.9090288163718989
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "budget-old",
+          "score": 0.8552070208932051
+        },
+        {
+          "id": "design-old",
+          "score": 0.8389031068776925
+        },
+        {
+          "id": "refund",
+          "score": 0.8371102247471636
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-budget-amount",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.8552070208932051
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-phone",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.7401670027295046
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "meeting",
+          "score": 0.901182509395451
+        },
+        {
+          "id": "design-old",
+          "score": 0.8788324504804738
+        },
+        {
+          "id": "deadline",
+          "score": 0.8493009518702267
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-meeting-link",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.901182509395451
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "refund",
+          "score": 0.7947678214749349
+        },
+        {
+          "id": "invoice-fraud",
+          "score": 0.7934380618691123
+        },
+        {
+          "id": "retention",
+          "score": 0.7882183918352204
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-atlas-contract",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.7947678214749349
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "wifi",
+          "score": 0.833722032427257
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-wifi-code",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.833722032427257
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "refund",
+          "score": 0.854743763395304
+        },
+        {
+          "id": "leave",
+          "score": 0.8483723110339427
+        },
+        {
+          "id": "shipping",
+          "score": 0.8456776425237815
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-tracking",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.854743763395304
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "deadline",
+          "score": 0.7966650828045082
+        },
+        {
+          "id": "release",
+          "score": 0.7927058219029242
+        },
+        {
+          "id": "invoice-fraud",
+          "score": 0.7923998713432203
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-ceo",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.7966650828045082
+    },
+    {
+      "accepted": false,
+      "acceptedHits": [],
+      "answerable": false,
+      "id": "q-no-moons",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.4185599646221613
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "leave",
+          "score": 0.8202531078286882
+        },
+        {
+          "id": "retention",
+          "score": 0.8110180660745087
+        },
+        {
+          "id": "design-old",
+          "score": 0.7981930464355452
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-library",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.8202531078286882
+    },
+    {
+      "accepted": true,
+      "acceptedHits": [
+        {
+          "id": "password",
+          "score": 0.8362135409092868
+        },
+        {
+          "id": "backup",
+          "score": 0.8134474449462037
+        },
+        {
+          "id": "security",
+          "score": 0.8012931897650596
+        }
+      ],
+      "answerable": false,
+      "id": "q-no-backup-password",
+      "supportingHitCount": 0,
+      "thresholdedRecallAtK": null,
+      "topScore": 0.8362135409092868
+    }
+  ],
+  "queryCount": 30,
+  "schemaVersion": 1,
+  "task": "cosine-threshold-evidence-acceptance",
+  "threshold": 0.75
+}
