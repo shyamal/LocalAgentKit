@@ -53,8 +53,7 @@ to be summarized. Each new run searches again and retains no prior retrieval cac
 
 Conversation transcripts are supplied through `ConversationMemory`, including its
 explicit restore/checkpoint APIs. They are not mixed into text-store search, and
-runtime task facts continue to use the planner's bounded facts renderer. The demo
-still needs separate persistence/resume wiring (M2-14).
+runtime task facts continue to use the planner's bounded facts renderer. The demo restores and checkpoints its own dedicated conversation file (M2-14).
 
 ## Failure and observation
 

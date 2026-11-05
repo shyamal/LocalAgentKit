@@ -50,7 +50,7 @@ Task facts do not call `MemoryStore`, populate conversation history, or survive
 app restart. ConversationMemory supports explicit persisted checkpoints (M2-04); working
 facts are excluded from them. Configuring `AgentConfiguration.memory` enables
 separate budgeted retrieval of durable text/semantic/episodic records (M2-07).
-Demo resume wiring remains M2-14. Category behavior uses the typed encoding, not
+The demo restores completed conversation turns under M2-14. Category behavior uses the typed encoding, not
 an arbitrary app-defined metadata key.
 
 Built-in planner prompts render relevant binding facts through the existing
