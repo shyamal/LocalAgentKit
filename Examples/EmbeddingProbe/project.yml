@@ -1,0 +1,41 @@
+name: EmbeddingProbe
+options:
+  deploymentTarget:
+    iOS: "26.4"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    GENERATE_INFOPLIST_FILE: YES
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "0.1"
+    CURRENT_PROJECT_VERSION: "1"
+packages:
+  LocalAgentKit:
+    path: ../..
+targets:
+  EmbeddingProbe:
+    type: application
+    platform: iOS
+    sources:
+      - Probe
+      - App
+      - path: ../../Benchmarks/EmbeddingQuality/corpus.json
+        buildPhase: resources
+    dependencies:
+      - package: LocalAgentKit
+        product: LocalAgentKitCore
+      - package: LocalAgentKit
+        product: LocalAgentKitProviders
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.localagentkit.embeddingprobe
+        TARGETED_DEVICE_FAMILY: "1"
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+schemes:
+  EmbeddingProbe:
+    build:
+      targets:
+        EmbeddingProbe: all

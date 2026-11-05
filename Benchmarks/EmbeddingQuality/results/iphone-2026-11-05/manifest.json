@@ -1,0 +1,57 @@
+{
+  "bundleIdentifier": "dev.localagentkit.embeddingprobe",
+  "corpusSHA256": "1208b7615eda49eae3a6a0b72620029c7f6de9d05b8ab69a514940bc9e449ca0",
+  "date": "2026-11-05",
+  "execution": "Signed app on paired wired physical iPhone, iOS 27.2 (24B115), not Simulator",
+  "limits": "One device/OS; both assets available; missing-asset fallback not reproduced; no MLX/Core AI execution; no provider promotion",
+  "paths": [
+    {
+      "elapsedMilliseconds": 240.980833,
+      "metadata": {
+        "assetAvailable": "true",
+        "dimension": "512",
+        "language": "en",
+        "revision": "1"
+      },
+      "path": "natural-language-sentence",
+      "status": "completed"
+    },
+    {
+      "elapsedMilliseconds": 32.303125,
+      "metadata": {
+        "assetAvailable": "true",
+        "dimension": "300",
+        "language": "en",
+        "revision": "1"
+      },
+      "path": "natural-language-word-average",
+      "status": "completed"
+    },
+    {
+      "elapsedMilliseconds": 226.843959,
+      "metadata": {
+        "implementation": "NLEmbeddingProvider",
+        "language": "en"
+      },
+      "path": "sdk-default",
+      "status": "completed"
+    }
+  ],
+  "rawReportSHA256": "bcea61b22c6682713ce707d9c0cf6f7762e6fb4820430f6f2259db818b633e1e",
+  "runID": "05C471EF-4DA1-4BBE-B692-2A71586C5D03",
+  "scoredReportSHA256": "0a80c9ed27cfced7327b05339eff2e98200e4b33d7e86d9803a3314efdf55f4b",
+  "sourceBase": "635760e88fccd68a25f099583a6b864e57b388cd",
+  "sourceFilesSHA256": {
+    "Benchmarks/EmbeddingQuality/corpus.json": "1208b7615eda49eae3a6a0b72620029c7f6de9d05b8ab69a514940bc9e449ca0",
+    "Benchmarks/EmbeddingQuality/inspect_device.py": "149fcb0f90891207afe74a7f092032ed49b670f519e5257729ff4bd2044c7da9",
+    "Benchmarks/EmbeddingQuality/score.py": "606c4cffda15f1613591df7b207f993c8f6c8c490d4139e964c54422d5e82607",
+    "Examples/EmbeddingProbe/App/EmbeddingProbeApp.swift": "31c133e8150cd3282e483b9dec764e29ebc3166fa587c52a4b0a431a4edc7a6e",
+    "Examples/EmbeddingProbe/Package.swift": "8fd2cd697ee78f5872a8863992bbd470bbd43a365624ea6baa9a94a171e5f1d4",
+    "Examples/EmbeddingProbe/Probe/NativePaths.swift": "d5feaec0cf41ac10dabc164fb32cfa8cf371f4e4ba176f65c76d1de24c78ef92",
+    "Examples/EmbeddingProbe/Probe/Runner.swift": "3562a8f9edfe644755e33257f2c58ebd98b9ad2079e56770f447877bf1cea773",
+    "Examples/EmbeddingProbe/Tests/RunnerTests.swift": "67f1ad8a37f8be9b88e5d1101ba8a4551cab69c31ddf5c3e99681c73460fe6e0",
+    "Examples/EmbeddingProbe/project.yml": "6de8eb79c73dc095f94807207663ee5f0476578cd4bf0a65243cbdd995bfa99d",
+    "Scripts/tests/test_embedding_device_report.py": "ce381d9bd06c359b6b914bf1b67b3387d8ad1d08f38669f3ff69fb3e7a8bcb3d"
+  },
+  "timingScope": "Per-path single sequential pass excluding asset construction; not controlled latency, energy or peak process memory"
+}

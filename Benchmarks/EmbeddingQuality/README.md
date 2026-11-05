@@ -105,6 +105,14 @@ corpus/results remain unchanged and independently reproducible.
 with fixed illustrative cosine cutoffs and false-accept/rejection accounting. It
 is a separate authored diagnostic and selects no SDK default or calibrated cutoff.
 
+## Physical-device probe
+
+[EmbeddingProbe](../../Examples/EmbeddingProbe) is an isolated iPhone app that
+records actual app-bundle asset availability and compares the SDK default against
+forced paths using the bundled fixture. The recorded iOS 27.2 run found both
+assets available and SDK vectors matching the sentence path; it did not reproduce
+missing-asset fallback or measure MLX/Core AI on the phone.
+
 ## Gate follow-up
 
 M3-04 and PLANNING question 4 remain open. Before making the deployment/provider

@@ -22,3 +22,7 @@ Examples/LocalAgentDemo/**/xcuserdata/
 # Python automation tests
 __pycache__/
 *.py[cod]
+
+# Isolated embedding measurement app
+Examples/EmbeddingProbe/.build*/
+Examples/EmbeddingProbe/**/xcuserdata/
