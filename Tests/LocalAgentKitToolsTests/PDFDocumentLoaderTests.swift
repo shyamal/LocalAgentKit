@@ -7,6 +7,18 @@ import LocalAgentKitTools
 import Testing
 
 @Suite struct PDFDocumentLoaderTests {
+  @Test func unifiedExtractorDispatchesPDFAndForwardsPasswordAndLimits() throws {
+    let url = try fixture(["Budget review"], ext: "PDF", password: "reader")
+    defer { try? FileManager.default.removeItem(at: url) }
+    #expect(try DocumentExtractor.load(contentsOf: url, password: "reader").text == "Budget review")
+    try expectRetrievalFailure { _ = try DocumentExtractor.load(contentsOf: url) }
+    try expectRetrievalFailure {
+      _ = try DocumentExtractor.load(
+        contentsOf: url, password: "reader",
+        limits: .init(maximumCharacters: 3))
+    }
+  }
+
   @Test func preservesPageOrderSeparatorsAndFilenameTitle() throws {
     let url = try fixture(["Budget review preparation", "Project sync checklist"], ext: "PDF")
     defer { try? FileManager.default.removeItem(at: url) }

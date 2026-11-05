@@ -50,7 +50,7 @@ public enum PDFDocumentLoader {
     guard url.isFileURL, url.pathExtension.lowercased() == "pdf" else {
       throw AgentError.retrievalFailure("PDF loading requires a local .pdf file")
     }
-    let data = try read(url, maximumBytes: limits.maximumBytes)
+    let data = try DocumentFileReader.read(url, maximumBytes: limits.maximumBytes, kind: "PDF")
     try checkCancellation()
     guard let pdf = PDFDocument(data: data) else {
       throw AgentError.retrievalFailure("Could not decode PDF")
@@ -95,31 +95,6 @@ public enum PDFDocumentLoader {
     return Document(
       title: url.deletingPathExtension().lastPathComponent,
       text: pages.joined(separator: "\n\n"))
-  }
-
-  private static func read(_ url: URL, maximumBytes: Int) throws -> Data {
-    do {
-      let values = try url.resourceValues(forKeys: [.isRegularFileKey])
-      guard values.isRegularFile == true else {
-        throw AgentError.retrievalFailure("PDF input must be a regular local file")
-      }
-      let file = try FileHandle(forReadingFrom: url)
-      defer { try? file.close() }
-      var data = Data()
-      while true {
-        try checkCancellation()
-        let remaining = maximumBytes - data.count
-        // Probe one byte past the limit, without overflowing at Int.max.
-        let amount = remaining >= 65_536 ? 65_536 : remaining + 1
-        guard let chunk = try file.read(upToCount: amount), !chunk.isEmpty else { return data }
-        guard chunk.count <= remaining else {
-          throw AgentError.retrievalFailure("PDF exceeds its byte limit")
-        }
-        data.append(chunk)
-      }
-    } catch let error as AgentError { throw error } catch {
-      throw AgentError.retrievalFailure("Could not read PDF file")
-    }
   }
 
   private static func checkCancellation() throws {
