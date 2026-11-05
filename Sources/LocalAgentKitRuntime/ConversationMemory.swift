@@ -30,6 +30,7 @@ public actor ConversationMemory {
   ///     Doesn't need to be exact — it only sizes when cross-run pruning kicks in.
   ///   - summarizer: Compacts older messages when retention limits are reached.
   ///   - retentionMultiple: History is pruned once it exceeds this many multiples of the share.
+  ///     Products above Int.max saturate at Int.max instead of overflowing.
   public init(
     approximateShareTokens: Int = 1600, retentionMultiple: Int = 4,
     summarizer: any ConversationSummarizer = ExtractiveSummarizer()
@@ -148,7 +149,9 @@ public actor ConversationMemory {
   private func pruneIfNeeded() async {
     let expectedRevision = revision
     let estimate = messages.reduce(0) { $0 + TokenEstimator.tokens($1) }
-    guard estimate > approximateShareTokens * retentionMultiple else { return }
+    let product = approximateShareTokens.multipliedReportingOverflow(by: retentionMultiple)
+    let cap = product.overflow ? Int.max : product.partialValue
+    guard estimate > cap else { return }
     let turns = ContextBudgeter.turns(of: messages)
     guard turns.count > 1 else { return }
 

@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-05",
+  "task": "M2-13",
+  "metric": "union of covered source lines across default-suite test binaries; not branch coverage",
+  "scope": "Core Memory directory, Runtime ConversationMemory/MemoryRetrieval, both SwiftData store directories including compatibility/migration helpers",
+  "full_core_runtime_gate": {
+    "covered": 2633,
+    "lines": 2666,
+    "percent": 98.76,
+    "threshold": 80
+  },
+  "files": {
+    "Sources/LocalAgentKitCore/Memory/ConversationStore.swift": {
+      "covered": 18,
+      "lines": 18,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitCore/Memory/EpisodicMemory.swift": {
+      "covered": 56,
+      "lines": 56,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitCore/Memory/MemoryRetrievalConfiguration.swift": {
+      "covered": 8,
+      "lines": 8,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitCore/Memory/MemoryStore.swift": {
+      "covered": 12,
+      "lines": 12,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitCore/Memory/SemanticMemory.swift": {
+      "covered": 50,
+      "lines": 50,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitCore/Memory/WorkingMemory.swift": {
+      "covered": 47,
+      "lines": 47,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitProviders/SwiftDataConversationStore/ConversationMigrationPlan.swift": {
+      "covered": 2,
+      "lines": 2,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitProviders/SwiftDataConversationStore/SwiftDataConversationStore.swift": {
+      "covered": 128,
+      "lines": 133,
+      "percent": 96.24,
+      "missed": [
+        25,
+        37,
+        38,
+        166,
+        167
+      ]
+    },
+    "Sources/LocalAgentKitProviders/SwiftDataMemoryStore/MemoryMigrationPlan.swift": {
+      "covered": 2,
+      "lines": 2,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitProviders/SwiftDataMemoryStore/MemorySchemaV1.swift": {
+      "covered": 20,
+      "lines": 21,
+      "percent": 95.24,
+      "missed": [
+        27
+      ]
+    },
+    "Sources/LocalAgentKitProviders/SwiftDataMemoryStore/StoreCompatibility.swift": {
+      "covered": 18,
+      "lines": 19,
+      "percent": 94.74,
+      "missed": [
+        17
+      ]
+    },
+    "Sources/LocalAgentKitProviders/SwiftDataMemoryStore/SwiftDataMemoryStore.swift": {
+      "covered": 116,
+      "lines": 122,
+      "percent": 95.08,
+      "missed": [
+        101,
+        102,
+        155,
+        156,
+        172,
+        173
+      ]
+    },
+    "Sources/LocalAgentKitRuntime/ConversationMemory.swift": {
+      "covered": 93,
+      "lines": 93,
+      "percent": 100.0,
+      "missed": []
+    },
+    "Sources/LocalAgentKitRuntime/MemoryRetrieval.swift": {
+      "covered": 14,
+      "lines": 14,
+      "percent": 100.0,
+      "missed": []
+    }
+  },
+  "tested_base_revision": "c747f5a792f0dfb79f944fe9d6449e04a130d888",
+  "source_sha256": {
+    "Sources/LocalAgentKitCore/Memory/ConversationStore.swift": "b47dc898b41f268e5961d8207713d60fb6221312f31c28910503a2113473c091",
+    "Sources/LocalAgentKitCore/Memory/EpisodicMemory.swift": "516d8e80602c6f3fc756427fb2ea54b02931b594dd0c61552c7a3eec1f65d6fb",
+    "Sources/LocalAgentKitCore/Memory/MemoryRetrievalConfiguration.swift": "f99bae341e86b3ddffcd21f6cb3896520eb139bda32bdb04d50bafc3de5fafa3",
+    "Sources/LocalAgentKitCore/Memory/MemoryStore.swift": "d1ae48e96887feb59b109cd2351e2ebc5f6894839f6402cb718408bacea97caf",
+    "Sources/LocalAgentKitCore/Memory/SemanticMemory.swift": "03afe910eee5fe08c63513f4b36106738e60a7ec6eedf0b4aba3716ffb71a585",
+    "Sources/LocalAgentKitCore/Memory/WorkingMemory.swift": "31e66e80a6751e6dc7e648a4c8743e4389e14500730d8f344e7bbfe58e76b31d",
+    "Sources/LocalAgentKitProviders/SwiftDataConversationStore/ConversationMigrationPlan.swift": "3d6a37efbe75ec61e383c6b612cacbf46cb7333cca8a16211fdc319dce7d4c49",
+    "Sources/LocalAgentKitProviders/SwiftDataConversationStore/SwiftDataConversationStore.swift": "78f5973e98851e7f6e38bb74db715b240724f3913e55f55151ec780ef591c5e9",
+    "Sources/LocalAgentKitProviders/SwiftDataMemoryStore/MemoryMigrationPlan.swift": "5ac1c51a5293e54f9201efa6b7945d643188338e93a39ee3e78eabb6e7d0b2b9",
+    "Sources/LocalAgentKitProviders/SwiftDataMemoryStore/MemorySchemaV1.swift": "5b04ba72e98e96782fe41e4ba08bfd6bb86f1e1c00fee262dad3d9a1eeda8c02",
+    "Sources/LocalAgentKitProviders/SwiftDataMemoryStore/StoreCompatibility.swift": "bc218da4f57f0a59f21c78c1fdeaade1f7212d6ba675e32373cab5c019d3001c",
+    "Sources/LocalAgentKitProviders/SwiftDataMemoryStore/SwiftDataMemoryStore.swift": "e43bb58b23e0575a3f3efb7f7b61dbda82b7179bb11ce5f92bd38a690271059d",
+    "Sources/LocalAgentKitRuntime/ConversationMemory.swift": "287b330c1078a78b1ef2d55b757fc44d02dbff6117fa107ecd7ced3bbd9527a6",
+    "Sources/LocalAgentKitRuntime/MemoryRetrieval.swift": "0e602f3d0a02c89a424708ebc9c0b14087d22bbd74246e5602f238c7eb89b4de"
+  },
+  "toolchain": {
+    "xcode": "27.2 (27B52)",
+    "macos": "26.6.2"
+  },
+  "checks": {
+    "default_test_functions": 632,
+    "focused_thread_sanitizer": "MemoryConcurrencyTests: 7 functions passed",
+    "offline_suite": "passed"
+  }
+}
