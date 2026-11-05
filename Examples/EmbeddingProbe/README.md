@@ -32,7 +32,9 @@ fresh run UUID, corpus hash, per-path status/timing/export and OS/thermal metada
 The system `physicalMemoryBytes` field is total device RAM, **not process RSS or peak
 memory**. Timings exclude model construction and are uncontrolled single passes;
 path order, warm caches and other device activity prevent latency/energy claims.
-There is no MLX or Core AI model in this app, no battery measurement, no SDK provider
+Ordinary runs include no MLX or Core AI model. An explicit optional Core AI
+parity mode accepts a separately transferred artifact; see the
+[Core AI conversion/parity guide](../../Benchmarks/EmbeddingQuality/CoreAI/README.md). There is no battery measurement or SDK provider
 swap, and no missing-asset simulation or asset deletion.
 
 ## CLI-run and retrieve only this app's report
@@ -73,7 +75,7 @@ and word revision 1 / 300 dimensions. Across all 24 documents and 20 queries:
 | Forced word average | 0.70 | 0.6329 | 0.6077 |
 | SDK default | 0.55 | 0.4800 | 0.4446 |
 
-The SDK's vectors matched the forced sentence path across all 40 texts. **The
+The SDK's vectors matched the forced sentence path across all 44 texts. **The
 missing-sentence-asset fallback was not reproduced on this phone in this run.**
 Do not generalize asset presence to other devices, OS versions or later asset state.
 The thermal API reported raw value 1 (fair, verified in the iOS SDK NSProcessInfo.h)
@@ -106,3 +108,9 @@ functions, the network-disabled suite, existing examples, six new probe function
 53 Python tests, strict formatting/layering and DocC. Core/Runtime coverage remains
 98.80% (2634/2666), unchanged from the preceding run; neither source target changed.
 The app builds signed for the physical device with no team identity committed.
+
+The opt-in unquantized MiniLM Core AI mode subsequently completed all 44 tensor
+comparisons on the physical iPhone / iOS 27.2, with independently recomputed maximum
+absolute error about 1.79e-7 against PyTorch (fixed tolerance 1e-4). See the Core AI
+guide for artifact transfer, raw-parity checks and the pretokenized-fixture limits.
+This is separate from the earlier NaturalLanguage asset run and four-bit MLX results.

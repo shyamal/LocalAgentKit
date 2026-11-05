@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D2621A88BC52020E331CE6F /* CoreAIEmbeddingProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0D9D0452C92742AE0509E2 /* CoreAIEmbeddingProbe.swift */; };
 		23BFD9000E4B743FEC1A99B5 /* EmbeddingProbeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6402AF46727A4D2A794748B8 /* EmbeddingProbeApp.swift */; };
 		584CBE3880F244B9152341EE /* LocalAgentKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2703C32E7B0130221211907F /* LocalAgentKitCore */; };
 		7887AF75899DF94A54D17827 /* NativePaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0C471609F64509524EEDA /* NativePaths.swift */; };
 		8B895633F019155BE52EF3AB /* Runner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526444243366D4E3A5090535 /* Runner.swift */; };
+		A77B48CC43CE7B595EE31A8A /* CoreAIResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7671364151BC2A2486C7CB4 /* CoreAIResult.swift */; };
 		EF57ABA8E45923ABA3B9386E /* corpus.json in Resources */ = {isa = PBXBuildFile; fileRef = 206329CC183FA79C504F1C69 /* corpus.json */; };
 		F7418D61BEE6307281DA39F6 /* LocalAgentKitProviders in Frameworks */ = {isa = PBXBuildFile; productRef = B801A28A3FAA29373D5F1065 /* LocalAgentKitProviders */; };
 /* End PBXBuildFile section */
@@ -22,6 +24,8 @@
 		4557A1D429485B8A3DE47E6E /* LocalAgentKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LocalAgentKit; path = ../..; sourceTree = SOURCE_ROOT; };
 		526444243366D4E3A5090535 /* Runner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runner.swift; sourceTree = "<group>"; };
 		6402AF46727A4D2A794748B8 /* EmbeddingProbeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingProbeApp.swift; sourceTree = "<group>"; };
+		C7671364151BC2A2486C7CB4 /* CoreAIResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAIResult.swift; sourceTree = "<group>"; };
+		DB0D9D0452C92742AE0509E2 /* CoreAIEmbeddingProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAIEmbeddingProbe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +52,7 @@
 		1CDA3CDEF07DF15B0B0F213B /* App */ = {
 			isa = PBXGroup;
 			children = (
+				DB0D9D0452C92742AE0509E2 /* CoreAIEmbeddingProbe.swift */,
 				6402AF46727A4D2A794748B8 /* EmbeddingProbeApp.swift */,
 			);
 			path = App;
@@ -75,6 +80,7 @@
 		D9B9DE44653A92F3C2924F69 /* Probe */ = {
 			isa = PBXGroup;
 			children = (
+				C7671364151BC2A2486C7CB4 /* CoreAIResult.swift */,
 				27E0C471609F64509524EEDA /* NativePaths.swift */,
 				526444243366D4E3A5090535 /* Runner.swift */,
 			);
@@ -166,6 +172,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D2621A88BC52020E331CE6F /* CoreAIEmbeddingProbe.swift in Sources */,
+				A77B48CC43CE7B595EE31A8A /* CoreAIResult.swift in Sources */,
 				23BFD9000E4B743FEC1A99B5 /* EmbeddingProbeApp.swift in Sources */,
 				7887AF75899DF94A54D17827 /* NativePaths.swift in Sources */,
 				8B895633F019155BE52EF3AB /* Runner.swift in Sources */,

@@ -92,6 +92,20 @@ import Testing
       Issue.record("Expected cancellation")
     } catch { #expect(error is CancellationError) }
   }
+  @Test func optionalCoreAIResultPreservesLegacyReportDecoding() throws {
+    let old = """
+      {"schemaVersion":1,"runID":"00000000-0000-4000-8000-000000000001",
+       "corpusSHA256":"hash","metadata":{},"results":[]}
+      """
+    var report = try JSONDecoder().decode(ProbeReport.self, from: Data(old.utf8))
+    #expect(report.coreAI == nil)
+    report.coreAI = CoreAIProbeResult(
+      status: "failed", failure: "Synthetic failure", comparedVectorCount: 0,
+      maximumAbsoluteError: nil, metadata: [:], export: nil)
+    let decoded = try JSONDecoder().decode(ProbeReport.self, from: JSONEncoder().encode(report))
+    #expect(decoded.coreAI?.failure == "Synthetic failure")
+    #expect(decoded.coreAI?.export == nil)
+  }
   @Test func typedProviderCancellationIsTerminal() async {
     do {
       _ = try await ProbeRunner.run(

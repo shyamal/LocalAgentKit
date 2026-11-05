@@ -1,0 +1,86 @@
+{
+  "absoluteTolerance": 0.0001,
+  "corpusSHA256": "1208b7615eda49eae3a6a0b72620029c7f6de9d05b8ab69a514940bc9e449ca0",
+  "date": "2026-11-05",
+  "deviceReportedMaximumAbsoluteError": 1.7881393e-07,
+  "executionScope": "Signed app using CoreAIRuntime on paired physical iPhone, iOS 27.2 (24B115)",
+  "fixtureSHA256": "3e443da3793c7f86d9c412d25aa4bf32afffddb178ae13ee05b9dda8bf2e9401",
+  "independentlyRecomputedMaximumAbsoluteError": 1.7850748443293263e-07,
+  "inputScalarType": "int32",
+  "inputShape": [
+    1,
+    256
+  ],
+  "limits": "Fixture-only unquantized model; pretokenized host inputs; GPU preference does not establish actual per-operation placement; not parity of 4-bit MLX artifact or a production provider/resource benchmark",
+  "metadata": {
+    "measurement": "App-bundle assets; not a controlled latency/energy benchmark",
+    "os": "Version 27.2 (Build 24B115)",
+    "physicalMemoryBytes": "8054751232",
+    "thermalEnd": "NSProcessInfoThermalState(rawValue: 0)",
+    "thermalStart": "NSProcessInfoThermalState(rawValue: 0)"
+  },
+  "modelMetadata": {
+    "absoluteTolerance": 0.0001,
+    "assetFilesSHA256": {
+      "main.hash": "f9dfdefe5373ea249de0705e291f3f55351ae9684b0abdfc92a18192625059f8",
+      "main.mlirb": "986605011e993b9baa6e3b55bad34c94b001d06e37ccf0120928f14f9262f896",
+      "metadata.json": "6efbd1fc4f681379691fc5329fe6ccbce1be50414796d46238d6a631abd3db6e"
+    },
+    "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "packages": {
+      "coreai-core": "1.0.0b3",
+      "coreai-torch": "0.4.3",
+      "torch": "2.13.0",
+      "transformers": "4.57.3"
+    },
+    "pooling": "attention-mask mean pooling then L2 normalization",
+    "precision": "unquantized PyTorch float32 source",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "shape": [
+      1,
+      256
+    ],
+    "sourceFilesSHA256": {
+      "1_Pooling/config.json": "4be450dde3b0273bb9787637cfbd28fe04a7ba6ab9d36ac48e92b11e350ffc23",
+      "config.json": "953f9c0d463486b10a6871cc2fd59f223b2c70184f49815e7efbcab5d8908b41",
+      "config_sentence_transformers.json": "061ca9d39661d6c6d6de5ba27f79a1cd5770ea247f8d46412a68a498dc5ac9f3",
+      "data_config.json": "32edcb108fc2516b920734a862ae0692bcae1c5d45d5f8d972cb0d53434a4c54",
+      "model.safetensors": "53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db",
+      "modules.json": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf",
+      "sentence_bert_config.json": "fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7",
+      "special_tokens_map.json": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
+      "tokenizer.json": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+      "tokenizer_config.json": "acb92769e8195aabd29b7b2137a9e6d6e25c476a4f15aa4355c233426c61576b",
+      "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    }
+  },
+  "outputScalarType": "float32",
+  "outputShape": [
+    1,
+    384
+  ],
+  "parityReportSHA256": "56f7fe47d2a071b0314ad13efbd6ba8cd9ab133ec2c3cd24e422bd108f35bfc3",
+  "rawDeviceReportSHA256": "ae42baf87c390427a00fd3e526b3c5406afaef4f7e7a7f7f475e15b41d914fdf",
+  "referenceSHA256": "5269c60b61626689c442d64e41230b9d68e325352ab47e271e5a9ba1e738ba75",
+  "runID": "5F6426D0-4D01-4BBE-B692-2A71586C5D03",
+  "sdkInterfaceSHA256": {
+    "CoreAIAsset": "f5e6d03862c165584703e01ae382c85af51b0a7204de3d1815628747051f09f4",
+    "CoreAICompiler": "3d010e8fe71939b6d5c86e4f154810d91dd0fca79fda962b19312faceb19bb9b",
+    "CoreAIDelegates": "578870d91b78f6578285c7953cf1fdd39752e8f82e8fc2b6b0ca484f29b41d04",
+    "CoreAIRuntime": "44beb6d7e6c26aaa86f960e98103d43255cb3a31dc62a531bfb9ab4c749640a2"
+  },
+  "sourceBase": "df6426d3a1e8d3d1718f0b9de5be5eb6aef52324",
+  "sourceFilesSHA256": {
+    "Benchmarks/EmbeddingQuality/CoreAI/convert_minilm.py": "36d01dbc57597a75a235ee7c7d56afa67c12f48b81e0e57112db506dad879ab0",
+    "Benchmarks/EmbeddingQuality/CoreAI/inspect_parity.py": "9a5c34cf168a605b99a25a41548384ec7de79f6715f9d8b9d6558d900d6c8d17",
+    "Benchmarks/EmbeddingQuality/CoreAI/requirements.txt": "2ad35b6897bf18150e393c89c5c962cac28d0bd70320fd9538f6f79e4fbbba02",
+    "Benchmarks/EmbeddingQuality/CoreAI/run_host.py": "4c1e81ba22728765c520a708f56625a7292f21c1065b90162183107acc62393c",
+    "Examples/EmbeddingProbe/App/CoreAIEmbeddingProbe.swift": "45ca0e307613120059f340110d50d09dcc7ac7f28454dbbc1b2ab75c1a6cdee7",
+    "Examples/EmbeddingProbe/App/EmbeddingProbeApp.swift": "907356f3a6efa048554dfb8d19c42ab504de9d7bc1c3f30456c279f1342e1ca1",
+    "Examples/EmbeddingProbe/Probe/CoreAIResult.swift": "e634a3e266346806276d1501760cefd6e5703cb1d2248a9097a99e56e7d69beb",
+    "Examples/EmbeddingProbe/Probe/Runner.swift": "7e677964a14dce9ab23d096ea729aa85834448ed86129b0bfa5f94bf33c14275",
+    "Examples/EmbeddingProbe/Tests/RunnerTests.swift": "4f0793df417c14e1e91f83f4cbcaca4d6005bc5c9893dbfc10fcba6a955555f7",
+    "Scripts/tests/test_coreai_parity.py": "31c32436a732617942cbe3f99d5ffcddd55054d4b23d1a67e3ba188469095106"
+  },
+  "vectorCount": 44
+}

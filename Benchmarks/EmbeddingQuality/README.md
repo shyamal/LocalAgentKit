@@ -113,6 +113,14 @@ forced paths using the bundled fixture. The recorded iOS 27.2 run found both
 assets available and SDK vectors matching the sentence path; it did not reproduce
 missing-asset fallback or measure MLX/Core AI on the phone.
 
+## Core AI conversion feasibility
+
+[CoreAI/README.md](CoreAI/README.md) records a real unquantized MiniLM conversion
+and 44-vector PyTorch/Core AI parity run through Apple’s Python runtime on this
+Mac. The optional native iPhone path also passed all 44 parity comparisons on
+iOS 27.2 after unlock (maximum absolute error approximately 1.79e-7). This does not
+reclassify the earlier four-bit MLX results as Core AI.
+
 ## Gate follow-up
 
 M3-04 and PLANNING question 4 remain open. Before making the deployment/provider
