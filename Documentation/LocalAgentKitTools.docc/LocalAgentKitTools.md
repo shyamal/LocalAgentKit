@@ -31,3 +31,8 @@ input; they cannot authorize writes.
 - ``Note``
 - <doc:LocalNotes>
 - ``DocumentSearchTool``
+
+### Load documents
+
+- ``PDFDocumentLoader``
+- <doc:PDFIngestion>

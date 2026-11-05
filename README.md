@@ -33,7 +33,7 @@ question. Experimental model-driven planning is opt-in.
 - **Durable memory:** explicit conversation checkpoints, facts/preferences and past
   events/actions through SwiftData stores. Configured memory is retrieved under the
   context budget. The demo restores recent completed turns after restart.
-- **Local retrieval:** document loading, chunking, Natural Language embeddings with
+- **Local retrieval:** TXT/Markdown loading and PDFKit text-layer extraction, chunking, Natural Language embeddings with
   a word-vector fallback, an in-memory vector store, and document search.
 - **Contact search:** explicit approval before local contact reads, separate OS
   authorization, and bounded contact-card results.

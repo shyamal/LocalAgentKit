@@ -1,7 +1,7 @@
 import Foundation
 
-/// Loads MVP document formats (FR-013): plain text and Markdown. PDF is M3-01 — it needs PDFKit,
-/// which Core must not import.
+/// Loads plain text and Markdown (FR-013). PDF text extraction is provided separately by
+/// LocalAgentKitTools.PDFDocumentLoader so Core never imports PDFKit.
 public enum DocumentLoader {
   private static let supportedExtensions: Set<String> = ["txt", "text", "md", "markdown"]
 

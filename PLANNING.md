@@ -264,7 +264,9 @@ Document (PDF/TXT/MD) ─▶ Extractor ─▶ Chunker ─▶ EmbeddingProvider �
 Query ─▶ EmbeddingProvider ─▶ similarity search ─▶ top-k ─▶ ContextBudgeter ─▶ prompt
 ```
 
-Ingestion is explicitly a background, batchable, cancellable operation with progress events — embedding a 300-page PDF on a phone is a battery event, not a function call.
+M3-01 supplies synchronous PDF text-layer extraction through Tools’ `PDFDocumentLoader`, returning only a Core `Document`; Core’s text/Markdown loader remains framework-free. Local regular files are byte-bounded before PDFKit, with page/character limits, copy-permission/password checks and typed cancellation between reads/pages. Empty/image-only inputs fail; mixed PDFs return only existing text layers, without OCR/layout/page citations. Unified format extraction and structure-aware chunking remain M3-02/03.
+
+M3-06 will add background, batchable, cancellable ingestion with progress events — embedding a 300-page PDF on a phone is a battery event, not a function call. The current synchronous loader does not claim scheduling, progress or interruption of a native parse already running.
 
 ### 2.7 Security architecture
 
@@ -388,7 +390,7 @@ M1-EV-08 embeds a scoped M5 fixture assessment in multi-step reports and CI arti
 required-action coverage and real-tool verification remain explicit. See
 [continuous M5 evidence](docs/evaluation-harness.md#continuous-m5-evidence-m1-ev-08).
 
-**Layering check** (cheap, high-value): fail the build if `LocalAgentKitCore` or `LocalAgentKitRuntime` contains an `import` of `FoundationModels`, `CoreAI`, `SwiftData`, `Vision`, `Speech`, `EventKit`, `Contacts`, or `SwiftUI`. Grep-level is sufficient. This is the one test that keeps M3 ("replace the model provider without touching AgentCore") true a year from now.
+**Layering check** (cheap, high-value): fail the build if `LocalAgentKitCore` or `LocalAgentKitRuntime` contains an `import` of `FoundationModels`, `CoreAI`, `SwiftData`, `PDFKit`, `Vision`, `Speech`, `EventKit`, `Contacts`, or `SwiftUI`. Grep-level is sufficient. This is the one test that keeps M3 ("replace the model provider without touching AgentCore") true a year from now.
 
 ### 4.3 Agent tool catalog (the tools the SDK ships *to* agents)
 
