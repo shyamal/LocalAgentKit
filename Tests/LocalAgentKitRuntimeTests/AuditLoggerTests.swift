@@ -5,7 +5,7 @@ import Testing
 @testable import LocalAgentKitRuntime
 
 @Suite struct AuditLoggerTests {
-  @Test func recordsInOrderAndIsAppendOnly() async {
+  @Test func recordsInOrderWithinTheRetentionWindow() async {
     let logger = AuditLogger()
     #expect(await logger.allEntries().isEmpty)
     await logger.record(
@@ -80,7 +80,7 @@ import Testing
     #expect(await logger.allEntries().first?.wasEmpty == false)
   }
 
-  @Test func argumentsAreLoggedAsASignatureNotRawValues() async throws {
+  @Test func argumentSignaturesRetainSensitiveTextWithinPolicy() async throws {
     let tool = MockTool(
       name: "search_contacts",
       schema: ToolSchema(

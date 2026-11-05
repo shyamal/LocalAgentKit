@@ -43,6 +43,8 @@ question. Experimental model-driven planning is opt-in.
   with bounded search previews and compatible JSON persistence.
 - **App integration:** observable SwiftUI state, permission sheets, streamed answers,
   and optional local diagnostics and thermal-policy handling.
+- **Audit snapshots:** bounded local execution records and versioned JSON export
+  that omits arguments by default; durable retention stays host-owned.
 - **Testing:** mock and scripted providers, plus a CLI harness for measuring tool
   calling, multi-step completion, refusals, and context limits.
 

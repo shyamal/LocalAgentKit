@@ -31,6 +31,13 @@ before every model call; a provider can still report overflow during generation.
 - ``ToolExecutor``
 - ``PermissionGate``
 
+### Audit snapshots
+
+- ``AuditLogger``
+- ``AuditEntry``
+- ``AuditRetentionPolicy``
+- <doc:AuditRetentionAndExport>
+
 ### Experimental planning
 
 - <doc:ExperimentalModelPlanning>
