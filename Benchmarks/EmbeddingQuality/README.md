@@ -1,4 +1,4 @@
-# Embedding quality baseline (M3-04, gate still open)
+# Embedding quality measurements (M3-04)
 
 This standalone measurement harness compares exact-cosine retrieval on a fixed,
 original synthetic English workplace corpus. It adds no SDK/runtime dependency,
@@ -121,19 +121,19 @@ Mac. The optional native iPhone path also passed all 44 parity comparisons on
 iOS 27.2 after unlock (maximum absolute error approximately 1.79e-7). This does not
 reclassify the earlier four-bit MLX results as Core AI.
 
-## Gate follow-up
+## Benchmark decision and remaining work
 
-M3-04 and PLANNING question 4 remain open. Before making the deployment/provider
-decision and starting gated RAG expansion:
+M3-04 and PLANNING question 4 are complete under
+[decision 0009](../../docs/decisions/0009-embedding-quality-and-provider-policy.md).
+The full [same-checkpoint Core AI comparison](CoreAI/IndependentQuality.md) covers
+all SciFact candidates/queries and source-reference parity before scoring.
 
-1. Add independent, representative document/query judgments and no-answer cases,
-   languages and long-document/chunking workloads relevant to real users.
-2. Measure physical-device asset availability, retrieval quality, memory, latency
-   and thermal/energy implications on supported OS/device combinations.
-3. Resolve the task's explicit “via Core AI” deployment framing. This measured
-   comparison runs MLX directly, not through CoreAIRuntime. The existing SDK findings
-   identify Core AI as a tensor API; no validated converted MiniLM/Core AI execution
-   path is supplied or claimed by this work. Do not silently waive that requirement.
+Existing NLEmbedding APIs/demo wiring stay compatible. Original MiniLM/Core AI is
+the next opt-in integration candidate (M3-11), not an already shipped provider or
+a default switch. Calibration remains M3-07, realistic latency/memory M3-08,
+full-session battery/thermal M6-05 and real-user PDF integration M3-10. Language
+coverage and application generalization are unmeasured scope limits, not silently
+passed guarantees. The benchmark gate now permits the remaining RAG implementation.
 
 Offline scorer tests run with the repository's existing Python CI command:
 

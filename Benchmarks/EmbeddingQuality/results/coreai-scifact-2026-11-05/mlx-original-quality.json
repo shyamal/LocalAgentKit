@@ -1,0 +1,6057 @@
+{
+  "categories": {
+    "scifact-test": {
+      "ndcgAtK": 0.596292574178649,
+      "recallAtK": 0.6603333333333333,
+      "reciprocalRank": 0.6106628152583731
+    }
+  },
+  "corpusSHA256": "1ae85162f749ef5dfdbd3c0d9ffdc019dc202810e20753226c52e1f9ed9976ca",
+  "documentCount": 5183,
+  "k": 3,
+  "metadata": {
+    "embeddingElapsedSeconds": 23.58495058400149,
+    "execution": "MLX Metal, not Core AI",
+    "filesSHA256": {
+      "1_Pooling/config.json": "4be450dde3b0273bb9787637cfbd28fe04a7ba6ab9d36ac48e92b11e350ffc23",
+      "config.json": "953f9c0d463486b10a6871cc2fd59f223b2c70184f49815e7efbcab5d8908b41",
+      "config_sentence_transformers.json": "061ca9d39661d6c6d6de5ba27f79a1cd5770ea247f8d46412a68a498dc5ac9f3",
+      "data_config.json": "32edcb108fc2516b920734a862ae0692bcae1c5d45d5f8d972cb0d53434a4c54",
+      "model.safetensors": "53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db",
+      "modules.json": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf",
+      "sentence_bert_config.json": "fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7",
+      "special_tokens_map.json": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
+      "tokenizer.json": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+      "tokenizer_config.json": "acb92769e8195aabd29b7b2137a9e6d6e25c476a4f15aa4355c233426c61576b",
+      "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "maximumUntruncatedTokens": 1939,
+    "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "huggingface-hub": "2.4.0",
+      "mlx": "0.32.4",
+      "mlx-embeddings": "0.1.0",
+      "transformers": "5.22.1"
+    },
+    "pooling": "library BERT mean pooled, normalized text_embeds",
+    "python": "3.14.6",
+    "quantization": "none (original weights)",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "truncatedInputs": {
+      "documents": 3681,
+      "queries": 0
+    },
+    "truncationAllowed": true
+  },
+  "metrics": {
+    "ndcgAtK": 0.596292574178649,
+    "recallAtK": 0.6603333333333333,
+    "reciprocalRank": 0.6106628152583731
+  },
+  "provider": "sentence-transformers/all-MiniLM-L6-v2",
+  "queries": [
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 5,
+      "id": "q-1",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-29638116",
+        "d-4346436",
+        "d-3874000",
+        "d-10786948",
+        "d-31715818",
+        "d-17388232",
+        "d-86129154",
+        "d-927561",
+        "d-19855358",
+        "d-1769799"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.2
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-100",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-34982259",
+        "d-14550841",
+        "d-4381486",
+        "d-25516011",
+        "d-5415832",
+        "d-92499",
+        "d-13116880",
+        "d-9154703",
+        "d-1944452",
+        "d-11020675"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1012",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-9745001",
+        "d-43122426",
+        "d-6751418",
+        "d-37912677",
+        "d-26026009",
+        "d-3944632",
+        "d-25452937",
+        "d-12207167",
+        "d-21551568",
+        "d-26409363"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1014",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-6277638",
+        "d-86160128",
+        "d-20829129",
+        "d-17195001",
+        "d-12943966",
+        "d-13774178",
+        "d-11742219",
+        "d-4680262",
+        "d-13958154",
+        "d-13794374"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-1019",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-196664003",
+        "d-12370190",
+        "d-21578627",
+        "d-11603066",
+        "d-7421677",
+        "d-24742375",
+        "d-8734695",
+        "d-14328288",
+        "d-20620012",
+        "d-7116734"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1020",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-10559501",
+        "d-9433958",
+        "d-12885341",
+        "d-2947124",
+        "d-8979167",
+        "d-26731863",
+        "d-34378726",
+        "d-30933307",
+        "d-15425958",
+        "d-26873988"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1021",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-10559501",
+        "d-9433958",
+        "d-12885341",
+        "d-2947124",
+        "d-8979167",
+        "d-26731863",
+        "d-34378726",
+        "d-15425958",
+        "d-30933307",
+        "d-9539248"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 42,
+      "id": "q-1024",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-8494570",
+        "d-36713289",
+        "d-4926049",
+        "d-6078882",
+        "d-4457160",
+        "d-6532806",
+        "d-667451",
+        "d-39462488",
+        "d-7468449",
+        "d-24995939"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.023809523809523808
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1029",
+      "ndcgAtK": 0.7653606369886217,
+      "ranking": [
+        "d-11899391",
+        "d-13940200",
+        "d-2388819",
+        "d-13923140",
+        "d-5567005",
+        "d-8325952",
+        "d-16058322",
+        "d-9655347",
+        "d-24069089",
+        "d-23342845"
+      ],
+      "recallAtK": 0.6666666666666666,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 11,
+      "id": "q-1041",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9451052",
+        "d-15778034",
+        "d-18038955",
+        "d-2817000",
+        "d-406733",
+        "d-32638085",
+        "d-43156471",
+        "d-18694784",
+        "d-27274441",
+        "d-11844791"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.09090909090909091
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 22,
+      "id": "q-1049",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-24737389",
+        "d-6670101",
+        "d-26112624",
+        "d-8925851",
+        "d-8126244",
+        "d-13915464",
+        "d-8327914",
+        "d-20018321",
+        "d-13552682",
+        "d-23342686"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.045454545454545456
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1062",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-32638085",
+        "d-20381484",
+        "d-17919731",
+        "d-25748308",
+        "d-406733",
+        "d-502591",
+        "d-2831620",
+        "d-20781656",
+        "d-43156471",
+        "d-8267678"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1086",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-39281140",
+        "d-3981244",
+        "d-25440070",
+        "d-6112053",
+        "d-22057077",
+        "d-30101891",
+        "d-5704562",
+        "d-29504413",
+        "d-45153864",
+        "d-33533307"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1088",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-37549932",
+        "d-4323425",
+        "d-8496132",
+        "d-11900630",
+        "d-34439544",
+        "d-16550075",
+        "d-14863011",
+        "d-19510470",
+        "d-21793890",
+        "d-33638477"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1089",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-17628888",
+        "d-21948782",
+        "d-7915836",
+        "d-23577014",
+        "d-86231298",
+        "d-23513818",
+        "d-30835854",
+        "d-37608303",
+        "d-6712836",
+        "d-5436081"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-1099",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-21557614",
+        "d-5698494",
+        "d-7662206",
+        "d-7454794",
+        "d-24005548",
+        "d-30981192",
+        "d-1287809",
+        "d-4687948",
+        "d-1522336",
+        "d-34268160"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-1100",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-21557614",
+        "d-5698494",
+        "d-24005548",
+        "d-7662206",
+        "d-30981192",
+        "d-7454794",
+        "d-1287809",
+        "d-4687948",
+        "d-1522336",
+        "d-34268160"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1104",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-3898784",
+        "d-34338075",
+        "d-4910408",
+        "d-6158879",
+        "d-21571708",
+        "d-14973286",
+        "d-44827480",
+        "d-11718220",
+        "d-7454794",
+        "d-37065914"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-1107",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-14865329",
+        "d-29381091",
+        "d-20532591",
+        "d-26902591",
+        "d-4319174",
+        "d-970012",
+        "d-17973161",
+        "d-32955023",
+        "d-19205437",
+        "d-4340358"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 416,
+      "id": "q-1110",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-20288322",
+        "d-4345757",
+        "d-36558211",
+        "d-70704988",
+        "d-24273592",
+        "d-9244474",
+        "d-41310252",
+        "d-8529693",
+        "d-71341302",
+        "d-27449472"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.002403846153846154
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1121",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4456756",
+        "d-16398827",
+        "d-10009203",
+        "d-17123316",
+        "d-29745822",
+        "d-24881307",
+        "d-3825472",
+        "d-19571273",
+        "d-14308244",
+        "d-39545358"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-113",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-6157837",
+        "d-14584755",
+        "d-25816994",
+        "d-1759213",
+        "d-3825750",
+        "d-27428509",
+        "d-44030361",
+        "d-26199970",
+        "d-10072941",
+        "d-31890716"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1130",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-17997584",
+        "d-29015485",
+        "d-13636631",
+        "d-8038329",
+        "d-991137",
+        "d-5508750",
+        "d-7399084",
+        "d-28006126",
+        "d-38502066",
+        "d-266641"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 5,
+      "id": "q-1132",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-6961811",
+        "d-2714623",
+        "d-41982985",
+        "d-21746539",
+        "d-33499189",
+        "d-34905328",
+        "d-24069089",
+        "d-20220731",
+        "d-15972906",
+        "d-20457190"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.2
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1137",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-33370",
+        "d-470625",
+        "d-9486930",
+        "d-5123516",
+        "d-1836154",
+        "d-37686718",
+        "d-12685434",
+        "d-38355793",
+        "d-9737083",
+        "d-14180565"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1140",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12009265",
+        "d-308862",
+        "d-32766786",
+        "d-27167110",
+        "d-24581365",
+        "d-17671145",
+        "d-4500832",
+        "d-24450344",
+        "d-18473550",
+        "d-6790197"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1144",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-10071552",
+        "d-9822397",
+        "d-6207111",
+        "d-12224536",
+        "d-3770750",
+        "d-1974176",
+        "d-33960383",
+        "d-5293024",
+        "d-11201004",
+        "d-17656445"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1146",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-13906581",
+        "d-24077493",
+        "d-39059143",
+        "d-21377587",
+        "d-17626822",
+        "d-22446093",
+        "d-19961177",
+        "d-16390264",
+        "d-21323587",
+        "d-10374686"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-115",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-33872649",
+        "d-23686039",
+        "d-34760396",
+        "d-39668245",
+        "d-84085333",
+        "d-4999387",
+        "d-7438803",
+        "d-9110810",
+        "d-7764903",
+        "d-24746892"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1150",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11369420",
+        "d-25832301",
+        "d-11951999",
+        "d-9460704",
+        "d-9478135",
+        "d-20754359",
+        "d-24624992",
+        "d-2359152",
+        "d-8385277",
+        "d-40323454"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1163",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-15305881",
+        "d-18261004",
+        "d-799586",
+        "d-21383026",
+        "d-19149247",
+        "d-8721150",
+        "d-41165286",
+        "d-5473074",
+        "d-4740447",
+        "d-4424888"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 163,
+      "id": "q-1175",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-20725212",
+        "d-18467982",
+        "d-31107919",
+        "d-3610282",
+        "d-3127341",
+        "d-11256632",
+        "d-16058322",
+        "d-16270577",
+        "d-31387717",
+        "d-4321947"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.006134969325153374
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 118,
+      "id": "q-1179",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-20725212",
+        "d-18467982",
+        "d-21330280",
+        "d-946756",
+        "d-1383826",
+        "d-7860396",
+        "d-9317504",
+        "d-24221369",
+        "d-885056",
+        "d-4363526"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.00847457627118644
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-118",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-4465735",
+        "d-6372244",
+        "d-21956124",
+        "d-32454714",
+        "d-4695107",
+        "d-52805891",
+        "d-2604063",
+        "d-26702468",
+        "d-20148808",
+        "d-7735859"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 23,
+      "id": "q-1180",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-24221369",
+        "d-20725212",
+        "d-8005007",
+        "d-44366096",
+        "d-9161988",
+        "d-1383826",
+        "d-9317504",
+        "d-1970884",
+        "d-8512633",
+        "d-2566674"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.043478260869565216
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-1185",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-21203899",
+        "d-41774099",
+        "d-16737210",
+        "d-21859699",
+        "d-7034001",
+        "d-21616324",
+        "d-10582939",
+        "d-202259",
+        "d-24825841",
+        "d-44265107"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1187",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-12737132",
+        "d-52873726",
+        "d-11535539",
+        "d-11011905",
+        "d-36310858",
+        "d-1897324",
+        "d-20028729",
+        "d-23208167",
+        "d-14446279",
+        "d-19138874"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1191",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-4283694",
+        "d-30655442",
+        "d-28069701",
+        "d-52850476",
+        "d-7808055",
+        "d-9872468",
+        "d-19058822",
+        "d-10335603",
+        "d-27587267",
+        "d-15153602"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1194",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11419230",
+        "d-24706198",
+        "d-22561064",
+        "d-5473074",
+        "d-16736883",
+        "d-3400973",
+        "d-12265561",
+        "d-46248894",
+        "d-6636088",
+        "d-15659108"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 5,
+      "id": "q-1196",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-31019903",
+        "d-154243324",
+        "d-33135135",
+        "d-20334484",
+        "d-25649714",
+        "d-6129301",
+        "d-1886551",
+        "d-25690564",
+        "d-28806780",
+        "d-153755807"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.2
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 5,
+      "id": "q-1197",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-31019903",
+        "d-33135135",
+        "d-154243324",
+        "d-20334484",
+        "d-25649714",
+        "d-6129301",
+        "d-25690564",
+        "d-15968271",
+        "d-28806780",
+        "d-31495049"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.2
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3053,
+      "id": "q-1199",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-7454794",
+        "d-21557614",
+        "d-1522336",
+        "d-5698494",
+        "d-4687948",
+        "d-34268160",
+        "d-25488034",
+        "d-35534019",
+        "d-7662206",
+        "d-40156901"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.00032754667540124465
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 137,
+      "id": "q-1200",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-12956194",
+        "d-16270577",
+        "d-493346",
+        "d-21754541",
+        "d-3610282",
+        "d-23938319",
+        "d-22767022",
+        "d-11256632",
+        "d-17402386",
+        "d-2576811"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0072992700729927005
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1202",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-34615397",
+        "d-3475317",
+        "d-24612804",
+        "d-24315156",
+        "d-3330111",
+        "d-4391121",
+        "d-8137081",
+        "d-21535641",
+        "d-21258863",
+        "d-14386505"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1204",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-31141365",
+        "d-52868579",
+        "d-1744097",
+        "d-15907458",
+        "d-15803282",
+        "d-42484543",
+        "d-12100854",
+        "d-6441369",
+        "d-4462419",
+        "d-25629722"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1207",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-18909530",
+        "d-735130",
+        "d-25858295",
+        "d-38380061",
+        "d-42787108",
+        "d-92499",
+        "d-11951999",
+        "d-344240",
+        "d-35660758",
+        "d-30714190"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 78,
+      "id": "q-1213",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-14492339",
+        "d-36444198",
+        "d-17934603",
+        "d-34469966",
+        "d-6853699",
+        "d-21498497",
+        "d-2192419",
+        "d-7948486",
+        "d-11156883",
+        "d-34016987"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.01282051282051282
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1216",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-24142891",
+        "d-13868795",
+        "d-8903143",
+        "d-28006126",
+        "d-13636631",
+        "d-2714623",
+        "d-33499189",
+        "d-29347970",
+        "d-25085979",
+        "d-11666252"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 8,
+      "id": "q-1221",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-8989616",
+        "d-4489217",
+        "d-42836872",
+        "d-4325398",
+        "d-9211173",
+        "d-2402323",
+        "d-9038803",
+        "d-19736671",
+        "d-4457160",
+        "d-4462777"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.125
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1225",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-9650982",
+        "d-6923961",
+        "d-6078882",
+        "d-3590806",
+        "d-19800147",
+        "d-24190159",
+        "d-7211056",
+        "d-4427060",
+        "d-14729253",
+        "d-4457160"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 287,
+      "id": "q-1226",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-11951999",
+        "d-25832301",
+        "d-5483793",
+        "d-213017",
+        "d-2679511",
+        "d-11369420",
+        "d-8083310",
+        "d-23036207",
+        "d-12156187",
+        "d-15121114"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.003484320557491289
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1232",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-13905670",
+        "d-4427060",
+        "d-5922085",
+        "d-1265945",
+        "d-2844490",
+        "d-16119973",
+        "d-9244474",
+        "d-26735018",
+        "d-11415809",
+        "d-24783597"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-124",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4883040",
+        "d-7111021",
+        "d-21479231",
+        "d-341324",
+        "d-31363207",
+        "d-4246523",
+        "d-22414304",
+        "d-32012666",
+        "d-8294009",
+        "d-21878751"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1241",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4427392",
+        "d-2828460",
+        "d-14060030",
+        "d-32797183",
+        "d-25858295",
+        "d-106301",
+        "d-4932668",
+        "d-2973910",
+        "d-12411274",
+        "d-23716150"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 9,
+      "id": "q-1245",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-11748341",
+        "d-23531592",
+        "d-40500723",
+        "d-4791384",
+        "d-154243324",
+        "d-1263446",
+        "d-25493293",
+        "d-1946610",
+        "d-7662395",
+        "d-12428497"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.1111111111111111
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1259",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-13069283",
+        "d-24341590",
+        "d-18340282",
+        "d-20454006",
+        "d-4886637",
+        "d-27123743",
+        "d-12438901",
+        "d-31311495",
+        "d-25973484",
+        "d-17450673"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1262",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-44172171",
+        "d-21561474",
+        "d-12552297",
+        "d-4401289",
+        "d-20420780",
+        "d-22937815",
+        "d-25462689",
+        "d-461550",
+        "d-36831892",
+        "d-8577229"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 5,
+      "id": "q-1266",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-17450673",
+        "d-23557241",
+        "d-27123743",
+        "d-16322674",
+        "d-37480103",
+        "d-13831842",
+        "d-13765757",
+        "d-25973484",
+        "d-16098747",
+        "d-5864770"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.2
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-127",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-21598000",
+        "d-22938539",
+        "d-293661",
+        "d-35231675",
+        "d-12197393",
+        "d-38623601",
+        "d-15600979",
+        "d-2272614",
+        "d-39863735",
+        "d-37768883"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1270",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-13900610",
+        "d-34227917",
+        "d-14843502",
+        "d-9976969",
+        "d-20491205",
+        "d-25806385",
+        "d-10408324",
+        "d-26673492",
+        "d-2488880",
+        "d-1102268"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1271",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-13768432",
+        "d-38040186",
+        "d-32671519",
+        "d-1686881",
+        "d-46266579",
+        "d-21323758",
+        "d-23124332",
+        "d-1472815",
+        "d-24989194",
+        "d-2496002"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 29,
+      "id": "q-1272",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-15685921",
+        "d-13757347",
+        "d-24760136",
+        "d-7840442",
+        "d-36860856",
+        "d-8629328",
+        "d-14893428",
+        "d-23305884",
+        "d-19521501",
+        "d-4323449"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.034482758620689655
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1273",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11041152",
+        "d-1889358",
+        "d-493346",
+        "d-24555417",
+        "d-7549811",
+        "d-30835854",
+        "d-21250322",
+        "d-6472746",
+        "d-22405338",
+        "d-16736883"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1274",
+      "ndcgAtK": 0.7653606369886217,
+      "ranking": [
+        "d-27731651",
+        "d-12428814",
+        "d-7481159",
+        "d-23440856",
+        "d-4406819",
+        "d-7145763",
+        "d-22632303",
+        "d-35085326",
+        "d-22159299",
+        "d-22561064"
+      ],
+      "recallAtK": 0.6666666666666666,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1278",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11335781",
+        "d-22635278",
+        "d-4468861",
+        "d-12705056",
+        "d-22968257",
+        "d-9767444",
+        "d-10162553",
+        "d-7343711",
+        "d-24069089",
+        "d-1196631"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1279",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11335781",
+        "d-22635278",
+        "d-10162553",
+        "d-12705056",
+        "d-4468861",
+        "d-22968257",
+        "d-7343711",
+        "d-9767444",
+        "d-24726600",
+        "d-24069089"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 74,
+      "id": "q-128",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-22867765",
+        "d-79447",
+        "d-87758",
+        "d-2593298",
+        "d-243694",
+        "d-12549585",
+        "d-2056197",
+        "d-7850867",
+        "d-24974080",
+        "d-23513718"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.013513513513513514
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 14,
+      "id": "q-1280",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-37768883",
+        "d-29214508",
+        "d-36233757",
+        "d-40558887",
+        "d-44947611",
+        "d-26008063",
+        "d-25928548",
+        "d-39863735",
+        "d-20287253",
+        "d-435529"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.07142857142857142
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 8,
+      "id": "q-1281",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-36233757",
+        "d-37768883",
+        "d-29214508",
+        "d-25657127",
+        "d-38805486",
+        "d-21108759",
+        "d-39929509",
+        "d-4387784",
+        "d-44947611",
+        "d-1371440"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.125
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1282",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-23649163",
+        "d-19532163",
+        "d-6503185",
+        "d-2565138",
+        "d-26461066",
+        "d-22371455",
+        "d-24700152",
+        "d-24082820",
+        "d-27944135",
+        "d-2526777"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-129",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-27768226",
+        "d-4688277",
+        "d-14361849",
+        "d-21571708",
+        "d-7547329",
+        "d-39652608",
+        "d-26532518",
+        "d-8042158",
+        "d-202259",
+        "d-22711954"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1290",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4687948",
+        "d-40156901",
+        "d-16812091",
+        "d-5698494",
+        "d-7454794",
+        "d-21557614",
+        "d-1522336",
+        "d-46182525",
+        "d-26000593",
+        "d-11246427"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1292",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-56893404",
+        "d-5567005",
+        "d-25571386",
+        "d-2739854",
+        "d-26059876",
+        "d-23389795",
+        "d-13450938",
+        "d-21641088",
+        "d-6313547",
+        "d-14848619"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1298",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11718220",
+        "d-34338075",
+        "d-29981186",
+        "d-14973286",
+        "d-1387104",
+        "d-79231308",
+        "d-2352142",
+        "d-3898784",
+        "d-6945285",
+        "d-30639847"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 17,
+      "id": "q-13",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-7662395",
+        "d-4791384",
+        "d-1263446",
+        "d-11748341",
+        "d-8529693",
+        "d-23557241",
+        "d-8842332",
+        "d-17450673",
+        "d-27123743",
+        "d-26611834"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.058823529411764705
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-130",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-27768226",
+        "d-4688277",
+        "d-14361849",
+        "d-8042158",
+        "d-7547329",
+        "d-26532518",
+        "d-25938251",
+        "d-21571708",
+        "d-22711954",
+        "d-4432763"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1303",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12631697",
+        "d-43566999",
+        "d-34328964",
+        "d-30101891",
+        "d-37037012",
+        "d-23737024",
+        "d-19994006",
+        "d-33554389",
+        "d-23865182",
+        "d-6549091"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 44,
+      "id": "q-1316",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-37311371",
+        "d-3155731",
+        "d-991137",
+        "d-11666252",
+        "d-5508750",
+        "d-24879055",
+        "d-22198971",
+        "d-6961811",
+        "d-28247027",
+        "d-18834078"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.022727272727272728
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1319",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-16284655",
+        "d-46193388",
+        "d-14192687",
+        "d-12742164",
+        "d-2437807",
+        "d-803312",
+        "d-3773719",
+        "d-36398420",
+        "d-427082",
+        "d-3870062"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 172,
+      "id": "q-132",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-6945691",
+        "d-15648443",
+        "d-21181273",
+        "d-7613033",
+        "d-2443495",
+        "d-9159125",
+        "d-3866315",
+        "d-5704562",
+        "d-12513042",
+        "d-20732789"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.005813953488372093
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1320",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-16284655",
+        "d-14192687",
+        "d-803312",
+        "d-46193388",
+        "d-16375102",
+        "d-2437807",
+        "d-36637129",
+        "d-8318286",
+        "d-5395426",
+        "d-3140772"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-133",
+      "ndcgAtK": 0.7039180890341347,
+      "ranking": [
+        "d-12640810",
+        "d-86694016",
+        "d-17934082",
+        "d-6492658",
+        "d-16280642",
+        "d-3155374",
+        "d-25515662",
+        "d-9507605",
+        "d-14328288",
+        "d-42708716"
+      ],
+      "recallAtK": 0.4,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 348,
+      "id": "q-1332",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-12705056",
+        "d-20722510",
+        "d-24998637",
+        "d-9334631",
+        "d-5991309",
+        "d-40963697",
+        "d-8639034",
+        "d-42873134",
+        "d-19130782",
+        "d-25089501"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0028735632183908046
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1335",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-27910499",
+        "d-27243019",
+        "d-33535222",
+        "d-20220731",
+        "d-13398997",
+        "d-24795767",
+        "d-14647747",
+        "d-25479072",
+        "d-8354687",
+        "d-19511011"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1336",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-27910499",
+        "d-27243019",
+        "d-33535222",
+        "d-20220731",
+        "d-13398997",
+        "d-24795767",
+        "d-14647747",
+        "d-25479072",
+        "d-19511011",
+        "d-8354687"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 11,
+      "id": "q-1337",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-29557235",
+        "d-6422576",
+        "d-19149247",
+        "d-13277623",
+        "d-6784372",
+        "d-7645565",
+        "d-12225214",
+        "d-21948782",
+        "d-37138639",
+        "d-7820043"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.09090909090909091
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1339",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-15482274",
+        "d-11933721",
+        "d-41493639",
+        "d-11718220",
+        "d-70490",
+        "d-25691541",
+        "d-116556376",
+        "d-44048701",
+        "d-26798867",
+        "d-32969964"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1344",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-6896063",
+        "d-9559146",
+        "d-9483851",
+        "d-27949347",
+        "d-31293581",
+        "d-15521377",
+        "d-3230557",
+        "d-35543846",
+        "d-14367469",
+        "d-11903247"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1352",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12885341",
+        "d-38376189",
+        "d-34287602",
+        "d-10559501",
+        "d-152245",
+        "d-14376683",
+        "d-4231060",
+        "d-1970884",
+        "d-31560225",
+        "d-11016410"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1359",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11614737",
+        "d-5114940",
+        "d-5551138",
+        "d-8570690",
+        "d-24019260",
+        "d-34369306",
+        "d-2048139",
+        "d-7552215",
+        "d-26199970",
+        "d-14606752"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 85,
+      "id": "q-1362",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-2593298",
+        "d-22867765",
+        "d-79447",
+        "d-87758",
+        "d-24974080",
+        "d-25175997",
+        "d-243694",
+        "d-2056197",
+        "d-12549585",
+        "d-7850867"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.011764705882352941
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 63,
+      "id": "q-1363",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-25175997",
+        "d-2593298",
+        "d-14831629",
+        "d-79447",
+        "d-7850867",
+        "d-27049238",
+        "d-3896759",
+        "d-34876410",
+        "d-32697244",
+        "d-87758"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.015873015873015872
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 11,
+      "id": "q-1368",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9555784",
+        "d-3150030",
+        "d-36960449",
+        "d-23267371",
+        "d-30720103",
+        "d-21553394",
+        "d-3034412",
+        "d-8856690",
+        "d-38551172",
+        "d-16256507"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.09090909090909091
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-137",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-26016929",
+        "d-24735908",
+        "d-31208367",
+        "d-4530659",
+        "d-457630",
+        "d-10536636",
+        "d-26668245",
+        "d-21914176",
+        "d-11880289",
+        "d-24285403"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-1370",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-21553394",
+        "d-9555784",
+        "d-2425364",
+        "d-30720103",
+        "d-36960449",
+        "d-3150030",
+        "d-22023404",
+        "d-3222187",
+        "d-23267371",
+        "d-33740844"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1379",
+      "ndcgAtK": 0.7653606369886217,
+      "ranking": [
+        "d-27123743",
+        "d-17450673",
+        "d-25973484",
+        "d-23557241",
+        "d-16322674",
+        "d-13831842",
+        "d-16098747",
+        "d-13765757",
+        "d-22007333",
+        "d-5864770"
+      ],
+      "recallAtK": 0.5,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1382",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-17755060",
+        "d-3831884",
+        "d-22914228",
+        "d-28334217",
+        "d-10169908",
+        "d-23887844",
+        "d-5256564",
+        "d-3468459",
+        "d-7875158",
+        "d-23895668"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-1385",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-9283422",
+        "d-306006",
+        "d-3559136",
+        "d-15946643",
+        "d-36345185",
+        "d-7621534",
+        "d-12956194",
+        "d-2714623",
+        "d-28468276",
+        "d-7869794"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-1389",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-23895668",
+        "d-8460275",
+        "d-1227277",
+        "d-14874811",
+        "d-2014909",
+        "d-1344498",
+        "d-17195001",
+        "d-13002003",
+        "d-2266471",
+        "d-25513319"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-1395",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-19343151",
+        "d-18218379",
+        "d-17717391",
+        "d-21063817",
+        "d-15335331",
+        "d-1976183",
+        "d-36399107",
+        "d-30553457",
+        "d-17917408",
+        "d-9095394"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-141",
+      "ndcgAtK": 0.9197207891481876,
+      "ranking": [
+        "d-14437255",
+        "d-38794814",
+        "d-6955746",
+        "d-10624000",
+        "d-313394",
+        "d-3099497",
+        "d-36860856",
+        "d-42330403",
+        "d-25653703",
+        "d-1710116"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-142",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-10582939",
+        "d-301866",
+        "d-19511011",
+        "d-43587663",
+        "d-24101431",
+        "d-37182501",
+        "d-854417",
+        "d-27243019",
+        "d-33535222",
+        "d-22852120"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-143",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-10582939",
+        "d-301866",
+        "d-19511011",
+        "d-43587663",
+        "d-24101431",
+        "d-27243019",
+        "d-33535222",
+        "d-37182501",
+        "d-854417",
+        "d-24825841"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-146",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-10582939",
+        "d-24101431",
+        "d-24825841",
+        "d-33535222",
+        "d-301866",
+        "d-19511011",
+        "d-40164383",
+        "d-37182501",
+        "d-19510470",
+        "d-51728753"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-148",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-15728433",
+        "d-1084345",
+        "d-26952804",
+        "d-52887689",
+        "d-10012166",
+        "d-10463997",
+        "d-56528795",
+        "d-19922508",
+        "d-11903247",
+        "d-9178310"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-163",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-18872233",
+        "d-43220289",
+        "d-40949706",
+        "d-19071857",
+        "d-29022271",
+        "d-7627167",
+        "d-5824985",
+        "d-20130904",
+        "d-40078758",
+        "d-6841927"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-171",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12670680",
+        "d-28149602",
+        "d-28015516",
+        "d-14853989",
+        "d-5448119",
+        "d-1049501",
+        "d-14938990",
+        "d-1834762",
+        "d-3330111",
+        "d-6251620"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-179",
+      "ndcgAtK": 0.7653606369886217,
+      "ranking": [
+        "d-27123743",
+        "d-17450673",
+        "d-25973484",
+        "d-16322674",
+        "d-23557241",
+        "d-13831842",
+        "d-16098747",
+        "d-4886637",
+        "d-32534305",
+        "d-37480103"
+      ],
+      "recallAtK": 0.5,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-180",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-16966326",
+        "d-1964163",
+        "d-23052989",
+        "d-9217800",
+        "d-26336593",
+        "d-14460402",
+        "d-27403802",
+        "d-23535770",
+        "d-31347396",
+        "d-30303335"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-183",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12827098",
+        "d-7521113",
+        "d-24282306",
+        "d-22406695",
+        "d-3495456",
+        "d-22973574",
+        "d-8137081",
+        "d-42465769",
+        "d-3391547",
+        "d-25068298"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-185",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-18340282",
+        "d-1866911",
+        "d-22975806",
+        "d-20280410",
+        "d-17088791",
+        "d-27123743",
+        "d-3285322",
+        "d-13007205",
+        "d-45638119",
+        "d-21874312"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 80,
+      "id": "q-198",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-29347970",
+        "d-17934603",
+        "d-3462075",
+        "d-15795880",
+        "d-8538916",
+        "d-16427454",
+        "d-26030079",
+        "d-29366489",
+        "d-6501747",
+        "d-2236768"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0125
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-208",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-7821634",
+        "d-19673227",
+        "d-13519661",
+        "d-1171121",
+        "d-15721252",
+        "d-24834968",
+        "d-5270265",
+        "d-12762485",
+        "d-22482820",
+        "d-195680777"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 6,
+      "id": "q-212",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9291668",
+        "d-11935250",
+        "d-4434951",
+        "d-7808055",
+        "d-14475235",
+        "d-22038539",
+        "d-4679264",
+        "d-3346812",
+        "d-18670",
+        "d-6040392"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.16666666666666666
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 5,
+      "id": "q-213",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-27054878",
+        "d-20887554",
+        "d-750781",
+        "d-9846940",
+        "d-13625993",
+        "d-21048969",
+        "d-5884524",
+        "d-7640792",
+        "d-4445629",
+        "d-44384384"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.2
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-216",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-21366394",
+        "d-34905328",
+        "d-6123924",
+        "d-21363424",
+        "d-20220731",
+        "d-22210434",
+        "d-6961811",
+        "d-35651106",
+        "d-45414636",
+        "d-9909405"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-217",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-21366394",
+        "d-34905328",
+        "d-6123924",
+        "d-20220731",
+        "d-22210434",
+        "d-21363424",
+        "d-45414636",
+        "d-25085979",
+        "d-38502066",
+        "d-266641"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-218",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-21366394",
+        "d-1800734",
+        "d-40365566",
+        "d-20311968",
+        "d-696006",
+        "d-2042250",
+        "d-883747",
+        "d-21395936",
+        "d-3835423",
+        "d-56486733"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-219",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-21366394",
+        "d-1800734",
+        "d-40365566",
+        "d-20311968",
+        "d-696006",
+        "d-2042250",
+        "d-883747",
+        "d-21395936",
+        "d-20148808",
+        "d-56486733"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-230",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-3067015",
+        "d-1148122",
+        "d-38028419",
+        "d-19487477",
+        "d-11457219",
+        "d-45638119",
+        "d-14972169",
+        "d-14663842",
+        "d-71625969",
+        "d-11951999"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-232",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-10536636",
+        "d-7655029",
+        "d-29090823",
+        "d-457630",
+        "d-8298120",
+        "d-25938221",
+        "d-28338268",
+        "d-26016929",
+        "d-21914176",
+        "d-26668245"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-233",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4388470",
+        "d-36708463",
+        "d-23581096",
+        "d-12232678",
+        "d-16963081",
+        "d-28928964",
+        "d-41380943",
+        "d-6106004",
+        "d-9548440",
+        "d-14225271"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-236",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4388470",
+        "d-36708463",
+        "d-23581096",
+        "d-14225271",
+        "d-28928964",
+        "d-29641682",
+        "d-41380943",
+        "d-9548440",
+        "d-37822406",
+        "d-29504413"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-237",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4942718",
+        "d-12881593",
+        "d-17416520",
+        "d-34386619",
+        "d-12824568",
+        "d-464511",
+        "d-2851611",
+        "d-799586",
+        "d-24706198",
+        "d-21943141"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-238",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-2619579",
+        "d-2251426",
+        "d-28704738",
+        "d-8006440",
+        "d-13290521",
+        "d-4463811",
+        "d-9539753",
+        "d-6285534",
+        "d-6820680",
+        "d-12440953"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 24,
+      "id": "q-239",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-16693950",
+        "d-22264117",
+        "d-6040392",
+        "d-7514614",
+        "d-9291668",
+        "d-9559146",
+        "d-516867",
+        "d-6599693",
+        "d-2466614",
+        "d-3230557"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.041666666666666664
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-248",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-5775033",
+        "d-23369842",
+        "d-1568684",
+        "d-26112696",
+        "d-2028532",
+        "d-3285059",
+        "d-4463811",
+        "d-70704988",
+        "d-21993510",
+        "d-18537148"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-249",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-5775033",
+        "d-23369842",
+        "d-1568684",
+        "d-26112696",
+        "d-3285059",
+        "d-2028532",
+        "d-4463811",
+        "d-70704988",
+        "d-33918970",
+        "d-21993510"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 7,
+      "id": "q-261",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-25822299",
+        "d-32322418",
+        "d-17097974",
+        "d-46743299",
+        "d-29148743",
+        "d-35271381",
+        "d-10697096",
+        "d-26658659",
+        "d-1360607",
+        "d-2533768"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.14285714285714285
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-268",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-970012",
+        "d-13000926",
+        "d-34121231",
+        "d-7198295",
+        "d-6766459",
+        "d-4340358",
+        "d-4319174",
+        "d-36838958",
+        "d-12100963",
+        "d-1568684"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-269",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-970012",
+        "d-13000926",
+        "d-7198295",
+        "d-34121231",
+        "d-6766459",
+        "d-4340358",
+        "d-36838958",
+        "d-1568684",
+        "d-12100963",
+        "d-11156883"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-274",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11614737",
+        "d-5114940",
+        "d-5551138",
+        "d-8570690",
+        "d-34369306",
+        "d-24019260",
+        "d-33417012",
+        "d-2048139",
+        "d-7552215",
+        "d-16422880"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-275",
+      "ndcgAtK": 0.2960819109658652,
+      "ranking": [
+        "d-4920376",
+        "d-14819804",
+        "d-85665741",
+        "d-4961038",
+        "d-14241418",
+        "d-29321530",
+        "d-1285713",
+        "d-41325555",
+        "d-5403286",
+        "d-19565018"
+      ],
+      "recallAtK": 0.3333333333333333,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-279",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-14376683",
+        "d-37677954",
+        "d-83667891",
+        "d-1970884",
+        "d-35711485",
+        "d-152245",
+        "d-1383826",
+        "d-16172576",
+        "d-21274496",
+        "d-87986426"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 12,
+      "id": "q-294",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-17240457",
+        "d-406733",
+        "d-35861290",
+        "d-2817000",
+        "d-43156471",
+        "d-11420613",
+        "d-5116145",
+        "d-23664875",
+        "d-27134931",
+        "d-3367829"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.08333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-295",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-1022115",
+        "d-29423324",
+        "d-20310709",
+        "d-22791348",
+        "d-24044977",
+        "d-17223891",
+        "d-26702468",
+        "d-13231899",
+        "d-46926352",
+        "d-42693833"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-298",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-39381118",
+        "d-34439544",
+        "d-23887844",
+        "d-23403754",
+        "d-8551160",
+        "d-8654183",
+        "d-238409",
+        "d-35962023",
+        "d-13380011",
+        "d-4701662"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-3",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-2739854",
+        "d-23389795",
+        "d-14717500",
+        "d-19058822",
+        "d-15153602",
+        "d-13914198",
+        "d-4632921",
+        "d-32181055",
+        "d-13519661",
+        "d-1388704"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-300",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-16120395",
+        "d-4421742",
+        "d-39929509",
+        "d-3553087",
+        "d-25254425",
+        "d-5966635",
+        "d-935538",
+        "d-24221369",
+        "d-15551129",
+        "d-17587795"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 412,
+      "id": "q-303",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-5278233",
+        "d-4085204",
+        "d-1780819",
+        "d-9791313",
+        "d-39481265",
+        "d-2722988",
+        "d-14581009",
+        "d-15635366",
+        "d-13639330",
+        "d-3346812"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0024271844660194173
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 140,
+      "id": "q-312",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-14464451",
+        "d-32770503",
+        "d-3662132",
+        "d-13123189",
+        "d-2107238",
+        "d-17447653",
+        "d-5650232",
+        "d-13618987",
+        "d-15966318",
+        "d-11244195"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.007142857142857143
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 71,
+      "id": "q-314",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-2638387",
+        "d-544971",
+        "d-20996244",
+        "d-25373397",
+        "d-37768883",
+        "d-28904104",
+        "d-13221399",
+        "d-15319019",
+        "d-29214508",
+        "d-25014337"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.014084507042253521
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-324",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-22174015",
+        "d-2014909",
+        "d-6962472",
+        "d-10790846",
+        "d-4658268",
+        "d-10534299",
+        "d-14874811",
+        "d-41087952",
+        "d-22968257",
+        "d-24652030"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-327",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-17997584",
+        "d-35764259",
+        "d-8038329",
+        "d-13905670",
+        "d-20460020",
+        "d-10559501",
+        "d-24423427",
+        "d-2947124",
+        "d-26731863",
+        "d-263364"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-338",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-24211561",
+        "d-23349986",
+        "d-36288526",
+        "d-21958900",
+        "d-3898784",
+        "d-13514898",
+        "d-15948830",
+        "d-20645335",
+        "d-8814634",
+        "d-2391552"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-343",
+      "ndcgAtK": 0.6131471927654584,
+      "ranking": [
+        "d-5884524",
+        "d-23783727",
+        "d-6158879",
+        "d-38630735",
+        "d-7640792",
+        "d-7873737",
+        "d-16760369",
+        "d-6176498",
+        "d-29253460",
+        "d-35495268"
+      ],
+      "recallAtK": 0.5,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-350",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-16927286",
+        "d-35448676",
+        "d-2479538",
+        "d-13552682",
+        "d-40447899",
+        "d-34498325",
+        "d-23604601",
+        "d-4465762",
+        "d-12149169",
+        "d-7260461"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-354",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-8774475",
+        "d-34103335",
+        "d-1866911",
+        "d-4422723",
+        "d-6944800",
+        "d-20183360",
+        "d-1241113",
+        "d-16086778",
+        "d-9063688",
+        "d-2014909"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-36",
+      "ndcgAtK": 0.3065735963827292,
+      "ranking": [
+        "d-33409100",
+        "d-3215494",
+        "d-11705328",
+        "d-18557974",
+        "d-16252863",
+        "d-42441846",
+        "d-21636085",
+        "d-37424881",
+        "d-5152028",
+        "d-10557471"
+      ],
+      "recallAtK": 0.5,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-362",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-38587347",
+        "d-8629328",
+        "d-9705208",
+        "d-15488881",
+        "d-10354110",
+        "d-5003144",
+        "d-38727075",
+        "d-35256900",
+        "d-15833835",
+        "d-34439544"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-380",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-19005293",
+        "d-3835423",
+        "d-12100963",
+        "d-23509113",
+        "d-26068103",
+        "d-2248870",
+        "d-21395936",
+        "d-26030079",
+        "d-40365566",
+        "d-878526"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 36,
+      "id": "q-384",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-51972698",
+        "d-25691878",
+        "d-8582337",
+        "d-15670968",
+        "d-12428497",
+        "d-22194407",
+        "d-13914633",
+        "d-3716075",
+        "d-39984099",
+        "d-8529693"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.027777777777777776
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-385",
+      "ndcgAtK": 0.6934264036172708,
+      "ranking": [
+        "d-1032372",
+        "d-9767444",
+        "d-9955779",
+        "d-24726600",
+        "d-9909405",
+        "d-6944800",
+        "d-4468861",
+        "d-1196631",
+        "d-13231899",
+        "d-13400643"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-386",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-16495649",
+        "d-21260231",
+        "d-39300105",
+        "d-30101891",
+        "d-34139429",
+        "d-12258338",
+        "d-38799797",
+        "d-9310407",
+        "d-34544514",
+        "d-24525112"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-388",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-21602220",
+        "d-1148122",
+        "d-471735",
+        "d-6669242",
+        "d-46346525",
+        "d-12881593",
+        "d-34386619",
+        "d-25519138",
+        "d-12428814",
+        "d-3367829"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-399",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-791050",
+        "d-32357890",
+        "d-471921",
+        "d-42387637",
+        "d-21003930",
+        "d-2158500",
+        "d-41911192",
+        "d-7285256",
+        "d-21495419",
+        "d-36211049"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-410",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-14924526",
+        "d-13757347",
+        "d-116792",
+        "d-1410197",
+        "d-29723642",
+        "d-35520219",
+        "d-29231620",
+        "d-810480",
+        "d-25416944",
+        "d-23670644"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-411",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-14924526",
+        "d-13757347",
+        "d-116792",
+        "d-29723642",
+        "d-35520219",
+        "d-1410197",
+        "d-810480",
+        "d-23670644",
+        "d-29231620",
+        "d-25416944"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 12,
+      "id": "q-415",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-20937018",
+        "d-18852643",
+        "d-4709641",
+        "d-37205759",
+        "d-51386222",
+        "d-24530130",
+        "d-30351165",
+        "d-12443371",
+        "d-6917133",
+        "d-24906548"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.08333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-42",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-40913091",
+        "d-18174210",
+        "d-27889071",
+        "d-45218443",
+        "d-4449524",
+        "d-27162821",
+        "d-10128893",
+        "d-6315132",
+        "d-22482024",
+        "d-21636085"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 110,
+      "id": "q-421",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-1065627",
+        "d-12866641",
+        "d-25435456",
+        "d-17388232",
+        "d-6944800",
+        "d-927561",
+        "d-26231129",
+        "d-43224840",
+        "d-4346436",
+        "d-10812605"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.00909090909090909
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 11,
+      "id": "q-431",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-14496749",
+        "d-2543135",
+        "d-16728949",
+        "d-19922508",
+        "d-29429111",
+        "d-13380011",
+        "d-23052989",
+        "d-25251625",
+        "d-4795303",
+        "d-23887844"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.09090909090909091
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-436",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-14637235",
+        "d-12588500",
+        "d-36831892",
+        "d-406733",
+        "d-8267678",
+        "d-32638085",
+        "d-13790144",
+        "d-28271439",
+        "d-17919731",
+        "d-14332945"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1114,
+      "id": "q-437",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-2359152",
+        "d-3391547",
+        "d-24466904",
+        "d-5782614",
+        "d-5765455",
+        "d-8083310",
+        "d-5836",
+        "d-39851630",
+        "d-8385277",
+        "d-6000423"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0008976660682226212
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-439",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4423559",
+        "d-9629682",
+        "d-22178316",
+        "d-14333540",
+        "d-4932668",
+        "d-5395426",
+        "d-39291138",
+        "d-23804187",
+        "d-35008773",
+        "d-5944514"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-440",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4423559",
+        "d-9629682",
+        "d-22178316",
+        "d-4932668",
+        "d-14333540",
+        "d-5944514",
+        "d-18575183",
+        "d-23804187",
+        "d-39291138",
+        "d-5395426"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-443",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-10165258",
+        "d-9911547",
+        "d-29125354",
+        "d-5415832",
+        "d-92499",
+        "d-1145473",
+        "d-19583924",
+        "d-13048272",
+        "d-34982259",
+        "d-12462961"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 10,
+      "id": "q-452",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9154703",
+        "d-22186938",
+        "d-8290760",
+        "d-4632921",
+        "d-25085979",
+        "d-14225271",
+        "d-4378885",
+        "d-37437064",
+        "d-32181055",
+        "d-12804937"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.1
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 18,
+      "id": "q-475",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-23576165",
+        "d-195689757",
+        "d-18810195",
+        "d-3468459",
+        "d-20672596",
+        "d-7548577",
+        "d-3831884",
+        "d-8724666",
+        "d-13466622",
+        "d-29473081"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.05555555555555555
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-478",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-14767844",
+        "d-5508750",
+        "d-34854444",
+        "d-991137",
+        "d-11666252",
+        "d-6961811",
+        "d-19561411",
+        "d-21320417",
+        "d-6123924",
+        "d-2506153"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 146,
+      "id": "q-48",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-18617259",
+        "d-11349166",
+        "d-24512064",
+        "d-5850219",
+        "d-44672703",
+        "d-29955650",
+        "d-21644993",
+        "d-43587663",
+        "d-13322804",
+        "d-27063470"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.00684931506849315
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-49",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-5953485",
+        "d-23913146",
+        "d-5702790",
+        "d-8006440",
+        "d-2619579",
+        "d-1333643",
+        "d-42662816",
+        "d-15590539",
+        "d-7029990",
+        "d-12871002"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-491",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-56893404",
+        "d-5567005",
+        "d-13450938",
+        "d-25571386",
+        "d-32181055",
+        "d-26059876",
+        "d-6588614",
+        "d-14864285",
+        "d-11899391",
+        "d-1447990"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-5",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-3413083",
+        "d-13734012",
+        "d-13791044",
+        "d-21186109",
+        "d-5372432",
+        "d-22194407",
+        "d-27063470",
+        "d-8670178",
+        "d-18617259",
+        "d-9764256"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-50",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12580014",
+        "d-39559521",
+        "d-25738896",
+        "d-12489130",
+        "d-4561402",
+        "d-29785642",
+        "d-19736671",
+        "d-13989491",
+        "d-15707049",
+        "d-17844478"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-501",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-17930286",
+        "d-24510595",
+        "d-42095718",
+        "d-24865781",
+        "d-8570317",
+        "d-44830890",
+        "d-39390206",
+        "d-22995579",
+        "d-8672737",
+        "d-39985001"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 358,
+      "id": "q-502",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-38180456",
+        "d-3222122",
+        "d-40905302",
+        "d-17626822",
+        "d-6421734",
+        "d-143796742",
+        "d-21377587",
+        "d-16390264",
+        "d-21203899",
+        "d-39059143"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.002793296089385475
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-507",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-7433668",
+        "d-30774694",
+        "d-1386103",
+        "d-7386360",
+        "d-21878751",
+        "d-23801039",
+        "d-5798227",
+        "d-34615397",
+        "d-16066726",
+        "d-14644164"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 12,
+      "id": "q-508",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-25516011",
+        "d-25985964",
+        "d-14550841",
+        "d-34982259",
+        "d-92499",
+        "d-4381486",
+        "d-623486",
+        "d-4417177",
+        "d-18374364",
+        "d-7583161"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.08333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-51",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-45638119",
+        "d-32001951",
+        "d-17648235",
+        "d-29366489",
+        "d-43385013",
+        "d-16086778",
+        "d-1866911",
+        "d-1554348",
+        "d-2014909",
+        "d-7821634"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-513",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-12770738",
+        "d-13230773",
+        "d-6647414",
+        "d-25301182",
+        "d-24918110",
+        "d-195689316",
+        "d-11630388",
+        "d-23967973",
+        "d-35495268",
+        "d-4463588"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-514",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-16256507",
+        "d-26409363",
+        "d-3034412",
+        "d-25259746",
+        "d-9555784",
+        "d-44572913",
+        "d-13312471",
+        "d-30720103",
+        "d-36960449",
+        "d-4462079"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-516",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-29564505",
+        "d-20109325",
+        "d-40935722",
+        "d-18988265",
+        "d-21495419",
+        "d-2032877",
+        "d-26107000",
+        "d-25319221",
+        "d-21287352",
+        "d-7285256"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 100,
+      "id": "q-517",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-19658917",
+        "d-25135304",
+        "d-23017040",
+        "d-20288322",
+        "d-11481946",
+        "d-38028419",
+        "d-42800527",
+        "d-2158500",
+        "d-25028913",
+        "d-4353857"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.01
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-521",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-34873974",
+        "d-29526125",
+        "d-25028913",
+        "d-3056682",
+        "d-20887554",
+        "d-27550580",
+        "d-15194125",
+        "d-9846940",
+        "d-40156901",
+        "d-44384384"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-525",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-13639330",
+        "d-2151983",
+        "d-4387494",
+        "d-8548635",
+        "d-4547102",
+        "d-3230361",
+        "d-6455142",
+        "d-5409905",
+        "d-13790144",
+        "d-32638085"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 13,
+      "id": "q-527",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-1617327",
+        "d-7506409",
+        "d-27822315",
+        "d-18489989",
+        "d-38899659",
+        "d-9412420",
+        "d-4325137",
+        "d-3464191",
+        "d-21645205",
+        "d-29689140"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.07692307692307693
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-528",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-5476778",
+        "d-23326722",
+        "d-10450300",
+        "d-24512064",
+        "d-22705234",
+        "d-18938992",
+        "d-8325952",
+        "d-76776022",
+        "d-92308",
+        "d-13322804"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-53",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-45638119",
+        "d-32001951",
+        "d-17648235",
+        "d-29366489",
+        "d-7821634",
+        "d-16086778",
+        "d-43385013",
+        "d-2014909",
+        "d-1554348",
+        "d-1866911"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-532",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12991445",
+        "d-21164071",
+        "d-79447",
+        "d-34338075",
+        "d-27889071",
+        "d-11718220",
+        "d-1387104",
+        "d-14973286",
+        "d-23195674",
+        "d-44387884"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-533",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12991445",
+        "d-21164071",
+        "d-79447",
+        "d-34338075",
+        "d-27889071",
+        "d-11718220",
+        "d-1387104",
+        "d-14973286",
+        "d-44387884",
+        "d-23195674"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-535",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-5567005",
+        "d-27428509",
+        "d-6176498",
+        "d-39368721",
+        "d-3801693",
+        "d-33960383",
+        "d-27449472",
+        "d-9288638",
+        "d-2138843",
+        "d-43483151"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-536",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-16056514",
+        "d-2158500",
+        "d-6123521",
+        "d-41911192",
+        "d-36357627",
+        "d-25440070",
+        "d-2436602",
+        "d-3943235",
+        "d-44500794",
+        "d-27022864"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-539",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-13282296",
+        "d-41264017",
+        "d-21472388",
+        "d-10190462",
+        "d-37583120",
+        "d-11953232",
+        "d-45457778",
+        "d-7011850",
+        "d-6309659",
+        "d-13933299"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-54",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-49556906",
+        "d-3973445",
+        "d-1590744",
+        "d-24721866",
+        "d-38533515",
+        "d-5172048",
+        "d-2272614",
+        "d-22621251",
+        "d-3419709",
+        "d-28712203"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-540",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-2225918",
+        "d-23869951",
+        "d-17150648",
+        "d-11886686",
+        "d-6565037",
+        "d-45154987",
+        "d-3085264",
+        "d-4611267",
+        "d-46451940",
+        "d-16398827"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 11,
+      "id": "q-544",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-1970884",
+        "d-3493623",
+        "d-44366096",
+        "d-10559501",
+        "d-26731863",
+        "d-10627801",
+        "d-11784947",
+        "d-9539248",
+        "d-37727521",
+        "d-25175223"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.09090909090909091
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-549",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-9433958",
+        "d-26731863",
+        "d-2274272",
+        "d-7820043",
+        "d-3107733",
+        "d-10559501",
+        "d-39545358",
+        "d-13651792",
+        "d-3493623",
+        "d-4345605"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-551",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-8903143",
+        "d-33499189",
+        "d-6961811",
+        "d-41982985",
+        "d-20220731",
+        "d-13398997",
+        "d-2462673",
+        "d-2714623",
+        "d-21392223",
+        "d-2825380"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-552",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-1471041",
+        "d-27772649",
+        "d-21060008",
+        "d-13578199",
+        "d-10675756",
+        "d-14340571",
+        "d-26735018",
+        "d-11415809",
+        "d-1365188",
+        "d-3828508"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 11,
+      "id": "q-554",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9878167",
+        "d-29399239",
+        "d-381602",
+        "d-15248287",
+        "d-36345578",
+        "d-31624828",
+        "d-9225850",
+        "d-28015516",
+        "d-3330111",
+        "d-52925737"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.09090909090909091
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-56",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4709641",
+        "d-22185730",
+        "d-22116439",
+        "d-15347087",
+        "d-6492658",
+        "d-21199527",
+        "d-18852643",
+        "d-18038250",
+        "d-20937018",
+        "d-3140772"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 80,
+      "id": "q-560",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-11233339",
+        "d-1855679",
+        "d-45096063",
+        "d-13798951",
+        "d-39084565",
+        "d-24783597",
+        "d-25726838",
+        "d-40312663",
+        "d-2844490",
+        "d-20310709"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0125
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-569",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-37311371",
+        "d-3155731",
+        "d-991137",
+        "d-23460562",
+        "d-11666252",
+        "d-5508750",
+        "d-36271512",
+        "d-6961811",
+        "d-10765888",
+        "d-21320417"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-57",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4709641",
+        "d-22185730",
+        "d-22116439",
+        "d-15347087",
+        "d-6492658",
+        "d-21199527",
+        "d-18852643",
+        "d-20937018",
+        "d-18038250",
+        "d-30351165"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-575",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-4421746",
+        "d-9548440",
+        "d-10300888",
+        "d-9704467",
+        "d-36066871",
+        "d-8747771",
+        "d-13583615",
+        "d-1631583",
+        "d-25041967",
+        "d-39462488"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 8,
+      "id": "q-577",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-21392703",
+        "d-8133050",
+        "d-20419913",
+        "d-37269418",
+        "d-1852826",
+        "d-3930020",
+        "d-26474812",
+        "d-5289038",
+        "d-2140513",
+        "d-7386360"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.125
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-578",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-8764879",
+        "d-33796570",
+        "d-22358449",
+        "d-18882947",
+        "d-4394817",
+        "d-13450938",
+        "d-11369420",
+        "d-15983148",
+        "d-39291138",
+        "d-9687772"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 35,
+      "id": "q-587",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-7142113",
+        "d-14192687",
+        "d-16375102",
+        "d-14191255",
+        "d-16541762",
+        "d-39465575",
+        "d-86129154",
+        "d-33063763",
+        "d-23208167",
+        "d-16287725"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.02857142857142857
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-589",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-10984005",
+        "d-24625323",
+        "d-2475059",
+        "d-1831916",
+        "d-1068106",
+        "d-22057077",
+        "d-2338488",
+        "d-12206390",
+        "d-5556809",
+        "d-31889025"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-593",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-19675911",
+        "d-20945963",
+        "d-13481731",
+        "d-33533307",
+        "d-31889025",
+        "d-4445629",
+        "d-24408040",
+        "d-25355575",
+        "d-7640792",
+        "d-25451374"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-597",
+      "ndcgAtK": 0.46927872602275644,
+      "ranking": [
+        "d-36355784",
+        "d-23136735",
+        "d-5433667",
+        "d-829646",
+        "d-46355579",
+        "d-25742130",
+        "d-12779444",
+        "d-76415938",
+        "d-46695481",
+        "d-13857083"
+      ],
+      "recallAtK": 0.3333333333333333,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 7,
+      "id": "q-598",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-6561200",
+        "d-27873158",
+        "d-27446873",
+        "d-76415938",
+        "d-9764256",
+        "d-36355784",
+        "d-25742130",
+        "d-46695481",
+        "d-28617573",
+        "d-7650066"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.14285714285714285
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-613",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-9638032",
+        "d-7549811",
+        "d-1371440",
+        "d-1897324",
+        "d-33911859",
+        "d-36830715",
+        "d-16056410",
+        "d-1964163",
+        "d-20054396",
+        "d-5108807"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 12,
+      "id": "q-619",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-10812605",
+        "d-5254741",
+        "d-22621251",
+        "d-6334188",
+        "d-20127522",
+        "d-32742683",
+        "d-3559136",
+        "d-5172048",
+        "d-25589047",
+        "d-19673227"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.08333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 16,
+      "id": "q-623",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-22843838",
+        "d-23267371",
+        "d-36960449",
+        "d-9555784",
+        "d-4462079",
+        "d-3150030",
+        "d-21553394",
+        "d-25599283",
+        "d-30720103",
+        "d-22023404"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0625
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-628",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-29134911",
+        "d-18938992",
+        "d-22705234",
+        "d-24512064",
+        "d-5476778",
+        "d-1071991",
+        "d-37444589",
+        "d-10450300",
+        "d-2601135",
+        "d-5398179"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-636",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-24294572",
+        "d-42708716",
+        "d-34071621",
+        "d-14328288",
+        "d-19752008",
+        "d-1285713",
+        "d-7116734",
+        "d-1910120",
+        "d-5914739",
+        "d-11289247"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-637",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-31019903",
+        "d-154243324",
+        "d-33135135",
+        "d-25649714",
+        "d-6129301",
+        "d-20334484",
+        "d-31495049",
+        "d-24318630",
+        "d-15968271",
+        "d-35022568"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-641",
+      "ndcgAtK": 0.6131471927654584,
+      "ranking": [
+        "d-5912283",
+        "d-26150367",
+        "d-17973630",
+        "d-24346598",
+        "d-21373821",
+        "d-31554917",
+        "d-5431268",
+        "d-8570690",
+        "d-7627167",
+        "d-6191684"
+      ],
+      "recallAtK": 0.5,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 29,
+      "id": "q-644",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-8839502",
+        "d-195352",
+        "d-27449472",
+        "d-28207326",
+        "d-11481946",
+        "d-26025820",
+        "d-43483151",
+        "d-120626",
+        "d-6157837",
+        "d-356218"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.034482758620689655
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-649",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12789595",
+        "d-13906581",
+        "d-38664102",
+        "d-63858430",
+        "d-24159217",
+        "d-17374970",
+        "d-12584053",
+        "d-4857093",
+        "d-11624482",
+        "d-1642727"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-659",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-18321590",
+        "d-32454714",
+        "d-46602807",
+        "d-1215116",
+        "d-2274272",
+        "d-38043606",
+        "d-14082855",
+        "d-34481589",
+        "d-28821565",
+        "d-1386103"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 514,
+      "id": "q-660",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-3308636",
+        "d-43378932",
+        "d-32353339",
+        "d-30101891",
+        "d-24211561",
+        "d-21590125",
+        "d-24097933",
+        "d-26461066",
+        "d-37619697",
+        "d-80109277"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0019455252918287938
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 7,
+      "id": "q-674",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-7662206",
+        "d-9814332",
+        "d-15360986",
+        "d-30981192",
+        "d-9617381",
+        "d-22674621",
+        "d-2095573",
+        "d-15561961",
+        "d-21571708",
+        "d-2423940"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.14285714285714285
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-684",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-4942718",
+        "d-12881593",
+        "d-34386619",
+        "d-17416520",
+        "d-12824568",
+        "d-2851611",
+        "d-464511",
+        "d-799586",
+        "d-24706198",
+        "d-7764903"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 642,
+      "id": "q-690",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-15692098",
+        "d-834336",
+        "d-19487477",
+        "d-31324978",
+        "d-1840993",
+        "d-27889071",
+        "d-11457219",
+        "d-34733465",
+        "d-30786800",
+        "d-25643818"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.001557632398753894
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-691",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-33076846",
+        "d-29073751",
+        "d-17671145",
+        "d-10991183",
+        "d-18041692",
+        "d-24624992",
+        "d-2686003",
+        "d-5765455",
+        "d-52944377",
+        "d-9460704"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-692",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-24088502",
+        "d-11156883",
+        "d-25420421",
+        "d-8137081",
+        "d-43587663",
+        "d-3090454",
+        "d-29399239",
+        "d-20608982",
+        "d-3698758",
+        "d-46926352"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-693",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-24088502",
+        "d-3698758",
+        "d-25420421",
+        "d-11156883",
+        "d-43587663",
+        "d-3090454",
+        "d-29399239",
+        "d-27243019",
+        "d-46926352",
+        "d-301866"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 15,
+      "id": "q-70",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9483851",
+        "d-27949347",
+        "d-11903247",
+        "d-6896063",
+        "d-28107602",
+        "d-9169645",
+        "d-31624828",
+        "d-21557055",
+        "d-37204802",
+        "d-14460402"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.06666666666666667
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-700",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-16557565",
+        "d-4350400",
+        "d-14926162",
+        "d-38675228",
+        "d-1669173",
+        "d-10504681",
+        "d-40429879",
+        "d-14610165",
+        "d-38751591",
+        "d-435529"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-702",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-16557565",
+        "d-4350400",
+        "d-38675228",
+        "d-14926162",
+        "d-1669173",
+        "d-10504681",
+        "d-14610165",
+        "d-19950357",
+        "d-38751591",
+        "d-435529"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 33,
+      "id": "q-715",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-13290521",
+        "d-53211308",
+        "d-1727493",
+        "d-5409325",
+        "d-19358586",
+        "d-19047331",
+        "d-2619579",
+        "d-12440953",
+        "d-32556431",
+        "d-9159495"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.030303030303030304
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 38,
+      "id": "q-716",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-13290521",
+        "d-2619579",
+        "d-12440953",
+        "d-2251426",
+        "d-21909315",
+        "d-153744",
+        "d-13964633",
+        "d-32556431",
+        "d-9159495",
+        "d-17544977"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.02631578947368421
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-718",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-17587795",
+        "d-175735",
+        "d-25254425",
+        "d-34034749",
+        "d-28809022",
+        "d-3346812",
+        "d-9291668",
+        "d-15778034",
+        "d-9451052",
+        "d-4679264"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-72",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-6076903",
+        "d-8997410",
+        "d-2119889",
+        "d-14492964",
+        "d-25970224",
+        "d-5700349",
+        "d-1686881",
+        "d-19485649",
+        "d-38380061",
+        "d-34735369"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-721",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-1834762",
+        "d-14853989",
+        "d-9784254",
+        "d-5448119",
+        "d-12670680",
+        "d-28015516",
+        "d-32454714",
+        "d-5476778",
+        "d-1049501",
+        "d-29509926"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-723",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-5531479",
+        "d-20608982",
+        "d-1871230",
+        "d-9878167",
+        "d-29399239",
+        "d-3330111",
+        "d-1049501",
+        "d-17741440",
+        "d-46926352",
+        "d-2236768"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-727",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-22406695",
+        "d-36444198",
+        "d-17934603",
+        "d-7521113",
+        "d-12670680",
+        "d-20722510",
+        "d-22621251",
+        "d-22483580",
+        "d-7948486",
+        "d-16550075"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-728",
+      "ndcgAtK": 0.38685280723454163,
+      "ranking": [
+        "d-22406695",
+        "d-36444198",
+        "d-17934603",
+        "d-7521113",
+        "d-22621251",
+        "d-12670680",
+        "d-20722510",
+        "d-46926352",
+        "d-16550075",
+        "d-22483580"
+      ],
+      "recallAtK": 0.5,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-729",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-26851674",
+        "d-18038250",
+        "d-18882947",
+        "d-1336292",
+        "d-56528795",
+        "d-32101982",
+        "d-26059876",
+        "d-9178310",
+        "d-13989491",
+        "d-35062452"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 9,
+      "id": "q-742",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-3984231",
+        "d-7873737",
+        "d-25028913",
+        "d-2842550",
+        "d-6853699",
+        "d-6270720",
+        "d-19332616",
+        "d-10576136",
+        "d-32159283",
+        "d-17897801"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.1111111111111111
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 25,
+      "id": "q-743",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-3984231",
+        "d-6270720",
+        "d-7662206",
+        "d-17897801",
+        "d-4020950",
+        "d-7873737",
+        "d-6853699",
+        "d-13923069",
+        "d-2842550",
+        "d-10576136"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.04
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-744",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-4138659",
+        "d-6454371",
+        "d-8460275",
+        "d-22820637",
+        "d-26104554",
+        "d-20649327",
+        "d-16319097",
+        "d-14092737",
+        "d-33920995",
+        "d-13492264"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-75",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-37768883",
+        "d-4387784",
+        "d-36233757",
+        "d-29214508",
+        "d-25657127",
+        "d-13965483",
+        "d-44947611",
+        "d-2099400",
+        "d-26488879",
+        "d-1744752"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-756",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-27134527",
+        "d-2831620",
+        "d-17919731",
+        "d-6669242",
+        "d-3230361",
+        "d-8646760",
+        "d-22036571",
+        "d-12172346",
+        "d-24863571",
+        "d-19149247"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-759",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-1805641",
+        "d-3929361",
+        "d-12409683",
+        "d-6503185",
+        "d-10617916",
+        "d-18074797",
+        "d-13948920",
+        "d-17925632",
+        "d-2526777",
+        "d-5289038"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 48,
+      "id": "q-768",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-19497526",
+        "d-3230361",
+        "d-12217662",
+        "d-32975424",
+        "d-12622860",
+        "d-12207167",
+        "d-34498325",
+        "d-1373287",
+        "d-36271512",
+        "d-26461066"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.020833333333333332
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-770",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-15476777",
+        "d-2492146",
+        "d-10958594",
+        "d-2328272",
+        "d-5641851",
+        "d-195680777",
+        "d-6334188",
+        "d-2058909",
+        "d-32421068",
+        "d-24575065"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 18,
+      "id": "q-775",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-11569583",
+        "d-27635177",
+        "d-31293581",
+        "d-43014661",
+        "d-12552297",
+        "d-28441310",
+        "d-9291596",
+        "d-2701077",
+        "d-13025574",
+        "d-7986878"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.05555555555555555
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-781",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-8246922",
+        "d-24338780",
+        "d-40632104",
+        "d-39084565",
+        "d-34378726",
+        "d-6270720",
+        "d-854417",
+        "d-2947124",
+        "d-15707049",
+        "d-1386103"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 5,
+      "id": "q-783",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-24338780",
+        "d-39084565",
+        "d-8246922",
+        "d-34378726",
+        "d-40632104",
+        "d-854417",
+        "d-21878751",
+        "d-6270720",
+        "d-2947124",
+        "d-344240"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.2
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-784",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-42662816",
+        "d-2356950",
+        "d-16627684",
+        "d-2619579",
+        "d-6285534",
+        "d-13290521",
+        "d-22871664",
+        "d-12440953",
+        "d-22843616",
+        "d-2251426"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 274,
+      "id": "q-785",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-54440",
+        "d-24979644",
+        "d-24234341",
+        "d-15570962",
+        "d-14717213",
+        "d-54561709",
+        "d-23586085",
+        "d-31543713",
+        "d-15274349",
+        "d-8202880"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0036496350364963502
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-793",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-8551160",
+        "d-23403754",
+        "d-39381118",
+        "d-28249680",
+        "d-8425533",
+        "d-34439544",
+        "d-10698739",
+        "d-935034",
+        "d-8247597",
+        "d-8654183"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-800",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-6040392",
+        "d-22543403",
+        "d-22264117",
+        "d-1848452",
+        "d-9291668",
+        "d-4679264",
+        "d-4434951",
+        "d-26230669",
+        "d-3230557",
+        "d-34747208"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-805",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-22180793",
+        "d-17188921",
+        "d-3118719",
+        "d-14149065",
+        "d-3727986",
+        "d-17631671",
+        "d-2593298",
+        "d-2060137",
+        "d-9600826",
+        "d-7621534"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-808",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-36606083",
+        "d-20821402",
+        "d-85394684",
+        "d-15478227",
+        "d-18111172",
+        "d-30261663",
+        "d-8352137",
+        "d-21221346",
+        "d-41852733",
+        "d-25462689"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-811",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-19799455",
+        "d-23868856",
+        "d-5107861",
+        "d-1964163",
+        "d-8698208",
+        "d-12462961",
+        "d-36838958",
+        "d-980008",
+        "d-3113630",
+        "d-23929297"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-814",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-33387953",
+        "d-8133180",
+        "d-8677721",
+        "d-3590806",
+        "d-21307488",
+        "d-4396105",
+        "d-85665741",
+        "d-2272614",
+        "d-120626",
+        "d-15322518"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 212,
+      "id": "q-820",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-21853444",
+        "d-30261663",
+        "d-35448676",
+        "d-18111172",
+        "d-8712839",
+        "d-13384318",
+        "d-18467982",
+        "d-17539488",
+        "d-5116145",
+        "d-236204"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.0047169811320754715
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 176,
+      "id": "q-821",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-18111172",
+        "d-21853444",
+        "d-30261663",
+        "d-13384318",
+        "d-35448676",
+        "d-18467982",
+        "d-4313478",
+        "d-236204",
+        "d-17539488",
+        "d-8712839"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.005681818181818182
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-823",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-15319019",
+        "d-2319305",
+        "d-6421792",
+        "d-6426919",
+        "d-25014337",
+        "d-13221399",
+        "d-641786",
+        "d-9505402",
+        "d-6503534",
+        "d-39929509"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 45,
+      "id": "q-830",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-11535539",
+        "d-12737132",
+        "d-8417211",
+        "d-52873726",
+        "d-30675656",
+        "d-28086354",
+        "d-14328288",
+        "d-17055665",
+        "d-38751591",
+        "d-6268106"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.022222222222222223
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 169,
+      "id": "q-831",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-11535539",
+        "d-12737132",
+        "d-28086354",
+        "d-8417211",
+        "d-17055665",
+        "d-25623469",
+        "d-30675656",
+        "d-6259170",
+        "d-52873726",
+        "d-1605392"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.005917159763313609
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-832",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-30303335",
+        "d-19205437",
+        "d-6936141",
+        "d-29362104",
+        "d-24670522",
+        "d-7116734",
+        "d-1605392",
+        "d-13760557",
+        "d-5094468",
+        "d-13780287"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 164,
+      "id": "q-834",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-23100962",
+        "d-8536018",
+        "d-32985041",
+        "d-23122306",
+        "d-20381484",
+        "d-22995164",
+        "d-14848619",
+        "d-13823200",
+        "d-24923605",
+        "d-23513818"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.006097560975609756
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-837",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-16346504",
+        "d-15928989",
+        "d-26121646",
+        "d-9239963",
+        "d-6121668",
+        "d-20725212",
+        "d-6259170",
+        "d-25628793",
+        "d-30369606",
+        "d-3210545"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-839",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-6219790",
+        "d-17327939",
+        "d-1469751",
+        "d-8182950",
+        "d-4435369",
+        "d-25435456",
+        "d-13923069",
+        "d-31715818",
+        "d-13764090",
+        "d-14692646"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-845",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-29399239",
+        "d-2236768",
+        "d-9878167",
+        "d-17741440",
+        "d-3330111",
+        "d-36345578",
+        "d-27789588",
+        "d-20608982",
+        "d-36089763",
+        "d-5531479"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-847",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-16787954",
+        "d-4424888",
+        "d-341324",
+        "d-5284188",
+        "d-21479231",
+        "d-11254040",
+        "d-32023005",
+        "d-7111021",
+        "d-18321590",
+        "d-31363207"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-852",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-474325",
+        "d-13843341",
+        "d-8190282",
+        "d-25098790",
+        "d-26611094",
+        "d-38735355",
+        "d-34208005",
+        "d-14361849",
+        "d-12145359",
+        "d-25761154"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-859",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9076196",
+        "d-22049489",
+        "d-57783564",
+        "d-1982286",
+        "d-15946643",
+        "d-29366489",
+        "d-4429118",
+        "d-33638477",
+        "d-825728",
+        "d-12315072"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 23,
+      "id": "q-870",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-4345757",
+        "d-41310252",
+        "d-23967973",
+        "d-35495268",
+        "d-40949706",
+        "d-43220289",
+        "d-20288322",
+        "d-11630388",
+        "d-29025270",
+        "d-5824985"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.043478260869565216
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-873",
+      "ndcgAtK": 0.23463936301137822,
+      "ranking": [
+        "d-4345757",
+        "d-41310252",
+        "d-3315558",
+        "d-20288322",
+        "d-12030735",
+        "d-23369842",
+        "d-36558211",
+        "d-18084826",
+        "d-29025270",
+        "d-26112696"
+      ],
+      "recallAtK": 0.2,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-879",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-8426046",
+        "d-26112624",
+        "d-6670101",
+        "d-24737389",
+        "d-18467982",
+        "d-8327914",
+        "d-13552682",
+        "d-45143088",
+        "d-20018321",
+        "d-26596106"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-880",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-26112624",
+        "d-6670101",
+        "d-8426046",
+        "d-18467982",
+        "d-20725212",
+        "d-8126244",
+        "d-24737389",
+        "d-8327914",
+        "d-26596106",
+        "d-15893330"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-882",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-14803797",
+        "d-12709184",
+        "d-6327940",
+        "d-4463811",
+        "d-26652147",
+        "d-5687200",
+        "d-21547032",
+        "d-44624045",
+        "d-12943966",
+        "d-71341302"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 30,
+      "id": "q-887",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-2140513",
+        "d-16712164",
+        "d-27995781",
+        "d-6599693",
+        "d-17416520",
+        "d-25413327",
+        "d-7717468",
+        "d-516867",
+        "d-680949",
+        "d-4942718"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.03333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-903",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-10648422",
+        "d-9334631",
+        "d-5752492",
+        "d-8639034",
+        "d-5372773",
+        "d-854417",
+        "d-14938990",
+        "d-26873988",
+        "d-14492339",
+        "d-7343711"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-904",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-7370282",
+        "d-5700349",
+        "d-2177022",
+        "d-3825472",
+        "d-43224840",
+        "d-4417558",
+        "d-1871230",
+        "d-23160444",
+        "d-34735369",
+        "d-3506723"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-907",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-6923961",
+        "d-57783564",
+        "d-21181273",
+        "d-4422868",
+        "d-11915280",
+        "d-1387654",
+        "d-25238950",
+        "d-20372201",
+        "d-4447785",
+        "d-26059876"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-911",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-11254556",
+        "d-12130690",
+        "d-10666475",
+        "d-32927401",
+        "d-9956893",
+        "d-1275505",
+        "d-19843244",
+        "d-58006489",
+        "d-5586392",
+        "d-4447055"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 8,
+      "id": "q-913",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9956893",
+        "d-11238784",
+        "d-23286603",
+        "d-23938319",
+        "d-712078",
+        "d-24150328",
+        "d-25543207",
+        "d-3203590",
+        "d-11774598",
+        "d-21557614"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.125
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 4,
+      "id": "q-914",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-9956893",
+        "d-23938319",
+        "d-11238784",
+        "d-3203590",
+        "d-23286603",
+        "d-11774598",
+        "d-712078",
+        "d-25543207",
+        "d-24150328",
+        "d-56486733"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.25
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-921",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-1642727",
+        "d-50670403",
+        "d-17691617",
+        "d-2028532",
+        "d-2424794",
+        "d-6647414",
+        "d-12205576",
+        "d-69045262",
+        "d-26107000",
+        "d-13083189"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-922",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-17077004",
+        "d-11230569",
+        "d-1986482",
+        "d-14319754",
+        "d-44562058",
+        "d-46353045",
+        "d-13899137",
+        "d-374902",
+        "d-22227889",
+        "d-31562330"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-936",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-5483793",
+        "d-20381484",
+        "d-24552097",
+        "d-95764370",
+        "d-36271512",
+        "d-23100962",
+        "d-86217760",
+        "d-13823200",
+        "d-20457190",
+        "d-22995164"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-94",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-18321590",
+        "d-20428155",
+        "d-1215116",
+        "d-6503185",
+        "d-39424916",
+        "d-11441172",
+        "d-10617916",
+        "d-84085333",
+        "d-3935126",
+        "d-10703001"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-956",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-12956194",
+        "d-3610282",
+        "d-3127341",
+        "d-16208091",
+        "d-25942757",
+        "d-44935041",
+        "d-18810195",
+        "d-6061927",
+        "d-9076196",
+        "d-32587939"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 3,
+      "id": "q-957",
+      "ndcgAtK": 0.5,
+      "ranking": [
+        "d-13492264",
+        "d-6308416",
+        "d-123859",
+        "d-22241778",
+        "d-9412420",
+        "d-14965508",
+        "d-21369472",
+        "d-7583161",
+        "d-13509809",
+        "d-40367499"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.3333333333333333
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-960",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-8780599",
+        "d-25974070",
+        "d-35495268",
+        "d-12102963",
+        "d-30981192",
+        "d-29735200",
+        "d-2138767",
+        "d-12770738",
+        "d-70704988",
+        "d-2774906"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-967",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-2119889",
+        "d-8997410",
+        "d-41599676",
+        "d-6157837",
+        "d-19752008",
+        "d-32372280",
+        "d-21369472",
+        "d-22767022",
+        "d-23972114",
+        "d-7223604"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-971",
+      "ndcgAtK": 0.5307212739772434,
+      "ranking": [
+        "d-6561200",
+        "d-27873158",
+        "d-9764256",
+        "d-27446873",
+        "d-28617573",
+        "d-46695481",
+        "d-19140422",
+        "d-23136735",
+        "d-7650066",
+        "d-76415938"
+      ],
+      "recallAtK": 0.5,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 236,
+      "id": "q-975",
+      "ndcgAtK": 0.0,
+      "ranking": [
+        "d-2844490",
+        "d-22852120",
+        "d-9159125",
+        "d-44724517",
+        "d-4454788",
+        "d-10359591",
+        "d-7948486",
+        "d-23509113",
+        "d-3330111",
+        "d-4429118"
+      ],
+      "recallAtK": 0.0,
+      "reciprocalRank": 0.00423728813559322
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-982",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-2988714",
+        "d-29557235",
+        "d-6422576",
+        "d-7451607",
+        "d-8533245",
+        "d-38477436",
+        "d-44947611",
+        "d-19149247",
+        "d-4389394",
+        "d-12225214"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 1,
+      "id": "q-985",
+      "ndcgAtK": 1.0,
+      "ranking": [
+        "d-6828370",
+        "d-16364639",
+        "d-8006440",
+        "d-2619579",
+        "d-13290521",
+        "d-32556431",
+        "d-16346504",
+        "d-32324430",
+        "d-6285534",
+        "d-12440953"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 1.0
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-99",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-20313748",
+        "d-18810195",
+        "d-11083121",
+        "d-16270577",
+        "d-3610282",
+        "d-10504681",
+        "d-30208015",
+        "d-2443495",
+        "d-8093935",
+        "d-42489926"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    },
+    {
+      "category": "scifact-test",
+      "firstRelevantRank": 2,
+      "id": "q-993",
+      "ndcgAtK": 0.6309297535714575,
+      "ranking": [
+        "d-26118532",
+        "d-16472469",
+        "d-25842866",
+        "d-26607366",
+        "d-2758012",
+        "d-1226452",
+        "d-25787749",
+        "d-16465895",
+        "d-6386930",
+        "d-7468449"
+      ],
+      "recallAtK": 1.0,
+      "reciprocalRank": 0.5
+    }
+  ],
+  "queryCount": 300,
+  "rankingLimit": 10,
+  "schemaVersion": 1
+}

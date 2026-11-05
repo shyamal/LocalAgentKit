@@ -17,6 +17,8 @@ def main():
     parser.add_argument('corpus')
     parser.add_argument('output_directory')
     parser.add_argument('--cache-dir', required=True)
+    parser.add_argument('--allow-truncation', action='store_true',
+                        help='Explicitly truncate to 256 model tokens and record counts.')
     args = parser.parse_args()
     import torch
     from transformers import AutoModel, AutoTokenizer
@@ -49,16 +51,25 @@ def main():
     model = SentenceEncoder().eval()
     rows = []
     vectors = {}
+    truncated = {'documents': 0, 'queries': 0}
+    maximum_tokens = 0
+    document_ids = {item['id'] for item in corpus['documents']}
     for item in corpus['documents'] + corpus['queries']:
-        if len(tokenizer.encode(item['text'])) > TOKENS:
-            raise ValueError('Strict parity fixture exceeds 256 tokens; no silent truncation')
+        length = len(tokenizer.encode(item['text']))
+        maximum_tokens = max(maximum_tokens, length)
+        if length > TOKENS:
+            if not args.allow_truncation:
+                raise ValueError('Strict parity fixture exceeds 256 tokens; no silent truncation')
+            truncated['documents' if item['id'] in document_ids else 'queries'] += 1
         tokens = tokenizer(item['text'], return_tensors='pt', padding='max_length',
-                           max_length=TOKENS, truncation=False)
+                           max_length=TOKENS, truncation=args.allow_truncation)
         with torch.inference_mode():
             reference = model(tokens['input_ids'], tokens['attention_mask'])[0].tolist()
         rows.append({'id': item['id'], 'inputIDs': tokens['input_ids'][0].tolist(),
                      'attentionMask': tokens['attention_mask'][0].tolist(), 'reference': reference})
         vectors[item['id']] = reference
+        if len(rows) % 500 == 0:
+            print(f'Prepared {len(rows)} reference tensors', flush=True)
     sample = (torch.tensor([rows[0]['inputIDs']], dtype=torch.int64),
               torch.tensor([rows[0]['attentionMask']], dtype=torch.int64))
     exported = torch.export.export(model, args=sample)
@@ -71,6 +82,8 @@ def main():
     metadata = {'model': MODEL, 'revision': REVISION, 'precision': 'unquantized PyTorch float32 source',
                 'shape': [1, TOKENS], 'pooling': 'attention-mask mean pooling then L2 normalization',
                 'absoluteTolerance': TOLERANCE,
+                'truncationAllowed': args.allow_truncation, 'truncatedInputs': truncated,
+                'maximumUntruncatedTokens': maximum_tokens,
                 'packages': {p: importlib.metadata.version(p) for p in ['torch', 'transformers', 'coreai-torch', 'coreai-core']},
                 'sourceFilesSHA256': {str(p.relative_to(source)): hashlib.sha256(p.read_bytes()).hexdigest()
                                       for p in sorted(Path(source).rglob('*')) if p.is_file()},

@@ -11,7 +11,7 @@ from score import evaluate, load_corpus, validate_vectors
 from convert_minilm import MODEL, REVISION, TOLERANCE
 
 
-def inspect(corpus, digest, report, reference, expected_run_id):
+def inspect(corpus, digest, report, reference, expected_run_id, ranking_limit=None):
     if report.get('schemaVersion') != 1 or report.get('corpusSHA256') != digest:
         raise ValueError('Probe report schema or corpus hash mismatch')
     if UUID(report['runID']) != UUID(expected_run_id):
@@ -43,8 +43,8 @@ def inspect(corpus, digest, report, reference, expected_run_id):
     return {'schemaVersion': 1, 'status': 'completed', 'runID': report['runID'], 'corpusSHA256': digest,
             'executionMetadata': report.get('metadata', {}), 'vectorCount': expected_count,
             'maximumAbsoluteError': maximum, 'absoluteTolerance': TOLERANCE,
-            'qualityScores': {'pytorchReference': evaluate(corpus, digest, reference),
-                              'coreAI': evaluate(corpus, digest, export)},
+            'qualityScores': {'pytorchReference': evaluate(corpus, digest, reference, ranking_limit=ranking_limit),
+                              'coreAI': evaluate(corpus, digest, export, ranking_limit=ranking_limit)},
             'scope': 'Unquantized pinned MiniLM; not conversion/parity of the earlier 4-bit MLX artifact.'}
 
 
@@ -55,10 +55,11 @@ def main():
     parser.add_argument('reference')
     parser.add_argument('output')
     parser.add_argument('--expected-run-id', required=True)
+    parser.add_argument('--ranking-limit', type=int)
     args = parser.parse_args()
     corpus, digest = load_corpus(args.corpus)
     result = inspect(corpus, digest, json.loads(Path(args.probe_report).read_text()),
-                     json.loads(Path(args.reference).read_text()), args.expected_run_id)
+                     json.loads(Path(args.reference).read_text()), args.expected_run_id, args.ranking_limit)
     Path(args.output).write_text(json.dumps(result, indent=2, sort_keys=True, allow_nan=False) + '\n')
     if result['status'] != 'completed':
         raise SystemExit(2)

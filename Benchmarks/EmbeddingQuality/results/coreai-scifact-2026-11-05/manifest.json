@@ -1,0 +1,69 @@
+{
+  "archiveSHA256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+  "corpusSHA256": "1ae85162f749ef5dfdbd3c0d9ffdc019dc202810e20753226c52e1f9ed9976ca",
+  "date": "2026-11-05",
+  "execution": "Official Python Core AI runtime on macOS 26.6.2; unquantized checkpoint also run through MLX; not a new full-corpus phone run",
+  "modelMetadata": {
+    "absoluteTolerance": 0.0001,
+    "assetFilesSHA256": {
+      "main.hash": "206ff7cfcf623c32a5cec8d3e6af037ebe88931b221720b85c8a2a81ab62e2a6",
+      "main.mlirb": "6606533e8f91889d7f5f91f22c65268ddb86fea10e86fa62541893a28e1d8c6b",
+      "metadata.json": "5a04d3b819cc02f206e48f897387b9e768d61be4685f48a16d08911bd699c784"
+    },
+    "maximumUntruncatedTokens": 1939,
+    "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "packages": {
+      "coreai-core": "1.0.0b3",
+      "coreai-torch": "0.4.3",
+      "torch": "2.13.0",
+      "transformers": "4.57.3"
+    },
+    "pooling": "attention-mask mean pooling then L2 normalization",
+    "precision": "unquantized PyTorch float32 source",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "shape": [
+      1,
+      256
+    ],
+    "sourceFilesSHA256": {
+      "1_Pooling/config.json": "4be450dde3b0273bb9787637cfbd28fe04a7ba6ab9d36ac48e92b11e350ffc23",
+      "config.json": "953f9c0d463486b10a6871cc2fd59f223b2c70184f49815e7efbcab5d8908b41",
+      "config_sentence_transformers.json": "061ca9d39661d6c6d6de5ba27f79a1cd5770ea247f8d46412a68a498dc5ac9f3",
+      "data_config.json": "32edcb108fc2516b920734a862ae0692bcae1c5d45d5f8d972cb0d53434a4c54",
+      "model.safetensors": "53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db",
+      "modules.json": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf",
+      "sentence_bert_config.json": "fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7",
+      "special_tokens_map.json": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
+      "tokenizer.json": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+      "tokenizer_config.json": "acb92769e8195aabd29b7b2137a9e6d6e25c476a4f15aa4355c233426c61576b",
+      "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "truncatedInputs": {
+      "documents": 3681,
+      "queries": 0
+    },
+    "truncationAllowed": true
+  },
+  "rawSHA256": {
+    "coreAIHostReport": "097ba1a8b0388106aa7d71cb134386ec43f67c3e8153fb536c29111795b6b71b",
+    "mlxOriginalVectors": "7cdbbb3a2f048b623223ddb85fb5f1ff8837b311d7da14b1ce8f250f4afda537",
+    "pytorchReference": "9b1440ee058d7be3050c19dc40fd0b64ef876877e9aa5bd3cbab35ab15c1ad7d",
+    "tensorFixture": "ff51e63f8ddf9341fcd5ccac8bc2d81a3126e293b52a6cc6007f5639692e5c2c"
+  },
+  "reportsSHA256": {
+    "comparison.json": "84de0bca2c4766a51458a6bd1de7e0882ee4975d232fcad5e234aea93cb2b98c",
+    "coreai-parity-and-quality.json": "fb856a1ad0082b389e510116e4d7e940d44aa4660b8ddc62ff11b78c1da5375b",
+    "mlx-original-quality.json": "897d01e79972a156f8b13c0b8a66d82727d708d129126feeb640954c955f87e1"
+  },
+  "sourceBase": "114629de2fae54c742bd0b00f63f39f09476278b",
+  "sourceFilesSHA256": {
+    "Benchmarks/EmbeddingQuality/CoreAI/convert_minilm.py": "81c6f0984e3243d4400f491799c2ff61243add354fd4b6dd6943520794524f00",
+    "Benchmarks/EmbeddingQuality/CoreAI/inspect_parity.py": "f64bd999bee19c1fc7aec5e87b8c54ccbe03ecc03a38f2a07439331558df5ba1",
+    "Benchmarks/EmbeddingQuality/CoreAI/requirements.txt": "2ad35b6897bf18150e393c89c5c962cac28d0bd70320fd9538f6f79e4fbbba02",
+    "Benchmarks/EmbeddingQuality/CoreAI/run_host.py": "cedc537bb965dd684a75c2575c1854dba90f36ed63805fabaee79b9f6cca5941",
+    "Benchmarks/EmbeddingQuality/export_mlx.py": "411acf03ac8baa0dd42cd70f43c363e0f0a2a6b5cfd482a5f5fab15a8f8f515f",
+    "Benchmarks/EmbeddingQuality/prepare_scifact.py": "f8bdc17b884bb57819a3480e0af078831c418633b58f4f2cdaa74fd52e672028",
+    "Benchmarks/EmbeddingQuality/score.py": "606c4cffda15f1613591df7b207f993c8f6c8c490d4139e964c54422d5e82607",
+    "Scripts/tests/test_coreai_parity.py": "f9b86da073db13212a850a28bd146866f7fc03637dd16a37efccfdc0093c49af"
+  }
+}
