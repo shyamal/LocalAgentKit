@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-05",
+  "exportsSHA256": {
+    "mlx": "93118bd5abf562a210b2e26b33638cd31cb0e70c15a8c4fad3f161f830b33557",
+    "sentence": "901689e7a092c93efb1063878c915ecad13e46e9e74b10ed2e03a6cccd68d6cd",
+    "word": "5d048a62830d9521175a12003726cc862361b3757e0894902d01b246ae455abf"
+  },
+  "host": "Apple silicon macOS 26.6.2 (25G83), Xcode 27.2 (27B52), Swift 6.4.2, Python 3.14",
+  "inputsSHA256": {
+    "corpus.json": "1208b7615eda49eae3a6a0b72620029c7f6de9d05b8ab69a514940bc9e449ca0",
+    "export-natural-language.swift": "72fa24e5e8f4bf80d2cc375036de8f69a5f9b2dc5bd6d15b3328c4caa53c6550",
+    "export_mlx.py": "a89578c3102128ae3c53ef5b4c7ce710dfa7f7ad9c474851618345292894fbd4",
+    "requirements-mlx.txt": "5c00d3634bc076f3e1161d7618851765c56e7de0bc5b626d8b4b2b194aa1a2b3",
+    "score.py": "10cc40d5cf07dfe4321434c365781dc8ccaea2806ce092e2322babf8c3aa1ad9"
+  },
+  "scope": "Exploratory synthetic English corpus; not gate completion or provider promotion.",
+  "sourceBase": "75f3325"
+}

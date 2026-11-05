@@ -220,7 +220,7 @@ and the deferred developer trials remain open.
 - [ ] **M3-01** PDF ingestion via PDFKit (FR-013)
 - [ ] **M3-02** Extraction pipeline for PDF / TXT / MD / plain text
 - [ ] **M3-03** Improved chunking — structure-aware, not fixed-width
-- [ ] **M3-04** 🔒 **Benchmark `NLEmbedding` retrieval quality vs. a small MLX embedding model via Core AI** — resolves open question 4; retrieval quality caps the entire feature
+- [~] **M3-04** 🔒 **Benchmark `NLEmbedding` retrieval quality vs. a small MLX embedding model via Core AI** — resolves open question 4; retrieval quality caps the entire feature *(2026-11-05 exploratory baseline: fixed original 24-passage/20-query English corpus, exact-cosine scorer with seven offline test functions, forced NaturalLanguage sentence/word-average paths and a pinned 4-bit MiniLM MLX comparison. Recall@3: 55% / 70% / 100%; full per-query rankings, model/file hashes and reproduction under Benchmarks/EmbeddingQuality. This is direct MLX, not Core AI, and no default provider changes. Gate remains OPEN: independent/representative corpus, physical-device asset and resource validation, and Core AI/deployment-path decision remain before resolving question 4 or expanding gated RAG.)*
 - [ ] **M3-05** File-backed persistent vector store
 - [ ] **M3-06** Background, batchable, **cancellable** ingestion with progress events — embedding a 300-page PDF on a phone is a battery event, not a function call (NFR battery)
 - [ ] **M3-07** Retrieval tuning: top-k, thresholds, dedup

@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "description": "Original synthetic English workplace passages; exploratory, not a held-out production benchmark. Binary relevance labels fixed before measurement.",
+  "documents": [
+    {
+      "id": "budget",
+      "text": "Budget review preparation: Priya needs headcount forecasts and supplier cost estimates for the quarterly finance meeting."
+    },
+    {
+      "id": "budget-old",
+      "text": "Last quarter budget review was cancelled. The old supplier spreadsheet is obsolete; do not use it for this quarter."
+    },
+    {
+      "id": "onboarding",
+      "text": "New employees receive a laptop, complete security training, and meet their assigned mentor during their first week."
+    },
+    {
+      "id": "offboarding",
+      "text": "When an employee leaves, revoke access, collect the laptop, and archive their work after manager approval."
+    },
+    {
+      "id": "release",
+      "text": "The mobile release is blocked by a crash on login. Chen owns the fix and the shipping date moves to Friday."
+    },
+    {
+      "id": "release-notes",
+      "text": "Release notes describe new dark mode icons and translation updates. No login changes were included last month."
+    },
+    {
+      "id": "backup",
+      "text": "Disaster recovery restores the production database from encrypted nightly snapshots. Test restoration every month."
+    },
+    {
+      "id": "password",
+      "text": "To reset a forgotten password, use the account recovery link and verify your identity with a second factor."
+    },
+    {
+      "id": "travel",
+      "text": "Business travel expenses require itemized receipts and manager approval within thirty days of returning."
+    },
+    {
+      "id": "refund",
+      "text": "Customers can request a refund within fourteen days of purchase. Support verifies the order number before reimbursement."
+    },
+    {
+      "id": "leave",
+      "text": "Annual leave requests must be submitted in the HR portal at least two weeks before the first day away."
+    },
+    {
+      "id": "sick",
+      "text": "If you are ill, notify your manager before your shift. Medical absence does not require two weeks advance notice."
+    },
+    {
+      "id": "meeting",
+      "text": "The design review meets on Tuesday at ten in the Cedar room. Bring the updated prototype for accessibility feedback."
+    },
+    {
+      "id": "design-old",
+      "text": "The old design review met on Monday in the Pine room. It has moved; use the current Tuesday invitation."
+    },
+    {
+      "id": "security",
+      "text": "Report a suspected phishing message to the security team. Do not open attachments or share credentials."
+    },
+    {
+      "id": "shipping",
+      "text": "Warehouse orders ship by courier on weekdays. International delivery usually takes seven business days."
+    },
+    {
+      "id": "garden",
+      "text": "The community garden needs watering twice a week. Tomatoes grow in the sunny raised beds near the gate."
+    },
+    {
+      "id": "recipe",
+      "text": "For tomato soup, roast ripe tomatoes with garlic and onions, then blend with vegetable stock."
+    },
+    {
+      "id": "parking",
+      "text": "Visitors park in the north lot and collect a temporary badge from reception. Staff use the underground garage."
+    },
+    {
+      "id": "wifi",
+      "text": "Guests connect to the visitor wireless network with a daily code issued by reception. Staff use certificate authentication."
+    },
+    {
+      "id": "invoice",
+      "text": "Supplier invoices are paid sixty days after receipt. Include a purchase order reference and bank account details."
+    },
+    {
+      "id": "invoice-fraud",
+      "text": "Requests to change supplier bank details must be verified by calling a known contact before any payment."
+    },
+    {
+      "id": "retention",
+      "text": "Support ticket personal data is deleted after ninety days unless a legal hold applies. Aggregated statistics are retained."
+    },
+    {
+      "id": "deadline",
+      "text": "Project Atlas customer demo is due on Thursday. Sara will present the search prototype; metrics are due Wednesday."
+    }
+  ],
+  "queries": [
+    {
+      "id": "q-budget",
+      "text": "What should Priya bring to the upcoming finance discussion?",
+      "relevant": [
+        "budget"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-join",
+      "text": "What happens during a new hire’s first week?",
+      "relevant": [
+        "onboarding"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-leave-company",
+      "text": "How do we remove access for someone leaving the business?",
+      "relevant": [
+        "offboarding"
+      ],
+      "category": "contrast"
+    },
+    {
+      "id": "q-release",
+      "text": "Why did shipping the mobile app slip and who is fixing it?",
+      "relevant": [
+        "release"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-backup",
+      "text": "How can we recover the database after data loss?",
+      "relevant": [
+        "backup"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-password",
+      "text": "I cannot remember my sign-in secret. How can I regain my account?",
+      "relevant": [
+        "password"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-travel",
+      "text": "What evidence and signoff do I need for a work trip reimbursement?",
+      "relevant": [
+        "travel"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-refund",
+      "text": "How long after buying can a customer get their money back?",
+      "relevant": [
+        "refund"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-vacation",
+      "text": "Where and when should I ask for vacation?",
+      "relevant": [
+        "leave"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-sick",
+      "text": "I woke up ill today. Must I give two weeks notice?",
+      "relevant": [
+        "sick"
+      ],
+      "category": "contrast"
+    },
+    {
+      "id": "q-room",
+      "text": "Which room and day should I use for the current design review?",
+      "relevant": [
+        "meeting",
+        "design-old"
+      ],
+      "category": "multi-relevant"
+    },
+    {
+      "id": "q-phish",
+      "text": "A suspicious email asks me for login credentials. What should I do?",
+      "relevant": [
+        "security"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-delivery",
+      "text": "How many working days does an overseas parcel take?",
+      "relevant": [
+        "shipping"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-tomato",
+      "text": "How do I make a meal from tomatoes and garlic?",
+      "relevant": [
+        "recipe"
+      ],
+      "category": "contrast"
+    },
+    {
+      "id": "q-visitor",
+      "text": "I am visiting the office. Where do I park and get a badge?",
+      "relevant": [
+        "parking"
+      ],
+      "category": "literal"
+    },
+    {
+      "id": "q-wireless",
+      "text": "How does a guest get internet access?",
+      "relevant": [
+        "wifi"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-pay",
+      "text": "When do we settle a supplier invoice?",
+      "relevant": [
+        "invoice"
+      ],
+      "category": "literal"
+    },
+    {
+      "id": "q-bank",
+      "text": "A vendor emailed different bank coordinates. Can I pay immediately?",
+      "relevant": [
+        "invoice-fraud"
+      ],
+      "category": "contrast"
+    },
+    {
+      "id": "q-delete",
+      "text": "How long do we keep identifiable support records?",
+      "relevant": [
+        "retention"
+      ],
+      "category": "paraphrase"
+    },
+    {
+      "id": "q-atlas",
+      "text": "Who presents the Atlas demo and when are metrics due?",
+      "relevant": [
+        "deadline"
+      ],
+      "category": "literal"
+    }
+  ]
+}
