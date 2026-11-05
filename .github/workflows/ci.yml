@@ -34,6 +34,11 @@ jobs:
       - name: Demo planner regression tests (no model assets)
         run: swift test --package-path Examples/LocalAgentDemo
 
+      - name: Embedding probe runner tests (mock paths, no model assets)
+        run: |
+          swift test --package-path Examples/EmbeddingProbe
+          xcrun swift-format lint --configuration .swift-format --strict --recursive Examples/EmbeddingProbe/Probe Examples/EmbeddingProbe/App Examples/EmbeddingProbe/Tests Examples/EmbeddingProbe/Package.swift
+
       - name: Layering check
         # Fails if LocalAgentKitCore/LocalAgentKitRuntime import an Apple
         # framework. Runs before the test suite: a layering violation is a
