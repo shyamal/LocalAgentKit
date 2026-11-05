@@ -87,9 +87,17 @@ Python/OS versions may lack matching wheels. Initial package/model setup require
 network downloads; input text is processed locally. Cached inference was repeated
 with `HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1` successfully; that is library offline
 configuration, not an OS-level traffic-capture claim. The model has a 256-token
-sentence-transformer limit; the adapter rejects longer input rather than silently
-truncating. Recorded elapsed times are one sequential pass without warmup or a
+sentence-transformer limit; by default the adapter rejects longer input. The
+independent-corpus run explicitly opts into counted tokenizer truncation with
+`--allow-truncation`. Recorded elapsed times are one sequential pass without warmup or a
 controlled load, not latency, energy or memory benchmark results (M3-08).
+
+## Independent-corpus follow-up
+
+See [IndependentCorpus.md](IndependentCorpus.md) for the checksum-pinned BEIR
+SciFact import, full-candidate published-label evaluation, explicit MiniLM
+truncation accounting and compact full-ranking reports. The original synthetic
+corpus/results remain unchanged and independently reproducible.
 
 ## Gate follow-up
 

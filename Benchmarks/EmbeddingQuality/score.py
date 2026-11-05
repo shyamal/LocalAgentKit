@@ -54,9 +54,11 @@ def validate_vectors(export, corpus, digest):
     return normalized
 
 
-def evaluate(corpus, digest, export, k=3):
+def evaluate(corpus, digest, export, k=3, ranking_limit=None):
     if isinstance(k, bool) or not isinstance(k, int) or k < 1:
         raise ValueError('k must be a positive integer')
+    if ranking_limit is not None and (type(ranking_limit) is not int or ranking_limit < k):
+        raise ValueError('ranking_limit must be an integer at least k')
     vectors = validate_vectors(export, corpus, digest)
     results = []
     for query in corpus['queries']:
@@ -69,13 +71,16 @@ def evaluate(corpus, digest, export, k=3):
         dcg = sum(1 / math.log2(i + 2) for i, identifier in enumerate(top) if identifier in relevant)
         ideal = sum(1 / math.log2(i + 2) for i in range(min(k, len(relevant))))
         results.append({'id': query['id'], 'category': query.get('category', 'unspecified'),
-                        'ranking': ranking, 'recallAtK': len(set(top) & relevant) / len(relevant),
+                        'ranking': ranking if ranking_limit is None else ranking[:ranking_limit],
+                        **({'firstRelevantRank': first} if ranking_limit is not None else {}),
+                        'recallAtK': len(set(top) & relevant) / len(relevant),
                         'reciprocalRank': 1 / first, 'ndcgAtK': dcg / ideal})
     def average(rows):
         return {key: math.fsum(row[key] for row in rows) / len(rows)
                 for key in ('recallAtK', 'reciprocalRank', 'ndcgAtK')}
     return {'schemaVersion': 1, 'corpusSHA256': digest, 'provider': export['provider'],
-            'metadata': export.get('metadata', {}), 'k': k, 'documentCount': len(corpus['documents']),
+            'metadata': export.get('metadata', {}), 'k': k,
+            **({'rankingLimit': ranking_limit} if ranking_limit is not None else {}), 'documentCount': len(corpus['documents']),
             'queryCount': len(results), 'metrics': average(results),
             'categories': {category: average([r for r in results if r['category'] == category])
                            for category in sorted({r['category'] for r in results})},
@@ -88,9 +93,10 @@ def main():
     parser.add_argument('vectors')
     parser.add_argument('output')
     parser.add_argument('--k', type=int, default=3)
+    parser.add_argument('--ranking-limit', type=int, help='Limit stored rankings, not the candidates used for scoring.')
     args = parser.parse_args()
     corpus, digest = load_corpus(args.corpus)
-    report = evaluate(corpus, digest, json.loads(Path(args.vectors).read_text()), args.k)
+    report = evaluate(corpus, digest, json.loads(Path(args.vectors).read_text()), args.k, args.ranking_limit)
     Path(args.output).write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + '\n')
 
 

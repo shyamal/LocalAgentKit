@@ -1,0 +1,30 @@
+{
+  "archiveSHA256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+  "archiveURL": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip",
+  "corpusSHA256": "1ae85162f749ef5dfdbd3c0d9ffdc019dc202810e20753226c52e1f9ed9976ca",
+  "date": "2026-11-05",
+  "documentCount": 5183,
+  "exportsSHA256": {
+    "mlx": "554f281f219d38d76940d7422331590ca1e897bab1d14cd17485f6e68b505a00",
+    "sentence": "95a382b6ee2b81cb719726e5a18f6d903e8419a9ae8c5ca6a81a2bc49f49a897",
+    "word": "3c87348f99c39fcad3c784c45403a21cad60b66e962729c545c2aa66f443f1b5"
+  },
+  "positiveJudgmentCount": 339,
+  "reportsSHA256": {
+    "mlx": "0ebe1da82f04aaf566111e1d4eee5bfb2e0db1286aac17b47295b7cc30b01757",
+    "sentence": "ed97b29e8b81f85159cfebf08b2900169197d0e50c8f39ae3332fad9a2ab95fe",
+    "word": "584eb8485d88a342121d77868d3e131ac64a15143795c123dfc4b9cb8f9af8a8"
+  },
+  "scope": "External scientific retrieval benchmark; direct MLX, not Core AI; not physical-device, application-domain, no-answer or multilingual validation",
+  "selection": "All corpus documents; all queries with positive test qrels; no result-dependent sampling",
+  "sourceBase": "6baffe7b50d75b4f332bbd7c7d0b3e2640df3189",
+  "sourceFilesSHA256": {
+    "Benchmarks/EmbeddingQuality/export-natural-language.swift": "72fa24e5e8f4bf80d2cc375036de8f69a5f9b2dc5bd6d15b3328c4caa53c6550",
+    "Benchmarks/EmbeddingQuality/export_mlx.py": "f13b8467ded90bc5afb14e89934efcb2e19e5e970e0bf249e98d609ba2f8d973",
+    "Benchmarks/EmbeddingQuality/prepare_scifact.py": "f8bdc17b884bb57819a3480e0af078831c418633b58f4f2cdaa74fd52e672028",
+    "Benchmarks/EmbeddingQuality/requirements-mlx.txt": "5c00d3634bc076f3e1161d7618851765c56e7de0bc5b626d8b4b2b194aa1a2b3",
+    "Benchmarks/EmbeddingQuality/score.py": "c3024c193f765ed705e02132ca22d75355a8a111112ae47fc78a1d91a3cbcca0",
+    "Scripts/tests/test_embedding_quality.py": "abf3d1f51036f818f2d86d71e7a577d3aa1aa5c8568f265d74f9a8461c02760a"
+  },
+  "testQueryCount": 300
+}
