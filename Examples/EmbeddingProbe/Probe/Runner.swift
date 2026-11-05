@@ -37,6 +37,7 @@ struct ProbeReport: Codable, Sendable {
   let corpusSHA256: String
   var metadata: [String: String]
   let results: [ProbeResult]
+  var coreAI: CoreAIProbeResult? = nil
 }
 enum ProbeRunner {
   static func run(

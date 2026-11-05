@@ -51,6 +51,20 @@ struct EmbeddingProbeApp: App {
             "thermalStart": String(describing: ProcessInfo.processInfo.thermalState),
             "measurement": "App-bundle assets; not a controlled latency/energy benchmark",
           ], runID: runID)
+        if ProcessInfo.processInfo.environment["LOCALAGENTKIT_COREAI_PROBE"] == "1" {
+          if #available(iOS 27.0, *) {
+            let documents = try FileManager.default.url(
+              for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            status = "Loading converted Core AI model and checking numerical parity…"
+            report.coreAI = try await CoreAIEmbeddingProbe().run(
+              directory: documents.appendingPathComponent("CoreAI", isDirectory: true),
+              corpus: corpus, digest: digest)
+          } else {
+            report.coreAI = CoreAIProbeResult(
+              status: "unavailable-os", failure: "Core AI requires iOS 27", comparedVectorCount: 0,
+              maximumAbsoluteError: nil, metadata: [:], export: nil)
+          }
+        }
         report.metadata["thermalEnd"] = String(describing: ProcessInfo.processInfo.thermalState)
         try Task.checkCancellation()
         let directory = try FileManager.default.url(
@@ -62,6 +76,10 @@ struct EmbeddingProbeApp: App {
         status =
           "Saved run \(runID.uuidString) to Documents/embedding-report.json. "
           + report.results.map { "\($0.path): \($0.status.rawValue)" }.joined(separator: "; ")
+        if let coreAI = report.coreAI {
+          status += "; Core AI: \(coreAI.status)"
+          if let failure = coreAI.failure { status += " (\(failure))" }
+        }
       } catch is CancellationError {
         status = "Cancelled; no new report saved."
       } catch {
