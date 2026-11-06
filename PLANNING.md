@@ -272,6 +272,8 @@ M3-06 adds Runtime’s explicitly owned `IngestionJob`: a detached utility-prior
 
 M3-07 now supplies opt-in Core `RetrievalConfiguration`: a bounded candidate window, finite/nonblank score selection, stable descending ranking, inclusive optional thresholds and ID/exact-text/whitespace-normalized deduplication before top-k. Pipeline scored/text APIs, optional automatic-RAG settings and a validated DocumentSearchTool initializer share this path; preceding limit-only defaults remain unchanged. There is no refill or semantic deduplication. No threshold is calibrated: independent application/no-answer annotations and frozen held-out evaluation remain outstanding, so M3-07 stays in progress. See the RetrievalSelection DocC guide for calibration requirements.
 
+M3-08’s standalone release benchmark pins 0/1,000/5,183/10,000 generated 1,024-character passages, 384/512 dimensions, two exact stores and three fresh-process repeats. Warm store-only query p95 remains below 13 ms on the measured M5 Max host, so no ANN is added. File snapshot allocation is the observed bottleneck: 5,183 × 512 produces 36.6 MiB JSON (over the unchanged 32 MiB default) and 266.7 MiB process RSS high water; M3-12 tracks compact/paged storage/decode investigation. These are synthetic capacity axes, not relevance, live index heap or iPhone/battery certification. Raw samples/provenance and preselected assessment targets are in Benchmarks/RetrievalScale.
+
 ### 2.7 Security architecture
 
 | Control | Rank | Role |
