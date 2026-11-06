@@ -32,6 +32,10 @@ input; they cannot authorize writes.
 - <doc:LocalNotes>
 - ``DocumentSearchTool``
 
+Search tools may opt in to Core `RetrievalConfiguration` for bounded candidates,
+score filtering and text/ID deduplication. Their existing limit-only behavior and
+read-only permissions remain unchanged; no score cutoff is calibrated.
+
 ### Load documents
 
 - ``DocumentExtractor``

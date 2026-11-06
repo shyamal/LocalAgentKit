@@ -270,6 +270,8 @@ M3-05 adds Providers’ `FileVectorStore`: an actor-owned version-1 JSON snapsho
 
 M3-06 will add background, batchable, cancellable ingestion with progress events — embedding a 300-page PDF on a phone is a battery event, not a function call. The current synchronous loader does not claim scheduling, progress or interruption of a native parse already running.
 
+M3-07 now supplies opt-in Core `RetrievalConfiguration`: a bounded candidate window, finite/nonblank score selection, stable descending ranking, inclusive optional thresholds and ID/exact-text/whitespace-normalized deduplication before top-k. Pipeline scored/text APIs, optional automatic-RAG settings and a validated DocumentSearchTool initializer share this path; preceding limit-only defaults remain unchanged. There is no refill or semantic deduplication. No threshold is calibrated: independent application/no-answer annotations and frozen held-out evaluation remain outstanding, so M3-07 stays in progress. See the RetrievalSelection DocC guide for calibration requirements.
+
 ### 2.7 Security architecture
 
 | Control | Rank | Role |
