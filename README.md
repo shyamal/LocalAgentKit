@@ -35,7 +35,8 @@ question. Experimental model-driven planning is opt-in.
   context budget. The demo restores recent completed turns after restart.
 - **Local retrieval:** unified PDF/TXT/Markdown and in-memory text extraction, bounded file reads,
   structure-aware paragraph/section chunking, Natural Language embeddings with
-  a word-vector fallback, an in-memory vector store, and document search.
+  a word-vector fallback, an in-memory vector store, and document search. Explicit
+  background ingestion jobs add bounded batches, progress snapshots and cancellation.
 - **Contact search:** explicit approval before local contact reads, separate OS
   authorization, and bounded contact-card results.
 - **File search:** bounded, read-only filename/metadata search inside host-supplied

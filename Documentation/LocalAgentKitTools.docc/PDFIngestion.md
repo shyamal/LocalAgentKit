@@ -64,7 +64,9 @@ that restriction. The loader does not attempt password guessing or remove protec
 Cancellation throws `AgentError.cancelled`, checked before I/O, between reads,
 after PDF decoding and around each page. It cannot interrupt a native PDFKit call
 already running. This method does not start an ingestion job, emit progress,
-schedule background work or persist vectors; those remain M3-05/06.
+schedule background work or persist vectors. Runtime’s `IngestionJob` (M3-06)
+can call it lazily from an explicitly owned detached task; native parsing remains
+non-interruptible. Vector persistence remains a separate provider concern.
 
 ## Verification
 

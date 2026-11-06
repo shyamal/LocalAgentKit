@@ -22,6 +22,12 @@ before every model call; a provider can still report overflow during generation.
 - <doc:BudgetedMemoryRetrieval>
 - ``EventBus``
 
+### Background document ingestion
+
+- ``IngestionJob``
+- ``DocumentIngestionSource``
+- <doc:BackgroundIngestion>
+
 ### Plan and execute
 
 - ``AgentPlanner``

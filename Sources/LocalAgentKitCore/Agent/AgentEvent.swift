@@ -67,6 +67,8 @@ public struct ContextUtilization: Sendable, Hashable {
 
 /// Everything observable about a run (FR-019), consumable through `AsyncStream`.
 public enum AgentEvent: Sendable {
+  /// A host-owned ingestion job changed state; these snapshots use the job's separate stream.
+  case ingestionProgress(IngestionProgress)
   /// A new goal has started executing.
   case started
   /// The runtime is about to request the next planner decision.
