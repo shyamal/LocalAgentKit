@@ -274,6 +274,8 @@ M3-07 now supplies opt-in Core `RetrievalConfiguration`: a bounded candidate win
 
 M3-08’s standalone release benchmark pins 0/1,000/5,183/10,000 generated 1,024-character passages, 384/512 dimensions, two exact stores and three fresh-process repeats. Warm store-only query p95 remains below 13 ms on the measured M5 Max host, so no ANN is added. File snapshot allocation is the observed bottleneck: 5,183 × 512 produces 36.6 MiB JSON (over the unchanged 32 MiB default) and 266.7 MiB process RSS high water; M3-12 tracks compact/paged storage/decode investigation. These are synthetic capacity axes, not relevance, live index heap or iPhone/battery certification. Raw samples/provenance and preselected assessment targets are in Benchmarks/RetrievalScale.
 
+M3-09 adds a test-only twelve-case adversarial corpus, exercising TXT/Markdown extraction and both automatic RAG and actual DocumentSearchTool output. Scripted worst-case calls reach every guarded tier; denial prevents execution/events/audit, default-broker controls require explicit decisions, and cancellation cannot be revived by stale approval. This tests authorization boundaries, not real-model resistance or answer/output safety. The original M1-SE-04 regressions remain; see docs/adversarial-rag-corpus.md.
+
 ### 2.7 Security architecture
 
 | Control | Rank | Role |
