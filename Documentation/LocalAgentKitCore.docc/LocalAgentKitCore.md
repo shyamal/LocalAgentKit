@@ -51,6 +51,7 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 
 ### Retrieval and memory
 
+- ``IngestionProgress``
 - ``Chunker``
 - ``ChunkerConfiguration``
 - <doc:StructuralChunking>

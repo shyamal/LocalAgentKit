@@ -36,6 +36,7 @@ question. Experimental model-driven planning is opt-in.
 - **Local retrieval:** unified PDF/TXT/Markdown and in-memory text extraction, bounded file reads,
   structure-aware paragraph/section chunking, Natural Language embeddings with
   a word-vector fallback, in-memory or file-backed vector storage, and document search.
+  Explicit background ingestion jobs add bounded batches, progress snapshots and cancellation.
 - **Contact search:** explicit approval before local contact reads, separate OS
   authorization, and bounded contact-card results.
 - **File search:** bounded, read-only filename/metadata search inside host-supplied
