@@ -60,6 +60,20 @@ attribute trigger generation during SQLite setup. An unchanged network-denied
 rerun passed every suite. The crash cause is not established; no test/assertion or
 network-denial rule was disabled. The normal full suite and example suites passed.
 
+## PR #62 conflict resolution
+
+On 2026-11-06, merged main d02bb1b (M3-05) into this branch. Conflicts were
+limited to README.md, PLANNING.md and TASKS.md. Both persistent storage and
+background ingestion descriptions/completed task entries were retained; no
+implementation was replaced. The local Xcode signing changes remain unstaged.
+
+The combined branch passes a warning-free build, all 698 Swift test functions,
+the unchanged network-denied suite, strict formatting/layering and DocC checks.
+Core/Runtime coverage is 98.88% (2826/2858): Core 99.40% (823/828), Runtime
+98.67% (2003/2030). This is up 0.15 percentage points from main's M3-05 result
+and 0.07 points below the initial ingestion-only run above, with no conflict-time
+Core/Runtime implementation changes. No test/network policy was weakened.
+
 ## Limits
 
 This is in-process cooperative background ingestion, not OS background entitlement,
