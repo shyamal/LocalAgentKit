@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "task": "M3-08",
+  "design": "Pinned before measurement; generated dense vectors and 1024-character ASCII passages. Capacity/performance only, not embedding or relevance quality.",
+  "counts": [0, 1000, 5183, 10000],
+  "dimensions": [384, 512],
+  "stores": ["memory", "file"],
+  "repetitions": 3,
+  "warmups": 5,
+  "queries": 30,
+  "candidateLimit": 20,
+  "textCharacters": 1024,
+  "seed": 34708,
+  "fileMaximumBytes": 268435456,
+  "hostAssessment": {
+    "count": 5183,
+    "warmQueryP95Milliseconds": 100,
+    "fileLoadMilliseconds": 1000,
+    "peakResidentBytes": 268435456,
+    "interpretation": "Exploratory host planning targets, not PRD SLA or phone acceptance. If query p95 exceeds target in at least two of three repeats, investigate an ANN prototype; memory/load failures alone require storage/cache analysis, not automatic ANN adoption. No unmeasured index will be shipped."
+  }
+}

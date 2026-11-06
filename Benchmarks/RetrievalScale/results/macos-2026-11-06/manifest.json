@@ -1,0 +1,55 @@
+{
+  "binarySHA256": "4086b7604666b465a46c67cc635ded03c57cc6022d891f12fbea51f2a404b59c",
+  "harnessSHA256": {
+    "Benchmarks/RetrievalScale/Package.swift": "96526b69b8838596beca36b1e76d745aa9a2a8f8c96f96d4606e53b13919c33d",
+    "Benchmarks/RetrievalScale/Sources/RetrievalScale/main.swift": "0420cc33ce4576e19000f1d8ab4a97a8d159e31c4a7b47c6623b71670d753abd",
+    "Benchmarks/RetrievalScale/run.py": "a612fb9b333a800c27f63fa9af55b722447637e2cc40e659aa643292d546f3da",
+    "Sources/LocalAgentKitProviders/FileVectorStore/FileVectorStore.swift": "7719d056370d4bcb7df65b95d669fb9958ca8f28659f2ec6340cc09ac2624ad7",
+    "Sources/LocalAgentKitProviders/InMemoryVectorStore/InMemoryVectorStore.swift": "18c52d239571d976a86fee25a6acf2bfac047c6df6c014c8d2472725dd845d7d"
+  },
+  "host": {
+    "architecture": "arm64",
+    "cpu": "Apple M5 Max",
+    "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83",
+    "physicalMemoryBytes": 38654705664,
+    "python": "3.14.6",
+    "swift": "Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)\nTarget: arm64-apple-macosx26.0"
+  },
+  "memoryMeasurement": "macOS /usr/bin/time -l whole-process high-water bytes; not live heap or index-only allocation",
+  "schemaVersion": 1,
+  "sdkCommit": "28ce1f652725892fdd719c6550b1cafe9b05f388",
+  "workload": {
+    "candidateLimit": 20,
+    "counts": [
+      0,
+      1000,
+      5183,
+      10000
+    ],
+    "design": "Pinned before measurement; generated dense vectors and 1024-character ASCII passages. Capacity/performance only, not embedding or relevance quality.",
+    "dimensions": [
+      384,
+      512
+    ],
+    "fileMaximumBytes": 268435456,
+    "hostAssessment": {
+      "count": 5183,
+      "fileLoadMilliseconds": 1000,
+      "interpretation": "Exploratory host planning targets, not PRD SLA or phone acceptance. If query p95 exceeds target in at least two of three repeats, investigate an ANN prototype; memory/load failures alone require storage/cache analysis, not automatic ANN adoption. No unmeasured index will be shipped.",
+      "peakResidentBytes": 268435456,
+      "warmQueryP95Milliseconds": 100
+    },
+    "queries": 30,
+    "repetitions": 3,
+    "schemaVersion": 1,
+    "seed": 34708,
+    "stores": [
+      "memory",
+      "file"
+    ],
+    "task": "M3-08",
+    "textCharacters": 1024,
+    "warmups": 5
+  },
+  "workloadSHA256": "78392c76b272602ec5010d858bec5e3b681e3c39aedec1a532f900289cafa643"
+}
