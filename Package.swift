@@ -121,7 +121,8 @@ let package = Package(
     ),
     .testTarget(
       name: "LocalAgentKitToolsTests",
-      dependencies: ["LocalAgentKitTools", "LocalAgentKitTesting"]
+      dependencies: ["LocalAgentKitTools", "LocalAgentKitTesting"],
+      resources: [.copy("Fixtures")]
     ),
     .testTarget(
       name: "LocalAgentKitEvalTests",

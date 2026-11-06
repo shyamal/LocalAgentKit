@@ -37,6 +37,10 @@ before every model call; a provider can still report overflow during generation.
 - ``ToolExecutor``
 - ``PermissionGate``
 
+### Untrusted documents
+
+- <doc:AdversarialDocuments>
+
 ### Audit snapshots
 
 - ``AuditLogger``
