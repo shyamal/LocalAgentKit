@@ -3,8 +3,8 @@ import LocalAgentKitCore
 
 /// A local, in-memory vector store using brute-force cosine similarity (FR-015) — fine at the
 /// single-user, single-workspace scale this is built for, with no network dependency. Not
-/// durable: content is re-ingested each launch. On-disk persistence is a v0.3 concern (M3), the
-/// RAG equivalent of `MemoryStore`'s SwiftData implementation for conversation memory.
+/// durable: content is re-ingested each launch. Use `FileVectorStore` for small-corpus snapshots
+/// that survive reopening, with explicit embedding-space and dimension configuration.
 public actor InMemoryVectorStore: VectorStore {
   private var documents: [EmbeddedDocument] = []
 
