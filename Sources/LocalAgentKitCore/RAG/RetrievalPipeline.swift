@@ -15,6 +15,8 @@ public struct RetrievalPipeline: Sendable {
   }
 
   /// Chunks `document`, embeds each chunk, and inserts them into the vector store.
+  /// This direct API remains a single insert; Runtime's `IngestionJob` provides explicit
+  /// lazy sources, bounded embedding batches, progress and cooperative background cancellation.
   public func ingest(_ document: Document, chunker: Chunker = Chunker()) async throws {
     let chunks = chunker.chunk(document)
     guard !chunks.isEmpty else { return }

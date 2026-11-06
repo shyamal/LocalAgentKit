@@ -51,6 +51,17 @@ the merged M3-05 base. Core is 99.44% (880/885), versus 99.27% before; Runtime i
 98.46% (1915/1945), versus 98.50% before. This task adds behavior in both targets;
 the combined gate remains above 80%. No tests were adjusted to inflate coverage.
 
+## PR #63 conflict resolution after ingestion merged
+
+Merged main 83be277 (including M3-06 / PR #62) on 2026-11-06. The conflicts
+were limited to README.md, TASKS.md and the Core DocC topic list. Both feature
+entries were retained; source files merged without conflicting implementation.
+The combined branch passes all 713 Swift test functions, the network-denied suite,
+strict build/formatting/layering, DocC checks and generic iOS compilation.
+Core/Runtime coverage is 98.87% (2897/2930): Core 99.44% (889/894), Runtime
+98.62% (2008/2036). This is 0.01 percentage points below main's conflict-resolution
+run (98.88%), and remains above the gate. Calibration remains unperformed.
+
 ## Calibration still outstanding
 
 The project-authored missing-fact diagnostic from M3-04 cannot select/certify a

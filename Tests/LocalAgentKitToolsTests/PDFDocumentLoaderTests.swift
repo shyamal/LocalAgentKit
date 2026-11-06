@@ -2,11 +2,28 @@ import CoreGraphics
 import CoreText
 import Foundation
 import LocalAgentKitCore
+import LocalAgentKitRuntime
 import LocalAgentKitTesting
 import LocalAgentKitTools
 import Testing
 
 @Suite struct PDFDocumentLoaderTests {
+  @Test func lazyPDFSourceExtractsAndIngestsInsideBackgroundJob() async throws {
+    let url = try fixture(["Budget review preparation", "Project actions"])
+    defer { try? FileManager.default.removeItem(at: url) }
+    let source = DocumentIngestionSource { try DocumentExtractor.load(contentsOf: url) }
+    let store = MockVectorStore()
+    let job = try IngestionJob.start(
+      sources: [source],
+      pipeline: RetrievalPipeline(embeddingProvider: MockEmbeddingProvider(), vectorStore: store),
+      batchSize: 1)
+    let progress = try await job.value()
+    #expect(progress.state == .completed && progress.completedDocuments == 1)
+    #expect(progress.committedBatches == 1)
+    let stored = await store.stored
+    #expect(stored.map(\.text) == ["Budget review preparation\n\nProject actions"])
+  }
+
   @Test func unifiedExtractorDispatchesPDFAndForwardsPasswordAndLimits() throws {
     let url = try fixture(["Budget review"], ext: "PDF", password: "reader")
     defer { try? FileManager.default.removeItem(at: url) }

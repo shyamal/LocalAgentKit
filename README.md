@@ -38,6 +38,7 @@ question. Experimental model-driven planning is opt-in.
   a word-vector fallback, in-memory or file-backed vector storage, and document search.
   Explicit retrieval settings add candidate limits, optional score filtering and
   deduplication; no answerability cutoff is calibrated.
+  Explicit background ingestion jobs add bounded batches, progress snapshots and cancellation.
 - **Contact search:** explicit approval before local contact reads, separate OS
   authorization, and bounded contact-card results.
 - **File search:** bounded, read-only filename/metadata search inside host-supplied

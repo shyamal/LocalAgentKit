@@ -53,6 +53,7 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 
 - ``RetrievalConfiguration``
 - <doc:RetrievalSelection>
+- ``IngestionProgress``
 - ``Chunker``
 - ``ChunkerConfiguration``
 - <doc:StructuralChunking>

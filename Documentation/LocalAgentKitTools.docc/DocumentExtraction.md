@@ -56,7 +56,9 @@ exceeded limits and PDF failures throw `AgentError.retrievalFailure`. Cancellati
 throws `AgentError.cancelled`, checked before work, between file reads and around
 decoding/cleanup. It cannot interrupt native operations or string cleanup already
 in progress. Extraction is synchronous; hosts choose its execution context.
-Background ingestion/progress remains M3-06. The default Core chunker now prefers
+Runtime’s explicit `IngestionJob` (M3-06) can invoke this loader through a lazy
+`DocumentIngestionSource`, with cooperative cancellation and cumulative AgentEvent
+snapshots. Hosts retain authorized file scope through job completion. The default Core chunker now prefers
 paragraphs and available Markdown sections (M3-03).
 
 Core `DocumentLoader.load(contentsOf:)` remains source compatible and keeps its

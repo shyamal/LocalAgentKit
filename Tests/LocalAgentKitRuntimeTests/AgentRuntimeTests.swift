@@ -28,6 +28,7 @@ private func makeRuntime(
 
 private func label(_ event: AgentEvent) -> String {
   switch event {
+  case .ingestionProgress: "ingestionProgress"
   case .started: "started"
   case .thinking: "thinking"
   case .workingMemoryUpdated: "workingMemoryUpdated"
