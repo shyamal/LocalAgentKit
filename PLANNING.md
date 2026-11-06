@@ -266,6 +266,8 @@ Query ─▶ EmbeddingProvider ─▶ similarity search ─▶ top-k ─▶ Cont
 
 M3-01 supplies synchronous PDF text-layer extraction through Tools’ `PDFDocumentLoader`, returning only a Core `Document`; Core’s text/Markdown loader remains framework-free. Local regular files are byte-bounded before PDFKit, with page/character limits, copy-permission/password checks and typed cancellation between reads/pages. Empty/image-only inputs fail; mixed PDFs return only existing text layers, without OCR/layout/page citations. M3-02 adds Tools’ `DocumentExtractor` dispatch for PDF/TXT/Markdown files and already-decoded text, with shared bounded regular-file reads and pre-cleanup character limits. Core provides pure text/Markdown normalization without importing PDFKit; its original file API remains source compatible. M3-03 makes structure-aware chunking the default: paragraphs are packed within literal ATX heading sections, preserving fitting fences/list blocks; oversized blocks fall back to overlapping word windows. Structural boundaries are not overlapped. Explicit `.wordAligned` retains preceding behavior. Tools can preserve Markdown source through `preserveMarkdownStructure: true`; the default extraction cleanup remains compatible. No Markdown AST, layout recovery or retrieval-quality claim is implied.
 
+M3-05 adds Providers’ `FileVectorStore`: an actor-owned version-1 JSON snapshot with bounded reads/encoded writes, explicit embedding-space/dimension validation, whole-batch upserts, removal, atomic replacement before cache publication and deterministic exact cosine search. Share one instance per file; independent writers and external edits are not coordinated. Full-cache/search/snapshot copies target small corpora, without ANN/resource or power-loss guarantees. No new Core protocol or runtime dependency is introduced.
+
 M3-06 will add background, batchable, cancellable ingestion with progress events — embedding a 300-page PDF on a phone is a battery event, not a function call. The current synchronous loader does not claim scheduling, progress or interruption of a native parse already running.
 
 ### 2.7 Security architecture
@@ -301,6 +303,7 @@ M3-06 will add background, batchable, cancellable ingestion with progress events
 |---|---|---|
 | **Foundation Models** | System inference on 26.4+; app-owned LanguageModel adaptation on 27+ | `FoundationModelProvider`, `LanguageModelProvider` (decision 0006) |
 | ~~**Core AI**~~ | ~~Custom/local model execution~~ | **Dropped 2026-09-26 (decision 0004).** Core AI exists but is a tensor/NDArray runtime, not a text-generation API (findings §1); custom model execution goes through `LocalModelProvider`, or Apple's `LanguageModel` protocol on OS 27 (M1-PR-06) |
+| **Foundation / JSON and file I/O** | Versioned local vector snapshots and exact cached cosine search | `FileVectorStore` in Providers |
 | **Foundation / ProcessInfo** | Opt-in thermal snapshot adapter; policy and events remain in Core/Runtime | `ProcessInfoThermalStateSource` in Providers |
 | **OSLog** | Opt-in content-free runtime logging and signpost intervals | `OSLogRuntimeInstrumentation` in `LocalAgentKitProviders` |
 | **Natural Language** (`NLEmbedding`) | Default on-device embeddings for RAG v0.3 | `NLEmbeddingProvider` |

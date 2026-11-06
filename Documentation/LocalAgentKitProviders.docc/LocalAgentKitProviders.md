@@ -37,6 +37,8 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 - ``NLEmbeddingProvider``
 - ``InMemoryVectorStore``
+- ``FileVectorStore``
+- <doc:PersistentVectors>
 
 ### Local text memory
 
