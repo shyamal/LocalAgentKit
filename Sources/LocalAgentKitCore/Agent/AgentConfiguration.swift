@@ -45,6 +45,8 @@ public struct AgentConfiguration: Sendable {
   public var embedding: (any EmbeddingProvider)?
   /// Searchable embeddings; automatic retrieval requires an embedding provider as well.
   public var vectorStore: (any VectorStore)?
+  /// Optional scored selection for automatic RAG; nil preserves preceding top-five behavior.
+  public var retrieval: RetrievalConfiguration?
   /// Bounds one run, each model call and the assembled context.
   public var limits: ExecutionLimits
   /// Controls audit recording; cannot weaken tool permission tiers.
@@ -65,13 +67,15 @@ public struct AgentConfiguration: Sendable {
     security: SecurityPolicy = .default,
     networkPolicy: NetworkPolicy = .never,
     planner: PlannerChoice = .stateMachine,
-    memoryRetrieval: MemoryRetrievalConfiguration = MemoryRetrievalConfiguration()
+    memoryRetrieval: MemoryRetrievalConfiguration = MemoryRetrievalConfiguration(),
+    retrieval: RetrievalConfiguration? = nil
   ) {
     self.model = model
     self.memory = memory
     self.memoryRetrieval = memoryRetrieval
     self.embedding = embedding
     self.vectorStore = vectorStore
+    self.retrieval = retrieval
     self.limits = limits
     self.security = security
     self.networkPolicy = networkPolicy

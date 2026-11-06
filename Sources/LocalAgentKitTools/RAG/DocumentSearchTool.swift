@@ -21,6 +21,7 @@ public struct DocumentSearchTool: AgentTool {
   public let isCancellable = true
   private let pipeline: RetrievalPipeline
   private let limit: Int
+  private let retrieval: RetrievalConfiguration?
 
   /// Creates a search tool sharing ingestion's embedding space and vector store.
   /// The result limit is clamped to at least one.
@@ -30,6 +31,20 @@ public struct DocumentSearchTool: AgentTool {
     self.pipeline = RetrievalPipeline(
       embeddingProvider: embeddingProvider, vectorStore: vectorStore)
     self.limit = max(1, limit)
+    self.retrieval = nil
+  }
+
+  /// Creates an explicitly tuned search tool. Invalid settings fail before tool execution.
+  /// No threshold is calibrated by this initializer; use settings measured for this embedding space/store.
+  public init(
+    embeddingProvider: any EmbeddingProvider, vectorStore: any VectorStore,
+    retrieval: RetrievalConfiguration
+  ) throws {
+    if let issue = retrieval.issue { throw AgentError.invalidConfiguration(issue) }
+    self.pipeline = RetrievalPipeline(
+      embeddingProvider: embeddingProvider, vectorStore: vectorStore)
+    self.limit = retrieval.resultLimit
+    self.retrieval = retrieval
   }
 
   /// Retrieves passages for the query; ordinary retrieval failures degrade to an empty result.
@@ -40,7 +55,11 @@ public struct DocumentSearchTool: AgentTool {
     }
     let passages: [String]
     do {
-      passages = try await pipeline.retrieve(for: query, limit: limit)
+      if let retrieval {
+        passages = try await pipeline.retrieve(for: query, configuration: retrieval)
+      } else {
+        passages = try await pipeline.retrieve(for: query, limit: limit)
+      }
     } catch AgentError.cancelled {
       throw AgentError.cancelled
     } catch is CancellationError {

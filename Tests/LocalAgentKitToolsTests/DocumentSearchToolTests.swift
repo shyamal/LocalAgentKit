@@ -18,6 +18,34 @@ private struct FailingEmbeddingProvider: EmbeddingProvider {
     DocumentSearchTool(embeddingProvider: MockEmbeddingProvider(), vectorStore: store, limit: limit)
   }
 
+  @Test func explicitSelectionDeduplicatesAndCanReturnNoResults() async throws {
+    let store = MockVectorStore()
+    let embedding = MockEmbeddingProvider()
+    let vector = try await embedding.embed(text: "budget")
+    try await store.insert([
+      EmbeddedDocument(text: "budget", vector: vector),
+      EmbeddedDocument(text: "budget", vector: vector),
+    ])
+    let selected = try DocumentSearchTool(
+      embeddingProvider: embedding, vectorStore: store,
+      retrieval: .init(resultLimit: 2, candidateLimit: 4))
+    let result = try await selected.execute(arguments: ToolArguments(["query": "budget"]))
+    #expect(result.structured == .array([.string("budget")]))
+    #expect(selected.permission == .readOnly)
+    let rejected = try DocumentSearchTool(
+      embeddingProvider: embedding, vectorStore: store,
+      retrieval: .init(minimumScore: 2))
+    #expect(try await rejected.execute(arguments: ToolArguments(["query": "budget"])).isEmpty)
+  }
+
+  @Test func invalidSelectionIsRejectedBeforeToolExecution() {
+    #expect(throws: AgentError.self) {
+      try DocumentSearchTool(
+        embeddingProvider: MockEmbeddingProvider(), vectorStore: MockVectorStore(),
+        retrieval: .init(candidateLimit: 0))
+    }
+  }
+
   @Test func propertiesMatchFR008() {
     let tool = tool(MockVectorStore())
     #expect(tool.name == "search_documents")

@@ -36,4 +36,67 @@ public struct RetrievalPipeline: Sendable {
     let vector = try await embeddingProvider.embed(text: query)
     return try await vectorStore.search(vector: vector, limit: limit).map(\.document.text)
   }
+
+  /// Selects scored passages from one bounded candidate window. Configuration is checked before
+  /// embedding. Nonfinite scores and blank text are discarded, then hits are ranked descending
+  /// (store order breaks ties), filtered inclusively and deduplicated before applying resultLimit.
+  /// No refill, semantic deduplication, calibrated cutoff or proof of answer presence is implied.
+  /// - Throws: `.invalidConfiguration`, typed cancellation or `.retrievalFailure` for unknown provider errors.
+  public func search(for query: String, configuration: RetrievalConfiguration) async throws
+    -> [SearchResult]
+  {
+    do {
+      try checkCancellation()
+      if let issue = configuration.issue { throw AgentError.invalidConfiguration(issue) }
+      let vector = try await embeddingProvider.embed(text: query)
+      try checkCancellation()
+      let candidates = try await vectorStore.search(
+        vector: vector, limit: configuration.candidateLimit)
+      try checkCancellation()
+      let ranked = candidates.prefix(configuration.candidateLimit).enumerated()
+        .filter { hit in
+          hit.element.score.isFinite
+            && !hit.element.document.text.split(whereSeparator: \.isWhitespace).isEmpty
+            && (configuration.minimumScore.map { hit.element.score >= $0 } ?? true)
+        }
+        .sorted { left, right in
+          left.element.score == right.element.score
+            ? left.offset < right.offset : left.element.score > right.element.score
+        }
+      var seen: Set<String> = []
+      var selected: [SearchResult] = []
+      for hit in ranked {
+        try checkCancellation()
+        let document = hit.element.document
+        let key: String?
+        switch configuration.deduplication {
+        case .none: key = nil
+        case .passageID: key = document.id.uuidString
+        case .exactText: key = document.text
+        case .normalizedWhitespace:
+          key = document.text.split(whereSeparator: \.isWhitespace).joined(separator: " ")
+        }
+        if let key, !seen.insert(key).inserted { continue }
+        selected.append(hit.element)
+        if selected.count == configuration.resultLimit { break }
+      }
+      try checkCancellation()
+      return selected
+    } catch let error as AgentError { throw error } catch is CancellationError {
+      throw AgentError.cancelled
+    } catch { throw AgentError.retrievalFailure("Scored retrieval failed") }
+
+  }
+
+  /// Returns selected texts through the same scored selection path, ready for context fitting.
+  public func retrieve(for query: String, configuration: RetrievalConfiguration) async throws
+    -> [String]
+  {
+    try await search(for: query, configuration: configuration).map(\.document.text)
+  }
+
+  private func checkCancellation() throws {
+    if Task.isCancelled { throw AgentError.cancelled }
+  }
+
 }

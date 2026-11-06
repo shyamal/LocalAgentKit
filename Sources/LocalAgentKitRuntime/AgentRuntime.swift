@@ -81,6 +81,7 @@ public actor AgentRuntime {
     if let issue = configuration.memoryRetrieval.issue {
       throw AgentError.invalidConfiguration(issue)
     }
+    if let issue = configuration.retrieval?.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = budgeter.configuration.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = thermalPolicy.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = NetworkPolicyGuard.validate(
@@ -365,8 +366,13 @@ public actor AgentRuntime {
     let interval = trace.begin(.retrieval)
     defer { interval.end() }
     do {
-      return try await RetrievalPipeline(embeddingProvider: embedding, vectorStore: vectorStore)
-        .retrieve(for: goal)
+      let pipeline = RetrievalPipeline(embeddingProvider: embedding, vectorStore: vectorStore)
+      if let retrieval = configuration.retrieval {
+        return try await pipeline.retrieve(for: goal, configuration: retrieval)
+      }
+      return try await pipeline.retrieve(for: goal)
+    } catch AgentError.cancelled {
+      throw AgentError.cancelled
     } catch is CancellationError {
       throw AgentError.cancelled
     } catch {

@@ -270,6 +270,8 @@ M3-05 adds Providers’ `FileVectorStore`: an actor-owned version-1 JSON snapsho
 
 M3-06 adds Runtime’s explicitly owned `IngestionJob`: a detached utility-priority task sequentially evaluates lazy `DocumentIngestionSource` values, chunks documents, embeds and inserts bounded batches through existing protocols. Separate bounded/coalescing AgentEvent ingestionProgress snapshots expose running/completed/cancelled/failed states and acknowledged commits. Cancellation checks surround awaits; committed batches survive cancellation/failure with no rollback/retry. Sources and embedding providers declare network requirements for preflight; hosts own store policy, authorized file scope and job lifetime. This is not OS background entitlement, a durable scheduler, a whole-document memory bound or forced interruption of native work. The existing direct ingest API remains unchanged. Resource/battery measurements remain M3-08/M6-05.
 
+M3-07 now supplies opt-in Core `RetrievalConfiguration`: a bounded candidate window, finite/nonblank score selection, stable descending ranking, inclusive optional thresholds and ID/exact-text/whitespace-normalized deduplication before top-k. Pipeline scored/text APIs, optional automatic-RAG settings and a validated DocumentSearchTool initializer share this path; preceding limit-only defaults remain unchanged. There is no refill or semantic deduplication. No threshold is calibrated: independent application/no-answer annotations and frozen held-out evaluation remain outstanding, so M3-07 stays in progress. See the RetrievalSelection DocC guide for calibration requirements.
+
 ### 2.7 Security architecture
 
 | Control | Rank | Role |
