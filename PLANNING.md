@@ -276,6 +276,8 @@ M3-08’s standalone release benchmark pins 0/1,000/5,183/10,000 generated 1,024
 
 M3-09 adds a test-only twelve-case adversarial corpus, exercising TXT/Markdown extraction and both automatic RAG and actual DocumentSearchTool output. Scripted worst-case calls reach every guarded tier; denial prevents execution/events/audit, default-broker controls require explicit decisions, and cancellation cannot be revived by stale approval. This tests authorization boundaries, not real-model resistance or answer/output safety. The original M1-SE-04 regressions remain; see docs/adversarial-rag-corpus.md.
 
+M3-10’s demo prototype adds an isolated, ephemeral user-PDF session via the native picker and scoped extraction. Ingestion is bounded/cancellable with progress; a fixed read-only search/answer workflow uses one model call and the existing context budget, and same-name replacement resets chat identity. It uses the current NaturalLanguage path, not M3-11 MiniLM/Core AI, with no calibrated answerability claim. Real user-PDF device acceptance remains open; see docs/pdf-demo-verification.md.
+
 ### 2.7 Security architecture
 
 | Control | Rank | Role |
