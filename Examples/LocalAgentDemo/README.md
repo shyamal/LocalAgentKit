@@ -150,3 +150,55 @@ completed checkpoint. Uninstalling the app removes its local data.
 Regression tests cover restored model context and displayed turns, ordered saving,
 save failures, corrupt-store preservation and fresh approval for restored checklists.
 See `docs/demo-conversation-resume.md` for native restart verification and limits.
+
+## Ask a user-selected PDF (M3-10, acceptance pending)
+
+The main chat now has **Ask a PDF**. Choose a downloaded English PDF with a text
+layer, wait for indexing, then ask a specific question with a known answer. Expand
+**Retrieved PDF passages** to inspect the source excerpts. `[1]` labels refer to
+retrieved passages, not PDF page numbers. Verify the answer against the original;
+a fluent answer or high similarity score does not establish factual support.
+
+This is a separate, ephemeral session, with an isolated in-memory vector store and
+conversation. It searches only the selected PDF, not the fixture notes, calendar,
+saved notes or a previous PDF. Replacing even a same-named file resets chat identity.
+Closing or cancelling clears the demo's session references and requests cancellation;
+native/uncooperative work already underway may retain memory until it returns. The
+demo does not checkpoint PDF turns, copy the source file to its note store or persist
+PDF vectors. This is not a secure-erasure/OS-cache/screenshot guarantee.
+
+The file picker can access provider-backed locations and the system/provider may
+download selected cloud content. The screen says so; `.never` governs configured
+SDK components, not the system file provider. Security-scoped access is balanced
+around extraction. Indexing uses `IngestionJob` off the UI actor, shows committed
+passage counts, and can be cancelled. It cannot forcibly interrupt PDFKit parsing.
+A cancelled or failed import never leaves a new ready-to-query session, and a late
+old import cannot overwrite a newer selection.
+
+Demo-specific extraction limits are 8 MiB, 100 pages and 200,000 Swift characters.
+Blank/image-only, locked/copy-restricted, unreadable and over-limit inputs fail visibly.
+Passwords/OCR are not offered by this UI. Indexing failure (including missing local
+embedding assets) is shown instead of falsely reporting readiness.
+
+Each question uses a deterministic workflow: one `search_documents` call with the
+literal query, followed by one tool-free answer request. No write tools are registered
+in the PDF runtime. Empty retrieval finishes without a model call; nonempty but
+irrelevant passages are still possible. Three passages are selected from twenty
+candidates with whitespace deduplication and no calibrated score threshold; existing
+context budgeting fits every answer request. Native guardrail refusals remain terminal.
+Follow-ups can use in-session history, but the literal current query drives search;
+short references such as “why?” may retrieve poorly.
+
+This prototype uses the existing NaturalLanguage embedding path, including its
+asset-dependent word-vector fallback. Decision 0009 measured substantial quality
+limitations. M3-11's opt-in MiniLM/Core AI adapter is **not integrated**, M3-07's
+held-out calibration is still pending, and this UI does not claim either is complete.
+M3-10 and the RAG milestone exit stay open until real user-PDF acceptance is verified.
+
+The demo test package now has eleven PDF-specific test functions (23 total), covering
+real generated PDF extraction/answer context, bounded search/model-call counts,
+no-evidence behavior, import limits, failures, cancellation, stale completion and
+same-filename chat replacement. They use mock embeddings/models, not an on-device
+answer-quality measurement. The picker and scope APIs were checked in the installed
+SDK before use; macOS/iOS builds compile the actual UI. Device build/install success
+alone does not verify picker interaction, answer correctness or lifecycle behavior.
