@@ -310,7 +310,7 @@ M3-10’s demo prototype adds an isolated, ephemeral user-PDF session via the na
 | Framework | Used for | Isolated in |
 |---|---|---|
 | **Foundation Models** | System inference on 26.4+; app-owned LanguageModel adaptation on 27+ | `FoundationModelProvider`, `LanguageModelProvider` (decision 0006) |
-| ~~**Core AI**~~ | ~~Custom/local model execution~~ | **Dropped 2026-09-26 (decision 0004).** Core AI exists but is a tensor/NDArray runtime, not a text-generation API (findings §1); custom model execution goes through `LocalModelProvider`, or Apple's `LanguageModel` protocol on OS 27 (M1-PR-06) |
+| **Core AI** | Opt-in MiniLM-compatible embeddings from a host-supplied model and tokenizer on OS 27 (M3-11, decision 0009). Text generation uses the separate model-provider seam (decision 0004). | `LocalAgentKitProviders` |
 | **Foundation / JSON and file I/O** | Versioned local vector snapshots and exact cached cosine search | `FileVectorStore` in Providers |
 | **Foundation / ProcessInfo** | Opt-in thermal snapshot adapter; policy and events remain in Core/Runtime | `ProcessInfoThermalStateSource` in Providers |
 | **OSLog** | Opt-in content-free runtime logging and signpost intervals | `OSLogRuntimeInstrumentation` in `LocalAgentKitProviders` |
