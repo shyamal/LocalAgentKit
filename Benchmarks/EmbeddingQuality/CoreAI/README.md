@@ -85,6 +85,55 @@ and rejects fake zero-error summary fields. Failed/unavailable runs produce no
 quality metrics and exit nonzero, while retaining a diagnostic JSON if available.
 No score or tolerance is adjusted to make a conversion pass.
 
+## Opt-in SDK adapter (M3-11)
+
+Use `CoreAIEmbeddingProvider` from `LocalAgentKitProviders` on iOS or macOS 27
+and later. Build with an SDK that includes Core AI. The app provisions the converted
+model locally and supplies a concurrency-safe tokenizer that matches the model
+revision. The supported export takes Int32 `input_ids` and `attention_mask` at
+`[1, 256]` and returns Float32 `embedding` at `[1, 384]` from `main`.
+
+```swift
+import Foundation
+import LocalAgentKitProviders
+
+@available(iOS 27.0, macOS 27.0, *)
+func makeEmbedding(
+  modelURL: URL,
+  tokenize: @escaping CoreAIEmbeddingProvider.Tokenizer
+) async throws -> CoreAIEmbeddingProvider {
+  let configuration = try CoreAIEmbeddingProvider.Configuration(
+    modelRevision: "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    tokenizerRevision: "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    embeddingSpace: "all-MiniLM-L6-v2@1110a243fdf4706b3f48f1d95db1a4f5529b4d41/fp32/mean/l2/256",
+    tokenizerRequiresNetwork: false)
+  return try await CoreAIEmbeddingProvider(
+    assetURL: modelURL, configuration: configuration, tokenize: tokenize)
+}
+```
+
+The example assumes the pinned tokenizer, conversion and local-only tokenization
+described above. Keep the declared revisions and network flag accurate for your host
+closure. The adapter performs no asset download and trusts the host's declarations.
+A tokenizer declared network-dependent is rejected by `AgentRuntime` under
+`.never` when configured as its embedding provider. The app is responsible for
+enforcing its policy when it uses the provider directly.
+
+Reuse one provider for indexing and querying. For a persistent `FileVectorStore`,
+pass `provider.configuration.embeddingSpace` and
+`CoreAIEmbeddingProvider.dimensions` to the store. Reindex in a fresh space when
+model weights, tokenization, precision, pooling or normalization change, even if
+the dimension stays the same. The app owns this identity and asset verification.
+The adapter returns raw model output after validating its shape and values.
+
+The existing iPhone parity command exercises the public adapter using fixture
+tokens keyed by text. A passing run verifies the numerical handoff through the
+SDK and native runtime. An app's production tokenizer needs its own parity checks.
+On 2026-11-08 the public adapter passed all 44 comparisons on the physical
+iPhone (Version 27.2 (Build 24B115)). The host inspector verified the fresh run ID
+and recomputed a maximum absolute difference of 1.7851e-7 against the pinned
+PyTorch vectors, below the fixed 1e-4 tolerance.
+
 ## Verified optional iPhone path
 
 The isolated EmbeddingProbe app now has an explicit `LOCALAGENTKIT_COREAI_PROBE=1`
@@ -94,8 +143,8 @@ results contain no vector export. Cancellation is checked around model loading a
 every inference. Ordinary probe runs do not load Core AI or require an artifact.
 Legacy JSON reports still decode with the optional Core AI field absent.
 
-The corrected signed app and generated fixture ran on the paired physical iPhone
-on iOS 27.2 (24B115), after the user unlocked it. All 44 inputs completed; the
+The earlier probe used Core AI directly and ran the generated fixture on the
+paired physical iPhone on iOS 27.2 (24B115). All 44 inputs completed; the
 phone reported maximum absolute error 1.7881393e-7. Independent recomputation from
 the exported JSON components gave 1.7850748443293263e-7, below the fixed 1e-4
 tolerance. That independent check uses JSON-decoded components rather than the
@@ -121,13 +170,11 @@ xcrun devicectl device process launch --device <device-id> --terminate-existing 
 
 Retrieve `Documents/embedding-report.json` from that container after completion and
 run `inspect_parity.py` with the same conversion's reference and run UUID. GPU is a
-specialization preference, not proof every operation executes on GPU. Tokens are
-precomputed by the pinned host tokenizer; this is not a shipped Swift tokenizer or
-production `EmbeddingProvider`. Timing, battery, process peak memory and broad
-application/multilingual/independent-corpus Core AI quality remain unmeasured.
-The full independent comparison in [IndependentQuality.md](IndependentQuality.md)
-and decision 0009 complete M3-04/PLANNING question 4. Provider integration (M3-11),
-calibration (M3-07) and resource/application checks remain separate work.
+specialization preference, not proof every operation executes on GPU. The pinned host tokenizer precomputes the fixture tokens. Timing, battery,
+process peak memory and application or multilingual quality remain open. The full
+independent comparison in [IndependentQuality.md](IndependentQuality.md) and
+decision 0009 complete M3-04 and PLANNING question 4. Calibration (M3-07) and
+resource and application checks remain separate work.
 
 ## Verification of this follow-up
 
