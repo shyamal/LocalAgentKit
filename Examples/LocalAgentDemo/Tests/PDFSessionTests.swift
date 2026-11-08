@@ -66,6 +66,29 @@ import Testing
     #expect(await model.requests.isEmpty)
   }
 
+  @Test func answerRequestPreservesPassagesAndHandlesLabelOnlyReply() async throws {
+    let first =
+      String(repeating: "The proposal covers on-device sensing. ", count: 10)
+      + "The first aim is reducing bandwidth."
+    let second = "The second aim is private personalization."
+    let session = DemoPDFSession(embedding: MockEmbeddingProvider())
+    let url = URL(fileURLWithPath: "/fixture.pdf")
+    for text in [first, second] {
+      _ = try await session.start(url, load: { _ in Document(title: text, text: text) }).value()
+    }
+    let model = MockModelProvider { _ in .text("- PDF_PASSAGES: [1]") }
+    let response = try await session.runtime(model: model).run("Summary of this")
+    let request = try #require(await model.requests.first)
+    let prompt = try #require(request.messages.last?.content)
+    #expect(prompt.contains(first))
+    #expect(prompt.contains(second))
+    #expect(prompt.contains("\n\n[2] "))
+    #expect(prompt.hasSuffix("Question: Summary of this"))
+    #expect(response.text.contains("couldn't generate an answer"))
+    #expect(response.toolCallCount == 1)
+    #expect(await model.requests.count == 1)
+  }
+
   @Test func replacementSessionDoesNotRetrieveEarlierPDF() async throws {
     let first = DemoPDFSession(embedding: MockEmbeddingProvider())
     let second = DemoPDFSession(embedding: MockEmbeddingProvider())
