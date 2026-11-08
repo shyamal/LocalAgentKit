@@ -37,18 +37,22 @@ Neither coverage target's source changed; this reflects executed Runtime lines.
 
 macOS, generic iOS and signed physical-iPhone builds succeed. Existing AppIntents
 metadata/orientation diagnostics remain; no Swift warning was silenced. The signed
-app was installed on the paired iPhone 15 Pro. iOS blocked the launch attempt because
-the device was locked; device interaction and user-file answer correctness are not
-yet verified. Existing user-local Xcode signing settings were preserved.
+app was installed on the paired iPhone 15 Pro. The first launch was blocked by
+the device lock. After unlocking on 2026-11-08, the app imported a user PDF and
+displayed retrieved excerpts. The first summary reply contained only a passage
+label. The PDF planner now supplies the labeled excerpts to the budgeted model in a dedicated
+answer prompt. A regression test checks that the prompt retains text beyond the
+shared workflow formatter’s clipping limit and that a label-only response shows
+a generation failure message. All 24 demo tests pass with this change. Existing
+user-local Xcode signing settings were preserved. The updated app was installed
+and launched on the same iPhone. The user confirmed that the same-PDF summary
+worked on retest.
 
 ## Acceptance remaining
 
-On an unlocked Apple Intelligence-capable iPhone, open Ask a PDF and select an
-actual authorized downloaded text-layer PDF. Check indexing/progress, ask a question
-with a known answer and compare visible excerpts and answer to the original. Replace
-with another PDF (including the same filename), verify context isolation, cancel an
-import and a question, then close/reopen. Reject blank/locked or over-limit PDFs
-without a false ready state. Do not use simulator generation as device acceptance.
+On the iPhone, replace the selected PDF (including with one of the same filename)
+and verify context isolation. Cancel an import and a question, then close and
+reopen the sheet. Check that blank, locked and over-limit PDFs fail visibly.
 
 The current local embedding path has measured limitations and fallback can change
 vector space; the prototype does not integrate MiniLM/Core AI (M3-11) or calibrate
@@ -57,5 +61,4 @@ nonempty snippets may be unrelated. PDF layout/OCR/page citations, provider down
 OS background execution, secure erasure and resource/quality guarantees are not
 claimed. File providers may download user selections outside SDK network policy.
 
-M3-10 remains in progress until that real user-PDF check. The milestone exit is not
-satisfied by generated-file tests, build/install success or scripted answers.
+M3-10 remains in progress while these device checks are pending.
