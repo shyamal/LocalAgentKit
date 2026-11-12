@@ -10,6 +10,11 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 ## Topics
 
+### Local image analysis
+
+- ``AppleVisionProvider``
+- <doc:LocalImageAnalysis>
+
 ### App-owned OS 27 models
 
 - ``LanguageModelProvider``

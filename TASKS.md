@@ -236,9 +236,9 @@ and the deferred developer trials remain open.
 
 ## Milestone 4 — v0.4 Multimodal
 
-- [ ] **M4-01** `VisionProvider` protocol + `AppleVisionProvider` (FR-016)
+- [x] **M4-01** `VisionProvider` protocol + `AppleVisionProvider` (FR-016) *(DONE 2026-11-12: Core encoded-image/orientation/category values and typed visionFailure; Providers ImageIO byte/pixel preflight and local Vision classification; Testing mock records/scripted results. Native generated-image classification passes on macOS 26.6.2 and generic iOS build passes. Default suite with 741 registered functions passes on unchanged retry after a recorded Core Data trigger-generation signal 11; offline suite, 70 Python checks, formatting/layering and DocC pass. Core/Runtime coverage 98.85%, up 0.01 points. Classification is the initial operation; OCR, object locations, document understanding and runtime attachments remain subsequent tasks. Evidence and limits: docs/vision-provider-verification.md.)*
 - [ ] **M4-02** OCR
-- [ ] **M4-03** Image classification + object detection
+- [~] **M4-03** Image classification + object detection *(Initial classification delivered by M4-01; located object detection remains.)*
 - [ ] **M4-04** Document understanding + structured extraction
 - [ ] **M4-05** `SpeechRecognizer` protocol + Apple STT implementation (FR-017)
 - [ ] **M4-06** `SpeechSynthesizer` protocol + Apple TTS implementation (FR-017)

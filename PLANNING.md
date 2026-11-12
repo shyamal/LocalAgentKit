@@ -151,6 +151,13 @@ LocalAgentKit/
 
 **Dependency direction is strictly one-way:** `Tools`/`Providers`/`SwiftUI` → `Runtime` → `Core`. Nothing depends on `Providers`. `Core` depends on nothing.
 
+M4-01 adds a Core VisionProvider seam with encoded ImageInput, EXIF orientation
+and category-valued VisionResult. Providers’ AppleVisionProvider validates image
+byte/pixel limits through ImageIO and classifies through Vision. The Testing target
+supplies MockVisionProvider. Results and typed failures contain no native image
+objects. Host invocation is independent of the runtime; attachments and
+orchestration are M4-07/08. OCR and located object detection are M4-02/03.
+
 ### 2.3 The agent loop
 
 `AgentRuntime` is an `actor`. It owns all mutable execution state; nothing else mutates it.
@@ -317,7 +324,7 @@ M3-10’s demo prototype adds an isolated, ephemeral user-PDF session via the na
 | **Natural Language** (`NLEmbedding`) | Default on-device embeddings for RAG v0.3 | `NLEmbeddingProvider` |
 | **SwiftData** | Memory persistence (working/conversation/semantic/episodic) | `SwiftDataMemoryStore` |
 | **Core Data** | Read-only store version/family preflight before SwiftData opening | `StoreCompatibility` (Providers only) |
-| **Vision** | OCR, classification, detection, document understanding | `AppleVisionProvider` |
+| **Vision / ImageIO** | M4-01 local image classification, metadata orientation and bounded image preflight; OCR, detection and document extraction follow | `AppleVisionProvider` in Providers |
 | **Speech** / **AVFoundation** | STT and TTS | `AppleSpeechProvider` |
 | **EventKit** | Calendar + Reminders tools | `LocalAgentKitTools` |
 | **Contacts** | Contacts tool | `LocalAgentKitTools` |
