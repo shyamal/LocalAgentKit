@@ -10,6 +10,13 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 
 ## Topics
 
+### Image analysis
+
+- ``VisionProvider``
+- ``ImageInput``
+- ``VisionResult``
+- ``VisionClassification``
+
 ### Thermal admission and context caps
 
 - ``AgentThermalState``
