@@ -1,32 +1,69 @@
 import Foundation
 import LocalAgentKitCore
 
-/// Small-corpus local vector persistence using versioned JSON snapshots and exact cosine search.
+/// Local vector persistence using compact snapshots and exact cosine search.
+/// Reads legacy version-1 JSON and writes version-2 binary property lists with Float32 bytes.
+/// Reading preserves a legacy file. The first successful mutation migrates it; older SDKs
+/// that only understand version 1 cannot reopen the migrated file.
 /// Share one instance per file; independent actors/process writers are not coordinated. Hosts
 /// own file authorization, provider-backed availability, backup and exclusive access. No network
 /// operation is initiated, but a file URL does not establish that its backing volume is offline.
 public actor FileVectorStore: VectorStore {
-  private struct Record: Codable {
+  private struct Record: Decodable {
     let id: UUID
     let text: String
     let vector: [Float]
     let metadata: [String: String]
 
-    init(_ document: EmbeddedDocument) {
-      id = document.id
-      text = document.text
-      vector = document.vector
-      metadata = document.metadata
-    }
     var document: EmbeddedDocument {
       EmbeddedDocument(id: id, text: text, vector: vector, metadata: metadata)
     }
   }
-  private struct Snapshot: Codable {
+  private struct Snapshot: Decodable {
     let version: Int
     let embeddingSpace: String
     let dimensions: Int
     let records: [Record]
+  }
+
+  private struct CompactRecord: Codable {
+    let id: UUID
+    let text: String
+    let vector: Data
+    let metadata: [String: String]
+
+    init(_ document: EmbeddedDocument) {
+      id = document.id
+      text = document.text
+      metadata = document.metadata
+      var bytes = Data()
+      for component in document.vector {
+        var bits = component.bitPattern.littleEndian
+        withUnsafeBytes(of: &bits) { bytes.append(contentsOf: $0) }
+      }
+      vector = bytes
+    }
+
+    func document(dimensions: Int) throws -> EmbeddedDocument {
+      guard vector.count % 4 == 0, vector.count / 4 == dimensions else {
+        throw AgentError.retrievalFailure("Invalid compact vector byte count")
+      }
+      let values = vector.withUnsafeBytes { bytes in
+        stride(from: 0, to: bytes.count, by: 4).map { offset in
+          Float(
+            bitPattern: UInt32(
+              littleEndian: bytes.loadUnaligned(fromByteOffset: offset, as: UInt32.self)))
+        }
+      }
+      return EmbeddedDocument(id: id, text: text, vector: values, metadata: metadata)
+    }
+  }
+
+  private struct CompactSnapshot: Codable {
+    let version: Int
+    let embeddingSpace: String
+    let dimensions: Int
+    let records: [CompactRecord]
   }
 
   private let url: URL
@@ -124,22 +161,33 @@ public actor FileVectorStore: VectorStore {
     guard !loaded else { return }
     do {
       let data = try read()
-      let snapshot = try JSONDecoder().decode(Snapshot.self, from: data)
-      guard snapshot.version == 1, snapshot.embeddingSpace == embeddingSpace,
-        snapshot.dimensions == dimensions
-      else {
-        throw AgentError.retrievalFailure("Incompatible vector snapshot version or embedding space")
+      let candidate: [EmbeddedDocument]
+      if data.starts(with: Data("bplist00".utf8)) {
+        let snapshot = try PropertyListDecoder().decode(CompactSnapshot.self, from: data)
+        try validateHeader(
+          version: snapshot.version, expectedVersion: 2,
+          space: snapshot.embeddingSpace, dimensions: snapshot.dimensions)
+        candidate = try snapshot.records.map { record in
+          try checkCancellation()
+          return try record.document(dimensions: dimensions)
+        }
+      } else {
+        let snapshot = try JSONDecoder().decode(Snapshot.self, from: data)
+        try validateHeader(
+          version: snapshot.version, expectedVersion: 1,
+          space: snapshot.embeddingSpace, dimensions: snapshot.dimensions)
+        candidate = snapshot.records.map(\.document)
       }
       var ids: Set<UUID> = []
-      for record in snapshot.records {
+      for document in candidate {
         try checkCancellation()
-        try validate(record.vector)
-        guard ids.insert(record.id).inserted else {
+        try validate(document.vector)
+        guard ids.insert(document.id).inserted else {
           throw AgentError.retrievalFailure("Duplicate IDs in vector snapshot")
         }
       }
       try checkCancellation()
-      documents = snapshot.records.map(\.document)
+      documents = candidate
       loaded = true
     } catch let error as CocoaError where error.code == .fileReadNoSuchFile {
       try checkCancellation()
@@ -170,10 +218,15 @@ public actor FileVectorStore: VectorStore {
   private func commit(_ candidate: [EmbeddedDocument]) throws {
     do {
       try checkCancellation()
-      let snapshot = Snapshot(
-        version: 1, embeddingSpace: embeddingSpace, dimensions: dimensions,
-        records: candidate.map(Record.init))
-      let data = try JSONEncoder().encode(snapshot)
+      let snapshot = CompactSnapshot(
+        version: 2, embeddingSpace: embeddingSpace, dimensions: dimensions,
+        records: try candidate.map { document in
+          try checkCancellation()
+          return CompactRecord(document)
+        })
+      let encoder = PropertyListEncoder()
+      encoder.outputFormat = .binary
+      let data = try encoder.encode(snapshot)
       guard data.count <= maximumBytes else {
         throw AgentError.retrievalFailure("Vector snapshot exceeds byte limit")
       }
@@ -184,6 +237,14 @@ public actor FileVectorStore: VectorStore {
       // No cancellation check after commit: a successful write is reported as success.
       documents = candidate
     } catch { throw mapped(error, operation: "save") }
+  }
+
+  private func validateHeader(
+    version: Int, expectedVersion: Int, space: String, dimensions: Int
+  ) throws {
+    guard version == expectedVersion, space == embeddingSpace, dimensions == self.dimensions else {
+      throw AgentError.retrievalFailure("Incompatible vector snapshot version or embedding space")
+    }
   }
 
   private func validate(_ vector: [Float]) throws {

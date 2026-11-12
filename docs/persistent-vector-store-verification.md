@@ -1,5 +1,9 @@
 # Persistent vector store verification (M3-05)
 
+M3-12 adds compact version-2 snapshots with legacy read compatibility. See
+[compact snapshot verification](compact-vector-snapshot-verification.md) for the
+current format, migration behavior and measured resource comparison.
+
 Verified 2026-11-06. `FileVectorStore` in Providers implements the existing Core
 `VectorStore` protocol with version-1 JSON snapshots. A Swift 6 complete-concurrency
 scratch probe against the installed SDK verified JSON encode/decode, bounded

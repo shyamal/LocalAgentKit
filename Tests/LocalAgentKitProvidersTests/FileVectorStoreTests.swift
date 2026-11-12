@@ -118,7 +118,7 @@ import Testing
     await failure { _ = try await other.count() }
     await failure { try await wrongDimensions.insert([]) }
     #expect(try Data(contentsOf: url) == before)
-    try edit(url) { $0["version"] = 2 }
+    try edit(url) { $0["version"] = 99 }
     let future = try Data(contentsOf: url)
     await failure { try await make(url).insert([EmbeddedDocument(text: "new", vector: [1, 0])]) }
     #expect(try Data(contentsOf: url) == future)
@@ -128,7 +128,7 @@ import Testing
     let url = location()
     defer { clean(url) }
     let input = EmbeddedDocument(text: "keep", vector: [1, 0])
-    try await make(url).insert([input])
+    try writeLegacy(url, documents: [input])
     let original = try Data(contentsOf: url)
     for mutation in 0..<4 {
       try original.write(to: url)
@@ -262,6 +262,116 @@ import Testing
     #expect(try await actual.count() == 1)
   }
 
+  @Test func legacyReadsDoNotRewriteAndFirstMutationMigratesAtomically() async throws {
+    let url = location()
+    defer { clean(url) }
+    let original = EmbeddedDocument(
+      text: "Legacy café", vector: [1, 0], metadata: ["source": "old"])
+    try writeLegacy(url, documents: [original])
+    let legacy = try Data(contentsOf: url)
+    let store = try make(url, maximumBytes: legacy.count)
+    #expect(try await store.search(vector: [1, 0], limit: 1).first?.document == original)
+    #expect(try Data(contentsOf: url) == legacy)
+    await failure {
+      try await store.insert([
+        EmbeddedDocument(text: String(repeating: "large", count: 1000), vector: [0, 1])
+      ])
+    }
+    #expect(try Data(contentsOf: url) == legacy)
+    #expect(try await store.count() == 1)
+    // A separate actor takes ownership only after the preceding actor has finished its work.
+    let migrating = try make(url)
+    var replacement = original
+    replacement.text = "Updated legacy passage"
+    try await migrating.insert([replacement])
+    #expect(try Data(contentsOf: url).starts(with: Data("bplist00".utf8)))
+    #expect(try await make(url).search(vector: [1, 0], limit: 1).first?.document == replacement)
+  }
+
+  @Test func compactRoundTripPreservesEveryFloatBitIncludingSignedZero() async throws {
+    let url = location()
+    defer { clean(url) }
+    let vector: [Float] = [
+      1, -0.0, 0.0, .leastNonzeroMagnitude, -.leastNonzeroMagnitude,
+      .greatestFiniteMagnitude, -.greatestFiniteMagnitude,
+    ]
+    let store = try FileVectorStore(url: url, embeddingSpace: "bits", dimensions: vector.count)
+    try await store.insert([EmbeddedDocument(text: "Unicode 漢字 🐦", vector: vector)])
+    let reopened = try FileVectorStore(url: url, embeddingSpace: "bits", dimensions: vector.count)
+    let actual = try #require(await reopened.search(vector: vector, limit: 1).first)
+    #expect(actual.document.vector.map(\.bitPattern) == vector.map(\.bitPattern))
+    #expect(actual.document.text == "Unicode 漢字 🐦")
+    let object =
+      try PropertyListSerialization.propertyList(
+        from: Data(contentsOf: url), format: nil) as! [String: Any]
+    let record = (object["records"] as! [[String: Any]])[0]
+    let bytes = record["vector"] as! Data
+    #expect(Array(bytes.prefix(8)) == [0, 0, 128, 63, 0, 0, 0, 128])
+
+  }
+
+  @Test func compactCorruptionNeverReplacesStorageOrPublishesPartialCache() async throws {
+    let url = location()
+    defer { clean(url) }
+    let input = EmbeddedDocument(text: "Keep", vector: [1, 0])
+    try await make(url).insert([input])
+    let original = try Data(contentsOf: url)
+    for mutation in 0..<6 {
+      try original.write(to: url)
+      try edit(url) { object in
+        var records = object["records"] as! [[String: Any]]
+        switch mutation {
+        case 0: records.append(records[0])
+        case 1: records[0]["vector"] = Data([0])
+        case 2: records[0]["vector"] = Data(repeating: 0, count: 8)
+        case 3: records[0]["vector"] = Data([0, 0, 128, 127, 0, 0, 0, 0])
+        case 4: object["dimensions"] = Int.max
+        default: object.removeValue(forKey: "version")
+        }
+        object["records"] = records
+      }
+      let corrupt = try Data(contentsOf: url)
+      let store = try make(url)
+      await failure { _ = try await store.count() }
+      await failure { try await store.insert([input]) }
+      #expect(try Data(contentsOf: url) == corrupt)
+      // Failed load must remain retryable without retaining a partial candidate.
+      try original.write(to: url)
+      #expect(try await store.count() == 1)
+    }
+    try original.dropLast().write(to: url)
+    await failure { _ = try await make(url).count() }
+  }
+
+  @Test func denseCompactSnapshotIsSmallerThanLegacyWithoutChangingSearch() async throws {
+    let url = location()
+    defer { clean(url) }
+    let values = (0..<512).map { Float($0 + 1) / 513 }
+    let input = EmbeddedDocument(text: String(repeating: "passage", count: 146), vector: values)
+    let store = try FileVectorStore(url: url, embeddingSpace: "dense", dimensions: 512)
+    try await store.insert([input])
+    let compact = try Data(contentsOf: url)
+    try writeLegacy(url, documents: [input], space: "dense", dimensions: 512)
+    let legacy = try Data(contentsOf: url)
+    #expect(compact.count < legacy.count)
+    let reopened = try FileVectorStore(url: url, embeddingSpace: "dense", dimensions: 512)
+    #expect(try await reopened.search(vector: values, limit: 1).first?.document == input)
+  }
+
+  private func writeLegacy(
+    _ url: URL, documents: [EmbeddedDocument], space: String = "fixture-v1", dimensions: Int = 2
+  ) throws {
+    let records: [[String: Any]] = documents.map {
+      ["id": $0.id.uuidString, "text": $0.text, "vector": $0.vector, "metadata": $0.metadata]
+    }
+    let object: [String: Any] = [
+      "version": 1, "embeddingSpace": space, "dimensions": dimensions, "records": records,
+    ]
+    try FileManager.default.createDirectory(
+      at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+    try JSONSerialization.data(withJSONObject: object).write(to: url)
+  }
+
   private func location() -> URL {
     FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
       .appendingPathComponent("vectors.json")
@@ -285,8 +395,17 @@ import Testing
     }
   }
   private func edit(_ url: URL, _ change: (inout [String: Any]) -> Void) throws {
-    var object = try JSONSerialization.jsonObject(with: Data(contentsOf: url)) as! [String: Any]
-    change(&object)
-    try JSONSerialization.data(withJSONObject: object).write(to: url)
+    let data = try Data(contentsOf: url)
+    if data.starts(with: Data("bplist00".utf8)) {
+      var object =
+        try PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
+      change(&object)
+      try PropertyListSerialization.data(fromPropertyList: object, format: .binary, options: 0)
+        .write(to: url)
+    } else {
+      var object = try JSONSerialization.jsonObject(with: data) as! [String: Any]
+      change(&object)
+      try JSONSerialization.data(withJSONObject: object).write(to: url)
+    }
   }
 }
