@@ -16,6 +16,8 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 - ``ImageInput``
 - ``VisionResult``
 - ``VisionClassification``
+- ``VisionTextObservation``
+- ``VisionBoundingBox``
 
 ### Thermal admission and context caps
 

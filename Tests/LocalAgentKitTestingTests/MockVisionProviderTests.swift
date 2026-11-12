@@ -46,4 +46,14 @@ import Testing
       #expect(await provider.inputs.count == (cancelBefore ? 0 : 1))
     }
   }
+  @Test func mockCanReturnOCRThroughTheExistingProtocol() async throws {
+    let result = VisionResult(recognizedText: [
+      VisionTextObservation(
+        text: "Scripted receipt", confidence: 1,
+        boundingBox: .init(x: 0, y: 0, width: 1, height: 1))
+    ])
+    let provider: any VisionProvider = MockVisionProvider { _ in result }
+    #expect(try await provider.analyze(image: ImageInput(data: Data())).text == "Scripted receipt")
+  }
+
 }

@@ -28,4 +28,18 @@ import Testing
     #expect(!provider.requiresNetwork)
     #expect(try await provider.analyze(image: ImageInput(data: Data())).classifications.isEmpty)
   }
+  @Test func recognizedTextRetainsRegionsAndJoinsInProviderOrder() {
+    let box = VisionBoundingBox(x: 0.1, y: 0.2, width: 0.5, height: 0.1)
+    let lines = [
+      VisionTextObservation(text: "Café", confidence: 0.9, boundingBox: box),
+      VisionTextObservation(text: "42.50", confidence: 0.8, boundingBox: box),
+    ]
+    let result = VisionResult(recognizedText: lines)
+    #expect(result.text == "Café\n42.50")
+    #expect(result.recognizedText == lines)
+    #expect(result.classifications.isEmpty)
+    #expect(result.recognizedText[0].boundingBox.y == 0.2)
+    #expect(VisionResult().text.isEmpty)
+  }
+
 }

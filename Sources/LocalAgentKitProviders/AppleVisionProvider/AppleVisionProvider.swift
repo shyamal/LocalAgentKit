@@ -3,15 +3,15 @@ import ImageIO
 import LocalAgentKitCore
 import Vision
 
-/// Local image classification using Apple's Vision framework (FR-016).
+/// Local image classification and optional text recognition using Apple's Vision framework (FR-016).
 /// Reads the first image in an encoded container. Does not read files or request camera access.
 public struct AppleVisionProvider: VisionProvider {
   /// Local Vision inference has no network requirement.
   public let requiresNetwork = false
   private let maximumBytes: Int
   private let maximumPixels: Int
-  private let resultLimit: Int
-  private let classify: @Sendable (ImageInput) async throws -> [VisionClassification]
+  private let process: @Sendable (ImageInput) async throws -> LocalAgentKitCore.VisionResult
+  private let failureMessage: String
 
   /// Creates a classifier with encoded-byte, first-image pixel and result-count limits.
   /// Defaults allow 16 MiB, 24 million pixels and five category predictions.
@@ -30,16 +30,70 @@ public struct AppleVisionProvider: VisionProvider {
     resultLimit: Int = 5,
     classify: @escaping @Sendable (ImageInput) async throws -> [VisionClassification]
   ) throws {
-    guard maximumBytes > 0, maximumPixels > 0, resultLimit > 0 else {
+    guard resultLimit > 0 else {
+      throw AgentError.invalidConfiguration(.invalidLimit("Vision limits must be positive"))
+    }
+    try self.init(
+      maximumBytes: maximumBytes, maximumPixels: maximumPixels,
+      failureMessage: "Image classification failed"
+    ) { image in
+      let results = try await classify(image)
+      guard
+        results.allSatisfy({
+          !$0.identifier.isEmpty && $0.confidence.isFinite && (0...1).contains($0.confidence)
+        })
+      else {
+        throw AgentError.visionFailure("Vision returned invalid category predictions")
+      }
+      let sorted = results.sorted {
+        $0.confidence == $1.confidence
+          ? $0.identifier < $1.identifier : $0.confidence > $1.confidence
+      }
+      return LocalAgentKitCore.VisionResult(classifications: Array(sorted.prefix(resultLimit)))
+    }
+  }
+
+  /// Creates an OCR-only provider with the supplied recognition and output limits.
+  public init(
+    textRecognition: TextRecognitionConfiguration, maximumBytes: Int = 16 * 1024 * 1024,
+    maximumPixels: Int = 24_000_000
+  ) throws {
+    try self.init(
+      textRecognition: textRecognition, maximumBytes: maximumBytes,
+      maximumPixels: maximumPixels, recognize: Self.recognize)
+  }
+
+  init(
+    textRecognition: TextRecognitionConfiguration, maximumBytes: Int = 16 * 1024 * 1024,
+    maximumPixels: Int = 24_000_000,
+    recognize:
+      @escaping @Sendable (ImageInput, TextRecognitionConfiguration) async throws
+      -> [VisionTextObservation]
+  ) throws {
+    try self.init(
+      maximumBytes: maximumBytes, maximumPixels: maximumPixels,
+      failureMessage: "Text recognition failed"
+    ) { image in
+      let observations = try await recognize(image, textRecognition)
+      try textRecognition.validate(observations)
+      return LocalAgentKitCore.VisionResult(recognizedText: observations)
+    }
+  }
+
+  private init(
+    maximumBytes: Int, maximumPixels: Int, failureMessage: String,
+    process: @escaping @Sendable (ImageInput) async throws -> LocalAgentKitCore.VisionResult
+  ) throws {
+    guard maximumBytes > 0, maximumPixels > 0 else {
       throw AgentError.invalidConfiguration(.invalidLimit("Vision limits must be positive"))
     }
     self.maximumBytes = maximumBytes
     self.maximumPixels = maximumPixels
-    self.resultLimit = resultLimit
-    self.classify = classify
+    self.failureMessage = failureMessage
+    self.process = process
   }
 
-  /// Returns up to resultLimit categories, sorted by descending confidence then identifier.
+  /// Runs the configured classification or OCR operation on the admitted image.
   /// Resolves embedded EXIF orientation unless the host supplies an override. Malformed,
   /// oversized or undecodable inputs fail with visionFailure; cancellation discards late output.
   public func analyze(image: ImageInput) async throws -> LocalAgentKitCore.VisionResult {
@@ -62,24 +116,13 @@ public struct AppleVisionProvider: VisionProvider {
       let orientation =
         image.orientation ?? ImageInput.Orientation(rawValue: encodedOrientation) ?? .up
       try Task.checkCancellation()
-      let results = try await classify(ImageInput(data: image.data, orientation: orientation))
+      let result = try await process(ImageInput(data: image.data, orientation: orientation))
       try Task.checkCancellation()
-      guard
-        results.allSatisfy({
-          !$0.identifier.isEmpty && $0.confidence.isFinite && (0...1).contains($0.confidence)
-        })
-      else {
-        throw AgentError.visionFailure("Vision returned invalid category predictions")
-      }
-      let sorted = results.sorted {
-        $0.confidence == $1.confidence
-          ? $0.identifier < $1.identifier : $0.confidence > $1.confidence
-      }
-      return LocalAgentKitCore.VisionResult(classifications: Array(sorted.prefix(resultLimit)))
+      return result
     } catch {
       if Task.isCancelled || error is CancellationError { throw AgentError.cancelled }
       if let error = error as? AgentError { throw error }
-      throw AgentError.visionFailure("Image classification failed")
+      throw AgentError.visionFailure(failureMessage)
     }
   }
 
