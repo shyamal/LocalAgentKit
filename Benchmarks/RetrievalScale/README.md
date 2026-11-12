@@ -88,6 +88,18 @@ File shape, Unicode/escaping, dimensions, OS cache, hardware and background load
 can change results. A phone budget still needs a physical-device run before a
 phone performance claim (M6-05/M3-10); desktop headroom cannot certify it.
 
+## Compact snapshot follow-up (M3-12, 2026-11-12)
+
+The same matrix now measures version-2 compact FileVectorStore snapshots, with
+all raw results under `results/macos-compact-2026-11-12`. The 5,183 × 512 file
+falls from 36.6 MiB to 15.7 MiB, and its query-process peak RSS falls from
+266.7 MiB to 90.9 MiB. All compact cells fit the default 32 MiB file budget.
+Query p95 stays below 13 ms. The table above is the historical JSON baseline.
+
+See [compact snapshot verification](../../docs/compact-vector-snapshot-verification.md)
+for the complete comparison, version-1 read compatibility, migration behavior and
+validation. The benchmark workload and its exploratory host targets are the same.
+
 ## Reproduce
 
 ```bash
