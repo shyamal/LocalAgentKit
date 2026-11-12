@@ -48,14 +48,59 @@ public struct VisionClassification: Sendable, Hashable {
   }
 }
 
+/// A rectangle normalized to the oriented image, with its origin at the lower-left corner.
+public struct VisionBoundingBox: Sendable, Hashable {
+  /// Horizontal origin in image-relative coordinates.
+  public let x: Double
+  /// Vertical origin in image-relative coordinates.
+  public let y: Double
+  /// Width relative to the image width.
+  public let width: Double
+  /// Height relative to the image height.
+  public let height: Double
+
+  /// Creates a normalized region. Providers validate their output before returning it.
+  public init(x: Double, y: Double, width: Double, height: Double) {
+    self.x = x
+    self.y = y
+    self.width = width
+    self.height = height
+  }
+}
+
+/// One recognized region, retaining the provider's best text candidate and confidence.
+public struct VisionTextObservation: Sendable, Hashable {
+  /// Recognized text for this region.
+  public let text: String
+  /// Native recognition confidence in zero through one.
+  public let confidence: Float
+  /// Location in the oriented image.
+  public let boundingBox: VisionBoundingBox
+
+  /// Creates a recognized text region.
+  public init(text: String, confidence: Float, boundingBox: VisionBoundingBox) {
+    self.text = text
+    self.confidence = confidence
+    self.boundingBox = boundingBox
+  }
+}
+
 /// Framework-independent image analysis returned to the host.
 public struct VisionResult: Sendable, Hashable {
   /// Image category predictions, in provider-defined order.
   public let classifications: [VisionClassification]
 
-  /// Creates a result containing category predictions.
-  public init(classifications: [VisionClassification] = []) {
+  /// Text regions in provider observation order, which may differ from document reading order.
+  public let recognizedText: [VisionTextObservation]
+  /// Region text joined with newlines, preserving observation order.
+  public var text: String { recognizedText.map(\.text).joined(separator: "\n") }
+
+  /// Creates an analysis result. Existing category-only construction remains available.
+  public init(
+    classifications: [VisionClassification] = [], recognizedText: [VisionTextObservation] = []
+  ) {
     self.classifications = classifications
+    self.recognizedText = recognizedText
   }
 }
 
