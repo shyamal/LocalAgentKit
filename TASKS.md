@@ -1,17 +1,46 @@
 # LocalAgentKit — TASKS
 
 **Companion documents:** [`LocalAgentKit-PRD-v0.2.md`](./LocalAgentKit-PRD-v0.2.md) (what & why) · [`PLANNING.md`](./PLANNING.md) (how)
-**Last updated:** 2026-09-02
+**Last updated:** 2026-11-12
 
 Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop detector`). FR/NFR/R/M references point back to the PRD.
 
 **Legend:** `[ ]` todo · `[~]` in progress · `[x]` done · `[!]` blocked · 🔒 gates later work
 
+## Current state — 2026-11-12
+
+Phase 0 and the M3-04 embedding benchmark gate are complete. Active implementation
+is Milestone 4. The Core AI embedding adapter (M3-11), compact vector snapshots
+(M3-12), Vision foundation (M4-01) and OCR (M4-02) have merged through PRs
+[#67](https://github.com/shyamal/LocalAgentKit/pull/67),
+[#69](https://github.com/shyamal/LocalAgentKit/pull/69),
+[#70](https://github.com/shyamal/LocalAgentKit/pull/70) and
+[#71](https://github.com/shyamal/LocalAgentKit/pull/71).
+
+- **M3-07 remains open.** Retrieval controls are implemented; independently
+  annotated application/no-answer data and held-out calibration are pending.
+- **M3-10 remains open.** The user confirmed a PDF summary worked on the iPhone
+  after the fix in [PR #68](https://github.com/shyamal/LocalAgentKit/pull/68).
+  Device checks for PDF replacement, cancellation, reopening and invalid files
+  are pending.
+- **Independent developer validation remains deferred** at the user's request.
+  The newcomer setup and custom-tool measurements remain open.
+- **Next implementation is M4-03 object detection**, followed by M4-04 document
+  understanding and structured extraction. Classification already ships in M4-01.
+  Standalone Vision cancellation is implemented; speech and end-to-end
+  cancellation coverage remain part of M4-09.
+
+Latest completed verification is recorded in
+[the OCR verification notes](docs/vision-ocr-verification.md). Core/Runtime
+coverage is 98.85%; native OCR checks ran on macOS, and the generic iOS build passed.
+Milestone 3's remaining calibration and PDF checks, and Milestone 4's device exit
+criteria, remain open.
+
 ---
 
 ## Milestone 0 — Repository Bootstrap
 
-*Nothing but the PRD exists. This milestone can run in parallel with Phase 0.*
+*Repository bootstrap is complete. The checklist below records the original setup work.*
 
 ### Version control & scaffolding
 - [x] **M0-01** `git init`; set default branch to `main`; first commit of the PRD + PLANNING.md
@@ -226,7 +255,7 @@ and the deferred developer trials remain open.
 - [~] **M3-07** Retrieval tuning: top-k, thresholds, dedup *(CONTROLS IMPLEMENTED 2026-11-06: Core RetrievalConfiguration selects a bounded candidate window with stable score ranking, inclusive opt-in threshold and ID/exact-text/normalized-whitespace dedup before top-k. Explicit pipeline APIs, optional automatic-RAG settings and validated DocumentSearchTool initializer share the policy; legacy/default paths remain unchanged, with no calibrated cutoff. Fifteen new functions test selection, cancellation/error mapping, validation, tool behavior and context-fitted runtime injection. Warning-free build, 699 branch Swift functions/offline suite, examples, 62 Python tests, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.76% (2795/2830), up 0.03 points from merged M3-05 base. Rebased onto M3-05; independent of M3-06. Still incomplete: provider-specific independent application/no-answer annotations, frozen calibration/evaluation splits and held-out measurements before claiming a reliable cutoff; decision 0009. The authored diagnostic is not that calibration. Evidence and remaining protocol: docs/retrieval-tuning-verification.md.)*
 - [x] **M3-08** Benchmark retrieval latency + memory at realistic corpus size; introduce an ANN index **only** if the benchmark demands it *(DONE 2026-11-06: pinned standalone release harness measures actual exact stores at 0/1,000/5,183/10,000 generated 1,024-character passages and 384/512 dimensions. Forty-eight fresh query processes, eight preparations, all 1,440 timed queries and source/workload/binary hashes retained. M5 Max host warm-query p95 is below 13 ms throughout; no ANN is warranted by the preselected 100 ms host query target. Storage is the observed limit: 5,183 × 512 needs 36.6 MiB JSON and 266.7 MiB query-process peak RSS, exceeding unchanged default file budget and exploratory host RSS target; M3-12 tracks compact/paged storage/decode. Whole-process high-water memory includes runtime/JSON/fixtures; not live index heap. Synthetic capacity axes and host timings do not certify embedding quality, phone latency, battery or real-PDF acceptance. Warning-free benchmark/SDK builds, 713 Swift functions/offline suite, 70 Python tests including eight benchmark/artifact checks, strict formatting/layering pass. Core/Runtime coverage 98.87% (2897/2930), unchanged from base. No SDK behavior/dependencies or defaults change. Raw data, methodology and limits: Benchmarks/RetrievalScale/README.md.)*
 - [x] **M3-09** Prompt-injection test corpus: adversarial instructions embedded in ingested documents (PRD §19) *(DONE 2026-11-06: twelve original test-only TXT/Markdown fixtures cover authority/approval/policy spoofing, urgency, tool JSON, hidden markup/code, delimiter/encoded/Unicode forms, workflow hijacking and evaluation pressure. Real extraction/chunking feeds automatic RAG and actual DocumentSearchTool routes; all 24 worst-case scripted attack requests reach the recorded prompt and are denied before target execution/start/completion/audit. Controls cover default-broker deny/approve across three tiers, cancellation rejecting stale approval, schema validation before gate, and benign read-only execution. Six functions expand to 38 invocations; original M1-SE-04 tests remain. Warning-free build, 719 Swift functions/offline suite, 70 Python tests, strict formatting/layering/DocC pass; Core/Runtime coverage unchanged at 98.87% (2897/2930). Only the Tools test target bundles fixtures; no SDK behavior/dependency changes. This verifies host authorization, not real-model resistance, output safety or real-PDF/OS permission acceptance. Corpus, reproduction and scope: docs/adversarial-rag-corpus.md.)*
-- [~] **M3-10** Demo app: answer questions from a real user-supplied PDF *(IMPLEMENTED 2026-11-06: separate PDF picker/session, balanced scoped extraction, bounded cancellable indexing, isolated ephemeral vectors/chat, source passages and one-search/one-answer workflow. Eleven new demo functions pass (23 total), plus 719 SDK functions/offline suite, 70 Python tests, formatting/layering and macOS/iOS/signed-device builds. The physical iPhone loaded a user PDF and displayed retrieved excerpts on 2026-11-08. The summary reply contained only a passage label. The PDF planner now passes labeled excerpts directly into its budgeted answer request and handles label-only replies. The user confirmed the same-PDF summary worked after reinstalling the updated app. The remaining device checks cover replacement, cancellation, reopening and invalid files. Core/Runtime coverage 98.81% (2895/2930), down 0.06 points with neither source target changed. The PDF demo uses NaturalLanguage embeddings. The opt-in Core AI adapter shipped separately in M3-11, and M3-07 calibration remains open. No SDK/project-reference/dependency changes. Evidence and acceptance protocol: docs/pdf-demo-verification.md.)*
+- [~] **M3-10** Demo app: answer questions from a real user-supplied PDF *(IMPLEMENTED 2026-11-06: separate PDF picker/session, balanced scoped extraction, bounded cancellable indexing, isolated ephemeral vectors/chat, source passages and one-search/one-answer workflow. Twelve PDF-specific functions pass (24 demo functions total), plus 719 SDK functions/offline suite, 70 Python tests, formatting/layering and macOS/iOS/signed-device builds. The physical iPhone loaded a user PDF and displayed retrieved excerpts on 2026-11-08. The summary reply contained only a passage label. The PDF planner now passes labeled excerpts directly into its budgeted answer request and handles label-only replies. The user confirmed the same-PDF summary worked after reinstalling the updated app. The remaining device checks cover replacement, cancellation, reopening and invalid files. Core/Runtime coverage 98.81% (2895/2930), down 0.06 points with neither source target changed. The PDF demo uses NaturalLanguage embeddings. The opt-in Core AI adapter shipped separately in M3-11, and M3-07 calibration remains open. No SDK/project-reference/dependency changes. Evidence and acceptance protocol: docs/pdf-demo-verification.md.)*
 - [x] **M3-11** Opt-in Core AI embedding adapter for OS 27 with host-supplied converted model and tokenizer (FR-014; decision 0009). Explicit model/tokenizer/vector-space and network declarations, mocks, cancellation and parity checks; preserve the 26.4 baseline and zero added SDK runtime dependencies. Complete before claiming the MiniLM path is integrated in M3-10; independent extraction/storage work may proceed after M3-04. *(Adapter implemented with fixed MiniLM tensor validation, typed errors, host-declared revisions/network/vector space and mock-backed cancellation tests. On 2026-11-08 the public adapter passed native parity on the iPhone across all 44 fixture inputs, with independently recomputed maximum absolute error 1.7851e-7 against the fixed 1e-4 tolerance. All 724 package tests and the offline suite passed. Core/Runtime coverage was 98.87%.)*
 - [x] **M3-12** Reduce file-backed vector snapshot size/load peak based on M3-08 measurements (FR-015/NFR memory). *(DONE 2026-11-12: version-2 binary property lists store exact little-endian Float32 bytes; version-1 JSON remains readable and migrates only on a successful mutation. Schema/space/dimension/record validation, rollback, cancellation and atomic publication are retained. The unchanged 48-process/1,440-query scale matrix reduces 5,183 × 512 storage from 36.6 to 15.7 MiB and query-process peak RSS from 266.7 to 90.9 MiB. Every measured compact snapshot fits the existing 32 MiB budget and query p95 stays below 13 ms. Exact search remains appropriate for this host workload. All 728 SDK functions/offline suite, 19 store functions, examples, 70 Python tests, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.84%, up 0.03 points from the preceding run with unchanged targets. Older SDK versions cannot open migrated files. Full-cache/full-snapshot semantics remain; phone performance and resource acceptance are separate. Evidence: docs/compact-vector-snapshot-verification.md and Benchmarks/RetrievalScale/results/macos-compact-2026-11-12.)*
 
@@ -244,7 +273,7 @@ and the deferred developer trials remain open.
 - [ ] **M4-06** `SpeechSynthesizer` protocol + Apple TTS implementation (FR-017)
 - [ ] **M4-07** Multimodal input types on `agent.run` — image, audio, document, combined (FR-002, FR-018)
 - [ ] **M4-08** Multimodal orchestration pipeline: camera → vision → structured data → agent → tool (FR-018)
-- [ ] **M4-09** Cancellation propagates into vision and speech (FR-024)
+- [~] **M4-09** Cancellation propagates into vision and speech (FR-024) *(Standalone classification and OCR check cancellation before and after native work and discard late results; tested in M4-01/02. Speech and runtime orchestration cancellation coverage remain pending.)*
 - [ ] **M4-10** Battery/thermal measurement for vision + speech paths (NFR battery)
 - [ ] **M4-11** Demo: receipt photo → structured expense record
 - [ ] **M4-12** Voice input → agent → spoken response, end to end
