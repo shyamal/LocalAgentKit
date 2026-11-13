@@ -77,6 +77,7 @@ public actor AgentRuntime {
     thermalPolicy: ThermalPolicy = .default,
     now: @escaping @Sendable () -> Date = { Date() }
   ) throws {
+    if let issue = configuration.inputLimits.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = configuration.limits.issue { throw AgentError.invalidConfiguration(issue) }
     if let issue = configuration.memoryRetrieval.issue {
       throw AgentError.invalidConfiguration(issue)
@@ -133,14 +134,32 @@ public actor AgentRuntime {
   /// - Throws: `LocalAgentKitCore.AgentError`. Cancelling the calling task cancels the run.
   public func run(_ goal: String, conversation: [ModelMessage]? = nil) async throws -> AgentResponse
   {
+    try await run(AgentInput(text: goal), conversation: conversation)
+  }
+
+  /// Runs a goal with explicit host-authorized image, audio or extracted-document inputs.
+  /// Attachments become ephemeral, budgeted source excerpts. Successful conversation memory
+  /// records the goal and answer; quoted source text in an answer is retained too.
+  /// Raw attachments and normalized excerpts are not recorded separately.
+  public func run(
+    _ input: AgentInput, conversation: [ModelMessage]? = nil
+  ) async throws -> AgentResponse {
     guard activeRun == nil else { throw AgentError.runInProgress }
-    let effectiveConversation: [ModelMessage]
-    if let conversation {
-      effectiveConversation = conversation
-    } else {
-      effectiveConversation = await memory?.history() ?? []
+    let goal =
+      input.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        && !input.attachments.isEmpty ? "Respond using the supplied attachments." : input.text
+    let task = Task {
+      let effectiveConversation: [ModelMessage]
+      if let conversation {
+        effectiveConversation = conversation
+      } else {
+        effectiveConversation = await memory?.history() ?? []
+      }
+      let response = try await self.execute(
+        goal: goal, attachments: input.attachments, conversation: effectiveConversation)
+      await memory?.recordTurn(goal: goal, answer: response.text)
+      return response
     }
-    let task = Task { try await self.execute(goal: goal, conversation: effectiveConversation) }
     activeRun = task
     do {
       let response = try await withTaskCancellationHandler {
@@ -149,7 +168,6 @@ public actor AgentRuntime {
         task.cancel()
       }
       activeRun = nil
-      await memory?.recordTurn(goal: goal, answer: response.text)
       return response
     } catch {
       activeRun = nil
@@ -203,7 +221,9 @@ public actor AgentRuntime {
 
   // MARK: The run
 
-  private func execute(goal: String, conversation: [ModelMessage]) async throws -> AgentResponse {
+  private func execute(
+    goal: String, attachments: [AgentInput.Attachment], conversation: [ModelMessage]
+  ) async throws -> AgentResponse {
     let trace = RuntimeTrace(sink: instrumentation)
     let interval = trace.begin(.run)
     defer { interval.end() }
@@ -215,9 +235,14 @@ public actor AgentRuntime {
       let thermal = thermalStateSource.map {
         ThermalController(source: $0, policy: thermalPolicy, events: bus)
       }
+      try Task.checkCancellationAsAgentError()
       _ = try await thermal?.checkpoint()
+      let excerpts = try await InputPreprocessor(
+        configuration: configuration, events: bus, clock: clock, thermal: thermal
+      ).process(attachments)
       let response = try await drive(
-        goal: goal, conversation: conversation, clock: clock, trace: trace, thermal: thermal)
+        goal: goal, conversation: conversation, excerpts: excerpts,
+        clock: clock, trace: trace, thermal: thermal)
       await broker.cancelAll()
       await bus.publish(.completed(response))
       return response
@@ -234,7 +259,8 @@ public actor AgentRuntime {
   }
 
   private func drive(
-    goal: String, conversation: [ModelMessage], clock: RunClock, trace: RuntimeTrace,
+    goal: String, conversation: [ModelMessage], excerpts: [String],
+    clock: RunClock, trace: RuntimeTrace,
     thermal: ThermalController?
   ) async throws -> AgentResponse {
     let limits = configuration.limits
@@ -242,7 +268,7 @@ public actor AgentRuntime {
     let memories = try await retrieveMemories(for: goal, clock: clock, trace: trace)
     let model = BudgetedModel(
       base: configuration.model, budgeter: budgeter, limits: limits, clock: clock, events: bus,
-      retrievedChunks: passages + memories, trace: trace,
+      retrievedChunks: excerpts + passages + memories, trace: trace,
       thermal: thermal)
     var executor = ToolExecutor(
       source: tools, gate: TimedGate(inner: customGate ?? broker, clock: clock, trace: trace),
