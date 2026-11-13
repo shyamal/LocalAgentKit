@@ -13,6 +13,7 @@ verify wiring and behavior under a script; they do not measure model reliability
 ### Speech doubles
 
 - ``MockSpeechRecognizer``
+- ``MockSpeechSynthesizer``
 
 ### Image analysis doubles
 

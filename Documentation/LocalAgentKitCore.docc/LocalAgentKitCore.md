@@ -14,6 +14,8 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 
 - ``AudioInput``
 - ``SpeechRecognizer``
+- ``SpeechSynthesizer``
+- ``AudioOutput``
 
 ### Image analysis
 
