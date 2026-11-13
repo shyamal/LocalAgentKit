@@ -155,8 +155,8 @@ M4-01 adds a Core VisionProvider seam with encoded ImageInput, EXIF orientation
 and VisionResult with category predictions. Providers’ AppleVisionProvider validates image
 byte/pixel limits through ImageIO and classifies through Vision. The Testing target
 supplies MockVisionProvider. Results and typed failures contain no native image
-objects. Host invocation is independent of the runtime; attachments and
-orchestration are M4-07/08. M4-02 adds an opt-in OCR initializer, native recognition
+objects. Host invocation remains available independently of the runtime. M4-07 adds
+AgentInput attachments; capture-to-tool orchestration remains M4-08. M4-02 adds an opt-in OCR initializer, native recognition
 levels/language hints, Core text regions with normalized lower-left bounding boxes,
 and joined text in observation order. Output limits fail rather than returning
 partial text; native working memory and layout recovery need separate work.
@@ -175,13 +175,24 @@ duration, and uses a private temporary file with SpeechAnalyzer. Feeding and fin
 result collection run concurrently; failure and cancellation request native
 termination. Installed locale assets are required and provisioned by the host.
 The native missing-asset path is verified; successful transcription remains
-pending asset provisioning and a known recording. Capture and runtime attachment
-integration remain subsequent work. M4-06 adds the SpeechSynthesizer seam,
+pending asset provisioning and a known recording. Capture remains host-owned; M4-07 adds runtime attachment integration. M4-06 adds the SpeechSynthesizer seam,
 AudioOutput PCM WAV values and a mock. AppleSpeechSynthesizer uses available
 Apple voice identifiers, a bounded callback queue, explicit input/output
 limits, cancellation and a generation timeout. Native buffer objects remain in
 Providers and only copied PCM values cross callback boundaries. The host owns
 playback and storage.
+
+M4-07 adds AgentInput (text plus image/audio/extracted-document attachments),
+optional vision/speech recognition configuration and bounded preprocessing before
+planning. Admission validates all source inputs before provider work. Extracted
+excerpts carry untrusted-source labels, are interleaved across attachments and
+share normal context budgeting with retrieval. Limits, run deadlines, thermal
+checkpoints and cancellation apply before model calls; late provider results are
+isolated from later runs. Count-only progress events report normalization, not
+prompt inclusion. Conversation memory stores completed goals/answers, without
+separate raw attachment or excerpt persistence. Quoted source text in answers
+remains part of answer retention. The existing tool permission gate remains the
+approval boundary.
 
 ### 2.3 The agent loop
 
