@@ -113,17 +113,22 @@ public struct VisionResult: Sendable, Hashable {
   public let recognizedText: [VisionTextObservation]
   /// Located object predictions in provider-defined order.
   public let detectedObjects: [VisionObjectObservation]
-  /// Region text joined with newlines, preserving observation order.
-  public var text: String { recognizedText.map(\.text).joined(separator: "\n") }
+  /// Structured document observations in native order.
+  public let documents: [VisionDocumentObservation]
+  /// OCR region text followed by document transcripts, joined with newlines.
+  public var text: String {
+    (recognizedText.map(\.text) + documents.map(\.text)).joined(separator: "\n")
+  }
 
   /// Creates an analysis result. Existing category-only construction remains available.
   public init(
     classifications: [VisionClassification] = [], recognizedText: [VisionTextObservation] = [],
-    detectedObjects: [VisionObjectObservation] = []
+    detectedObjects: [VisionObjectObservation] = [], documents: [VisionDocumentObservation] = []
   ) {
     self.classifications = classifications
     self.recognizedText = recognizedText
     self.detectedObjects = detectedObjects
+    self.documents = documents
   }
 }
 

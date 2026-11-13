@@ -107,6 +107,33 @@ public struct AppleVisionProvider: VisionProvider {
     }
   }
 
+  /// Creates a structured document recognizer with bounded output.
+  public init(
+    documentRecognition: DocumentRecognitionConfiguration, maximumBytes: Int = 16 * 1024 * 1024,
+    maximumPixels: Int = 24_000_000
+  ) throws {
+    try self.init(
+      documentRecognition: documentRecognition, maximumBytes: maximumBytes,
+      maximumPixels: maximumPixels, recognizeDocuments: Self.recognizeDocuments)
+  }
+
+  init(
+    documentRecognition: DocumentRecognitionConfiguration, maximumBytes: Int = 16 * 1024 * 1024,
+    maximumPixels: Int = 24_000_000,
+    recognizeDocuments:
+      @escaping @Sendable (ImageInput, DocumentRecognitionConfiguration) async throws
+      -> [VisionDocumentObservation]
+  ) throws {
+    try self.init(
+      maximumBytes: maximumBytes, maximumPixels: maximumPixels,
+      failureMessage: "Document recognition failed"
+    ) { image in
+      let documents = try await recognizeDocuments(image, documentRecognition)
+      try documentRecognition.validate(documents)
+      return LocalAgentKitCore.VisionResult(documents: documents)
+    }
+  }
+
   private init(
     maximumBytes: Int, maximumPixels: Int, failureMessage: String,
     process: @escaping @Sendable (ImageInput) async throws -> LocalAgentKitCore.VisionResult
@@ -120,7 +147,7 @@ public struct AppleVisionProvider: VisionProvider {
     self.process = process
   }
 
-  /// Runs the configured classification, OCR or detection operation on the admitted image.
+  /// Runs the configured image-analysis operation on the admitted image.
   /// Resolves embedded EXIF orientation unless the host supplies an override. Malformed,
   /// oversized or undecodable inputs fail with visionFailure; cancellation discards late output.
   public func analyze(image: ImageInput) async throws -> LocalAgentKitCore.VisionResult {

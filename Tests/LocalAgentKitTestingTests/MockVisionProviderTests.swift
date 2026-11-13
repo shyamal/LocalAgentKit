@@ -67,4 +67,14 @@ import Testing
     #expect(result.detectedObjects == [object])
   }
 
+  @Test func mockCanReturnStructuredDocumentsThroughTheExistingProtocol() async throws {
+    let document = VisionDocumentObservation(
+      text: "Invoice", confidence: 1, boundingBox: .init(x: 0, y: 0, width: 1, height: 1))
+    let provider: any VisionProvider = MockVisionProvider { _ in VisionResult(documents: [document])
+    }
+    let result = try await provider.analyze(image: ImageInput(data: Data()))
+    #expect(result.documents == [document])
+    #expect(result.text == "Invoice")
+  }
+
 }

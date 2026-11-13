@@ -119,4 +119,5 @@ let mock = MockVisionProvider { _ in
 
 Use the default initializer for image categories, the text-recognition initializer
 for OCR, or the object-detection initializer for located people, cats and dogs.
-Structured document extraction and runtime image attachments follow in Milestone 4.
+Use <doc:LocalDocumentAnalysis> for transcript, paragraph and table extraction.
+Runtime image attachments follow in Milestone 4.
