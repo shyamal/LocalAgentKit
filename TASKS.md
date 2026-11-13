@@ -10,38 +10,38 @@ Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop d
 ## Current state — 2026-11-13
 
 Phase 0 and the M3-04 embedding benchmark gate are complete. Active implementation
-is Milestone 4. The Core AI embedding adapter (M3-11), compact vector snapshots
-(M3-12), Vision foundation (M4-01) and OCR (M4-02) have merged through PRs
-[#67](https://github.com/shyamal/LocalAgentKit/pull/67),
-[#69](https://github.com/shyamal/LocalAgentKit/pull/69),
-[#70](https://github.com/shyamal/LocalAgentKit/pull/70) and
-[#71](https://github.com/shyamal/LocalAgentKit/pull/71).
+is Milestone 4. Vision classification, OCR, built-in people/cat/dog detection and
+document/table recognition are implemented and merged (M4-01..04).
 
+- **M4-05 remains in progress.** The recorded-audio recognizer and mock merged in
+  [PR #75](https://github.com/shyamal/LocalAgentKit/pull/75). Native checks verified
+  missing English assets and unsupported locales. Successful transcription and
+  cancellation acceptance still need installed assets and a known recording.
+- **M4-06 is complete.** Synthesis merged in
+  [PR #76](https://github.com/shyamal/LocalAgentKit/pull/76). Native macOS checks
+  generated nonzero, decodable WAV audio and exercised timeout handling.
+  Listening quality and phone resource use remain unmeasured.
+- **Next is M4-07**, adding image, audio, document and combined inputs to the
+  runtime, followed by **M4-08** orchestration through providers and tools.
+- **M4-09 remains in progress.** Standalone providers have cancellation coverage;
+  native speech acceptance and complete runtime cancellation checks remain open.
 - **M3-07 remains open.** Retrieval controls are implemented; independently
   annotated application/no-answer data and held-out calibration are pending.
 - **M3-10 remains open.** The user confirmed a PDF summary worked on the iPhone
-  after the fix in [PR #68](https://github.com/shyamal/LocalAgentKit/pull/68).
-  Device checks for PDF replacement, cancellation, reopening and invalid files
-  are pending.
+  after [PR #68](https://github.com/shyamal/LocalAgentKit/pull/68). Device checks
+  for PDF replacement, cancellation, reopening and invalid files remain pending.
 - **Independent developer validation remains deferred** at the user's request.
   The newcomer setup and custom-tool measurements remain open.
-- **M4-03 now implements built-in people/cat/dog detection.** Positive-photo
-  accuracy remains unverified. M4-04 now extracts document transcripts, paragraphs
-  and table cells. M4-05 recorded-audio recognition is implemented, with native
-  acceptance pending installed speech assets. M4-06 synthesis now produces WAV
-  audio through an available Apple voice. Next implementation is M4-07 multimodal
-  inputs on the runtime.
-- Standalone Vision, recorded-audio sessions and synthesis have cancellation
-  coverage. Native transcription acceptance and end-to-end cancellation checks
-  remain part of M4-05/09.
 
-Latest completed verification is recorded in
-[the synthesis verification notes](docs/speech-synthesis-verification.md).
-Core/Runtime coverage is 98.73%. Native synthesis generated decodable nonzero WAV
-audio and exercised its timeout. Successful native transcription remains pending
-recognition assets. The generic iOS build passed.
-Milestone 3's remaining calibration and PDF checks, and Milestone 4's device exit
-criteria, remain open.
+Latest verification is recorded in
+[the synthesis notes](docs/speech-synthesis-verification.md). The default suite
+contains 800 registered functions; offline checks and the generic iOS build passed.
+Core/Runtime coverage is 98.73%. See
+[the recognition notes](docs/speech-recognition-verification.md) for M4-05's
+remaining native acceptance.
+
+Milestone 3's calibration and PDF checks, and Milestone 4's receipt/voice device
+exit criteria, remain open.
 
 ---
 
