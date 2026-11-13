@@ -10,6 +10,11 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 
 ## Topics
 
+### Recorded audio
+
+- ``AudioInput``
+- ``SpeechRecognizer``
+
 ### Image analysis
 
 - ``VisionProvider``

@@ -10,6 +10,11 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 ## Topics
 
+### Recorded speech
+
+- ``AppleSpeechRecognizer``
+- <doc:RecordedSpeech>
+
 ### Local image analysis
 
 - ``AppleVisionProvider``

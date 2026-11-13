@@ -27,15 +27,18 @@ is Milestone 4. The Core AI embedding adapter (M3-11), compact vector snapshots
   The newcomer setup and custom-tool measurements remain open.
 - **M4-03 now implements built-in people/cat/dog detection.** Positive-photo
   accuracy remains unverified. M4-04 now extracts document transcripts, paragraphs
-  and table cells. Next implementation is M4-05 speech recognition, followed by
-  M4-06 speech synthesis.
-- Standalone classification, OCR and detection handle cancellation. Speech and
-  end-to-end cancellation coverage remain part of M4-09.
+  and table cells. M4-05 recorded-audio recognition is implemented, with native
+  acceptance pending installed speech assets. Next independent implementation
+  is M4-06 speech synthesis.
+- Standalone Vision and recorded-audio sessions have cancellation coverage.
+  Native speech acceptance, synthesis and end-to-end cancellation coverage remain
+  part of M4-05/06/09.
 
 Latest completed verification is recorded in
-[the document verification notes](docs/vision-document-recognition-verification.md).
-Core/Runtime coverage is 98.93%; native generated-table checks ran on macOS,
-and the generic iOS build passed.
+[the speech verification notes](docs/speech-recognition-verification.md).
+Core/Runtime coverage is 98.86%. Native speech checks verified missing-asset and
+unsupported-locale failures; successful transcription remains pending. The generic
+iOS build passed.
 Milestone 3's remaining calibration and PDF checks, and Milestone 4's device exit
 criteria, remain open.
 
@@ -272,11 +275,11 @@ and the deferred developer trials remain open.
 - [x] **M4-02** OCR *(DONE 2026-11-12: opt-in AppleVisionProvider text recognition with accurate/fast levels, validated language hints, detection/correction options and output limits. Core text regions retain confidence and normalized lower-left boxes; VisionResult joins observation-order text. Shared image admission, orientation and cancellation remain active. Generated-text, blank-image and unsupported-language native tests pass on macOS 26.6.2, including both levels and default language options. Default suite with 753 registered functions, offline suite, examples, 70 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.85%, unchanged at two decimal places. Receipt/multilingual quality, phone profiling and document layout remain separate. Evidence: docs/vision-ocr-verification.md.)*
 - [x] **M4-03** Image classification + object detection *(DONE 2026-11-13: M4-01 classification plus configured built-in people/cat/dog detection. Core object observations retain separate detection/label confidence and normalized bounds; shared image admission and cancellation, validated output, inclusive confidence filtering and stable top-k selection. Native requests run on generated blank images in all three target combinations on macOS 26.6.2; positive-photo accuracy remains unmeasured. Default suite with 763 registered functions, offline suite, examples, 70 Python tests, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.82%, down 0.03 points; Runtime covered one fewer line with unchanged source. Custom categories, phone resources and runtime attachment integration remain outside this built-in mode. Evidence: docs/vision-object-detection-verification.md.)*
 - [x] **M4-04** Document understanding + structured extraction *(DONE 2026-11-13: opt-in native document recognition returns Core transcripts, optional titles, paragraph groups and located tables with inclusive cell spans. Aggregate document/paragraph/table/cell/text limits, shared image admission and cancellation, typed failures and mock support. Native generated-table recognition passes on macOS 26.6.2, including a blank cell, blank image and unsupported-language checks. Default suite with 774 registered functions passes on unchanged retry after a recorded Runtime test stall; offline suite, examples, 70 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.93%, up 0.11 points. Receipt semantics, complex real-photo layout, page assembly and phone resources remain separate. Evidence: docs/vision-document-recognition-verification.md.)*
-- [ ] **M4-05** `SpeechRecognizer` protocol + Apple STT implementation (FR-017)
+- [~] **M4-05** `SpeechRecognizer` protocol + Apple STT implementation (FR-017) *(IMPLEMENTED 2026-11-13: Core encoded AudioInput/recognizer seam, mock and typed speechFailure; Providers recorded-file SpeechAnalyzer adapter with private temporary files, byte/duration/transcript limits, installed-asset preflight and concurrent feed/result cancellation. Eight portable provider functions and Core/mock tests pass. Native en-US assets are absent on the Mac; missing-asset and unsupported-locale paths pass, while successful native transcription and cancellation acceptance remain pending host provisioning and a known recording. Default suite with 788 registered functions/offline suite, examples, 71 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.86%, down 0.07 points; Runtime covered two fewer lines with unchanged source. Evidence and remaining acceptance: docs/speech-recognition-verification.md.)*
 - [ ] **M4-06** `SpeechSynthesizer` protocol + Apple TTS implementation (FR-017)
 - [ ] **M4-07** Multimodal input types on `agent.run` — image, audio, document, combined (FR-002, FR-018)
 - [ ] **M4-08** Multimodal orchestration pipeline: camera → vision → structured data → agent → tool (FR-018)
-- [~] **M4-09** Cancellation propagates into vision and speech (FR-024) *(Standalone classification and OCR check cancellation before and after native work and discard late results; tested in M4-01/02. Speech and runtime orchestration cancellation coverage remain pending.)*
+- [~] **M4-09** Cancellation propagates into vision and speech (FR-024) *(Standalone Vision and recorded-audio session cancellation are covered in M4-01..05, including late-result rejection and failure releasing the other session side. Native STT success/cancellation acceptance, TTS and runtime orchestration remain pending.)*
 - [ ] **M4-10** Battery/thermal measurement for vision + speech paths (NFR battery)
 - [ ] **M4-11** Demo: receipt photo → structured expense record
 - [ ] **M4-12** Voice input → agent → spoken response, end to end

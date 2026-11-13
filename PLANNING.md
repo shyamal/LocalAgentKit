@@ -169,6 +169,15 @@ with inclusive cell spans. Aggregate output limits fail before publication; the
 first-image admission and cancellation path is shared. Semantic expense fields
 and the receipt workflow remain M4-11.
 
+M4-05 implements a Core SpeechRecognizer/AudioInput seam and Testing mock.
+AppleSpeechRecognizer accepts recorded bytes, bounds encoded size and decoded
+duration, and uses a private temporary file with SpeechAnalyzer. Feeding and final
+result collection run concurrently; failure and cancellation request native
+termination. Installed locale assets are required and provisioned by the host.
+The native missing-asset path is verified; successful transcription remains
+pending asset provisioning and a known recording. Capture and runtime attachment
+integration remain subsequent work.
+
 ### 2.3 The agent loop
 
 `AgentRuntime` is an `actor`. It owns all mutable execution state; nothing else mutates it.
@@ -336,7 +345,7 @@ M3-10’s demo prototype adds an isolated, ephemeral user-PDF session via the na
 | **SwiftData** | Memory persistence (working/conversation/semantic/episodic) | `SwiftDataMemoryStore` |
 | **Core Data** | Read-only store version/family preflight before SwiftData opening | `StoreCompatibility` (Providers only) |
 | **Vision / ImageIO** | M4-01 image classification and bounded orientation-aware image preflight; M4-02 opt-in OCR; M4-03 located people/cat/dog detection; M4-04 native document text and table structure | `AppleVisionProvider` in Providers |
-| **Speech** / **AVFoundation** | STT and TTS | `AppleSpeechProvider` |
+| **Speech** / **AVFAudio** | Recorded-file STT with installed SpeechTranscriber assets; TTS follows in M4-06 | `AppleSpeechRecognizer` in Providers |
 | **EventKit** | Calendar + Reminders tools | `LocalAgentKitTools` |
 | **Contacts** | Contacts tool | `LocalAgentKitTools` |
 | **PDFKit** | PDF text extraction for RAG | `LocalAgentKitTools` / RAG ingestion |

@@ -28,6 +28,14 @@ class LayeringTests(unittest.TestCase):
                 self.assertIn('Layering violation', result.stderr)
                 self.assertIn(target, result.stderr)
 
+    def test_audio_frameworks_are_rejected_in_each_gated_target(self):
+        for framework in ['AVFoundation', 'AVFAudio']:
+            for target in ['LocalAgentKitCore', 'LocalAgentKitRuntime']:
+                with self.subTest(framework=framework, target=target):
+                    result = self.run_check({target: f'import {framework}\n'})
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn('Layering violation', result.stderr)
+
     def test_pdfkit_in_tools_and_foundation_in_core_are_allowed(self):
         result = self.run_check({'LocalAgentKitTools': 'import PDFKit\n',
                                  'LocalAgentKitCore': 'import Foundation\n// import PDFKit\n'})
