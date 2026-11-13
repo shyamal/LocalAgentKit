@@ -163,7 +163,11 @@ partial text; native working memory and layout recovery need separate work.
 M4-03 adds configured people/cat/dog detectors with Core located observations,
 native detection confidence and category labels, normalized boxes, confidence
 filtering and stable top-k selection. It uses revision-2 built-in requests and
-the same image admission and cancellation path.
+the same image admission and cancellation path. M4-04 adds native document
+recognition with Core transcripts, optional titles, paragraph groups and tables
+with inclusive cell spans. Aggregate output limits fail before publication; the
+first-image admission and cancellation path is shared. Semantic expense fields
+and the receipt workflow remain M4-11.
 
 ### 2.3 The agent loop
 
@@ -331,7 +335,7 @@ M3-10’s demo prototype adds an isolated, ephemeral user-PDF session via the na
 | **Natural Language** (`NLEmbedding`) | Default on-device embeddings for RAG v0.3 | `NLEmbeddingProvider` |
 | **SwiftData** | Memory persistence (working/conversation/semantic/episodic) | `SwiftDataMemoryStore` |
 | **Core Data** | Read-only store version/family preflight before SwiftData opening | `StoreCompatibility` (Providers only) |
-| **Vision / ImageIO** | M4-01 image classification and bounded orientation-aware image preflight; M4-02 opt-in OCR; M4-03 located people/cat/dog detection; document extraction follows | `AppleVisionProvider` in Providers |
+| **Vision / ImageIO** | M4-01 image classification and bounded orientation-aware image preflight; M4-02 opt-in OCR; M4-03 located people/cat/dog detection; M4-04 native document text and table structure | `AppleVisionProvider` in Providers |
 | **Speech** / **AVFoundation** | STT and TTS | `AppleSpeechProvider` |
 | **EventKit** | Calendar + Reminders tools | `LocalAgentKitTools` |
 | **Contacts** | Contacts tool | `LocalAgentKitTools` |

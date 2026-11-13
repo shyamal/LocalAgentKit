@@ -54,4 +54,19 @@ import Testing
     #expect(VisionResult().detectedObjects.isEmpty)
   }
 
+  @Test func structuredDocumentsPreserveMergedSpansAndJoinedText() {
+    let box = VisionBoundingBox(x: 0, y: 0, width: 1, height: 1)
+    let cell = VisionDocumentCell(
+      text: "Merged", rowRange: 0...1, columnRange: 0...0, boundingBox: box)
+    let table = VisionDocumentTable(rowCount: 2, columnCount: 1, cells: [cell], boundingBox: box)
+    let document = VisionDocumentObservation(
+      text: "Café", title: "Title", paragraphs: ["Café"], tables: [table],
+      confidence: 1, boundingBox: box)
+    let result = VisionResult(documents: [document, document])
+    #expect(result.text == "Café\nCafé")
+    #expect(result.documents[0].tables[0].cells[0].rowRange == 0...1)
+    #expect(result.documents[0].title == "Title")
+    #expect(VisionResult().documents.isEmpty)
+  }
+
 }

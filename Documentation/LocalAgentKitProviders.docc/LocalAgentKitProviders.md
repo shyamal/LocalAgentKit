@@ -14,6 +14,7 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 - ``AppleVisionProvider``
 - <doc:LocalImageAnalysis>
+- <doc:LocalDocumentAnalysis>
 
 ### App-owned OS 27 models
 

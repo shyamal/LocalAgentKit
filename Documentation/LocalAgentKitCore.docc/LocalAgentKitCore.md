@@ -19,6 +19,9 @@ Every protocol has a test counterpart in LocalAgentKitTesting.
 - ``VisionTextObservation``
 - ``VisionBoundingBox``
 - ``VisionObjectObservation``
+- ``VisionDocumentObservation``
+- ``VisionDocumentTable``
+- ``VisionDocumentCell``
 
 ### Thermal admission and context caps
 
