@@ -85,6 +85,25 @@ public struct VisionTextObservation: Sendable, Hashable {
   }
 }
 
+/// One located object with native detection confidence and category predictions.
+public struct VisionObjectObservation: Sendable, Hashable {
+  /// Category predictions for this region. Their confidences are separate from detection confidence.
+  public let labels: [VisionClassification]
+  /// Native observation confidence, used for detector score filtering.
+  public let confidence: Float
+  /// Location relative to the oriented image, with a lower-left origin.
+  public let boundingBox: VisionBoundingBox
+
+  /// Creates an object region with its labels and detection confidence.
+  public init(
+    labels: [VisionClassification], confidence: Float, boundingBox: VisionBoundingBox
+  ) {
+    self.labels = labels
+    self.confidence = confidence
+    self.boundingBox = boundingBox
+  }
+}
+
 /// Framework-independent image analysis returned to the host.
 public struct VisionResult: Sendable, Hashable {
   /// Image category predictions, in provider-defined order.
@@ -92,15 +111,19 @@ public struct VisionResult: Sendable, Hashable {
 
   /// Text regions in provider observation order, which may differ from document reading order.
   public let recognizedText: [VisionTextObservation]
+  /// Located object predictions in provider-defined order.
+  public let detectedObjects: [VisionObjectObservation]
   /// Region text joined with newlines, preserving observation order.
   public var text: String { recognizedText.map(\.text).joined(separator: "\n") }
 
   /// Creates an analysis result. Existing category-only construction remains available.
   public init(
-    classifications: [VisionClassification] = [], recognizedText: [VisionTextObservation] = []
+    classifications: [VisionClassification] = [], recognizedText: [VisionTextObservation] = [],
+    detectedObjects: [VisionObjectObservation] = []
   ) {
     self.classifications = classifications
     self.recognizedText = recognizedText
+    self.detectedObjects = detectedObjects
   }
 }
 

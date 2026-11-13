@@ -61,6 +61,35 @@ the inserted newlines. Exceeding either limit fails the entire operation. Empty
 recognition is a successful empty result. These output bounds are checked after
 native recognition and do not limit its internal working memory.
 
+## Locate people and animals
+
+The built-in detection mode locates people, cats and dogs. Choose the detector
+families explicitly to control which native requests run.
+
+```swift
+let options = try AppleVisionProvider.ObjectDetectionConfiguration(
+    targets: [.people, .animals], minimumConfidence: 0.5, resultLimit: 20)
+let provider: any VisionProvider = try AppleVisionProvider(objectDetection: options)
+let result = try await provider.analyze(image: ImageInput(data: data))
+let objects = result.detectedObjects
+```
+
+Each object retains labels, native observation confidence and a normalized
+bounding box in the oriented image. People use the SDK label `person`; animal
+label identifiers are passed through from Vision. Observation confidence and
+label confidence are separate values. The cutoff filters observation confidence;
+its value in this example is illustrative.
+
+The default cutoff is zero and the default result limit is twenty. Results are
+ranked by descending observation confidence, preserving source order for ties.
+The combined mode runs people first, then animals. Limits select the top results
+after native detection; they do not bound native computation or memory.
+
+Revision 2 of each built-in request preserves the SDK's deployment floor.
+Positive-photo accuracy and application-specific confidence cutoffs need separate
+validation. Runtime image attachments and structured document extraction remain
+subsequent tasks.
+
 ## Handle failures and cancellation
 
 Malformed images, oversized inputs and native processing failures throw
@@ -88,6 +117,6 @@ let mock = MockVisionProvider { _ in
 }
 ```
 
-The default initializer supplies image categories, while the text-recognition
-initializer performs OCR. Object locations, structured document extraction and
-image attachments to the runtime are subsequent Milestone 4 tasks.
+Use the default initializer for image categories, the text-recognition initializer
+for OCR, or the object-detection initializer for located people, cats and dogs.
+Structured document extraction and runtime image attachments follow in Milestone 4.

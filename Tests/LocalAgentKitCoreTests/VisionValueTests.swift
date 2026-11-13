@@ -42,4 +42,16 @@ import Testing
     #expect(VisionResult().text.isEmpty)
   }
 
+  @Test func locatedObjectsKeepDetectionAndLabelConfidencesSeparate() {
+    let object = VisionObjectObservation(
+      labels: [.init(identifier: "person", confidence: 0.9)], confidence: 0.8,
+      boundingBox: .init(x: 0.1, y: 0.2, width: 0.3, height: 0.4))
+    let result = VisionResult(detectedObjects: [object])
+    #expect(result.detectedObjects == [object])
+    #expect(result.detectedObjects[0].confidence == 0.8)
+    #expect(result.detectedObjects[0].labels[0].confidence == 0.9)
+    #expect(result.text.isEmpty && result.classifications.isEmpty)
+    #expect(VisionResult().detectedObjects.isEmpty)
+  }
+
 }

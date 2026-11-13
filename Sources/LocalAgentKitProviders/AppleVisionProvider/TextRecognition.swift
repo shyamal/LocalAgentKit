@@ -56,8 +56,7 @@ extension AppleVisionProvider {
         let box = observation.boundingBox
         guard !observation.text.isEmpty, observation.confidence.isFinite,
           (0...1).contains(observation.confidence),
-          [box.x, box.y, box.width, box.height].allSatisfy({ $0.isFinite && (0...1).contains($0) }),
-          box.width > 0, box.height > 0, box.x + box.width <= 1, box.y + box.height <= 1
+          box.isValidNormalizedRegion
         else {
           throw AgentError.visionFailure("Vision returned invalid text observations")
         }

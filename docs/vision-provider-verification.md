@@ -2,7 +2,8 @@
 
 M4-02 extends this foundation with opt-in OCR. See
 [local OCR verification](vision-ocr-verification.md) for the current text-recognition
-API, configuration and native checks.
+API, configuration and native checks. M4-03 adds built-in people/cat/dog detection;
+see [object detection verification](vision-object-detection-verification.md).
 
 Verified on 2026-11-12. Core now defines VisionProvider, encoded ImageInput with
 EXIF orientation, VisionClassification and VisionResult. AppleVisionProvider in
