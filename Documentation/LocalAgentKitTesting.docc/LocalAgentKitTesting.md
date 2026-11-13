@@ -10,6 +10,10 @@ verify wiring and behavior under a script; they do not measure model reliability
 
 ## Topics
 
+### Speech doubles
+
+- ``MockSpeechRecognizer``
+
 ### Image analysis doubles
 
 - ``MockVisionProvider``

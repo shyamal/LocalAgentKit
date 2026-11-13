@@ -83,6 +83,8 @@ public enum AgentError: Error, Sendable, Hashable, CustomStringConvertible {
   case retrievalFailure(String)
   /// Image decoding or local vision analysis failed.
   case visionFailure(String)
+  /// Audio decoding or speech processing failed.
+  case speechFailure(String)
   /// Construction or preflight rejected the supplied configuration.
   case invalidConfiguration(ConfigurationIssue)
   /// `run` was called while another run was active. One runtime runs one goal at a time.
@@ -126,6 +128,8 @@ public enum AgentError: Error, Sendable, Hashable, CustomStringConvertible {
       "\"\(tool)\" was called repeatedly without making progress, so the request was stopped."
     case .memoryFailure(let message):
       "Could not read or write conversation memory: \(message)"
+    case .speechFailure(let message):
+      "Could not process speech: \(message)"
     case .visionFailure(let message):
       "Could not analyze the image: \(message)"
     case .retrievalFailure(let message):
