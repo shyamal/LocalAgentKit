@@ -14,6 +14,8 @@ something a successful compile proves. Guardrail refusals are terminal outcomes.
 
 - ``AppleSpeechRecognizer``
 - <doc:RecordedSpeech>
+- ``AppleSpeechSynthesizer``
+- <doc:LocalSpeechSynthesis>
 
 ### Local image analysis
 

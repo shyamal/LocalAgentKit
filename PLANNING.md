@@ -176,7 +176,12 @@ result collection run concurrently; failure and cancellation request native
 termination. Installed locale assets are required and provisioned by the host.
 The native missing-asset path is verified; successful transcription remains
 pending asset provisioning and a known recording. Capture and runtime attachment
-integration remain subsequent work.
+integration remain subsequent work. M4-06 adds the SpeechSynthesizer seam,
+AudioOutput PCM WAV values and a mock. AppleSpeechSynthesizer uses available
+Apple voice identifiers, a bounded callback queue, explicit input/output
+limits, cancellation and a generation timeout. Native buffer objects remain in
+Providers and only copied PCM values cross callback boundaries. The host owns
+playback and storage.
 
 ### 2.3 The agent loop
 
@@ -345,7 +350,7 @@ M3-10’s demo prototype adds an isolated, ephemeral user-PDF session via the na
 | **SwiftData** | Memory persistence (working/conversation/semantic/episodic) | `SwiftDataMemoryStore` |
 | **Core Data** | Read-only store version/family preflight before SwiftData opening | `StoreCompatibility` (Providers only) |
 | **Vision / ImageIO** | M4-01 image classification and bounded orientation-aware image preflight; M4-02 opt-in OCR; M4-03 located people/cat/dog detection; M4-04 native document text and table structure | `AppleVisionProvider` in Providers |
-| **Speech** / **AVFAudio** | Recorded-file STT with installed SpeechTranscriber assets; TTS follows in M4-06 | `AppleSpeechRecognizer` in Providers |
+| **Speech** / **AVFAudio** | Recorded-file STT with installed SpeechTranscriber assets; M4-06 local PCM WAV synthesis | `AppleSpeechRecognizer` / `AppleSpeechSynthesizer` in Providers |
 | **EventKit** | Calendar + Reminders tools | `LocalAgentKitTools` |
 | **Contacts** | Contacts tool | `LocalAgentKitTools` |
 | **PDFKit** | PDF text extraction for RAG | `LocalAgentKitTools` / RAG ingestion |
