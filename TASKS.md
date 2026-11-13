@@ -1,13 +1,13 @@
 # LocalAgentKit — TASKS
 
 **Companion documents:** [`LocalAgentKit-PRD-v0.2.md`](./LocalAgentKit-PRD-v0.2.md) (what & why) · [`PLANNING.md`](./PLANNING.md) (how)
-**Last updated:** 2026-11-12
+**Last updated:** 2026-11-13
 
 Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop detector`). FR/NFR/R/M references point back to the PRD.
 
 **Legend:** `[ ]` todo · `[~]` in progress · `[x]` done · `[!]` blocked · 🔒 gates later work
 
-## Current state — 2026-11-12
+## Current state — 2026-11-13
 
 Phase 0 and the M3-04 embedding benchmark gate are complete. Active implementation
 is Milestone 4. The Core AI embedding adapter (M3-11), compact vector snapshots
@@ -25,14 +25,16 @@ is Milestone 4. The Core AI embedding adapter (M3-11), compact vector snapshots
   are pending.
 - **Independent developer validation remains deferred** at the user's request.
   The newcomer setup and custom-tool measurements remain open.
-- **Next implementation is M4-03 object detection**, followed by M4-04 document
-  understanding and structured extraction. Classification already ships in M4-01.
-  Standalone Vision cancellation is implemented; speech and end-to-end
-  cancellation coverage remain part of M4-09.
+- **M4-03 now implements built-in people/cat/dog detection.** Positive-photo
+  accuracy remains unverified. Next implementation is M4-04 document understanding
+  and structured extraction.
+- Standalone classification, OCR and detection handle cancellation. Speech and
+  end-to-end cancellation coverage remain part of M4-09.
 
 Latest completed verification is recorded in
-[the OCR verification notes](docs/vision-ocr-verification.md). Core/Runtime
-coverage is 98.85%; native OCR checks ran on macOS, and the generic iOS build passed.
+[the detection verification notes](docs/vision-object-detection-verification.md).
+Core/Runtime coverage is 98.82%; native detection smoke checks ran on macOS,
+and the generic iOS build passed.
 Milestone 3's remaining calibration and PDF checks, and Milestone 4's device exit
 criteria, remain open.
 
@@ -267,7 +269,7 @@ and the deferred developer trials remain open.
 
 - [x] **M4-01** `VisionProvider` protocol + `AppleVisionProvider` (FR-016) *(DONE 2026-11-12: Core encoded-image/orientation/category values and typed visionFailure; Providers ImageIO byte/pixel preflight and local Vision classification; Testing mock records/scripted results. Native generated-image classification passes on macOS 26.6.2 and generic iOS build passes. Default suite with 741 registered functions passes on unchanged retry after a recorded Core Data trigger-generation signal 11; offline suite, 70 Python checks, formatting/layering and DocC pass. Core/Runtime coverage 98.85%, up 0.01 points. Classification is the initial operation; OCR, object locations, document understanding and runtime attachments remain subsequent tasks. Evidence and limits: docs/vision-provider-verification.md.)*
 - [x] **M4-02** OCR *(DONE 2026-11-12: opt-in AppleVisionProvider text recognition with accurate/fast levels, validated language hints, detection/correction options and output limits. Core text regions retain confidence and normalized lower-left boxes; VisionResult joins observation-order text. Shared image admission, orientation and cancellation remain active. Generated-text, blank-image and unsupported-language native tests pass on macOS 26.6.2, including both levels and default language options. Default suite with 753 registered functions, offline suite, examples, 70 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.85%, unchanged at two decimal places. Receipt/multilingual quality, phone profiling and document layout remain separate. Evidence: docs/vision-ocr-verification.md.)*
-- [~] **M4-03** Image classification + object detection *(Initial classification delivered by M4-01; located object detection remains.)*
+- [x] **M4-03** Image classification + object detection *(DONE 2026-11-13: M4-01 classification plus configured built-in people/cat/dog detection. Core object observations retain separate detection/label confidence and normalized bounds; shared image admission and cancellation, validated output, inclusive confidence filtering and stable top-k selection. Native requests run on generated blank images in all three target combinations on macOS 26.6.2; positive-photo accuracy remains unmeasured. Default suite with 763 registered functions, offline suite, examples, 70 Python tests, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.82%, down 0.03 points; Runtime covered one fewer line with unchanged source. Custom categories, phone resources and runtime attachment integration remain outside this built-in mode. Evidence: docs/vision-object-detection-verification.md.)*
 - [ ] **M4-04** Document understanding + structured extraction
 - [ ] **M4-05** `SpeechRecognizer` protocol + Apple STT implementation (FR-017)
 - [ ] **M4-06** `SpeechSynthesizer` protocol + Apple TTS implementation (FR-017)

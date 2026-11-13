@@ -56,4 +56,15 @@ import Testing
     #expect(try await provider.analyze(image: ImageInput(data: Data())).text == "Scripted receipt")
   }
 
+  @Test func mockCanReturnLocatedObjectsThroughTheExistingProtocol() async throws {
+    let object = VisionObjectObservation(
+      labels: [.init(identifier: "Dog", confidence: 0.9)], confidence: 0.8,
+      boundingBox: .init(x: 0.1, y: 0.2, width: 0.3, height: 0.4))
+    let provider: any VisionProvider = MockVisionProvider { _ in
+      VisionResult(detectedObjects: [object])
+    }
+    let result = try await provider.analyze(image: ImageInput(data: Data()))
+    #expect(result.detectedObjects == [object])
+  }
+
 }

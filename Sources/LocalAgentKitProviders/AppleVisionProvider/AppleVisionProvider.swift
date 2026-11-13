@@ -3,7 +3,7 @@ import ImageIO
 import LocalAgentKitCore
 import Vision
 
-/// Local image classification and optional text recognition using Apple's Vision framework (FR-016).
+/// Local classification, OCR and built-in object detection using Apple's Vision framework (FR-016).
 /// Reads the first image in an encoded container. Does not read files or request camera access.
 public struct AppleVisionProvider: VisionProvider {
   /// Local Vision inference has no network requirement.
@@ -80,6 +80,33 @@ public struct AppleVisionProvider: VisionProvider {
     }
   }
 
+  /// Creates a detector for the selected built-in categories, with confidence and result limits.
+  public init(
+    objectDetection: ObjectDetectionConfiguration, maximumBytes: Int = 16 * 1024 * 1024,
+    maximumPixels: Int = 24_000_000
+  ) throws {
+    try self.init(
+      objectDetection: objectDetection, maximumBytes: maximumBytes,
+      maximumPixels: maximumPixels, detect: Self.detectObjects)
+  }
+
+  init(
+    objectDetection: ObjectDetectionConfiguration, maximumBytes: Int = 16 * 1024 * 1024,
+    maximumPixels: Int = 24_000_000,
+    detect:
+      @escaping @Sendable (ImageInput, ObjectDetectionConfiguration) async throws
+      -> [VisionObjectObservation]
+  ) throws {
+    try self.init(
+      maximumBytes: maximumBytes, maximumPixels: maximumPixels,
+      failureMessage: "Object detection failed"
+    ) { image in
+      let observations = try await detect(image, objectDetection)
+      return LocalAgentKitCore.VisionResult(
+        detectedObjects: try objectDetection.select(observations))
+    }
+  }
+
   private init(
     maximumBytes: Int, maximumPixels: Int, failureMessage: String,
     process: @escaping @Sendable (ImageInput) async throws -> LocalAgentKitCore.VisionResult
@@ -93,7 +120,7 @@ public struct AppleVisionProvider: VisionProvider {
     self.process = process
   }
 
-  /// Runs the configured classification or OCR operation on the admitted image.
+  /// Runs the configured classification, OCR or detection operation on the admitted image.
   /// Resolves embedded EXIF orientation unless the host supplies an override. Malformed,
   /// oversized or undecodable inputs fail with visionFailure; cancellation discards late output.
   public func analyze(image: ImageInput) async throws -> LocalAgentKitCore.VisionResult {
