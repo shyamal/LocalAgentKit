@@ -15,8 +15,13 @@ let package = Package(
         .product(name: "LocalAgentKitTools", package: "LocalAgentKit"),
         .product(name: "LocalAgentKitSwiftUI", package: "LocalAgentKit"),
       ], path: "LocalAgentDemo",
-      exclude: ["ContentView.swift", "LocalAgentDemoApp.swift", "ReceiptView.swift", "Resources"],
-      sources: ["AgentSetup.swift", "ReceiptSession.swift", "ReceiptTextParser.swift"]),
+      exclude: [
+        "ContentView.swift", "LocalAgentDemoApp.swift", "ReceiptView.swift", "VoiceView.swift",
+        "VoiceDevice.swift", "Resources",
+      ],
+      sources: [
+        "AgentSetup.swift", "ReceiptSession.swift", "ReceiptTextParser.swift", "VoiceSession.swift",
+      ]),
     .testTarget(
       name: "DemoPlannerTests",
       dependencies: [

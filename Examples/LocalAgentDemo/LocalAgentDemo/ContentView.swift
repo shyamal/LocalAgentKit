@@ -14,6 +14,7 @@ struct ContentView: View {
   var showsDocumentPassages = false
   @State private var showingPDF = false
   @State private var showingReceipt = false
+  @State private var showingVoice = false
   @State private var draft = ""
   @FocusState private var inputFocused: Bool
 
@@ -28,6 +29,12 @@ struct ContentView: View {
         Button("Receipt expense", systemImage: "receipt") { showingReceipt = true }
           .disabled(viewModel.isRunning)
       }
+      #if os(iOS)
+        if allowsPDFImport {
+          Button("Voice question", systemImage: "mic") { showingVoice = true }
+            .disabled(viewModel.isRunning)
+        }
+      #endif
       Text(conversationNotice)
         .font(.caption)
         .foregroundStyle(.secondary)
@@ -103,7 +110,15 @@ struct ContentView: View {
     }
     .sheet(isPresented: $showingPDF) { DemoPDFView() }
     .sheet(isPresented: $showingReceipt) { ReceiptPhotoView() }
+    #if os(iOS)
+      .sheet(isPresented: $showingVoice) { VoiceDemoView() }
+    #endif
     .task {
+      #if os(iOS)
+        if allowsPDFImport, ProcessInfo.processInfo.environment["LOCALAGENTKIT_VOICE_DEMO"] == "1" {
+          showingVoice = true
+        }
+      #endif
       if allowsPDFImport, ProcessInfo.processInfo.environment["LOCALAGENTKIT_RECEIPT_DEMO"] == "1" {
         showingReceipt = true
       }

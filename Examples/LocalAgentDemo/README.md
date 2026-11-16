@@ -212,3 +212,13 @@ Saved expenses on this device. Only approved structured fields are persisted;
 photos and raw OCR are not saved. The workflow uses no model generation.
 See [receipt acceptance](RECEIPT-VALIDATION.md) for limits, sample expectations,
 local persistence and the physical camera/approval checklist.
+
+## Voice question (M4-12, iPhone)
+
+Open **Voice question**, explicitly prepare English speech data if needed, then
+record a short question. Review the transcript and choose **Ask and speak** for a
+local agent answer and spoken playback. Stop/Replay and another recording are
+supported. Audio, transcripts and replies are not saved by this screen. System
+asset preparation can download language models; it is separate from the offline
+agent run. See [voice acceptance](VOICE-VALIDATION.md) for setup, limits and the
+user-confirmed microphone/playback flow.
