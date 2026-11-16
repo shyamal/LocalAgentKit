@@ -3,7 +3,8 @@ import LocalAgentKitCore
 /// What the runtime should do next.
 public enum PlannerDecision: Sendable {
   /// Run this call through `ToolExecutor`, then report the outcome with ``AgentPlanner/observe(_:context:)``
-  /// or ``AgentPlanner/handleFailure(_:context:)``.
+  /// or ``AgentPlanner/handleFailure(_:context:)``. The runtime gives each invocation a unique
+  /// execution ID; use the observed call ID to correlate runtime events and results.
   case callTool(ToolCall)
   /// The goal is achieved; this is the answer.
   case complete(String)

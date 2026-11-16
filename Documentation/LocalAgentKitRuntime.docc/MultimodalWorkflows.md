@@ -103,3 +103,13 @@ as this example does. Tool observations, answers, auditing and host subscribers
 have their existing retention policies. Cancellation and run deadlines cover
 normalization and subsequent tool execution; approval waits use the runtime's
 existing human-wait policy.
+
+## Cancel pending work safely
+
+Cancel the calling task or invoke `cancelCurrentRun()`. Cancelling attachment
+processing propagates to its provider; late results are discarded. Cancelling a
+pending tool approval invalidates that request without executing the tool.
+Each runtime invocation has a unique execution ID, including repeated workflow
+steps and subsequent runs. Treat the current permission event's `call.id` as
+opaque: do not reconstruct it from a step ID or reuse an earlier request's ID.
+A stale permission response returns false even while a new request is waiting.

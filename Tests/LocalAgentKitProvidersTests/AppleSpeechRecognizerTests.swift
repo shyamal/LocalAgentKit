@@ -237,3 +237,21 @@ struct AppleSpeechNativeTests {
     }
   }
 }
+
+extension AppleSpeechRecognizerTests {
+  @Test func externalCancellationRemovesTheActiveRecordingDirectory() async throws {
+    let recording = Recording()
+    let provider = try AppleSpeechRecognizer { url, _, _ in
+      await recording.save(url)
+      try await Task.sleep(for: .seconds(60))
+      return "late transcript"
+    }
+    let task = Task { try await provider.transcribe(audio: AudioInput(data: Self.silence())) }
+    while await recording.url == nil { await Task.yield() }
+    let url = try #require(await recording.url)
+    #expect(FileManager.default.fileExists(atPath: url.path))
+    task.cancel()
+    await #expect(throws: AgentError.cancelled) { try await task.value }
+    #expect(!FileManager.default.fileExists(atPath: url.deletingLastPathComponent().path))
+  }
+}
