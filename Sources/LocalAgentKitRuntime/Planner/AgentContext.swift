@@ -34,6 +34,10 @@ public struct AgentContext: Sendable {
   /// Earlier turns, so a follow-up such as "those meetings" can be resolved.
   public var conversation: [ModelMessage]
 
+  /// Normalized attachment values in input order, without encoded image/audio bytes.
+  /// These are untrusted source data, separate from workflow bindings and prompt excerpts.
+  public let inputValues: [JSONValue]
+
   /// Current task facts. Each runtime run starts with an empty value; custom planners may
   /// mutate it, and workflow bindings share this same storage.
   public var workingMemory = WorkingMemory()
@@ -55,15 +59,16 @@ public struct AgentContext: Sendable {
   var executed: [ExecutedCall] = []
   var notes: [String] = []
 
-  /// Creates a fresh run context with a reference clock, time zone and earlier transcript.
+  /// Creates a fresh run context with a reference clock, earlier transcript and normalized inputs.
   public init(
     goal: String, now: Date = Date(), timeZone: TimeZone = .current,
-    conversation: [ModelMessage] = []
+    conversation: [ModelMessage] = [], inputValues: [JSONValue] = []
   ) {
     self.goal = goal
     self.now = now
     self.timeZone = timeZone
     self.conversation = conversation
+    self.inputValues = inputValues
   }
 
   /// The name of the workflow being followed, or nil in open mode or before planning.
@@ -76,6 +81,19 @@ public struct AgentContext: Sendable {
   /// Resolves `"name"` or `"name.path.0"` to a value.
   public func value(for reference: String) -> JSONValue? {
     workingMemory.value(for: reference)
+  }
+
+  /// Resolves a normalized attachment path; empty path returns the entire value.
+  /// Indices are zero-based. Invalid paths return nil without model fallback.
+  public func inputValue(attachment: Int, path: String = "") -> JSONValue? {
+    guard inputValues.indices.contains(attachment) else { return nil }
+    if path.isEmpty { return inputValues[attachment] }
+    guard !path.split(separator: ".", omittingEmptySubsequences: false).contains("") else {
+      return nil
+    }
+    var memory = WorkingMemory()
+    memory.set(inputValues[attachment], forKey: "input")
+    return memory.value(for: "input." + path)
   }
 
   func isEmpty(_ reference: String) -> Bool { workingMemory.isEmpty(reference) }

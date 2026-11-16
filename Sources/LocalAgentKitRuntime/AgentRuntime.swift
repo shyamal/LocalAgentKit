@@ -237,11 +237,11 @@ public actor AgentRuntime {
       }
       try Task.checkCancellationAsAgentError()
       _ = try await thermal?.checkpoint()
-      let excerpts = try await InputPreprocessor(
+      let input = try await InputPreprocessor(
         configuration: configuration, events: bus, clock: clock, thermal: thermal
       ).process(attachments)
       let response = try await drive(
-        goal: goal, conversation: conversation, excerpts: excerpts,
+        goal: goal, conversation: conversation, input: input,
         clock: clock, trace: trace, thermal: thermal)
       await broker.cancelAll()
       await bus.publish(.completed(response))
@@ -259,7 +259,7 @@ public actor AgentRuntime {
   }
 
   private func drive(
-    goal: String, conversation: [ModelMessage], excerpts: [String],
+    goal: String, conversation: [ModelMessage], input: PreparedInput,
     clock: RunClock, trace: RuntimeTrace,
     thermal: ThermalController?
   ) async throws -> AgentResponse {
@@ -268,7 +268,7 @@ public actor AgentRuntime {
     let memories = try await retrieveMemories(for: goal, clock: clock, trace: trace)
     let model = BudgetedModel(
       base: configuration.model, budgeter: budgeter, limits: limits, clock: clock, events: bus,
-      retrievedChunks: excerpts + passages + memories, trace: trace,
+      retrievedChunks: input.excerpts + passages + memories, trace: trace,
       thermal: thermal)
     var executor = ToolExecutor(
       source: tools, gate: TimedGate(inner: customGate ?? broker, clock: clock, trace: trace),
@@ -281,7 +281,8 @@ public actor AgentRuntime {
     let descriptors = await tools.descriptors()
 
     var context = AgentContext(
-      goal: goal, now: now(), timeZone: timeZone, conversation: conversation)
+      goal: goal, now: now(), timeZone: timeZone, conversation: conversation,
+      inputValues: input.values)
     do {
       let plan: AgentPlan
       do {

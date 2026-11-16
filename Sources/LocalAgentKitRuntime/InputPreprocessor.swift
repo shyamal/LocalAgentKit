@@ -1,6 +1,12 @@
 import Foundation
 import LocalAgentKitCore
 
+/// Per-run normalized sources, separate from persistent memory.
+struct PreparedInput: Sendable {
+  var excerpts: [String] = []
+  var values: [JSONValue] = []
+}
+
 /// Normalizes explicit input without giving providers access to tools or the model.
 struct InputPreprocessor {
   let configuration: AgentConfiguration
@@ -8,11 +14,13 @@ struct InputPreprocessor {
   let clock: RunClock
   let thermal: ThermalController?
 
-  func process(_ attachments: [AgentInput.Attachment]) async throws -> [String] {
-    guard !attachments.isEmpty else { return [] }
+  func process(_ attachments: [AgentInput.Attachment]) async throws -> PreparedInput {
+    guard !attachments.isEmpty else { return PreparedInput() }
     try preflight(attachments)
     await events.publish(.inputProcessingProgress(processed: 0, total: attachments.count))
     var groups: [[String]] = []
+    var values: [JSONValue] = []
+    var structuredRemaining = configuration.inputLimits.maximumStructuredBytes
     var remaining = configuration.inputLimits.maximumExtractedBytes
     for (index, attachment) in attachments.enumerated() {
       try Task.checkCancellation()
@@ -21,10 +29,16 @@ struct InputPreprocessor {
       guard allowed > .zero else { throw AgentError.executionTimeout(.run) }
       let configuration = configuration
       let maximumBytes = remaining
-      let body = try await withDeadline(allowed, scope: .run) {
-        try await Self.render(attachment, configuration: configuration, maximumBytes: maximumBytes)
+      let maximumStructuredBytes = structuredRemaining
+      let normalized = try await withDeadline(allowed, scope: .run) {
+        try await Self.render(
+          attachment, configuration: configuration, maximumBytes: maximumBytes,
+          maximumStructuredBytes: maximumStructuredBytes)
       }
       try Task.checkCancellation()
+      let body = normalized.text
+      structuredRemaining -= normalized.structuredBytes
+      values.append(normalized.value)
       var excerpts: [String] = []
       var start = body.startIndex
       repeat {
@@ -45,7 +59,7 @@ struct InputPreprocessor {
     for offset in 0..<(groups.map(\.count).max() ?? 0) {
       for group in groups where offset < group.count { ordered.append(group[offset]) }
     }
-    return ordered
+    return PreparedInput(excerpts: ordered, values: values)
   }
 
   private func preflight(_ attachments: [AgentInput.Attachment]) throws {
@@ -82,10 +96,13 @@ struct InputPreprocessor {
   }
 
   private static func render(
-    _ attachment: AgentInput.Attachment, configuration: AgentConfiguration, maximumBytes: Int
-  ) async throws -> String {
+    _ attachment: AgentInput.Attachment, configuration: AgentConfiguration, maximumBytes: Int,
+    maximumStructuredBytes: Int
+  ) async throws -> (text: String, value: JSONValue, structuredBytes: Int) {
     do {
       var text = InputText(remaining: maximumBytes)
+      var structured = StructuredInput(maximumBytes: maximumStructuredBytes)
+      let value: JSONValue
       switch attachment {
       case .audio(let audio):
         guard let provider = configuration.speechRecognizer else {
@@ -95,17 +112,25 @@ struct InputPreprocessor {
         try Task.checkCancellation()
         try text.append("Audio transcript:\n")
         try text.append(transcript)
+        value = try structured.object([
+          "kind": structured.string("audio"), "text": structured.string(transcript),
+        ])
       case .document(let document):
         try text.append("Document title: ")
         try text.append(document.title)
         try text.append("\nDocument text:\n")
         try text.append(document.text)
+        value = try structured.object([
+          "kind": structured.string("document"),
+          "title": structured.string(document.title), "text": structured.string(document.text),
+        ])
       case .image(let image):
         guard let provider = configuration.vision else {
           throw AgentError.inputFailure("Image input requires a vision provider")
         }
         let result = try await provider.analyze(image: image)
         try Task.checkCancellation()
+        value = try structured.image(result)
         try text.append("Image analysis:\n")
         for category in result.classifications {
           try text.append("Category: ")
@@ -144,7 +169,7 @@ struct InputPreprocessor {
           }
         }
       }
-      return text.value
+      return (text.value, value, maximumStructuredBytes - structured.remaining)
     } catch {
       if Task.isCancelled || error is CancellationError { throw AgentError.cancelled }
       if let error = error as? AgentError { throw error }

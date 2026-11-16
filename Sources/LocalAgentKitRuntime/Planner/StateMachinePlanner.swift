@@ -168,6 +168,19 @@ public struct StateMachinePlanner: AgentPlanner {
             tool: invocation.tool, violations: [.missingRequired(path: name)])
         }
         values[name] = value
+      case .input(let index, let path):
+        guard let value = context.inputValue(attachment: index, path: path),
+          let parameter = descriptor.schema.parameters[name]
+        else {
+          throw AgentError.invalidArguments(
+            tool: invocation.tool, violations: [.missingRequired(path: name)])
+        }
+        let violations = ToolSchema(parameters: [name: parameter], required: [name])
+          .validate(ToolArguments([name: value]))
+        guard violations.isEmpty else {
+          throw AgentError.invalidArguments(tool: invocation.tool, violations: violations)
+        }
+        values[name] = value
       case .model(let hint):
         asked[name] = hint
       }

@@ -31,19 +31,25 @@ public struct AgentInputLimits: Sendable, Hashable {
   /// Aggregate normalized excerpt UTF-8 bytes, including source labels.
   public var maximumExtractedBytes: Int
 
-  /// Defaults to four attachments, 16 MiB source bytes and 64 KiB extracted excerpts.
+  /// Aggregate normalized structured-value JSON bytes (conservative accounting).
+  public var maximumStructuredBytes: Int
+
+  /// Defaults to four attachments, 16 MiB source bytes and 64 KiB each for excerpts and structured values.
   public init(
     maximumAttachments: Int = 4, maximumBytes: Int = 16 * 1024 * 1024,
-    maximumExtractedBytes: Int = 64 * 1024
+    maximumExtractedBytes: Int = 64 * 1024, maximumStructuredBytes: Int = 64 * 1024
   ) {
     self.maximumAttachments = maximumAttachments
     self.maximumBytes = maximumBytes
     self.maximumExtractedBytes = maximumExtractedBytes
+    self.maximumStructuredBytes = maximumStructuredBytes
   }
 
   /// Invalid settings rejected when constructing a runtime.
   public var issue: ConfigurationIssue? {
-    guard maximumAttachments >= 0, maximumBytes > 0, maximumExtractedBytes > 0 else {
+    guard maximumAttachments >= 0, maximumBytes > 0, maximumExtractedBytes > 0,
+      maximumStructuredBytes > 0
+    else {
       return .invalidLimit("Invalid multimodal input limits")
     }
     return nil

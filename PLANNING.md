@@ -194,6 +194,16 @@ separate raw attachment or excerpt persistence. Quoted source text in answers
 remains part of answer retention. The existing tool permission gate remains the
 approval boundary.
 
+M4-08 carries bounded normalized JSON values into AgentContext.inputValues,
+separately from working memory and model excerpts. ArgumentSource.input selects
+an attachment and path in code; missing or schema-incompatible input fails before
+model argument generation. The existing executor still validates and authorizes
+every invocation. A separate conservative structured-byte cap includes metadata
+and escaped strings. Host camera/photo selection supplies authorized encoded
+bytes; capture UI and expense interpretation remain receipt-demo work. Portable
+integration tests cover broker approval/denial and durable note writes; a gated
+native generated-image OCR check exercises the same path.
+
 ### 2.3 The agent loop
 
 `AgentRuntime` is an `actor`. It owns all mutable execution state; nothing else mutates it.
