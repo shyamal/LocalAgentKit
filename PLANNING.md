@@ -220,6 +220,18 @@ and unplugged physical OCR/synthesis evidence is recorded. The unplugged phases
 observed no change at battery API resolution, which does not establish zero energy
 or a battery budget. Native STT resource coverage remains pending assets. No SDK behavior or limits changed.
 
+M4-11 implements receipt selection/camera capture in the demo host, bounded native
+OCR, conservative field proposals and an editable review. An immutable reviewed
+record enters AgentRuntime through a normalized document input binding and a
+user-confirmation-tier expense tool. Amounts use integer minor units; only approved
+fields persist in an actor-serialized, bounded atomic local store. Photos/raw OCR
+are ephemeral and do not enter chat history. Scripted/native synthetic acceptance
+passes. After sample-packaging and plain-photo OCR fixes, the user confirmed
+scanner date/total extraction, approved saving and reopening on the iPhone.
+Document scanning supplies cropped upright images; common date/total formats and
+OCR columns are normalized without guessing ambiguous fields.
+
+
 ### 2.3 The agent loop
 
 `AgentRuntime` is an `actor`. It owns all mutable execution state; nothing else mutates it.

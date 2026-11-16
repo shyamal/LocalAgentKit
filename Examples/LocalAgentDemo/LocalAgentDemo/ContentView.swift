@@ -1,3 +1,4 @@
+import Foundation
 import LocalAgentKitCore
 import LocalAgentKitSwiftUI
 import SwiftUI
@@ -12,6 +13,7 @@ struct ContentView: View {
   var inputPlaceholder = "Ask the agent…"
   var showsDocumentPassages = false
   @State private var showingPDF = false
+  @State private var showingReceipt = false
   @State private var draft = ""
   @FocusState private var inputFocused: Bool
 
@@ -20,6 +22,10 @@ struct ContentView: View {
       if allowsPDFImport {
         Button("Ask a PDF", systemImage: "doc.text.magnifyingglass") { showingPDF = true }
           .padding(.top, 8)
+          .disabled(viewModel.isRunning)
+      }
+      if allowsPDFImport {
+        Button("Receipt expense", systemImage: "receipt") { showingReceipt = true }
           .disabled(viewModel.isRunning)
       }
       Text(conversationNotice)
@@ -96,6 +102,12 @@ struct ContentView: View {
       .padding()
     }
     .sheet(isPresented: $showingPDF) { DemoPDFView() }
+    .sheet(isPresented: $showingReceipt) { ReceiptPhotoView() }
+    .task {
+      if allowsPDFImport, ProcessInfo.processInfo.environment["LOCALAGENTKIT_RECEIPT_DEMO"] == "1" {
+        showingReceipt = true
+      }
+    }
     .agentPermissionSheet(for: viewModel)
     .overlay(alignment: .top) {
       if let utilization = viewModel.contextUtilization {

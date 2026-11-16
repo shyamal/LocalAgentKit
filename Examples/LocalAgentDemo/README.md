@@ -202,3 +202,13 @@ same-filename chat replacement. They use mock embeddings/models, not an on-devic
 answer-quality measurement. The picker and scope APIs were checked in the installed
 SDK before use; macOS/iOS builds compile the actual UI. Device build/install success
 alone does not verify picker interaction, answer correctness or lifecycle behavior.
+
+## Receipt photo demo (M4-11)
+
+Open **Receipt expense** to choose a photo/file, scan an iPhone receipt with the document camera or
+try the synthetic sample. Native OCR proposes editable merchant/date/total/currency
+fields. Review them, approve the runtime's save request, and find the result in
+Saved expenses on this device. Only approved structured fields are persisted;
+photos and raw OCR are not saved. The workflow uses no model generation.
+See [receipt acceptance](RECEIPT-VALIDATION.md) for limits, sample expectations,
+local persistence and the physical camera/approval checklist.
