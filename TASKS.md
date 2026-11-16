@@ -21,10 +21,12 @@ document/table recognition are implemented and merged (M4-01..04).
   [PR #76](https://github.com/shyamal/LocalAgentKit/pull/76). Native macOS checks
   generated nonzero, decodable WAV audio and exercised timeout handling.
   Listening quality and phone resource use remain unmeasured.
-- **Next is M4-07**, adding image, audio, document and combined inputs to the
-  runtime, followed by **M4-08** orchestration through providers and tools.
+- **M4-07 is implemented.** Combined image, audio and extracted-document inputs
+  now share runtime limits, preprocessing and context budgeting.
+- **Next is M4-08**, orchestration through providers and tools.
 - **M4-09 remains in progress.** Standalone providers have cancellation coverage;
-  native speech acceptance and complete runtime cancellation checks remain open.
+  runtime input cancellation and late-result isolation are covered by M4-07.
+  Native speech acceptance and device orchestration checks remain open.
 - **M3-07 remains open.** Retrieval controls are implemented; independently
   annotated application/no-answer data and held-out calibration are pending.
 - **M3-10 remains open.** The user confirmed a PDF summary worked on the iPhone
@@ -34,14 +36,16 @@ document/table recognition are implemented and merged (M4-01..04).
   The newcomer setup and custom-tool measurements remain open.
 
 Latest verification is recorded in
-[the synthesis notes](docs/speech-synthesis-verification.md). The default suite
-contains 800 registered functions; offline checks and the generic iOS build passed.
-Core/Runtime coverage is 98.73%. See
+[the multimodal input notes](docs/multimodal-input-verification.md). The default
+suite contains 811 registered functions. Core/Runtime coverage is 98.93%.
+Offline checks passed on unchanged retry after a recorded Core Data signal-11
+crash; the generic iOS build passed. See
 [the recognition notes](docs/speech-recognition-verification.md) for M4-05's
 remaining native acceptance.
 
 Milestone 3's calibration and PDF checks, and Milestone 4's receipt/voice device
 exit criteria, remain open.
+
 
 ---
 
@@ -278,9 +282,9 @@ and the deferred developer trials remain open.
 - [x] **M4-04** Document understanding + structured extraction *(DONE 2026-11-13: opt-in native document recognition returns Core transcripts, optional titles, paragraph groups and located tables with inclusive cell spans. Aggregate document/paragraph/table/cell/text limits, shared image admission and cancellation, typed failures and mock support. Native generated-table recognition passes on macOS 26.6.2, including a blank cell, blank image and unsupported-language checks. Default suite with 774 registered functions passes on unchanged retry after a recorded Runtime test stall; offline suite, examples, 70 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.93%, up 0.11 points. Receipt semantics, complex real-photo layout, page assembly and phone resources remain separate. Evidence: docs/vision-document-recognition-verification.md.)*
 - [~] **M4-05** `SpeechRecognizer` protocol + Apple STT implementation (FR-017) *(IMPLEMENTED 2026-11-13: Core encoded AudioInput/recognizer seam, mock and typed speechFailure; Providers recorded-file SpeechAnalyzer adapter with private temporary files, byte/duration/transcript limits, installed-asset preflight and concurrent feed/result cancellation. Eight portable provider functions and Core/mock tests pass. Native en-US assets are absent on the Mac; missing-asset and unsupported-locale paths pass, while successful native transcription and cancellation acceptance remain pending host provisioning and a known recording. Default suite with 788 registered functions/offline suite, examples, 71 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.86%, down 0.07 points; Runtime covered two fewer lines with unchanged source. Evidence and remaining acceptance: docs/speech-recognition-verification.md.)*
 - [x] **M4-06** `SpeechSynthesizer` protocol + Apple TTS implementation (FR-017) *(DONE 2026-11-13: Core PCM WAV AudioOutput/synthesis seam and mock; Apple provider uses an available Apple voice, main-actor native lifetime, copied PCM chunks, bounded queue, text/output limits, cancellation and generation timeout. Native macOS checks generated nonzero WAV audio with verified frame/rate metadata, exercised timeout and rejected an unknown voice. Default suite with 800 registered functions/offline suite, examples, 71 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.73%, down 0.13 points; Core 99.17% and Runtime 98.53%. Listening quality and phone resource use remain unmeasured. Evidence: docs/speech-synthesis-verification.md.)*
-- [ ] **M4-07** Multimodal input types on `agent.run` — image, audio, document, combined (FR-002, FR-018)
+- [x] **M4-07** Multimodal input types on `agent.run` — image, audio, document, combined (FR-002, FR-018) *(DONE 2026-11-13: Core AgentInput and input limits, configured vision/speech preprocessing, count-only progress and typed input failures. All-input preflight, shared run deadlines/cancellation/thermal checkpoints, untrusted-source excerpts and context budgeting precede planning. String calls remain supported; attachments are not separately persisted. Eleven focused runtime tests cover combined sources, limits, late results, budgeting, structured image output, tool approval and run reservation through history recording. Full suite with 811 registered functions, offline suite on unchanged retry, examples, 71 Python checks, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.93%, up 0.20 points. Native STT and device orchestration acceptance remain pending. Evidence: docs/multimodal-input-verification.md.)*
 - [ ] **M4-08** Multimodal orchestration pipeline: camera → vision → structured data → agent → tool (FR-018)
-- [~] **M4-09** Cancellation propagates into vision and speech (FR-024) *(Standalone Vision and recorded-audio session cancellation are covered in M4-01..05, including late-result rejection and failure releasing the other session side. M4-06 adds synthesis cancellation, cancelled collection and a native stop-on-timeout check. Native STT success/cancellation, active native synthesis cancellation and runtime orchestration acceptance remain pending.)*
+- [~] **M4-09** Cancellation propagates into vision and speech (FR-024) *(Standalone Vision and recorded-audio session cancellation are covered in M4-01..05, including late-result rejection and failure releasing the other session side. M4-06 adds synthesis cancellation, cancelled collection and a native stop-on-timeout check. M4-07 verifies runtime input cancellation, abandonment of uncooperative providers and late-result isolation. Native STT success/cancellation, active native synthesis cancellation and runtime orchestration acceptance remain pending.)*
 - [ ] **M4-10** Battery/thermal measurement for vision + speech paths (NFR battery)
 - [ ] **M4-11** Demo: receipt photo → structured expense record
 - [ ] **M4-12** Voice input → agent → spoken response, end to end

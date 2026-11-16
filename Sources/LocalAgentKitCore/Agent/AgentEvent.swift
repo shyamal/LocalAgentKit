@@ -71,6 +71,8 @@ public enum AgentEvent: Sendable {
   case ingestionProgress(IngestionProgress)
   /// A new goal has started executing.
   case started
+  /// Attachment normalization progress; counts do not guarantee prompt inclusion.
+  case inputProcessingProgress(processed: Int, total: Int)
   /// The runtime is about to request the next planner decision.
   case thinking
   /// The initial plan is available for display.

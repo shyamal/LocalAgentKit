@@ -18,6 +18,12 @@ enum NetworkPolicyGuard {
     if configuration.embedding?.requiresNetwork == true {
       return .networkRequiredButForbidden(component: "embedding")
     }
+    if configuration.vision?.requiresNetwork == true {
+      return .networkRequiredButForbidden(component: "vision")
+    }
+    if configuration.speechRecognizer?.requiresNetwork == true {
+      return .networkRequiredButForbidden(component: "speechRecognizer")
+    }
     if instrumentation?.requiresNetwork == true {
       return .networkRequiredButForbidden(component: "instrumentation")
     }

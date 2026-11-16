@@ -47,6 +47,12 @@ public struct AgentConfiguration: Sendable {
   public var vectorStore: (any VectorStore)?
   /// Optional scored selection for automatic RAG; nil preserves preceding top-five behavior.
   public var retrieval: RetrievalConfiguration?
+  /// Image analysis backend for explicit image attachments.
+  public var vision: (any VisionProvider)?
+  /// Recorded-audio backend for explicit audio attachments.
+  public var speechRecognizer: (any SpeechRecognizer)?
+  /// Attachment admission and extracted-text bounds.
+  public var inputLimits: AgentInputLimits
   /// Bounds one run, each model call and the assembled context.
   public var limits: ExecutionLimits
   /// Controls audit recording; cannot weaken tool permission tiers.
@@ -68,7 +74,10 @@ public struct AgentConfiguration: Sendable {
     networkPolicy: NetworkPolicy = .never,
     planner: PlannerChoice = .stateMachine,
     memoryRetrieval: MemoryRetrievalConfiguration = MemoryRetrievalConfiguration(),
-    retrieval: RetrievalConfiguration? = nil
+    retrieval: RetrievalConfiguration? = nil,
+    vision: (any VisionProvider)? = nil,
+    speechRecognizer: (any SpeechRecognizer)? = nil,
+    inputLimits: AgentInputLimits = AgentInputLimits()
   ) {
     self.model = model
     self.memory = memory
@@ -76,6 +85,9 @@ public struct AgentConfiguration: Sendable {
     self.embedding = embedding
     self.vectorStore = vectorStore
     self.retrieval = retrieval
+    self.vision = vision
+    self.speechRecognizer = speechRecognizer
+    self.inputLimits = inputLimits
     self.limits = limits
     self.security = security
     self.networkPolicy = networkPolicy

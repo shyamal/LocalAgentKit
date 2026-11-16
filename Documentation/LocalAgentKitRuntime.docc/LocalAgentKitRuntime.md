@@ -14,6 +14,7 @@ before every model call; a provider can still report overflow during generation.
 ### Run an agent
 
 - <doc:BuildYourFirstAgent>
+- <doc:MultimodalInputs>
 - ``AgentRuntime``
 - ``StaticToolSource``
 - ``ConversationMemory``
