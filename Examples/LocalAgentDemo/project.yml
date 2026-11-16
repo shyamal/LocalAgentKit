@@ -43,6 +43,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: dev.localagentkit.demo.app
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_NSCameraUsageDescription: "Take a receipt photo to review and save an expense on this device."
         ENABLE_HARDENED_RUNTIME: NO
         # EventKit (M1-TL-04/05): both the modern (iOS 17/macOS 14+) and legacy usage-description
         # keys are set, since which one the OS reads for a 26.4 floor isn't documented in the SDK

@@ -11,7 +11,10 @@
 		0B769FB1BB47AB389F579E54 /* LocalAgentKitProviders in Frameworks */ = {isa = PBXBuildFile; productRef = B305F338778E9354BE5B51F2 /* LocalAgentKitProviders */; };
 		1F0BA36F036DDEFD3836D2CC /* LocalAgentKitSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = F988CC96755B6108AB463F39 /* LocalAgentKitSwiftUI */; };
 		1F846E27385C30FF286B7217 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E4F5714C1105067AF2F32A /* AppDelegate.swift */; };
+		434E11B9532898CFA317B715 /* ReceiptTextParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DBA0458AAD3028DE8AC14B /* ReceiptTextParser.swift */; };
 		4CF1D80652D3DEB32CFF295D /* AgentSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F5F409E74E568747C4E9AB /* AgentSetup.swift */; };
+		56D69994B2CB31D744BF715B /* ReceiptSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE120F1728F2D89DD456747 /* ReceiptSession.swift */; };
+		7846802CB0006B64E9ABDB97 /* receipt-sample.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AEB3F7637B94A12290206C7 /* receipt-sample.png */; };
 		84D02B732D208B7CC4D0A434 /* LocalAgentKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = BD72A937E79E9FD4AA875C7B /* LocalAgentKitCore */; };
 		86EF99ECE7FBF1EDBE967BE2 /* LocalAgentKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = 79CDD0FCB2A2C0800F4999CD /* LocalAgentKitCore */; };
 		9233944D7F6226EC44ABABEF /* LocalAgentKitTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 657FADFC4E80C64B7ED2E605 /* LocalAgentKitTesting */; };
@@ -20,19 +23,24 @@
 		CD4F4C2B77E90B68AEAD422B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0098C30BC1E5A97305BC7EDF /* ContentView.swift */; };
 		E0A65C52C14188861C599987 /* LocalAgentKitRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 656A15575795B0350BB642E8 /* LocalAgentKitRuntime */; };
 		E76DE3BDBA8C1F07D59C1998 /* LocalAgentKitRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 0CEADE967579B249ED5F13C9 /* LocalAgentKitRuntime */; };
+		E849EE4D906EF4BD9355ADFB /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B99202B349A1F2939E1F1E2 /* ReceiptView.swift */; };
 		F92AEF0531575656AD601D23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3619F7734E9D9C6F820E0F45 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0098C30BC1E5A97305BC7EDF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1B99202B349A1F2939E1F1E2 /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
 		31E4F5714C1105067AF2F32A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3619F7734E9D9C6F820E0F45 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		3AEB3F7637B94A12290206C7 /* receipt-sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receipt-sample.png"; sourceTree = "<group>"; };
 		46F5F409E74E568747C4E9AB /* AgentSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentSetup.swift; sourceTree = "<group>"; };
 		4EB3F61BB4D09614AEE1EDC4 /* LocalAgentDemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LocalAgentDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A791E6E7167A5396760B15EF /* LocalAgentKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LocalAgentKit; path = ../..; sourceTree = SOURCE_ROOT; };
 		C128B8769C81FBD0A10208D0 /* notes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = notes.md; sourceTree = "<group>"; };
 		C1C2C4539966D9ECA22953A7 /* LocalAgentDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAgentDemoApp.swift; sourceTree = "<group>"; };
+		E1DBA0458AAD3028DE8AC14B /* ReceiptTextParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptTextParser.swift; sourceTree = "<group>"; };
 		FCA165B384A96794767A3A22 /* LocalAgentDemoUIKitCheck.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LocalAgentDemoUIKitCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FDE120F1728F2D89DD456747 /* ReceiptSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptSession.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				C128B8769C81FBD0A10208D0 /* notes.md */,
+				3AEB3F7637B94A12290206C7 /* receipt-sample.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -93,6 +102,9 @@
 				46F5F409E74E568747C4E9AB /* AgentSetup.swift */,
 				0098C30BC1E5A97305BC7EDF /* ContentView.swift */,
 				C1C2C4539966D9ECA22953A7 /* LocalAgentDemoApp.swift */,
+				FDE120F1728F2D89DD456747 /* ReceiptSession.swift */,
+				E1DBA0458AAD3028DE8AC14B /* ReceiptTextParser.swift */,
+				1B99202B349A1F2939E1F1E2 /* ReceiptView.swift */,
 				744E709881D6107767D8BCCD /* Resources */,
 			);
 			path = LocalAgentDemo;
@@ -210,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C56BC1D7348087A6006AC499 /* notes.md in Resources */,
+				7846802CB0006B64E9ABDB97 /* receipt-sample.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +245,9 @@
 				4CF1D80652D3DEB32CFF295D /* AgentSetup.swift in Sources */,
 				CD4F4C2B77E90B68AEAD422B /* ContentView.swift in Sources */,
 				00342D63449B1D7674B3B78C /* LocalAgentDemoApp.swift in Sources */,
+				56D69994B2CB31D744BF715B /* ReceiptSession.swift in Sources */,
+				434E11B9532898CFA317B715 /* ReceiptTextParser.swift in Sources */,
+				E849EE4D906EF4BD9355ADFB /* ReceiptView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +393,7 @@
 				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "LocalAgent reads your calendar so it can tell you about upcoming meetings.";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "LocalAgent reads your calendar so it can tell you about upcoming meetings.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Take a receipt photo to review and save an expense on this device.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "LocalAgent creates reminders when you ask it to.";
 				INFOPLIST_KEY_NSRemindersUsageDescription = "LocalAgent creates reminders when you ask it to.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -421,6 +438,7 @@
 				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "LocalAgent reads your calendar so it can tell you about upcoming meetings.";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "LocalAgent reads your calendar so it can tell you about upcoming meetings.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Take a receipt photo to review and save an expense on this device.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "LocalAgent creates reminders when you ask it to.";
 				INFOPLIST_KEY_NSRemindersUsageDescription = "LocalAgent creates reminders when you ask it to.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

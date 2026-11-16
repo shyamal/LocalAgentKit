@@ -50,8 +50,12 @@ pending recognition assets.
   Unplugged five-minute idle/OCR/synthesis phases also passed observational
   eligibility, with nominal thermal state and no resolved battery-level change.
   Native STT resource coverage remains pending; zero energy is not inferred.
-- **Next implementation is M4-11**, the receipt photo demo. M4-05/09 remain open
-  for native STT/device acceptance; M4-12 adds the complete voice workflow.
+- **M4-11 is complete locally.** Receipt photo/file/document scanning, editable
+  OCR proposals and approval-gated structured expense history are implemented.
+  Sample packaging and plain-photo OCR issues were fixed. The user confirmed
+  scanner date/total extraction, approved saving and a restored row on reopening.
+- **Next implementation is M4-12**, the complete voice workflow. M4-05/09/10
+  remain open for native STT/device coverage.
 - **M3-07 remains open.** Retrieval controls are implemented; independently
   annotated application/no-answer data and held-out calibration are pending.
 - **M3-10 remains open.** The user confirmed a PDF summary worked on the iPhone
@@ -62,9 +66,10 @@ pending recognition assets.
 
 Latest verification is recorded in
 [the resource measurement notes](docs/multimodal-resources-verification.md). The
-SDK default suite contains 822 registered functions; the new portable probe has
-five. Core/Runtime coverage is 98.98%. Offline checks, 79 Python tests and the
-signed physical probe build/run passed. See
+SDK default suite contains 822 registered functions; the resource probe has five
+and the updated demo has 37. Core/Runtime coverage is 98.98%. Offline checks,
+80 Python tests, receipt native synthetic acceptance and both demo platform builds
+pass. The demo suite passed on unchanged retry after a recorded Core Data crash. See
 [the recognition notes](docs/speech-recognition-verification.md) for M4-05's
 remaining native acceptance.
 
@@ -315,7 +320,7 @@ and the deferred developer trials remain open.
   - **Unplugged run completed:** three available five-minute phases — idle 1,139 calls; OCR 711 calls, p95 161.50 ms, 69.35 MiB; synthesis 695 calls, p95 158.01 ms, 45.60 MiB. All 2,551 snapshots were nominal, unplugged and foreground with stable brightness/power mode. These phases pass observational battery eligibility. No battery-level change was resolved; this is not zero energy or a battery-budget pass.
   - **Still pending:** native STT resource measurement because English recognition assets are absent on the phone. M4-10 remains `[~]` for this missing path; the unplugged OCR/synthesis run is complete.
   - **Evidence:** [protocol](Benchmarks/MultimodalResources/README.md), [unplugged results](Benchmarks/MultimodalResources/results/iphone-unplugged-2026-11-16/summary.json), [verification](docs/multimodal-resources-verification.md).
-- [ ] **M4-11** Demo: receipt photo → structured expense record
+- [x] **M4-11** Demo: receipt photo → structured expense record *(DONE 2026-11-16: example-only receipt sheet with photo/file selection and iPhone document scanning, preview, bounded accurate OCR and editable merchant/date/total/currency proposals. OCR columns are grouped; common date formats and split-line totals normalize conservatively, with integer minor units and no model generation. Immutable reviewed fields flow through AgentRuntime input binding and a confirmation-tier tool into bounded atomic local storage; photos/raw OCR are not saved. Eleven new demo functions bring the package to 37 registered functions, including native sample-to-approved-reopened-store acceptance. Full/offline SDK suite, 80 Python checks, formatting/layering/DocC and iPhone/macOS builds pass; Core/Runtime coverage stays 98.98%. A Core Data helper crash was preserved and unchanged retry passed. Physical testing found missing sample packaging (fixed with generated-resource regression guard), then a plain-camera OCR miss; document scanning/upright encoding and parsing improvements were installed. The user confirmed scanned date/total extraction, approved saving, and the saved row remaining after closing/reopening Receipt expense. Additional layouts/lighting/picker-denial and full-app-relaunch checks are not claimed. Evidence: Examples/LocalAgentDemo/RECEIPT-VALIDATION.md; docs/receipt-photo-demo-verification.md.)*
 - [ ] **M4-12** Voice input → agent → spoken response, end to end
 
 **Exit:** receipt → structured expense works on device; multimodal inputs flow through one `run` API.
