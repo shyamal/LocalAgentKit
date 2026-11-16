@@ -121,6 +121,8 @@ broader multimodal support remains roadmap work.
 - [LocalAgentDemo](Examples/LocalAgentDemo/README.md): iPhone/macOS chat app covering
   calendar lookup, note retrieval, checklist generation, and approved note saving.
   Its RAG notes are bundled fixtures, not the user's Apple Notes library.
+- [MultimodalProbe](Examples/MultimodalProbe/README.md): developer-only synthetic
+  vision/speech resource measurements with explicit battery-validity checks.
 
 ## Requirements
 

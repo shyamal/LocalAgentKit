@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "imageWidth": 800,
+  "imageHeight": 300,
+  "imageText": "INVOICE 42",
+  "font": "Helvetica",
+  "fontSize": 40,
+  "textX": 40,
+  "textY": 150,
+  "speechText": "This is a local speech test for the resource measurement probe.",
+  "locale": "en-US",
+  "pathOrder": ["idle", "ocr", "transcription", "synthesis"],
+  "secondsPerPhase": 60,
+  "batterySecondsPerPhase": 300,
+  "intervalMilliseconds": 250
+}
