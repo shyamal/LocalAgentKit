@@ -212,6 +212,14 @@ results and observations. Native STT success/cancellation remains pending instal
 recognition assets and a known recording. Device cancellation/resource checks
 remain separate from portable and native-Mac acceptance.
 
+M4-10 adds a separate iPhone resource probe, portable paced runner and host JSONL
+validator. Fixed synthetic OCR/speech fixtures and an idle phase retain raw
+latency, sampled footprint, thermal, brightness and battery/charging observations.
+Short, charging or incomplete phases cannot qualify for battery reporting. Wired
+and unplugged physical OCR/synthesis evidence is recorded. The unplugged phases
+observed no change at battery API resolution, which does not establish zero energy
+or a battery budget. Native STT resource coverage remains pending assets. No SDK behavior or limits changed.
+
 ### 2.3 The agent loop
 
 `AgentRuntime` is an `actor`. It owns all mutable execution state; nothing else mutates it.

@@ -26,3 +26,7 @@ __pycache__/
 # Isolated embedding measurement app
 Examples/EmbeddingProbe/.build*/
 Examples/EmbeddingProbe/**/xcuserdata/
+
+# Isolated multimodal resource probe
+Examples/MultimodalProbe/.build*/
+Examples/MultimodalProbe/**/xcuserdata/
