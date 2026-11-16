@@ -73,3 +73,19 @@ The native command is LOCALAGENTKIT_DEVICE_TESTS=1 swift test --filter
 AppleSpeechNativeTests. Inspect its asset-state log when assessing the outcome.
 Speech accuracy, phone resource use and microphone/voice integration need their
 own evidence. M4-06 text-to-speech and M4-12 voice workflow remain separate tasks.
+
+## Native acceptance update — 2026-11-16 (M4-12)
+
+The iPhone demo now provides explicit host-owned AssetInventory preparation. The
+user initiated preparation and confirmed English data ready, then a microphone
+question transcribed through AgentRuntime to the correct audible reply. Playback
+Stop and another recorded question also worked. Metadata-only checks found no
+remaining question.wav/recording.audio files after the completed turn; user voice
+or transcript contents were not exported. This supplies native success acceptance
+for M4-05. The SDK recognizer and its no-download policy did not change.
+
+Native cancellation during the analyzer's active processing and an actual native
+STT resource run remain separate M4-09/10 acceptance. The earlier missing-asset
+observations on Mac/phone are historical, not the phone's current voice readiness.
+See [voice acceptance](../Examples/LocalAgentDemo/VOICE-VALIDATION.md) and
+[verification](voice-demo-verification.md).

@@ -231,6 +231,14 @@ scanner date/total extraction, approved saving and reopening on the iPhone.
 Document scanning supplies cropped upright images; common date/total formats and
 OCR columns are normalized without guessing ambiguous fields.
 
+M4-12 adds an iPhone voice screen: explicit host speech-asset setup, bounded
+microphone/file input, local transcription and editable review, a short response
+workflow, native synthesis and in-memory playback. Revisions and audio ownership
+prevent late playback after cancellation; raw voice/transcripts/replies are not
+persisted by this screen. The user confirmed native microphone transcription,
+correct spoken reply, Stop and a subsequent question on the phone. Native STT
+cancellation timing and STT resource measurements remain M4-09/10 acceptance.
+
 
 ### 2.3 The agent loop
 
