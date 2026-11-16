@@ -1,13 +1,13 @@
 # LocalAgentKit — TASKS
 
 **Companion documents:** [`LocalAgentKit-PRD-v0.2.md`](./LocalAgentKit-PRD-v0.2.md) (what & why) · [`PLANNING.md`](./PLANNING.md) (how)
-**Last updated:** 2026-11-13
+**Last updated:** 2026-11-16
 
 Task IDs are stable — reference them in commits and PRs (`M1-RT-03: add loop detector`). FR/NFR/R/M references point back to the PRD.
 
 **Legend:** `[ ]` todo · `[~]` in progress · `[x]` done · `[!]` blocked · 🔒 gates later work
 
-## Current state — 2026-11-13
+## Current state — 2026-11-16
 
 Phase 0 and the M3-04 embedding benchmark gate are complete. Active implementation
 is Milestone 4. Vision classification, OCR, built-in people/cat/dog detection and
@@ -23,7 +23,11 @@ document/table recognition are implemented and merged (M4-01..04).
   Listening quality and phone resource use remain unmeasured.
 - **M4-07 is implemented.** Combined image, audio and extracted-document inputs
   now share runtime limits, preprocessing and context budgeting.
-- **Next is M4-08**, orchestration through providers and tools.
+- **M4-08 is implemented locally.** Normalized attachment fields flow directly
+  into schema-validated workflow tool arguments. Native generated-image OCR
+  reached a durable note through approval on the Mac.
+- **Next is M4-09 acceptance**, including outstanding native speech cancellation.
+  Physical capture/receipt and voice demos remain M4-11/12.
 - **M4-09 remains in progress.** Standalone providers have cancellation coverage;
   runtime input cancellation and late-result isolation are covered by M4-07.
   Native speech acceptance and device orchestration checks remain open.
@@ -36,10 +40,9 @@ document/table recognition are implemented and merged (M4-01..04).
   The newcomer setup and custom-tool measurements remain open.
 
 Latest verification is recorded in
-[the multimodal input notes](docs/multimodal-input-verification.md). The default
-suite contains 811 registered functions. Core/Runtime coverage is 98.93%.
-Offline checks passed on unchanged retry after a recorded Core Data signal-11
-crash; the generic iOS build passed. See
+[the orchestration notes](docs/multimodal-orchestration-verification.md). The
+default suite contains 818 registered functions. Core/Runtime coverage is 98.89%.
+Offline checks and the generic iOS build passed. See
 [the recognition notes](docs/speech-recognition-verification.md) for M4-05's
 remaining native acceptance.
 
@@ -283,7 +286,7 @@ and the deferred developer trials remain open.
 - [~] **M4-05** `SpeechRecognizer` protocol + Apple STT implementation (FR-017) *(IMPLEMENTED 2026-11-13: Core encoded AudioInput/recognizer seam, mock and typed speechFailure; Providers recorded-file SpeechAnalyzer adapter with private temporary files, byte/duration/transcript limits, installed-asset preflight and concurrent feed/result cancellation. Eight portable provider functions and Core/mock tests pass. Native en-US assets are absent on the Mac; missing-asset and unsupported-locale paths pass, while successful native transcription and cancellation acceptance remain pending host provisioning and a known recording. Default suite with 788 registered functions/offline suite, examples, 71 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.86%, down 0.07 points; Runtime covered two fewer lines with unchanged source. Evidence and remaining acceptance: docs/speech-recognition-verification.md.)*
 - [x] **M4-06** `SpeechSynthesizer` protocol + Apple TTS implementation (FR-017) *(DONE 2026-11-13: Core PCM WAV AudioOutput/synthesis seam and mock; Apple provider uses an available Apple voice, main-actor native lifetime, copied PCM chunks, bounded queue, text/output limits, cancellation and generation timeout. Native macOS checks generated nonzero WAV audio with verified frame/rate metadata, exercised timeout and rejected an unknown voice. Default suite with 800 registered functions/offline suite, examples, 71 Python checks, strict formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.73%, down 0.13 points; Core 99.17% and Runtime 98.53%. Listening quality and phone resource use remain unmeasured. Evidence: docs/speech-synthesis-verification.md.)*
 - [x] **M4-07** Multimodal input types on `agent.run` — image, audio, document, combined (FR-002, FR-018) *(DONE 2026-11-13: Core AgentInput and input limits, configured vision/speech preprocessing, count-only progress and typed input failures. All-input preflight, shared run deadlines/cancellation/thermal checkpoints, untrusted-source excerpts and context budgeting precede planning. String calls remain supported; attachments are not separately persisted. Eleven focused runtime tests cover combined sources, limits, late results, budgeting, structured image output, tool approval and run reservation through history recording. Full suite with 811 registered functions, offline suite on unchanged retry, examples, 71 Python checks, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.93%, up 0.20 points. Native STT and device orchestration acceptance remain pending. Evidence: docs/multimodal-input-verification.md.)*
-- [ ] **M4-08** Multimodal orchestration pipeline: camera → vision → structured data → agent → tool (FR-018)
+- [x] **M4-08** Multimodal orchestration pipeline: camera → vision → structured data → agent → tool (FR-018) *(DONE 2026-11-16: host-authorized captured bytes produce bounded normalized JSON in AgentContext; workflow input sources resolve fields in code with schema validation before model generation or approval. Existing tool validation, limits and permission enforcement remain active. Structured data has a separate aggregate 64 KiB default cap. Seven new runtime functions cover grounding, limits, schema failures, permission denial and cross-run isolation. Portable demo checks exercise the broker and durable note writes; native generated-image OCR reaches an approved, reopened note on macOS without generation calls. Full/offline suite with 818 registered functions, demo checks, native integration, examples, 71 Python tests, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.89%, down 0.04 points. Physical camera UI and receipt interpretation remain M4-11. Evidence: docs/multimodal-orchestration-verification.md.)*
 - [~] **M4-09** Cancellation propagates into vision and speech (FR-024) *(Standalone Vision and recorded-audio session cancellation are covered in M4-01..05, including late-result rejection and failure releasing the other session side. M4-06 adds synthesis cancellation, cancelled collection and a native stop-on-timeout check. M4-07 verifies runtime input cancellation, abandonment of uncooperative providers and late-result isolation. Native STT success/cancellation, active native synthesis cancellation and runtime orchestration acceptance remain pending.)*
 - [ ] **M4-10** Battery/thermal measurement for vision + speech paths (NFR battery)
 - [ ] **M4-11** Demo: receipt photo → structured expense record

@@ -36,8 +36,9 @@ document attachment. An attachment-only input uses a generic analysis request.
 
 ## Bound admission and context
 
-`AgentInputLimits` defaults to four attachments, 16 MiB aggregate source bytes
-and 64 KiB normalized excerpt bytes, including source labels. Zero allowed
+`AgentInputLimits` defaults to four attachments, 16 MiB aggregate source bytes,
+64 KiB normalized excerpt bytes including source labels, and a separate 64 KiB
+structured-value budget. See <doc:MultimodalWorkflows> for deterministic tool bindings. Zero allowed
 attachments disables attachment input. Invalid configuration fails at runtime
 construction. Missing providers, empty binary input and source size/count excesses
 fail before invoking any attachment provider. The extracted-byte cap fails the

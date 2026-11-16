@@ -10,6 +10,9 @@ public enum ArgumentSource: Sendable, Hashable {
   /// values in code instead of through the model removes the grounding failure, the largest
   /// model-side failure in Phase 0 (findings §12).
   case binding(String)
+  /// A normalized attachment value, resolved in code without model reconstruction.
+  /// Zero-based attachment index and dot-separated path; empty path selects the whole value.
+  case input(attachment: Int, path: String = "")
   /// Asked of the model as one narrow, validated question. `hint` says what is wanted.
   case model(hint: String)
 }
@@ -208,6 +211,14 @@ public struct Workflow: Sendable, Hashable {
           "step \(step.id): required parameter \(name) of \(invocation.tool) has no source")
       }
       for source in invocation.arguments.values {
+        if case .input(let index, let path) = source {
+          if index < 0
+            || (!path.isEmpty
+              && path.split(separator: ".", omittingEmptySubsequences: false).contains(""))
+          {
+            problems.append("step \(step.id): invalid attachment reference")
+          }
+        }
         if case .binding(let reference) = source {
           let root = String(reference.split(separator: ".").first ?? "")
           if !seenBindings.contains(root) {
