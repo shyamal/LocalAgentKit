@@ -13,24 +13,38 @@ Phase 0 and the M3-04 embedding benchmark gate are complete. Active implementati
 is Milestone 4. Vision classification, OCR, built-in people/cat/dog detection and
 document/table recognition are implemented and merged (M4-01..04).
 
+**Merged work:** PRs [#78](https://github.com/shyamal/LocalAgentKit/pull/78),
+[#79](https://github.com/shyamal/LocalAgentKit/pull/79),
+[#80](https://github.com/shyamal/LocalAgentKit/pull/80) and
+[#81](https://github.com/shyamal/LocalAgentKit/pull/81) are merged. M4-10's resource
+probe and both physical-run reports are on `main`; native STT coverage remains
+pending recognition assets.
+
 - **M4-05 remains in progress.** The recorded-audio recognizer and mock merged in
   [PR #75](https://github.com/shyamal/LocalAgentKit/pull/75). Native checks verified
-  missing English assets and unsupported locales. Successful transcription and
-  cancellation acceptance still need installed assets and a known recording.
+  missing English assets and unsupported locales. The resource probe also found
+  English recognition assets absent on the iPhone. Successful native transcription,
+  cancellation and resource acceptance still need installed assets; a synthetic
+  known recording is already available in the probe.
 - **M4-06 is complete.** Synthesis merged in
   [PR #76](https://github.com/shyamal/LocalAgentKit/pull/76). Native macOS checks
   generated nonzero, decodable WAV audio and exercised timeout handling.
-  Listening quality and phone resource use remain unmeasured.
-- **M4-07 is implemented.** Combined image, audio and extracted-document inputs
-  now share runtime limits, preprocessing and context budgeting.
-- **M4-08 is merged.** Normalized attachment fields flow directly
+  Native active cancellation is verified on the Mac. M4-10 now records wired and
+  unplugged iPhone synthesis latency, sampled footprint and thermal/battery
+  observations. Listening quality remains unmeasured.
+- **M4-07 is merged in [PR #78](https://github.com/shyamal/LocalAgentKit/pull/78).**
+  Combined image, audio and extracted-document inputs now share runtime limits,
+  preprocessing and context budgeting.
+- **M4-08 is merged in [PR #79](https://github.com/shyamal/LocalAgentKit/pull/79).**
+  Normalized attachment fields flow directly
   into schema-validated workflow tool arguments. Native generated-image OCR
   reached a durable note through approval on the Mac.
-- **M4-09 acceptance merged in PR #80.** Runtime cancellation reaches active
+- **M4-09 is partially verified; changes merged in [PR #80](https://github.com/shyamal/LocalAgentKit/pull/80).** Runtime cancellation reaches active
   vision/audio inputs, temporary recordings are removed, and native synthesis
   cancels after real PCM output. A stale-approval replay bug is fixed with unique
   execution IDs. Native transcription success/cancellation still needs assets.
-- **M4-10 is in progress locally.** A separate probe and validator now retain
+- **M4-10 is partially verified in [PR #81](https://github.com/shyamal/LocalAgentKit/pull/81).**
+  A separate probe and validator now retain
   wired iPhone OCR/synthesis latency, sampled footprint and thermal observations.
   Charging excludes battery results; native STT assets are absent on this phone.
   Unplugged five-minute idle/OCR/synthesis phases also passed observational
@@ -56,7 +70,6 @@ remaining native acceptance.
 
 Milestone 3's calibration and PDF checks, and Milestone 4's receipt/voice device
 exit criteria, remain open.
-
 
 ---
 
@@ -296,7 +309,12 @@ and the deferred developer trials remain open.
 - [x] **M4-07** Multimodal input types on `agent.run` — image, audio, document, combined (FR-002, FR-018) *(DONE 2026-11-13: Core AgentInput and input limits, configured vision/speech preprocessing, count-only progress and typed input failures. All-input preflight, shared run deadlines/cancellation/thermal checkpoints, untrusted-source excerpts and context budgeting precede planning. String calls remain supported; attachments are not separately persisted. Eleven focused runtime tests cover combined sources, limits, late results, budgeting, structured image output, tool approval and run reservation through history recording. Full suite with 811 registered functions, offline suite on unchanged retry, examples, 71 Python checks, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.93%, up 0.20 points. Native STT and device orchestration acceptance remain pending. Evidence: docs/multimodal-input-verification.md.)*
 - [x] **M4-08** Multimodal orchestration pipeline: camera → vision → structured data → agent → tool (FR-018) *(DONE 2026-11-16: host-authorized captured bytes produce bounded normalized JSON in AgentContext; workflow input sources resolve fields in code with schema validation before model generation or approval. Existing tool validation, limits and permission enforcement remain active. Structured data has a separate aggregate 64 KiB default cap. Seven new runtime functions cover grounding, limits, schema failures, permission denial and cross-run isolation. Portable demo checks exercise the broker and durable note writes; native generated-image OCR reaches an approved, reopened note on macOS without generation calls. Full/offline suite with 818 registered functions, demo checks, native integration, examples, 71 Python tests, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.89%, down 0.04 points. Physical camera UI and receipt interpretation remain M4-11. Evidence: docs/multimodal-orchestration-verification.md.)*
 - [~] **M4-09** Cancellation propagates into vision and speech (FR-024) *(UPDATED 2026-11-16: active runtime vision/audio cancellation produces typed cancelled with no completion, tool execution or history; prior uncooperative-provider late-result checks remain passing. External recognition cancellation removes the private recording directory. Native synthesis cancellation is synchronized after a real PCM buffer and followed by successful fresh synthesis. A regression exposed stale permission approval resolving a subsequent run with a reused planner ID; runtime invocations now receive unique execution IDs. Full/offline suite with 822 registered functions, six selected native speech checks, examples, 71 Python tests, formatting/layering/DocC and generic iOS build pass. Core/Runtime coverage 98.86%, down 0.03 points. Native en-US recognition assets remain absent; native STT success/cancellation and physical-device acceptance remain pending. Evidence: docs/multimodal-cancellation-verification.md.)*
-- [~] **M4-10** Battery/thermal measurement for vision + speech paths (NFR battery) *(UPDATED 2026-11-16: separate Release iPhone resource probe with pinned synthetic OCR/speech fixture, paced idle control, JSONL observations, foreground/critical-thermal interruption and conservative host battery validation. Retained wired iPhone 15 Pro / iOS 27.2 run: 144 OCR calls, p95 161.68 ms, maximum sampled footprint 73.22 MiB; 141 synthesis calls, p95 156.81 ms, 43.28 MiB. All sampled thermal states were fair. Charging and 60-second phases exclude every battery result. STT assets were absent, so no transcription cost is inferred. Five portable Swift functions, eight new inspector functions/all 79 Python tests, full/offline SDK suite, examples, strict formatting/layering/actionlint/DocC pass. Core/Runtime coverage 98.98%, up 0.12 points with unchanged SDK source. Signed probe installed, ran and exported verified artifacts. A subsequent user-started unplugged run completed three available 300-second phases: idle 1,139 calls, OCR 711 (p95 161.50 ms, 69.35 MiB maximum sampled footprint), synthesis 695 (p95 158.01 ms, 45.60 MiB). All 2,551 snapshots were nominal, unplugged and foreground with stable brightness/power mode. The battery API showed no level change; this is not zero energy or a battery-budget pass. Raw unplugged results and inherited build provenance are retained. Native STT resource coverage remains pending. Protocol/results: Benchmarks/MultimodalResources/README.md; verification: docs/multimodal-resources-verification.md.)*
+- [~] **M4-10** Battery/thermal measurement for vision + speech paths (NFR battery) *(UPDATED 2026-11-16; PR #81 merged.)*
+  - **Implemented and verified:** standalone Release iPhone probe, pinned synthetic fixtures, paced idle control, JSONL export, conservative host validation and CI checks. Five portable Swift functions, all 79 Python tests, full/offline SDK suite, examples, formatting/layering/actionlint/DocC pass; Core/Runtime coverage 98.98% with unchanged SDK source.
+  - **Wired iPhone 15 Pro / iOS 27.2:** OCR 144 calls, p95 161.68 ms, maximum sampled footprint 73.22 MiB; synthesis 141 calls, p95 156.81 ms, 43.28 MiB. All sampled thermal states were fair. Charging and 60-second phases make this run ineligible for battery reporting.
+  - **Unplugged run completed:** three available five-minute phases — idle 1,139 calls; OCR 711 calls, p95 161.50 ms, 69.35 MiB; synthesis 695 calls, p95 158.01 ms, 45.60 MiB. All 2,551 snapshots were nominal, unplugged and foreground with stable brightness/power mode. These phases pass observational battery eligibility. No battery-level change was resolved; this is not zero energy or a battery-budget pass.
+  - **Still pending:** native STT resource measurement because English recognition assets are absent on the phone. M4-10 remains `[~]` for this missing path; the unplugged OCR/synthesis run is complete.
+  - **Evidence:** [protocol](Benchmarks/MultimodalResources/README.md), [unplugged results](Benchmarks/MultimodalResources/results/iphone-unplugged-2026-11-16/summary.json), [verification](docs/multimodal-resources-verification.md).
 - [ ] **M4-11** Demo: receipt photo → structured expense record
 - [ ] **M4-12** Voice input → agent → spoken response, end to end
 
