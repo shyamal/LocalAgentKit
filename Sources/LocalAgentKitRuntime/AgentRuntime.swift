@@ -329,7 +329,10 @@ public actor AgentRuntime {
           ]
           context.goal += "\n(Clarification: \(answer))"
 
-        case .callTool(let call):
+        case .callTool(var call):
+          // Planner IDs may repeat across runs or retries. Scope each execution so an old
+          // permission response (or delayed cancellation handler) cannot resolve a new wait.
+          call.id = UUID().uuidString + ":" + call.id
           if case .loop(_, let toolName) = loopDetector.record(call) {
             throw AgentError.loopDetected(tool: toolName)
           }

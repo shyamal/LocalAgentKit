@@ -1,6 +1,7 @@
 import AVFAudio
 import Foundation
 import LocalAgentKitCore
+import Synchronization
 import Testing
 
 @testable import LocalAgentKitProviders
@@ -203,5 +204,62 @@ struct AppleSpeechSynthesisNativeTests {
     await #expect(throws: AgentError.speechFailure("Requested local Apple voice is unavailable")) {
       try await provider.synthesize(text: "Hello")
     }
+  }
+}
+
+/// Cancels from the native callback itself, so the test cannot confuse preflight cancellation
+/// with cancellation after real audio was produced. Mutex also handles callback-before-attach.
+private final class ActiveSpeechCancellation: Sendable {
+  private struct State {
+    var task: Task<AudioOutput, any Error>?
+    var observed = false
+  }
+  private let state = Mutex(State())
+  var observed: Bool { state.withLock { $0.observed } }
+  func attach(_ task: Task<AudioOutput, any Error>) {
+    let cancel = state.withLock { value in
+      value.task = task
+      return value.observed
+    }
+    if cancel { task.cancel() }
+  }
+  func audioArrived() {
+    let task = state.withLock { value in
+      value.observed = true
+      return value.task
+    }
+    task?.cancel()
+  }
+  func clear() { state.withLock { $0.task = nil } }
+}
+
+extension AppleSpeechSynthesisNativeTests {
+  @Test func cancellingAfterNativeAudioArrivesDiscardsOutputAndAllowsAnotherRequest() async throws {
+    let available = AVSpeechSynthesisVoice.speechVoices().contains {
+      $0.identifier.hasPrefix("com.apple.") && !$0.voiceTraits.contains(.isPersonalVoice)
+        && $0.language == "en-US"
+    }
+    guard available else {
+      Issue.record("Native active-cancellation acceptance requires an installed en-US Apple voice")
+      return
+    }
+    let probe = ActiveSpeechCancellation()
+    defer { probe.clear() }
+    let provider = try AppleSpeechSynthesizer {
+      text, locale, identifier, bytes, duration, timeout in
+      try await NativeSpeechOutput.render(
+        text, locale, identifier, bytes, duration, timeout,
+        onAudioBuffer: { probe.audioArrived() })
+    }
+    let task = Task {
+      try await provider.synthesize(text: String(repeating: "Cancellation test. ", count: 80))
+    }
+    probe.attach(task)
+    await #expect(throws: AgentError.cancelled) { try await task.value }
+    #expect(probe.observed)
+    let fresh = try AppleSpeechSynthesizer(timeout: .seconds(10))
+    #expect(try await fresh.synthesize(text: "A fresh request succeeds.").frameCount > 0)
+    print(
+      "Speech native check: cancelled after a real audio buffer; subsequent synthesis succeeded")
   }
 }

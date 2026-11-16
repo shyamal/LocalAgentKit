@@ -66,5 +66,8 @@ M4-05's 98.86%. Core is 99.17% (953/961), down from 99.48%; Runtime is 98.53%
 
 M4-05 remains open because en-US recognition assets are absent on the development
 Mac. TTS voice availability is independent of SpeechTranscriber asset availability.
-Native transcription acceptance, active native cancellation checks, runtime audio
-attachments and the complete voice workflow remain M4-05/07/09/12.
+M4-07/08 subsequently added runtime audio inputs and structured workflow bindings.
+M4-09 verifies cancellation after real native PCM output and successful synthesis
+afterwards; see [cancellation acceptance](multimodal-cancellation-verification.md).
+Native transcription acceptance and the complete device voice workflow remain
+M4-05/09/12.

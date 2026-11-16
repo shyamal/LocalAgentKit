@@ -1,7 +1,8 @@
 /// A model-requested invocation of a tool.
 public struct ToolCall: Sendable, Hashable, Codable, Identifiable {
-  /// Correlates a call with its result. The provider supplies it; iOS 27 rejects transcripts whose
-  /// tool outputs do not carry their call's id (findings §10).
+  /// Correlates a call with its result. Providers/planners supply a local ID; AgentRuntime
+  /// assigns a unique execution ID before tool execution. Tool outputs must carry their call's
+  /// ID for transcript consistency (findings §10).
   public var id: String
   /// Registered tool name the invocation targets.
   public var name: String

@@ -21,7 +21,8 @@ struct SpeechPCMChunk: Sendable {
 
   static func render(
     _ text: String, _ locale: String, _ identifier: String?, _ maximumBytes: Int,
-    _ maximumDuration: Double, _ timeout: Duration
+    _ maximumDuration: Double, _ timeout: Duration,
+    onAudioBuffer: (@Sendable () -> Void)? = nil
   ) async throws -> AudioOutput {
     try Task.checkCancellation()
     let voices = AVSpeechSynthesisVoice.speechVoices().filter {
@@ -62,6 +63,7 @@ struct SpeechPCMChunk: Sendable {
             return
           }
           let chunk = try Self.copy(buffer, maximumBytes: maximumBytes)
+          onAudioBuffer?()
           if case .dropped = channel.continuation.yield(chunk) {
             channel.continuation.finish(
               throwing: AgentError.speechFailure("Speech audio queue exceeded its limit"))

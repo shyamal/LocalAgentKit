@@ -204,6 +204,14 @@ bytes; capture UI and expense interpretation remain receipt-demo work. Portable
 integration tests cover broker approval/denial and durable note writes; a gated
 native generated-image OCR check exercises the same path.
 
+M4-09 adds active runtime Vision/Speech cancellation and recording-directory cleanup
+acceptance, plus native synthesis cancellation synchronized on real PCM output.
+A stale-approval regression exposed repeated planner call IDs across runs; runtime
+invocations now receive unique execution IDs carried through events, permissions,
+results and observations. Native STT success/cancellation remains pending installed
+recognition assets and a known recording. Device cancellation/resource checks
+remain separate from portable and native-Mac acceptance.
+
 ### 2.3 The agent loop
 
 `AgentRuntime` is an `actor`. It owns all mutable execution state; nothing else mutates it.
