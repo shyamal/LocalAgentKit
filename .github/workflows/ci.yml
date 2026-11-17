@@ -42,7 +42,7 @@ jobs:
       - name: Multimodal resource probe checks (mock workloads, no device)
         run: |
           swift test --package-path Examples/MultimodalProbe
-          xcrun swift-format lint --configuration .swift-format --strict --recursive Examples/MultimodalProbe/Probe Examples/MultimodalProbe/App Examples/MultimodalProbe/Tests Examples/MultimodalProbe/Package.swift
+          xcrun swift-format lint --configuration .swift-format --strict --recursive Examples/MultimodalProbe/Probe Examples/MultimodalProbe/App Examples/MultimodalProbe/Tests Examples/MultimodalProbe/DeviceTests Examples/MultimodalProbe/Package.swift
 
       - name: Layering check
         # Fails if LocalAgentKitCore/LocalAgentKitRuntime import an Apple

@@ -34,8 +34,27 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+  NativeSpeechTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - DeviceTests
+    dependencies:
+      - target: MultimodalProbe
+      - package: LocalAgentKit
+        product: LocalAgentKitCore
+      - package: LocalAgentKit
+        product: LocalAgentKitProviders
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.localagentkit.multimodalprobe.speechtests
+        TARGETED_DEVICE_FAMILY: "1"
 schemes:
   MultimodalProbe:
     build:
       targets:
         MultimodalProbe: all
+    test:
+      targets:
+        - NativeSpeechTests
+      testPlans: []
