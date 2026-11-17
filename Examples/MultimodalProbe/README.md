@@ -90,3 +90,29 @@ Eight Python functions test report freshness/structure and conservative battery
 classification. CI runs these without a phone. Native paths compile in the
 separate iOS project and are exercised physically; they are not compiled by the
 portable Swift package.
+
+## Native cancellation acceptance (M4-09)
+
+`NativeSpeechTests` is a separate, hosted iPhone XCTest target; portable runner
+checks do not invoke it. Prepare English speech data in this app first, then leave
+the connected iPhone unlocked. The test never installs assets, captures microphone
+audio or exports transcript text. Missing assets or unsupported hardware produce
+an explicit skip, which does not count as acceptance.
+
+```bash
+xcodebuild -project Examples/MultimodalProbe/MultimodalProbe.xcodeproj \
+  -scheme MultimodalProbe -configuration Debug -destination 'id=<device-udid>' \
+  -derivedDataPath /tmp/lak-native-cancellation ENABLE_TESTABILITY=YES \
+  DEVELOPMENT_TEAM=<team-id> -allowProvisioningUpdates \
+  -only-testing:NativeSpeechTests test
+```
+
+The test synthesizes a known recording, uses the real SDK file-transcription path,
+and cancels its task at the first nonempty analyzer volatile range. An internal
+observer is available only through `@testable`; public calls do not install it.
+The test asserts `.cancelled`, native progress while the private file exists,
+removal of its directory, return within ten seconds of progress, and a subsequent
+nonempty native transcription. A thirty-second watchdog cannot satisfy the
+progress assertion. The progress callback establishes accepted audio in an active
+analyzer session; it is not hardware inference profiling. The ten-second bound is
+an acceptance limit, not a measured worst-case guarantee for every device.

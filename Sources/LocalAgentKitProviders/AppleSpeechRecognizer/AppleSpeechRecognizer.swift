@@ -1,4 +1,5 @@
 import AVFAudio
+import CoreMedia
 import Foundation
 import LocalAgentKitCore
 import Speech
@@ -23,7 +24,7 @@ public struct AppleSpeechRecognizer: SpeechRecognizer {
     try self.init(
       localeIdentifier: localeIdentifier, maximumBytes: maximumBytes,
       maximumDuration: maximumDuration, maximumCharacters: maximumCharacters,
-      recognize: Self.recognize)
+      recognize: { try await Self.recognize($0, localeIdentifier: $1, maximumCharacters: $2) })
   }
 
   init(
@@ -85,9 +86,11 @@ public struct AppleSpeechRecognizer: SpeechRecognizer {
     }
   }
 
-  private static func recognize(_ url: URL, localeIdentifier: String, maximumCharacters: Int)
-    async throws -> String
-  {
+  /// Internal native-progress observation for device acceptance; public calls do not install a handler.
+  static func recognize(
+    _ url: URL, localeIdentifier: String, maximumCharacters: Int,
+    onAnalysisProgress: (@Sendable () -> Void)? = nil
+  ) async throws -> String {
     try Task.checkCancellation()
     guard SpeechTranscriber.isAvailable,
       let locale = await SpeechTranscriber.supportedLocale(
@@ -105,6 +108,13 @@ public struct AppleSpeechRecognizer: SpeechRecognizer {
         "Speech recognition assets are not installed for the requested locale")
     }
     let analyzer = SpeechAnalyzer(modules: [transcriber])
+    if let onAnalysisProgress {
+      await analyzer.setVolatileRangeChangedHandler { range, _, _ in
+        // Ignore the initial empty range: cancellation must follow actual audio progress.
+        if CMTimeGetSeconds(range.duration) > 0 { onAnalysisProgress() }
+      }
+      try Task.checkCancellation()
+    }
     let results = transcriber.results
     let file = try AVAudioFile(forReading: url)
     return try await runSession(

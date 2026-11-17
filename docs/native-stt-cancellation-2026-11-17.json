@@ -1,0 +1,33 @@
+{
+  "assertionsVerifiedByPassingTest": [
+    "Cancellation follows nonempty native analyzer volatile range",
+    "Private recording exists at native progress",
+    "Task returns typed AgentError.cancelled",
+    "Private recording directory removed before task returns",
+    "Return within 10 seconds after native progress",
+    "Subsequent native transcription is nonempty"
+  ],
+  "configuration": "Debug; ENABLE_TESTABILITY=YES",
+  "date": "2026-11-17",
+  "deviceModel": "iPhone 15 Pro (iPhone16,1)",
+  "failures": 0,
+  "limits": "Volatile range establishes active analyzer input progress, not hardware inference profiling. Test duration includes fixture synthesis and recovery. No claim of immediate cancellation on all hardware.",
+  "os": "iOS 27.2 (24B115)",
+  "privacy": "Synthetic synthesized speech only; no microphone capture, transcript export or installation request",
+  "schemaVersion": 1,
+  "sdkBaseCommit": "e8eb7f06ab4f03402ab2ba051297cd9071235f5d",
+  "sourceHashes": {
+    "Examples/MultimodalProbe/DeviceTests/NativeSpeechCancellationTests.swift": "8743cfd44c29324719d64eda0d1161feccb991d62c85578ecbe3290e5d5d3cbc",
+    "Examples/MultimodalProbe/MultimodalProbe.xcodeproj/project.pbxproj": "92258c90f9c56983588ef1df926e935ffd367b961f60bfefee837b9078f99c55",
+    "Examples/MultimodalProbe/project.yml": "aa4b3689a2a07585a6d3074d21c97bd5e7ccde9a24faf9d6e311abe34e19734a",
+    "Sources/LocalAgentKitProviders/AppleSpeechRecognizer/AppleSpeechRecognizer.swift": "efdfe2b9359da7af042f6ff3559ed357f7a103e8d17d092b046c59e34e6d5610"
+  },
+  "sourceState": "Local changes relative to base; exact source hashes below",
+  "status": "passed",
+  "test": "NativeSpeechCancellationTests.testActiveNativeCancellationCleansUpAndAllowsAnotherTranscription",
+  "testDurationSeconds": 0.854,
+  "testsExecuted": 1,
+  "testsSkipped": 0,
+  "watchdogSeconds": 30,
+  "xcode": "Xcode 27.2\nBuild version 27B52"
+}

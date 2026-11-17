@@ -12,10 +12,23 @@
 		45DA71FD8C3D37B9CC76AD5F /* ResourceProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8BAE0BE54F7EFA1BCBDF81 /* ResourceProbe.swift */; };
 		6E8DFCD4ACC31ADAA52B4E34 /* workload.json in Resources */ = {isa = PBXBuildFile; fileRef = B83E01F4DD866FD880740364 /* workload.json */; };
 		78FFDDBA9008D523648A8845 /* LocalAgentKitProviders in Frameworks */ = {isa = PBXBuildFile; productRef = A185E4F739B0C26C75DC35BE /* LocalAgentKitProviders */; };
+		8D84D26CD1ABE228820A8D8D /* LocalAgentKitProviders in Frameworks */ = {isa = PBXBuildFile; productRef = 712D34F4AA1E9C2D4B02588D /* LocalAgentKitProviders */; };
+		8EB821BF748830EDE4AD2898 /* NativeSpeechCancellationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFCC4ACF32C8E63A9B40CED3 /* NativeSpeechCancellationTests.swift */; };
 		A149BF9C1CD32FCC20C55517 /* ResourceLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9353848812321CB9AC0DE9C5 /* ResourceLog.swift */; };
 		A8BC589C987B4D1CD9651520 /* NativeWorkloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE3E4D77FC64B993382E6A4 /* NativeWorkloads.swift */; };
 		E0B86716386645615DF3B583 /* LocalAgentKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = F9A25B8B519B203E96B996D6 /* LocalAgentKitCore */; };
+		FC65B03550609F27509888A7 /* LocalAgentKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7C7EF11484ADBC6F6B125D50 /* LocalAgentKitCore */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6E15DA50937B9E499F362DD9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81700370ABB9DF1E0BC037BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52156EF32D3412028050029E;
+			remoteInfo = MultimodalProbe;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		3DE3E4D77FC64B993382E6A4 /* NativeWorkloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeWorkloads.swift; sourceTree = "<group>"; };
@@ -26,6 +39,8 @@
 		B83E01F4DD866FD880740364 /* workload.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = workload.json; sourceTree = "<group>"; };
 		C893013DE9DC50EFE4AF3F2E /* LocalAgentKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LocalAgentKit; path = ../..; sourceTree = SOURCE_ROOT; };
 		D085A75E4237D6F40F50E043 /* MultimodalProbeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultimodalProbeApp.swift; sourceTree = "<group>"; };
+		DFCC4ACF32C8E63A9B40CED3 /* NativeSpeechCancellationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeSpeechCancellationTests.swift; sourceTree = "<group>"; };
+		E2C796B29CC78B9CF9B966B7 /* NativeSpeechTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NativeSpeechTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +50,15 @@
 			files = (
 				E0B86716386645615DF3B583 /* LocalAgentKitCore in Frameworks */,
 				78FFDDBA9008D523648A8845 /* LocalAgentKitProviders in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8992E992DB09110A096B784F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC65B03550609F27509888A7 /* LocalAgentKitCore in Frameworks */,
+				8D84D26CD1ABE228820A8D8D /* LocalAgentKitProviders in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +74,14 @@
 			path = Probe;
 			sourceTree = "<group>";
 		};
+		3A6EFD4F6E129BD90AE77663 /* DeviceTests */ = {
+			isa = PBXGroup;
+			children = (
+				DFCC4ACF32C8E63A9B40CED3 /* NativeSpeechCancellationTests.swift */,
+			);
+			path = DeviceTests;
+			sourceTree = "<group>";
+		};
 		4EC19FB68097E45A976918C6 /* MultimodalResources */ = {
 			isa = PBXGroup;
 			children = (
@@ -63,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				44376FB79254282CE9462B2A /* MultimodalProbe.app */,
+				E2C796B29CC78B9CF9B966B7 /* NativeSpeechTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -71,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				D8EC3506E59F5A413FA43868 /* App */,
+				3A6EFD4F6E129BD90AE77663 /* DeviceTests */,
 				4EC19FB68097E45A976918C6 /* MultimodalResources */,
 				C526462C04656CF6D63B6E9F /* Packages */,
 				250991C0EB3F4A5FE961AAB6 /* Probe */,
@@ -120,6 +154,27 @@
 			productReference = 44376FB79254282CE9462B2A /* MultimodalProbe.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C6EE3174B3B296202E54CF23 /* NativeSpeechTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35F6A10F9D952CBEC4B439C8 /* Build configuration list for PBXNativeTarget "NativeSpeechTests" */;
+			buildPhases = (
+				CA9C3C1B1541589E4120D501 /* Sources */,
+				8992E992DB09110A096B784F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7CD0D6D1170B5D445D62DDB1 /* PBXTargetDependency */,
+			);
+			name = NativeSpeechTests;
+			packageProductDependencies = (
+				7C7EF11484ADBC6F6B125D50 /* LocalAgentKitCore */,
+				712D34F4AA1E9C2D4B02588D /* LocalAgentKitProviders */,
+			);
+			productName = NativeSpeechTests;
+			productReference = E2C796B29CC78B9CF9B966B7 /* NativeSpeechTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -130,6 +185,9 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					52156EF32D3412028050029E = {
+						ProvisioningStyle = Automatic;
+					};
+					C6EE3174B3B296202E54CF23 = {
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -152,6 +210,7 @@
 			projectRoot = "";
 			targets = (
 				52156EF32D3412028050029E /* MultimodalProbe */,
+				C6EE3174B3B296202E54CF23 /* NativeSpeechTests */,
 			);
 		};
 /* End PBXProject section */
@@ -180,7 +239,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CA9C3C1B1541589E4120D501 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EB821BF748830EDE4AD2898 /* NativeSpeechCancellationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7CD0D6D1170B5D445D62DDB1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52156EF32D3412028050029E /* MultimodalProbe */;
+			targetProxy = 6E15DA50937B9E499F362DD9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		75D9A20E126172A24AE8FE3D /* Release */ = {
@@ -259,6 +334,38 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dev.localagentkit.multimodalprobe;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A7B557C7F034D718A233200E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.localagentkit.multimodalprobe.speechtests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultimodalProbe.app/MultimodalProbe";
+			};
+			name = Debug;
+		};
+		D5E6BD03C38CF64C77285855 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.localagentkit.multimodalprobe.speechtests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultimodalProbe.app/MultimodalProbe";
 			};
 			name = Release;
 		};
@@ -351,6 +458,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		35F6A10F9D952CBEC4B439C8 /* Build configuration list for PBXNativeTarget "NativeSpeechTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7B557C7F034D718A233200E /* Debug */,
+				D5E6BD03C38CF64C77285855 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		724C64484116F5B6AC88DFE0 /* Build configuration list for PBXNativeTarget "MultimodalProbe" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -379,6 +495,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		712D34F4AA1E9C2D4B02588D /* LocalAgentKitProviders */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LocalAgentKitProviders;
+		};
+		7C7EF11484ADBC6F6B125D50 /* LocalAgentKitCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LocalAgentKitCore;
+		};
 		A185E4F739B0C26C75DC35BE /* LocalAgentKitProviders */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LocalAgentKitProviders;
