@@ -98,3 +98,15 @@ and low-power mode. Battery level did not change at the API's reported resolutio
 that is not zero energy or a battery-budget pass. OCR p95 was 161.50 ms and synthesis
 158.01 ms. STT remained unavailable, shortening the four-phase protocol to about
 15 minutes. See the verification notes for sample counts and build provenance.
+
+## Completed native transcription protocol (2026-11-17)
+
+After explicit probe-owned speech setup, a fresh corrected Release build completed
+all four 300-second unplugged phases. [Retained raw, summary and provenance](results/iphone-stt-unplugged-2026-11-17)
+include 695 STT calls (p95 169.11 ms; maximum sampled process footprint 44.63 MiB).
+All phases pass observational battery eligibility. All 3,250 snapshots were nominal,
+foreground and unplugged with stable brightness/power mode. Observed decreases
+were idle 0, OCR about 5, STT 0 and synthesis about 5 percentage points; coarse
+whole-device readings cannot isolate provider energy or certify a battery budget.
+This closes M4-10 measurement coverage, superseding the earlier missing-STT status.
+The separately retained cancelled attempt is not completion evidence.

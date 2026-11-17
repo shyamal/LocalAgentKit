@@ -3,8 +3,11 @@
 A separate developer-only iPhone app measures native SDK OCR, recorded-audio
 recognition and speech synthesis alongside a paced idle baseline. It uses a
 synthetic image and a synthesized recording; no camera, microphone, user file or
-personal-data permission is requested. It makes no asset-installation request.
-Missing recognition assets produce an explicit unavailable path.
+personal-data permission is requested. Measurement never requests installation.
+An explicit, confirmed **Prepare English speech data** action can download system
+models outside measured phases. Readiness in another app does not establish this
+probe's readiness: check here before collecting a fresh run. Missing recognition
+assets still produce an explicit unavailable path.
 
 The source workload is pinned in
 [`workload.json`](../../Benchmarks/MultimodalResources/workload.json). See the
@@ -61,7 +64,8 @@ python3 Benchmarks/MultimodalResources/inspect.py \
 `LOCALAGENTKIT_RESOURCE_SECONDS` can override phase duration from 1 through 300
 seconds for a diagnostic run. Durations shorter than 300 seconds cannot produce
 battery-eligible results. Manual runs choose their own UUID; the completed UI
-shows the report filename. No report is overwritten deliberately: use a new UUID
+shows the report filename. Existing reports are never overwritten: a repeated CLI UUID fails file creation.
+The CLI UUID applies only to autorun; each manual start generates a fresh UUID. Use a new UUID
 for every launch and retain raw logs. `--allow-incomplete` permits inspection of
 partial/cancelled logs, which always remain ineligible for battery claims.
 

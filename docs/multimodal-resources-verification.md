@@ -2,7 +2,8 @@
 
 Verified on 2026-11-16, following merged M4-09 work in PR #80. M4-10 is in
 progress: the portable probe, wired resource evidence and unplugged OCR/synthesis
-observation are complete; native transcription resource measurements remain open.
+observation are complete. A subsequent native transcription latency/memory/thermal
+run is retained below; the completed longer native STT battery observation is retained in the final section.
 
 ## Implementation
 
@@ -119,8 +120,115 @@ signing metadata was added.
 
 Repeat longer untethered runs after cooling before drawing comparative or energy
 conclusions, and use higher-resolution energy tooling if a numerical energy budget
-must be evaluated. Native STT resource measurement still requires host-provisioned
-speech assets; no installation was requested and that path remains unmeasured.
-M4-10 stays in progress for native transcription coverage. The fixed-order synthetic
+must be evaluated. The historical runs above did not exercise STT. The follow-up below adds native
+transcription measurements after explicit preparation; its longer battery
+observation remains outstanding. M4-10 stays in progress. The fixed-order synthetic
 workload does not certify receipt accuracy, microphone capture, voice playback,
 whole-agent energy or the battery cost of a user session.
+
+## STT follow-up after M4-12
+
+A fresh Release build at SDK commit `e8b9b4b` installed and launched on the
+same iPhone. Despite the voice app's successful host setup, the probe's own
+preflight reported `recognitionAssets: not-installed`. Run
+`D69B0C6C-E300-4B72-9B80-0D2E67B92F0F` therefore cannot close native STT
+measurement acceptance and is not retained as new resource evidence.
+
+The probe now offers explicitly confirmed English speech-data preparation using
+`AssetInventory.assetInstallationRequest` and `downloadAndInstall`, verified
+against the installed iOS SDK. This host action may use the network; measurement
+and SDK recognition still never request installation. Cancellation cancels the
+request's progress and checks task cancellation before reporting readiness;
+system work may finish separately. Preparation is outside measured phases and
+requires a fresh run afterward. Neither another app's readiness nor successful
+setup alone counts as a measured transcription phase.
+
+The updated signed Release build and strict formatting pass; five portable runner
+and eight inspector functions pass. Only the existing AppIntents metadata warning
+was emitted. SDK source is unchanged. At that point physical setup and new measurements remained pending. The next
+section records the subsequently completed short run; no new battery result is claimed.
+
+## Native STT resource run, 2026-11-16
+
+After the user confirmed the probe's explicit speech preparation was ready,
+a fresh Release run `AAC3BAB3-500D-4CE7-B383-86E3DA6923B2` completed all four
+60-second phases on the same iPhone. The header reports installed speech assets;
+transcription used the SDK recognizer with the generated synthetic recording.
+
+| Path | Calls | p50 ms | p95 ms | Maximum sampled footprint MiB |
+|---|---:|---:|---:|---:|
+| Idle | 229 | 0.0010 | 0.0013 | 17.22 |
+| OCR | 143 | 154.86 | 160.02 | 76.06 |
+| Recorded-audio STT | 139 | 164.05 | 167.67 | 44.88 |
+| Synthesis | 140 | 153.82 | 156.07 | 22.88 |
+
+All 659 snapshots were nominal, foreground, low-power mode off and reported
+unplugged. Sampled brightness was approximately 0.65. The developer-controlled
+launch does not establish the physical connection type; observed charging state
+is taken from the report. Every phase is battery-ineligible because it is shorter
+than 300 seconds. No battery drain or energy-budget result is claimed.
+
+[Raw report, validated summary and build manifest](../Benchmarks/MultimodalResources/results/iphone-stt-2026-11-16)
+retain fresh identity, source/executable/workload hashes and the explicit local
+probe modification relative to the SDK commit. Independent host validation
+confirmed completion and all phase boundaries. No microphone or user recording
+was accessed. The known recording is generated during preparation; nonempty
+transcription is the admission check, not a transcript-accuracy score. Sampled
+process footprint is not peak usage. Fixed order, caching and preparation prevent
+causal comparison with earlier runs. M4-10 remains partial for the longer native
+STT battery observation; M4-09 active native cancellation is also still open.
+
+## Battery follow-up inspected 2026-11-17
+
+The user reported finishing the longer protocol. The retrieved synthetic report
+started at `2026-11-16T09:11:18Z`, but its terminal record is **cancelled** at
+758.95 seconds. Idle and OCR completed their 300-second phases; transcription
+was interrupted and synthesis never started. The record does not establish why
+cancellation occurred. Inspection with `--allow-incomplete` excludes every phase
+from battery eligibility; no drain result or completion is inferred from the UI
+report. M4-10 remains partial.
+
+This attempt exposed a host bug: a manually started run reused the CLI environment
+UUID and replaced the device's short-run report. The short report had already been
+archived unchanged. The [cancelled raw report and conservative summary](../Benchmarks/MultimodalResources/results/iphone-stt-battery-cancelled-2026-11-16)
+are retained separately, with inherited build provenance. Their shared UUID is
+explicitly not evidence of freshness; startedAt, duration and artifact hashes
+distinguish the two attempts.
+
+Manual starts now always generate a fresh UUID; the CLI override applies only to
+the automatic launch. Report creation uses atomic without-overwriting writes,
+so repeated CLI UUIDs fail rather than truncate evidence. The Foundation-only
+log moved to the portable target, with a regression checking an existing report
+remains byte-for-byte intact. A fresh physical battery run is still required.
+
+## Completed native STT battery protocol, 2026-11-17
+
+The user started the corrected Release probe unplugged and reported the Finished
+screen. Fresh manual UUID `9E1B70C7-EA85-424E-A772-D504859C2CDC` identifies a
+complete run starting `2026-11-17T05:12:49Z`. The strict inspector, without
+`--allow-incomplete`, validated all four phases and marked each battery-eligible.
+
+| Path | Calls | Duration s | p95 ms | Maximum sampled footprint MiB | Observed battery decrease |
+|---|---:|---:|---:|---:|---|
+| Idle | 1,143 | 300.26 | 0.0011 | 16.72 | 0 percentage points |
+| OCR | 708 | 300.16 | 160.98 | 74.27 | about 5 percentage points |
+| Recorded-audio STT | 695 | 300.06 | 169.11 | 44.63 | 0 percentage points |
+| Synthesis | 696 | 300.29 | 157.06 | 32.22 | about 5 percentage points |
+
+All 3,250 snapshots were nominal, foreground, unplugged and low-power mode off,
+with brightness approximately 0.70. Total observed battery decrease was about
+10 percentage points. These coarse whole-device readings do not attribute drain
+to providers, resolve sub-step consumption, or establish any energy-budget pass.
+In particular, STT's zero resolved decrease does not mean zero energy. Fixed order,
+warmed preparation, system activity and battery reporting resolution limit any
+comparison between phases or earlier runs. Footprint is sampled process usage,
+not a peak or provider-only allocation. No hourly extrapolation is made.
+
+[Raw observations, strict summary and build provenance](../Benchmarks/MultimodalResources/results/iphone-stt-unplugged-2026-11-17)
+are retained separately from both prior attempts. Source and executable hashes
+were captured before this run and source hashes rechecked on retrieval. Device
+identifiers and signing identity are excluded. Only synthetic reports were read;
+no microphone, user audio or personal data was collected. Six portable runner/log
+functions, eight inspector functions, strict formatting and the signed Release
+build pass (only the existing AppIntents metadata warning). M4-10 measurement
+coverage is complete; active native analyzer cancellation remains M4-09.
