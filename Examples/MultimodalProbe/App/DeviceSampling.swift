@@ -42,24 +42,3 @@ import UIKit
     return result == KERN_SUCCESS ? info.phys_footprint : nil
   }
 }
-
-actor ResourceLog {
-  private let file: FileHandle
-  init(url: URL) throws {
-    guard FileManager.default.createFile(atPath: url.path, contents: nil) else {
-      throw CocoaError(.fileWriteUnknown)
-    }
-    file = try FileHandle(forWritingTo: url)
-  }
-  func append(_ event: ResourceEvent) throws {
-    let encoder = JSONEncoder()
-    encoder.outputFormatting = [.sortedKeys]
-    var data = try encoder.encode(event)
-    data.append(10)
-    try file.write(contentsOf: data)
-  }
-  func close() throws {
-    try file.synchronize()
-    try file.close()
-  }
-}

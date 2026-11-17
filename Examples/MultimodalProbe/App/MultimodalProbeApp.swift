@@ -1,4 +1,5 @@
 import Foundation
+import Speech
 import SwiftUI
 import UIKit
 
@@ -8,6 +9,7 @@ import UIKit
     "Synthetic OCR and speech only. No camera, microphone or personal data access."
   @State private var operation: Task<Void, Never>?
   @State private var autoran = false
+  @State private var confirmSpeechPreparation = false
 
   var body: some Scene {
     WindowGroup {
@@ -15,6 +17,8 @@ import UIKit
         Text("Multimodal resource probe").font(.title)
         Text(status).textSelection(.enabled)
         if operation != nil { ProgressView() }
+        Button("Prepare English speech data") { confirmSpeechPreparation = true }
+          .disabled(operation != nil)
         Button("Run 60-second phases") { start(seconds: nil) }.disabled(operation != nil)
         Button("Run battery protocol (20 minutes)") { start(seconds: 300) }.disabled(
           operation != nil)
@@ -25,9 +29,59 @@ import UIKit
         Button("Cancel") { operation?.cancel() }.disabled(operation == nil)
       }
       .padding()
+      .confirmationDialog(
+        "Prepare system speech data?", isPresented: $confirmSpeechPreparation,
+        titleVisibility: .visible
+      ) {
+        Button("Download system speech data") { prepareSpeechData() }
+        Button("Cancel", role: .cancel) {}
+      } message: {
+        Text(
+          "This explicit setup may download English speech models using your connection. Setup is outside measured phases; running the probe never requests installation."
+        )
+      }
       .task { autorunIfReady() }
       .onChange(of: scenePhase) { _, phase in
         if phase != .active { operation?.cancel() } else { autorunIfReady() }
+      }
+    }
+  }
+
+  @MainActor private func prepareSpeechData() {
+    guard operation == nil else { return }
+    status = "Preparing English speech data outside measurement…"
+    operation = Task {
+      defer { operation = nil }
+      do {
+        guard SpeechTranscriber.isAvailable,
+          let locale = await SpeechTranscriber.supportedLocale(
+            equivalentTo: Locale(identifier: "en-US"))
+        else {
+          status = "English transcription is unavailable on this device."
+          return
+        }
+        try Task.checkCancellation()
+        let module = SpeechTranscriber(
+          locale: locale, transcriptionOptions: [], reportingOptions: [], attributeOptions: [])
+        let request = try await AssetInventory.assetInstallationRequest(supporting: [module])
+        try await withTaskCancellationHandler {
+          try Task.checkCancellation()
+          try await request?.downloadAndInstall()
+          try Task.checkCancellation()
+        } onCancel: {
+          request?.progress.cancel()
+        }
+        let installed = await AssetInventory.status(forModules: [module]) == .installed
+        try Task.checkCancellation()
+        status =
+          installed
+          ? "Local English speech data is ready. Start a fresh measurement run."
+          : "Speech data is not installed. No transcription measurement is available."
+      } catch {
+        status =
+          Task.isCancelled
+          ? "Speech setup stopped. System work may finish separately; recheck before measuring."
+          : "Speech setup failed: \(error)"
       }
     }
   }
@@ -38,10 +92,12 @@ import UIKit
       return
     }
     autoran = true
-    start(seconds: env["LOCALAGENTKIT_RESOURCE_SECONDS"].flatMap(Int.init))
+    start(
+      seconds: env["LOCALAGENTKIT_RESOURCE_SECONDS"].flatMap(Int.init),
+      runID: env["LOCALAGENTKIT_RESOURCE_RUN_ID"].flatMap(UUID.init(uuidString:)) ?? UUID())
   }
 
-  @MainActor private func start(seconds: Int?) {
+  @MainActor private func start(seconds: Int?, runID: UUID = UUID()) {
     guard operation == nil else { return }
     status = "Preparing synthetic fixtures and checking installed assets…"
     operation = Task {
@@ -66,9 +122,6 @@ import UIKit
           secondsPerPhase: seconds ?? fixture.secondsPerPhase,
           intervalMilliseconds: fixture.intervalMilliseconds)
         let prepared = try await NativeWorkloads.prepare(fixture, digest: NativeWorkloads.sha(data))
-        let runID =
-          ProcessInfo.processInfo.environment["LOCALAGENTKIT_RESOURCE_RUN_ID"]
-          .flatMap(UUID.init(uuidString:)) ?? UUID()
         let documents = try FileManager.default.url(
           for: .documentDirectory, in: .userDomainMask,
           appropriateFor: nil, create: true)

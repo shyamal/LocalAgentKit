@@ -1,0 +1,74 @@
+{
+  "limits": "Observed battery percentage only, not energy attribution. Fixed phase order and warmed caches; sampled footprint is not process peak. No baseline subtraction or per-hour extrapolation.",
+  "metadata": {
+    "audioSHA256": "ac60c010af9af6ae8a1b850f3e790bd42c0542d39f5d20e82aac7bf47f9ce12e",
+    "configuration": "Release; standalone providers; sequential paced synthetic fixture",
+    "imageSHA256": "51ccb3ce798d6094577b5d7d80adbe574690690a5e40dce5c9f5dbf5e7571c05",
+    "intervalMilliseconds": "250",
+    "os": "Version 27.2 (Build 24B115)",
+    "pathOrder": "idle,ocr,transcription,synthesis",
+    "preparation": "Preparation excluded; synthesis warmed; first OCR/STT calls retained",
+    "recognitionAssets": "installed",
+    "screenPolicy": "Foreground, idle timer disabled; brightness uncontrolled",
+    "secondsPerPhase": "300",
+    "startedAt": "2026-11-16T09:11:18Z",
+    "voiceIdentifier": "com.apple.eloquence.en-US.Eddy",
+    "workloadSHA256": "f656d640354add391b57c5fe54672d8e52ce298e83bebf339a8c6a205fb01769"
+  },
+  "paths": {
+    "idle": {
+      "batteryEligible": false,
+      "batteryExclusions": [
+        "phase-or-run-incomplete",
+        "brightness-unknown-or-changed"
+      ],
+      "batteryPercentagePoints": null,
+      "calls": 1142,
+      "durationSeconds": 300.20172512499266,
+      "latencyP50Milliseconds": 0.0009583309292793274,
+      "latencyP95Milliseconds": 0.0014583347365260124,
+      "maxSampledFootprintMiB": 26.345481872558594,
+      "status": "completed",
+      "thermalCounts": {
+        "nominal": 1144
+      }
+    },
+    "ocr": {
+      "batteryEligible": false,
+      "batteryExclusions": [
+        "phase-or-run-incomplete",
+        "brightness-unknown-or-changed"
+      ],
+      "batteryPercentagePoints": null,
+      "calls": 711,
+      "durationSeconds": 300.23790379166894,
+      "latencyP50Milliseconds": 156.16187499836087,
+      "latencyP95Milliseconds": 160.82274999644142,
+      "maxSampledFootprintMiB": 77.8767318725586,
+      "status": "completed",
+      "thermalCounts": {
+        "nominal": 713
+      }
+    },
+    "transcription": {
+      "batteryEligible": false,
+      "batteryExclusions": [
+        "phase-or-run-incomplete",
+        "shorter-than-battery-protocol",
+        "brightness-unknown-or-changed"
+      ],
+      "batteryPercentagePoints": null,
+      "calls": 367,
+      "latencyP50Milliseconds": 165.17066667438485,
+      "latencyP95Milliseconds": 168.72954166319687,
+      "maxSampledFootprintMiB": 48.43925476074219,
+      "status": "incomplete",
+      "thermalCounts": {
+        "nominal": 368
+      }
+    }
+  },
+  "runID": "AAC3BAB3-500D-4CE7-B383-86E3DA6923B2",
+  "schemaVersion": 1,
+  "terminal": "cancelled"
+}

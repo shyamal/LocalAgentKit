@@ -12,6 +12,7 @@
 		45DA71FD8C3D37B9CC76AD5F /* ResourceProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8BAE0BE54F7EFA1BCBDF81 /* ResourceProbe.swift */; };
 		6E8DFCD4ACC31ADAA52B4E34 /* workload.json in Resources */ = {isa = PBXBuildFile; fileRef = B83E01F4DD866FD880740364 /* workload.json */; };
 		78FFDDBA9008D523648A8845 /* LocalAgentKitProviders in Frameworks */ = {isa = PBXBuildFile; productRef = A185E4F739B0C26C75DC35BE /* LocalAgentKitProviders */; };
+		A149BF9C1CD32FCC20C55517 /* ResourceLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9353848812321CB9AC0DE9C5 /* ResourceLog.swift */; };
 		A8BC589C987B4D1CD9651520 /* NativeWorkloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE3E4D77FC64B993382E6A4 /* NativeWorkloads.swift */; };
 		E0B86716386645615DF3B583 /* LocalAgentKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = F9A25B8B519B203E96B996D6 /* LocalAgentKitCore */; };
 /* End PBXBuildFile section */
@@ -21,6 +22,7 @@
 		44376FB79254282CE9462B2A /* MultimodalProbe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MultimodalProbe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C5F25F0E3AB079783106C2F /* DeviceSampling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSampling.swift; sourceTree = "<group>"; };
 		6F8BAE0BE54F7EFA1BCBDF81 /* ResourceProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceProbe.swift; sourceTree = "<group>"; };
+		9353848812321CB9AC0DE9C5 /* ResourceLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceLog.swift; sourceTree = "<group>"; };
 		B83E01F4DD866FD880740364 /* workload.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = workload.json; sourceTree = "<group>"; };
 		C893013DE9DC50EFE4AF3F2E /* LocalAgentKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LocalAgentKit; path = ../..; sourceTree = SOURCE_ROOT; };
 		D085A75E4237D6F40F50E043 /* MultimodalProbeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultimodalProbeApp.swift; sourceTree = "<group>"; };
@@ -42,6 +44,7 @@
 		250991C0EB3F4A5FE961AAB6 /* Probe */ = {
 			isa = PBXGroup;
 			children = (
+				9353848812321CB9AC0DE9C5 /* ResourceLog.swift */,
 				6F8BAE0BE54F7EFA1BCBDF81 /* ResourceProbe.swift */,
 			);
 			path = Probe;
@@ -172,6 +175,7 @@
 				3BBD9DADF565B3BA2BE763D8 /* DeviceSampling.swift in Sources */,
 				159CFF8E4A09C0D60C2B9085 /* MultimodalProbeApp.swift in Sources */,
 				A8BC589C987B4D1CD9651520 /* NativeWorkloads.swift in Sources */,
+				A149BF9C1CD32FCC20C55517 /* ResourceLog.swift in Sources */,
 				45DA71FD8C3D37B9CC76AD5F /* ResourceProbe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
