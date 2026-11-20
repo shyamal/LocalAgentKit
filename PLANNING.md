@@ -334,6 +334,15 @@ remain M5-01/M5-02. Permission enforcement and terminal refusal behavior are sha
 with the default planner. No real-model reliability result is claimed for this
 configuration; M5-03 is still required before changing the default.
 
+M5-01 update (2026-11-20): the experimental proposal now includes exact earlier-step
+argument bindings, validated JSON literals, flat result guards (all/any), bounded
+retries and empty-result skip. The whole ordered conditional workflow validates
+before execution and reuses the deterministic interpreter. Bound values are type
+checked before argument repair so incompatible observed facts cannot be replaced
+by model guesses. Open-ended replanning remains M5-02; parallel/DAG scheduling
+remains M5-04/05. This supersedes the earlier linear-only limitation. No default
+promotion or real-model reliability claim is made; M5-03 remains open.
+
 ### 2.5 Concurrency model
 
 Swift 6 strict concurrency, full checking, no exceptions:

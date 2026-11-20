@@ -6,8 +6,8 @@ import LocalAgentKitCore
 /// is validated and compiled into a workflow; existing argument resolution, tool execution,
 /// permissions, budgets and limits still apply. All per-run state lives in `AgentContext`.
 ///
-/// This is not the default and has no measured reliability claim. It supports linear sequences,
-/// not model-generated conditions, binding expressions or open-ended replanning (M5-01/02).
+/// This is not the default and has no measured reliability claim. It supports ordered conditional
+/// steps and exact earlier-result bindings, but not open-ended replanning (M5-02).
 /// Use declared workflows for deterministic conditions and dependencies.
 public struct ModelDrivenPlanner: AgentPlanner {
   /// Maximum number of proposed tool steps, excluding the final answer; clamped to at least one.
@@ -25,21 +25,13 @@ public struct ModelDrivenPlanner: AgentPlanner {
     self.workflowPlanner = StateMachinePlanner(maxRepairs: maxRepairs)
   }
 
-  /// Requests and validates a complete linear sequence before any proposed tool executes.
+  /// Requests and validates an ordered conditional workflow before any proposed tool executes.
   /// Invalid plans throw invalidArguments; policy refusals are terminal and never repaired.
   public func plan(
     context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider
   ) async throws -> AgentPlan {
     let names = tools.map(\.name).sorted()
-    let stepSchema = ToolSchema(
-      parameters: [
-        "tool": ToolParameter(
-          .string, description: "Registered tool name.",
-          allowedValues: names.isEmpty ? nil : names),
-        "summary": ToolParameter(.string, description: "Brief description of this step."),
-        "instruction": ToolParameter(
-          .string, description: "What this tool should do, using earlier observations if needed."),
-      ], required: ["tool", "summary", "instruction"])
+    let stepSchema = ModelPlanCompiler.schema(names: names)
     let descriptor = ToolDescriptor(
       name: Self.planName,
       description: "Propose the complete ordered tool sequence, followed by a final answer.",
@@ -53,7 +45,12 @@ public struct ModelDrivenPlanner: AgentPlanner {
         ], required: ["steps", "answer_instruction"]),
       permission: .none, isParallelSafe: true, isCancellable: true)
     let catalog = tools.sorted { $0.name < $1.name }
-      .map { "- \($0.name): \($0.description)" }.joined(separator: "\n")
+      .map { tool in
+        let parameters = tool.schema.parameters.sorted { $0.key < $1.key }.map { name, value in
+          "  \(name) (\(tool.schema.required.contains(name) ? "required" : "optional"), \(value.type)): \(value.description)"
+        }.joined(separator: "\n")
+        return "- \(tool.name): \(tool.description)\n\(parameters)"
+      }.joined(separator: "\n")
     let proposal = try await ModelQuery(model: model, repairer: repairer).ask(
       descriptor,
       messages: [
@@ -68,7 +65,11 @@ public struct ModelDrivenPlanner: AgentPlanner {
             Propose the entire linear sequence, at most \(maxSteps) tool steps.
             Use no tool steps if none are needed or none are available.
             Do not claim a tool succeeded before it executes. Human confirmation is still required
-            for protected tools. Conditions and open-ended replanning are not supported here.
+            for protected tools. Results bind to step_1, step_2, and so on. Binding paths and conditions may only refer
+            to earlier steps. Use argument bindings to carry exact observed values; literals are
+            JSON text. Conditions run in code. Use complementary guards for conditional paths.
+            Retries are at most two extra attempts; on_empty skip permits later guarded steps.
+            Open-ended replanning is not supported here.
             """),
       ])
     guard case .array(let proposedSteps) = proposal["steps"] else {
@@ -93,12 +94,9 @@ public struct ModelDrivenPlanner: AgentPlanner {
         throw Self.invalid(
           "steps[\(index)]", expected: "a registered tool and nonempty instructions")
       }
-      let arguments = Dictionary(
-        uniqueKeysWithValues: tool.schema.parameters.map { name, parameter in
-          (name, ArgumentSource.model(hint: parameter.description + "\n" + instruction))
-        })
       steps.append(
-        .tool("step_\(index + 1)", summary, name, arguments, retries: 0))
+        try ModelPlanCompiler.step(
+          fields: fields, index: index, tool: tool, summary: summary, instruction: instruction))
     }
     steps.append(.respond("answer", "Write the answer", instruction: answer))
     let workflow = Workflow(
@@ -122,10 +120,11 @@ public struct ModelDrivenPlanner: AgentPlanner {
   public func next(
     context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider
   ) async throws -> PlannerDecision {
-    try await workflowPlanner.next(context: &context, tools: tools, model: model)
+    try ModelPlanCompiler.validateBindings(context: context, tools: tools)
+    return try await workflowPlanner.next(context: &context, tools: tools, model: model)
   }
 
-  /// Records tool observations and advances the fixed sequence; does not ask the model to replan.
+  /// Records tool observations and advances the proposed workflow; does not ask the model to replan.
   public func observe(
     _ observation: ToolObservation, context: inout AgentContext
   ) throws -> PlanRevision {

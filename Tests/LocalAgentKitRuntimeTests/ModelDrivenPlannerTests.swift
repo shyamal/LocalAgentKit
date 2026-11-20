@@ -247,3 +247,268 @@ private struct DenyPlanTool: PermissionGate {
     #expect(await model.requests.first?.tools.first?.name == "choose_next_action")
   }
 }
+
+private struct PlanFacts: AgentTool {
+  let value: JSONValue
+  var empty = false
+  let name = "read_facts"
+  let description = "Read structured task facts."
+  let schema = ToolSchema.empty
+  let permission = ToolPermission.none
+  let isParallelSafe = true
+  let isCancellable = true
+  func execute(arguments: ToolArguments) async throws -> ToolResult {
+    ToolResult(callID: "", toolName: name, text: "Task facts", structured: value, isEmpty: empty)
+  }
+}
+
+private func advancedStep(_ name: String, _ fields: [String: JSONValue] = [:]) -> JSONValue {
+  var result: [String: JSONValue] = [
+    "tool": .string(name), "summary": "Planned step", "instruction": "Use the observed facts.",
+  ]
+  result.merge(fields) { _, new in new }
+  return .object(result)
+}
+
+private func source(_ name: String, _ kind: String, _ value: String) -> JSONValue {
+  .object(["name": .string(name), "source": .string(kind), "value": .string(value)])
+}
+
+private func clause(_ path: String, _ operation: String, _ value: String? = nil) -> JSONValue {
+  var result: [String: JSONValue] = ["reference": .string(path), "operator": .string(operation)]
+  if let value { result["value_json"] = .string(value) }
+  return .object(result)
+}
+
+extension ModelDrivenPlannerTests {
+  @Test func generatedBindingsCarryExactStructuredFactsWithoutArgumentGeneration() async throws {
+    let facts = PlanFacts(value: .object(["count": .int(42)]))
+    let consume = MockTool(
+      name: "consume",
+      schema: ToolSchema(
+        parameters: ["count": ToolParameter(.integer, description: "Observed count.")],
+        required: ["count"]))
+    let model = ScriptedModelProvider(responses: [
+      proposal([
+        advancedStep("read_facts"),
+        advancedStep(
+          "consume", ["arguments": .array([source("count", "binding", "step_1.count")])]),
+      ]), .text("Done"),
+    ])
+    let runtime = try experimentalRuntime(model, tools: [facts, consume])
+    #expect(try await runtime.run("Use the count").text == "Done")
+    #expect(await consume.executions.first?.int("count") == 42)
+    #expect(await model.requests.count == 2)
+    let catalog = await model.requests.first?.messages.last?.content
+    #expect(catalog?.contains("count (required") == true)
+  }
+
+  @Test func conditionalPathsUseObservedFactsInsteadOfPromptInstructions() async throws {
+    let facts = PlanFacts(value: .object(["approved": .bool(false)]))
+    let forbidden = MockTool(name: "approved_path")
+    let fallback = MockTool(name: "fallback_path")
+    let model = ScriptedModelProvider(responses: [
+      proposal([
+        advancedStep("read_facts"),
+        advancedStep(
+          "approved_path", ["conditions": .array([clause("step_1.approved", "equals", "true")])]),
+        advancedStep(
+          "fallback_path",
+          [
+            "conditions": .array([
+              clause("step_1.approved", "equals", "false"), clause("step_1.absent", "exists"),
+            ]), "condition_mode": "any",
+          ]),
+      ]), .text("Used fallback"),
+    ])
+    _ = try await experimentalRuntime(model, tools: [facts, forbidden, fallback]).run(
+      "Choose a path")
+    #expect(await forbidden.executions.isEmpty)
+    #expect(await fallback.executions.count == 1)
+    #expect(await model.requests.count == 2)
+  }
+
+  @Test(arguments: [
+    "exists", "is_empty", "not_empty", "equals", "less_than", "at_most", "at_least", "greater_than",
+  ])
+  func generatedGuardOperatorsAreEvaluatedInCode(_ operation: String) async throws {
+    let facts = PlanFacts(value: .int(5))
+    let selected = MockTool(name: "selected")
+    let value = ["exists", "is_empty", "not_empty"].contains(operation) ? nil : "5"
+    let model = ScriptedModelProvider(responses: [
+      proposal([
+        advancedStep("read_facts"),
+        advancedStep("selected", ["conditions": .array([clause("step_1", operation, value)])]),
+      ]), .text("Done"),
+    ])
+    _ = try await experimentalRuntime(model, tools: [facts, selected]).run("Compare the value")
+    let expected = ["exists", "not_empty", "equals", "at_most", "at_least"].contains(operation)
+    #expect(await selected.executions.count == (expected ? 1 : 0))
+  }
+
+  @Test func emptyResultPolicyPermitsAGuardedFollowup() async throws {
+    let facts = PlanFacts(value: .array([]), empty: true)
+    let fallback = MockTool(name: "fallback")
+    let model = ScriptedModelProvider(responses: [
+      proposal([
+        advancedStep("read_facts", ["on_empty": "skip"]),
+        advancedStep("fallback", ["conditions": .array([clause("step_1", "is_empty")])]),
+      ]), .text("Used fallback"),
+    ])
+    _ = try await experimentalRuntime(model, tools: [facts, fallback]).run("Find a fallback")
+    #expect(await fallback.executions.count == 1)
+  }
+
+  @Test func aMissingBindingFailsWithoutModelSubstitution() async throws {
+    let facts = PlanFacts(value: .object([:]))
+    let write = MockTool(
+      name: "write",
+      schema: ToolSchema(
+        parameters: ["value": ToolParameter(.string, description: "Value.")], required: ["value"]))
+    let model = ScriptedModelProvider(responses: [
+      proposal([
+        advancedStep("read_facts"),
+        advancedStep(
+          "write", ["arguments": .array([source("value", "binding", "step_1.missing")])]),
+      ])
+    ])
+    let runtime = try experimentalRuntime(model, tools: [facts, write])
+    guard case .invalidArguments = await failure(runtime) else {
+      Issue.record("Expected a missing binding error")
+      return
+    }
+    #expect(await write.executions.isEmpty)
+    #expect(await model.requests.count == 1)
+  }
+
+  @Test func generatedLiteralsAndRetryBoundsUseTheExistingExecutor() async throws {
+    actor Attempts {
+      var count = 0
+      func perform() throws -> String {
+        count += 1
+        if count < 2 {
+          throw AgentError.toolFailed(tool: "retry", message: "Transient fixture failure")
+        }
+        return "OK"
+      }
+    }
+    let attempts = Attempts()
+    let tool = MockTool(
+      name: "retry",
+      schema: ToolSchema(
+        parameters: ["value": ToolParameter(.string, description: "Value.")], required: ["value"]),
+      handler: { _ in try await attempts.perform() })
+    let model = ScriptedModelProvider(responses: [
+      proposal([
+        advancedStep(
+          "retry",
+          [
+            "arguments": .array([source("value", "literal", "\"Exact value\"")]), "retries": 2,
+          ])
+      ]), .text("Done"),
+    ])
+    _ = try await experimentalRuntime(model, tools: [tool]).run("Retry the operation")
+    #expect(await tool.executions.count == 2)
+    #expect(await tool.executions.allSatisfy { $0.string("value") == "Exact value" })
+    #expect(await model.requests.count == 2)
+  }
+
+  @Test func aGeneratedRetryNeverRoutesAroundPermissionDenial() async throws {
+    let write = MockTool(name: "protected_write", permission: .userConfirmation)
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("protected_write", ["retries": 2, "on_empty": "skip"])])
+    ])
+    let runtime = try experimentalRuntime(model, tools: [write], gate: DenyPlanTool())
+    #expect(await failure(runtime) == .permissionDenied(tool: "protected_write"))
+    #expect(await write.executions.isEmpty)
+    #expect(await model.requests.count == 1)
+  }
+
+  @Test(arguments: [
+    "forward", "empty_path", "unknown_parameter", "duplicate", "wrong_literal", "bad_json",
+    "oversized", "too_many_guards", "unknown_operator", "extra_comparison", "nonnumeric",
+    "excess_retries",
+  ])
+  func malformedExpressionsRejectTheWholePlanBeforeExecution(_ kind: String) async throws {
+    let tool = MockTool(
+      name: "consume",
+      schema: ToolSchema(
+        parameters: ["count": ToolParameter(.integer, description: "Count.")], required: ["count"]))
+    var fields: [String: JSONValue] = [:]
+    switch kind {
+    case "forward": fields["arguments"] = .array([source("count", "binding", "step_2")])
+    case "empty_path": fields["arguments"] = .array([source("count", "binding", "step_1..count")])
+    case "unknown_parameter": fields["arguments"] = .array([source("missing", "literal", "1")])
+    case "duplicate":
+      fields["arguments"] = .array([
+        source("count", "literal", "1"), source("count", "literal", "2"),
+      ])
+    case "wrong_literal": fields["arguments"] = .array([source("count", "literal", "\"text\"")])
+    case "bad_json": fields["arguments"] = .array([source("count", "literal", "{")])
+    case "oversized":
+      fields["arguments"] = .array([
+        source("count", "literal", String(repeating: "1", count: 16_385))
+      ])
+    case "too_many_guards":
+      fields["conditions"] = .array(Array(repeating: clause("step_1", "exists"), count: 9))
+    case "unknown_operator": fields["conditions"] = .array([clause("step_1", "execute_script")])
+    case "extra_comparison": fields["conditions"] = .array([clause("step_1", "exists", "1")])
+    case "nonnumeric": fields["conditions"] = .array([clause("step_1", "less_than", "\"text\"")])
+    default: fields["retries"] = 3
+    }
+    let facts = MockTool(name: "read_facts")
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("read_facts"), advancedStep("consume", fields)])
+    ])
+    let runtime = try experimentalRuntime(
+      model, tools: [facts, tool], planner: ModelDrivenPlanner(maxRepairs: 0))
+    guard case .invalidArguments = await failure(runtime) else {
+      Issue.record("Expected invalidArguments for \(kind)")
+      return
+    }
+    #expect(await facts.executions.isEmpty)
+    #expect(await tool.executions.isEmpty)
+    #expect(await model.requests.count == 1)
+  }
+}
+
+extension ModelDrivenPlannerTests {
+  @Test func generatedRetriesCannotOverrideLoopProtection() async throws {
+    let tool = MockTool(
+      name: "retry",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "retry", message: "Still unavailable")
+      })
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("retry", ["retries": 2])])
+    ])
+    let runtime = try experimentalRuntime(model, tools: [tool])
+    #expect(await failure(runtime) == .loopDetected(tool: "retry"))
+    #expect(await tool.executions.count == 2)
+    #expect(await model.requests.count == 1)
+  }
+}
+
+extension ModelDrivenPlannerTests {
+  @Test func incompatibleBoundFactsCannotBeRewrittenByArgumentRepair() async throws {
+    let facts = PlanFacts(value: .object(["count": .string("not a count")]))
+    let write = MockTool(
+      name: "write",
+      schema: ToolSchema(
+        parameters: ["count": ToolParameter(.integer, description: "Observed count.")],
+        required: ["count"]))
+    let model = ScriptedModelProvider(responses: [
+      proposal([
+        advancedStep("read_facts"),
+        advancedStep("write", ["arguments": .array([source("count", "binding", "step_1.count")])]),
+      ])
+    ])
+    let runtime = try experimentalRuntime(model, tools: [facts, write])
+    guard case .invalidArguments = await failure(runtime) else {
+      Issue.record("Expected an incompatible binding error")
+      return
+    }
+    #expect(await write.executions.isEmpty)
+    #expect(await model.requests.count == 1)
+  }
+}
