@@ -74,6 +74,18 @@ targets:
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         ENABLE_HARDENED_RUNTIME: NO
+  PDFLifecycleTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - DeviceTests
+    dependencies:
+      - target: LocalAgentDemo
+      - package: LocalAgentKit
+        product: LocalAgentKitTesting
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.localagentkit.demo.pdftests
 schemes:
   LocalAgentDemo:
     build:
@@ -81,6 +93,9 @@ schemes:
         LocalAgentDemo: all
     run:
       config: Debug
+    test:
+      targets:
+        - PDFLifecycleTests
   LocalAgentDemoUIKitCheck:
     build:
       targets:

@@ -62,3 +62,49 @@ OS background execution, secure erasure and resource/quality guarantees are not
 claimed. File providers may download user selections outside SDK network policy.
 
 M3-10 remains in progress while these device checks are pending.
+
+## Physical lifecycle regression checks, 2026-11-20
+
+A separate hosted `PDFLifecycleTests` target uses generated text-layer PDFs with
+the real PDF extractor, NaturalLanguage embeddings, demo controller, view model
+and PDF runtime planner. The answer model is scripted, isolating ownership and
+cancellation behavior from generative quality. Four tests passed on the physical
+iPhone 15 Pro / iOS 27.2, zero skips/failures, in 0.138 seconds total:
+
+- Same-filename replacement produces a fresh chat identity. After asking about
+  the first PDF, the replacement's answer request contains BETA and no ALPHA from
+  the first document. Close/cancel clears the controller; a fresh controller and
+  reimport have no earlier turns.
+- Cancellation after extraction reaches an actor-gated embedding stage prevents
+  late native embedding completion from publishing a ready session.
+- Closing while the scripted answer model is actively waiting cancels the
+  question; no assistant answer appears and no view model remains attached.
+- Blank, locked, corrupt, 101-page and over-8-MiB files each clear an existing
+  ready session and expose a failure rather than retaining the previous PDF.
+
+[Acceptance record](pdf-lifecycle-2026-11-20.json) retains test outcomes and
+source/build hashes. Native question/import work ran on device; these are not
+file-picker gesture tests. No user document or personal data was accessed by the
+tests. Generated fixtures were deleted by teardown. The first run waited for a
+locked phone and was interrupted before acceptance; the rebuilt final source
+ran after unlock. Logs/result bundle: `/tmp/lak-pdf-lifecycle-final.log` and
+`/tmp/lak-pdf-lifecycle-final.xcresult`. System linguistic-asset and invalid-PDF
+diagnostics appeared without test failure. The launch log includes a 0.69-second
+extended-launch hang diagnostic; no performance claim is made from these tests.
+
+All 45 portable demo functions and all 80 Python checks pass, as do strict test
+formatting, layering, actionlint and diff checks. CI formats device tests but does
+not require an iPhone. SDK/runtime source is unchanged; previous coverage is not
+remeasured or claimed as a result of this test-only change. The visible replace,
+Done and reopening flow still awaits user confirmation before closing M3-10.
+
+## Manual UI acceptance completed, 2026-11-20
+
+The user confirmed: “Replacement works; reopening is empty” after using Ask a PDF,
+choosing a PDF, replacing it, tapping Done and reopening the sheet. No document
+contents were requested or collected. Together with the four physical hosted
+lifecycle tests, this closes M3-10's outstanding replacement, cancellation,
+reopening and invalid-file acceptance. Earlier pending sections describe the
+state at those earlier checks; they are superseded by this confirmation.
+Remaining embedding/answerability, cloud-provider, layout, secure-erasure and
+performance limitations still apply. M3-07 calibration remains separate.

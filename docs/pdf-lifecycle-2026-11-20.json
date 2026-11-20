@@ -1,0 +1,67 @@
+{
+  "buildArtifactHashes": {
+    "LocalAgentDemo": "e3281fea0f5977d7e0a0776cf6b0c2a4fa089f964949ffa43b961a3ad073c230",
+    "LocalAgentDemo.debug.dylib": "1a34eb810ac713bc580a60116b081f0ff5c54e9e83cf54fdf76e3c8969a53e8f",
+    "PlugIns/PDFLifecycleTests.xctest/PDFLifecycleTests": "0d12031809c6ec72baaf2510a27c952861301f5ae62b66e21799dbc93f8d2bfb"
+  },
+  "configuration": "Debug; ENABLE_TESTABILITY=YES",
+  "date": "2026-11-20",
+  "device": "iPhone 15 Pro; iOS 27.2",
+  "failures": 0,
+  "limits": "Hosted tests do not automate picker gestures or sheet presentation. The user separately confirmed visible replacement and empty reopening. No cloud-file, OCR-layout, generative-quality or secure-erasure guarantee.",
+  "manualUIAcceptance": {
+    "date": "2026-11-20",
+    "documentContentsCollected": false,
+    "reopenedSheetHasNoPreviousPDFOrChat": true,
+    "replacementWorks": true,
+    "source": "User confirmation in this session"
+  },
+  "nativePaths": [
+    "PDFKit extraction",
+    "NaturalLanguage embeddings",
+    "DemoPDFController",
+    "AgentViewModel",
+    "AgentRuntime PDF planner"
+  ],
+  "privacy": "Generated temporary PDFs only; no user document contents collected. Fixtures deleted by teardown.",
+  "schemaVersion": 1,
+  "scriptedPaths": [
+    "Answer model",
+    "Actor gate before native embedding for deterministic import cancellation"
+  ],
+  "sdkBaseCommit": "7feeb42baad7f7947b2ce3bf340b3e44a4856845",
+  "sourceHashes": {
+    "Examples/LocalAgentDemo/DeviceTests/PDFLifecycleTests.swift": "a65f69a25db706acfcb1485702521eb7d333dacedf22c9704f6a10071495b9d0",
+    "Examples/LocalAgentDemo/LocalAgentDemo/AgentSetup.swift": "8accadde7125beb3809dcad3b4f5603edf4bde300c511f113c4a896493d83619",
+    "Examples/LocalAgentDemo/LocalAgentDemo/ContentView.swift": "777b4f825c6946398a16f71b39ca27760613519a00603a08e6e321130242b3b4",
+    "Examples/LocalAgentDemo/LocalAgentDemo/LocalAgentDemoApp.swift": "81ea21d15e64083b2cc1e53f94dad47c132b0aa1c001357fb47d08a44ac2fee2",
+    "Examples/LocalAgentDemo/LocalAgentDemo/ReceiptSession.swift": "c86a278621acfb2869d205a2a3f0bf3a68201cc3862a035048dca1b778534f76",
+    "Examples/LocalAgentDemo/LocalAgentDemo/ReceiptTextParser.swift": "e0620667e0e58a8c38772079aafbdb4105dd2d76852881230168aa0766ea1f8f",
+    "Examples/LocalAgentDemo/LocalAgentDemo/ReceiptView.swift": "297ae2dd9a5f59c3bd98b63b362bf6875f6e3444b698bceaf7a85c1b614f8257",
+    "Examples/LocalAgentDemo/LocalAgentDemo/VoiceDevice.swift": "43302d9db8102cb1ccab4be7284da632704506c66d74b960820e107d36e17bfd",
+    "Examples/LocalAgentDemo/LocalAgentDemo/VoiceSession.swift": "0da1f133e1533e40b5710a01ff122054b553f10b37a298d22bf40b3bf9bc09e2",
+    "Examples/LocalAgentDemo/LocalAgentDemo/VoiceView.swift": "e66c279ce943225425e24056525e73412d84eb284f05efe0469d633c5c7d4a82",
+    "Examples/LocalAgentDemo/project.yml": "2628a968194ea74aea77d730ac7fc9a77835db7e7a82f3049283c0bcd81ee27b"
+  },
+  "status": "passed",
+  "tests": [
+    {
+      "durationSeconds": 0.038,
+      "name": "testCancelledNativeImportCannotPublishALateReadySession"
+    },
+    {
+      "durationSeconds": 0.017,
+      "name": "testClosingDuringAQuestionCancelsWithoutPublishingAnAnswer"
+    },
+    {
+      "durationSeconds": 0.046,
+      "name": "testInvalidNativePDFsClearAnExistingReadySession"
+    },
+    {
+      "durationSeconds": 0.037,
+      "name": "testSameFilenameReplacementAndReopeningDiscardPreviousContext"
+    }
+  ],
+  "testsExecuted": 4,
+  "testsSkipped": 0
+}

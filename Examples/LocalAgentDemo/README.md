@@ -222,3 +222,29 @@ supported. Audio, transcripts and replies are not saved by this screen. System
 asset preparation can download language models; it is separate from the offline
 agent run. See [voice acceptance](VOICE-VALIDATION.md) for setup, limits and the
 user-confirmed microphone/playback flow.
+
+## Physical PDF lifecycle acceptance (M3-10)
+
+A separate hosted `PDFLifecycleTests` target generates temporary synthetic PDFs
+and exercises the actual demo controller, native PDF extraction and local
+NaturalLanguage embeddings. Its answer model is scripted: these tests measure
+session ownership and cleanup rather than generative answer quality. No user PDF,
+calendar, receipt or voice data is read or exported by the tests.
+
+```bash
+xcodebuild -project Examples/LocalAgentDemo/LocalAgentDemo.xcodeproj \
+  -scheme LocalAgentDemo -configuration Debug -destination 'id=<device-udid>' \
+  -derivedDataPath /tmp/lak-pdf-lifecycle ENABLE_TESTABILITY=YES \
+  DEVELOPMENT_TEAM=<team-id> -allowProvisioningUpdates \
+  -test-timeouts-enabled YES -default-test-execution-time-allowance 60 \
+  -only-testing:PDFLifecycleTests test
+```
+
+The connected iPhone must remain unlocked. The tests cover same-filename
+replacement and retrieved-context isolation, cancellation during native import,
+closing during an active question, empty controller state after close/reopen,
+and blank, password-locked, corrupt, over-page and over-byte failures after a
+successful import. An actor gate synchronizes import cancellation after extraction
+reaches the embedding stage. A cancellable scripted model synchronizes question
+cancellation. They do not automate file-picker gestures, cloud-file availability
+or the SwiftUI sheet presentation itself; those remain manual UI checks.

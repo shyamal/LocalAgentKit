@@ -32,7 +32,9 @@ jobs:
         run: swift build
 
       - name: Demo planner regression tests (no model assets)
-        run: swift test --package-path Examples/LocalAgentDemo
+        run: |
+          swift test --package-path Examples/LocalAgentDemo
+          xcrun swift-format lint --configuration .swift-format --strict --recursive Examples/LocalAgentDemo/DeviceTests
 
       - name: Embedding probe runner tests (mock paths, no model assets)
         run: |
