@@ -1,0 +1,2779 @@
+{
+  "context" : {
+    "locale" : "en_US",
+    "referenceDateTime" : "2026-09-21T10:00",
+    "referenceWeekday" : "Monday",
+    "timeZone" : "UTC"
+  },
+  "createdAt" : "2026-11-21T10:59:37Z",
+  "measurementProtocolVersion" : 1,
+  "mode" : "single-call-probe",
+  "model" : "foundation",
+  "operatingSystem" : "Version 27.2.1 (Build 26B131)",
+  "repetitions" : 5,
+  "results" : [
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "0.175 * 2480"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 1.256458708,
+      "goalID" : "st-01",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "0.175 * 2480"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.943164208,
+      "goalID" : "st-01",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "0.175 * 2480"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.935818917,
+      "goalID" : "st-01",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "0.175 * 2480"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.934160792,
+      "goalID" : "st-01",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "0.175 * 2480"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.932768208,
+      "goalID" : "st-01",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "186.40 \/ 4"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.875487666,
+      "goalID" : "st-02",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "186.40 \/ 4"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.872742708,
+      "goalID" : "st-02",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "186.40 \/ 4"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.867722958,
+      "goalID" : "st-02",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "186.40 \/ 4"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.86438275,
+      "goalID" : "st-02",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "186.40 \/ 4"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.868818666,
+      "goalID" : "st-02",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "342 \/ 27"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.856912125,
+      "goalID" : "st-03",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "342 \/ 27"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.839279542,
+      "goalID" : "st-03",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "342 \/ 27"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.838789458,
+      "goalID" : "st-03",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "342 \/ 27"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.840109917,
+      "goalID" : "st-03",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "342 \/ 27"
+          },
+          "name" : "calculate"
+        }
+      ],
+      "elapsedSeconds" : 0.841612708,
+      "goalID" : "st-03",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-22T23:59",
+            "start" : "2026-09-22T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.374971125,
+      "goalID" : "st-04",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-22T23:59",
+            "start" : "2026-09-22T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.34500975,
+      "goalID" : "st-04",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-22T23:59",
+            "start" : "2026-09-22T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.402385375,
+      "goalID" : "st-04",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-22T23:59",
+            "start" : "2026-09-22T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.361562583,
+      "goalID" : "st-04",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-22T23:59",
+            "start" : "2026-09-22T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.3437725,
+      "goalID" : "st-04",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-10-02T23:59",
+            "start" : "2026-10-01T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.365759625,
+      "goalID" : "st-05",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-10-02T23:59",
+            "start" : "2026-10-02T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.354686958,
+      "goalID" : "st-05",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-10-02T23:59",
+            "start" : "2026-10-01T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.354261042,
+      "goalID" : "st-05",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-10-02T23:59",
+            "start" : "2026-10-01T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.3592111660000001,
+      "goalID" : "st-05",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-10-02T23:59",
+            "start" : "2026-10-01T00:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.3696981670000001,
+      "goalID" : "st-05",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-29T17:00",
+            "start" : "2026-09-29T12:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.333784375,
+      "goalID" : "st-06",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-29T18:00",
+            "start" : "2026-09-29T14:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.351074291,
+      "goalID" : "st-06",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-30T17:00",
+            "start" : "2026-09-30T12:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.316422791,
+      "goalID" : "st-06",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-25T17:00",
+            "start" : "2026-09-25T12:00"
+          },
+          "name" : "list_calendar_events"
+        }
+      ],
+      "elapsedSeconds" : 1.310412625,
+      "goalID" : "st-06",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 1.363467875,
+      "goalID" : "st-06",
+      "outcome" : "text",
+      "repetition" : 5,
+      "text" : "To check if you're free on Friday afternoon, could you provide the exact time range? For example, from 3 PM to 6 PM?"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Call the plumber"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.135423417,
+      "goalID" : "st-07",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Call the plumber"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.144765708,
+      "goalID" : "st-07",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Call the plumber"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.149243417,
+      "goalID" : "st-07",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Call the plumber"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.140239834,
+      "goalID" : "st-07",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Call the plumber"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.134313375,
+      "goalID" : "st-07",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 1.194702917,
+      "goalID" : "st-08",
+      "outcome" : "text",
+      "repetition" : 1,
+      "text" : "Would you like to add a due date for the reminder? If not, I can proceed without one."
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "title" : "Renew passport"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 0.835664042,
+      "goalID" : "st-08",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 1.271598333,
+      "goalID" : "st-08",
+      "outcome" : "text",
+      "repetition" : 3,
+      "text" : "Would you like to set a due date for the reminder? If not, I can proceed without a specific date."
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 1.159380292,
+      "goalID" : "st-08",
+      "outcome" : "text",
+      "repetition" : 4,
+      "text" : "Would you like to set a due date for the reminder for renewing your passport?"
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 1.30613625,
+      "goalID" : "st-08",
+      "outcome" : "text",
+      "repetition" : 5,
+      "text" : "Would you like to set a specific due date and time for the reminder? If not, I can create it for now."
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-21T10:30",
+            "title" : "Take the laundry out"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.171170667,
+      "goalID" : "st-09",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-21T10:30",
+            "title" : "take the laundry out"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.164233417,
+      "goalID" : "st-09",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-21T10:30",
+            "title" : "Take the laundry out"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.167797208,
+      "goalID" : "st-09",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-21T10:30",
+            "title" : "Take the laundry out"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.173005833,
+      "goalID" : "st-09",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-21T10:30",
+            "title" : "Take the laundry out"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.170270666,
+      "goalID" : "st-09",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 1.5201585,
+      "goalID" : "st-10",
+      "outcome" : "text",
+      "repetition" : 1,
+      "text" : "Would you like me to create a reminder for you? The reminder should be titled \"Quarterly Report Submission\" and due on 2026-09-30 at 17:00."
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-30T17:00",
+            "title" : "Submit Quarterly Report"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.178260791,
+      "goalID" : "st-10",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-30T17:00",
+            "title" : "Submit quarterly report"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.138807666,
+      "goalID" : "st-10",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-30T17:00",
+            "title" : "Submit Quarterly Report"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.170878875,
+      "goalID" : "st-10",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-30T17:00",
+            "title" : "Submit Quarterly Report"
+          },
+          "name" : "create_reminder"
+        }
+      ],
+      "elapsedSeconds" : 1.174706375,
+      "goalID" : "st-10",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "Priya Raman"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.824389417,
+      "goalID" : "st-11",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "Priya Raman"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.81548425,
+      "goalID" : "st-11",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "Priya Raman"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.813177042,
+      "goalID" : "st-11",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "Priya Raman"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.813893875,
+      "goalID" : "st-11",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "Priya Raman"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.824330959,
+      "goalID" : "st-11",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "dentist"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.785039917,
+      "goalID" : "st-12",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "dentist"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.78224225,
+      "goalID" : "st-12",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "dentist"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.782453333,
+      "goalID" : "st-12",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "dentist"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.78095575,
+      "goalID" : "st-12",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "dentist"
+          },
+          "name" : "search_contacts"
+        }
+      ],
+      "elapsedSeconds" : 0.791421583,
+      "goalID" : "st-12",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "pdf",
+            "query" : "lease agreement"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.863054583,
+      "goalID" : "st-13",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "pdf",
+            "query" : "lease agreement"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.856841959,
+      "goalID" : "st-13",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "pdf",
+            "query" : "lease agreement"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.855484,
+      "goalID" : "st-13",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "pdf",
+            "query" : "lease agreement"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.856648042,
+      "goalID" : "st-13",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "pdf",
+            "query" : "lease agreement"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.859487959,
+      "goalID" : "st-13",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "image",
+            "query" : "error message screenshot"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.949882791,
+      "goalID" : "st-14",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "image",
+            "query" : "error message screenshot"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.943412583,
+      "goalID" : "st-14",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "image",
+            "query" : "error message screenshot"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.951149458,
+      "goalID" : "st-14",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "image",
+            "query" : "error message screenshot"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.947650291,
+      "goalID" : "st-14",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "file_type" : "image",
+            "query" : "error message screenshot"
+          },
+          "name" : "search_files"
+        }
+      ],
+      "elapsedSeconds" : 0.949136208,
+      "goalID" : "st-14",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "employee handbook"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.794431875,
+      "goalID" : "st-15",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "employee handbook"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.777878417,
+      "goalID" : "st-15",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "employee handbook"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.790215125,
+      "goalID" : "st-15",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "employee handbook"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.791726958,
+      "goalID" : "st-15",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "employee handbook"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.79285175,
+      "goalID" : "st-15",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "laptop requests approval"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.807381917,
+      "goalID" : "st-16",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "laptop requests approval onboarding guide"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.874679375,
+      "goalID" : "st-16",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "laptop requests approval onboarding guide"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.869265917,
+      "goalID" : "st-16",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "laptop requests approval onboarding guide"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.885614792,
+      "goalID" : "st-16",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "laptop requests approval onboarding guide"
+          },
+          "name" : "search_documents"
+        }
+      ],
+      "elapsedSeconds" : 0.880044875,
+      "goalID" : "st-16",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 1.379927333,
+      "goalID" : "st-17",
+      "outcome" : "text",
+      "repetition" : 1,
+      "text" : "Would you like to save a note titled \"New Office Gate Code\" with the content \"the gate code for the new office is 4417\"?"
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 0.98727975,
+      "goalID" : "st-17",
+      "outcome" : "text",
+      "repetition" : 2,
+      "text" : "What should the title of the note be?"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "body" : "The gate code for the new office is 4417.",
+            "title" : "New Office Gate Code"
+          },
+          "name" : "create_note"
+        }
+      ],
+      "elapsedSeconds" : 1.105992583,
+      "goalID" : "st-17",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "body" : "The gate code for the new office is 4417.",
+            "title" : "New Office Gate Code"
+          },
+          "name" : "create_note"
+        }
+      ],
+      "elapsedSeconds" : 1.112237542,
+      "goalID" : "st-17",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+
+      ],
+      "elapsedSeconds" : 1.380669792,
+      "goalID" : "st-17",
+      "outcome" : "text",
+      "repetition" : 5,
+      "text" : "Would you like me to create a note with the title \"New Office Gate Code\" and the body \"The gate code for the new office is 4417\"?"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "body" : "The Q3 offsite is moving to Thursday.",
+            "title" : "Q3 Offsite"
+          },
+          "name" : "create_note"
+        }
+      ],
+      "elapsedSeconds" : 1.034272417,
+      "goalID" : "st-18",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "body" : "The Q3 offsite is moving to Thursday.",
+            "title" : "Q3 Offsite"
+          },
+          "name" : "create_note"
+        }
+      ],
+      "elapsedSeconds" : 1.035349584,
+      "goalID" : "st-18",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "body" : "The Q3 offsite is moving to Thursday.",
+            "title" : "Q3 Offsite"
+          },
+          "name" : "create_note"
+        }
+      ],
+      "elapsedSeconds" : 1.0433255830000001,
+      "goalID" : "st-18",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "body" : "The Q3 offsite is moving to Thursday.",
+            "title" : "Q3 Offsite"
+          },
+          "name" : "create_note"
+        }
+      ],
+      "elapsedSeconds" : 1.03827475,
+      "goalID" : "st-18",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "body" : "The Q3 offsite is moving to Thursday.",
+            "title" : "Q3 Offsite"
+          },
+          "name" : "create_note"
+        }
+      ],
+      "elapsedSeconds" : 1.038766125,
+      "goalID" : "st-18",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "wifi password"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.821313541,
+      "goalID" : "st-19",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "wifi password"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.812761125,
+      "goalID" : "st-19",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "wifi password"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.796535958,
+      "goalID" : "st-19",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "wifi password"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.807173625,
+      "goalID" : "st-19",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "wifi password"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.804454209,
+      "goalID" : "st-19",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "meeting with the design team"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.827420667,
+      "goalID" : "st-20",
+      "outcome" : "toolCalls",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "meeting with the design team"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.843618458,
+      "goalID" : "st-20",
+      "outcome" : "toolCalls",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "meeting with the design team"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.831849041,
+      "goalID" : "st-20",
+      "outcome" : "toolCalls",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "meeting with the design team"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.871004458,
+      "goalID" : "st-20",
+      "outcome" : "toolCalls",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "meeting with the design team"
+          },
+          "name" : "search_notes"
+        }
+      ],
+      "elapsedSeconds" : 0.9722215,
+      "goalID" : "st-20",
+      "outcome" : "toolCalls",
+      "repetition" : 5
+    }
+  ],
+  "schemaVersion" : 2,
+  "suite" : "phase0-single-tool",
+  "suiteVersion" : 1,
+  "synthetic" : false,
+  "timeoutSeconds" : 60,
+  "validity" : [
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-01",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-01",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-01",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-01",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-01",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-02",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-02",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-02",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-02",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-02",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-03",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-03",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-03",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-03",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "calculate",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-03",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-04",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-04",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-04",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-04",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-04",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-05",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-05",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-05",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-05",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-05",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-06",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-06",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-06",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "list_calendar_events",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-06",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-06",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-07",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-07",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-07",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-07",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-07",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-08",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-08",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-08",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-08",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-08",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-09",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-09",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-09",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-09",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-09",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-10",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-10",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-10",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-10",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_reminder",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-10",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-11",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-11",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-11",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-11",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-11",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-12",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-12",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-12",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-12",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_contacts",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-12",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-13",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-13",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-13",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-13",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-13",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-14",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-14",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-14",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-14",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_files",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-14",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-15",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-15",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-15",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-15",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-15",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-16",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-16",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-16",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-16",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_documents",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-16",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-17",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-17",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_note",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-17",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_note",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-17",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+
+      ],
+      "goalID" : "st-17",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_note",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-18",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_note",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-18",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_note",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-18",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_note",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-18",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "create_note",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-18",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-19",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-19",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-19",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-19",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-19",
+      "repetition" : 5
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-20",
+      "repetition" : 1
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-20",
+      "repetition" : 2
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-20",
+      "repetition" : 3
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-20",
+      "repetition" : 4
+    },
+    {
+      "calls" : [
+        {
+          "name" : "search_notes",
+          "valid" : true,
+          "violations" : [
+
+          ]
+        }
+      ],
+      "firstCallValid" : true,
+      "goalID" : "st-20",
+      "repetition" : 5
+    }
+  ],
+  "validitySummary" : {
+    "attempts" : 100,
+    "attemptsWithCalls" : 91,
+    "emittedCallValidityRate" : 1,
+    "emittedCalls" : 91,
+    "extraCalls" : 0,
+    "validCalls" : 91,
+    "validFirstCallRate" : 0.91,
+    "validFirstCalls" : 91
+  }
+}

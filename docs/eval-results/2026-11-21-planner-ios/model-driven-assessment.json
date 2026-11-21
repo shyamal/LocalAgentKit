@@ -1,0 +1,100 @@
+{
+  "assessment" : {
+    "byTool" : {
+      "calculate" : {
+        "attempts" : 31,
+        "executed" : 31,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.25806451612903225,
+        "groundedSuccesses" : 8
+      },
+      "create_note" : {
+        "attempts" : 7,
+        "executed" : 7,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.5714285714285714,
+        "groundedSuccesses" : 4
+      },
+      "create_reminder" : {
+        "attempts" : 13,
+        "executed" : 13,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.3076923076923077,
+        "groundedSuccesses" : 4
+      },
+      "list_calendar_events" : {
+        "attempts" : 24,
+        "executed" : 24,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.375,
+        "groundedSuccesses" : 9
+      },
+      "search_contacts" : {
+        "attempts" : 5,
+        "executed" : 5,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 1,
+        "groundedSuccesses" : 5
+      },
+      "search_documents" : {
+        "attempts" : 15,
+        "executed" : 15,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.7333333333333333,
+        "groundedSuccesses" : 11
+      },
+      "search_files" : {
+        "attempts" : 2,
+        "executed" : 2,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 1,
+        "groundedSuccesses" : 2
+      },
+      "search_notes" : {
+        "attempts" : 20,
+        "executed" : 20,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.6,
+        "groundedSuccesses" : 12
+      }
+    },
+    "completedGoals" : 0,
+    "counts" : {
+      "attempts" : 117,
+      "executed" : 117,
+      "executionRate" : 1,
+      "groundedSuccessRate" : 0.4700854700854701,
+      "groundedSuccesses" : 55
+    },
+    "expectedRequiredSteps" : 93,
+    "expectedTrials" : 30,
+    "matchedRequiredSteps" : 52,
+    "metric" : "M5",
+    "missingGroundedToolCoverage" : [
+
+    ],
+    "notes" : [
+      "Execution means the fixture call completed; grounded success also requires valid, goal-matching arguments and dependency order.",
+      "Unemitted required calls remain visible in required-step and per-tool coverage; no calls means an unknown rate, never 100%.",
+      "This suite uses fixture tools (plus real calculator arithmetic), not the actual device tool backends. No verdict establishes the real-tool M5 target.",
+      "Completion, refusal, model and runtime failures remain in the source report; they are not excluded to improve a rate."
+    ],
+    "observedTrials" : 30,
+    "protocolComplete" : true,
+    "realToolTargetVerified" : false,
+    "requiredSteps" : 93,
+    "scope" : "fixture-tools\/modelDriven-bounded-v1",
+    "target" : "Tool execution success >95% for supported built-in tools",
+    "verdict" : "belowTarget"
+  },
+  "measuredAt" : "2026-11-21T11:18:14Z",
+  "model" : "foundation",
+  "operatingSystem" : "Version 27.2 (Build 24B115)",
+  "planner" : "modelDriven-bounded-v1",
+  "repetitions" : 3,
+  "schemaVersion" : 1,
+  "suite" : "phase0-multi-step",
+  "suiteVersion" : 1,
+  "synthetic" : false,
+  "timeoutSeconds" : 60
+}

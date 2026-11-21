@@ -1,0 +1,2267 @@
+{
+  "attempts" : 30,
+  "completed" : 4,
+  "completionRate" : 0.13333333333333333,
+  "context" : {
+    "locale" : "en_US",
+    "referenceDateTime" : "2026-09-21T10:00",
+    "referenceWeekday" : "Monday",
+    "timeZone" : "UTC"
+  },
+  "createdAt" : "2026-11-21T10:57:42Z",
+  "m5" : {
+    "byTool" : {
+      "calculate" : {
+        "attempts" : 50,
+        "executed" : 50,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.18,
+        "groundedSuccesses" : 9
+      },
+      "create_note" : {
+        "attempts" : 11,
+        "executed" : 11,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.5454545454545454,
+        "groundedSuccesses" : 6
+      },
+      "create_reminder" : {
+        "attempts" : 16,
+        "executed" : 16,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.1875,
+        "groundedSuccesses" : 3
+      },
+      "list_calendar_events" : {
+        "attempts" : 31,
+        "executed" : 31,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.12903225806451613,
+        "groundedSuccesses" : 4
+      },
+      "search_contacts" : {
+        "attempts" : 4,
+        "executed" : 4,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.5,
+        "groundedSuccesses" : 2
+      },
+      "search_documents" : {
+        "attempts" : 25,
+        "executed" : 25,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.36,
+        "groundedSuccesses" : 9
+      },
+      "search_files" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_notes" : {
+        "attempts" : 20,
+        "executed" : 20,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.6,
+        "groundedSuccesses" : 12
+      }
+    },
+    "completedGoals" : 4,
+    "counts" : {
+      "attempts" : 157,
+      "executed" : 157,
+      "executionRate" : 1,
+      "groundedSuccessRate" : 0.28662420382165604,
+      "groundedSuccesses" : 45
+    },
+    "expectedRequiredSteps" : 93,
+    "expectedTrials" : 30,
+    "matchedRequiredSteps" : 40,
+    "metric" : "M5",
+    "missingGroundedToolCoverage" : [
+      "search_files"
+    ],
+    "notes" : [
+      "Execution means the fixture call completed; grounded success also requires valid, goal-matching arguments and dependency order.",
+      "Unemitted required calls remain visible in required-step and per-tool coverage; no calls means an unknown rate, never 100%.",
+      "This suite uses fixture tools (plus real calculator arithmetic), not the actual device tool backends. No verdict establishes the real-tool M5 target.",
+      "Completion, refusal, model and runtime failures remain in the source report; they are not excluded to improve a rate."
+    ],
+    "observedTrials" : 30,
+    "protocolComplete" : true,
+    "realToolTargetVerified" : false,
+    "requiredSteps" : 93,
+    "scope" : "fixture-tools\/stateMachine-open",
+    "target" : "Tool execution success >95% for supported built-in tools",
+    "verdict" : "belowTarget"
+  },
+  "measurementProtocolVersion" : 1,
+  "mode" : "agent-run",
+  "model" : "foundation",
+  "operatingSystem" : "Version 27.2.1 (Build 26B131)",
+  "planner" : "stateMachine-open",
+  "repetitions" : 3,
+  "results" : [
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-20T20:00",
+            "title" : "Confirm Dentist Appointment"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-21T20:00",
+            "title" : "Dentist Appointment"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-21T18:00",
+            "title" : "Dentist Appointment Confirmation"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-22T20:00",
+            "title" : "Dentist Appointment Confirmation"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-22T18:00",
+            "title" : "Dentist Appointment Confirmation"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-21T18:00",
+            "title" : "Call dentist to confirm appointment"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 6,
+      "elapsedSeconds" : 12.196062291,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-01",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 6,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+          "create_reminder"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "answer" : "No results found.",
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-20T18:00",
+            "title" : "Confirm dentist appointment"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-21T20:00",
+            "title" : "Dentist Appointment Confirmation"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 2,
+      "elapsedSeconds" : 5.285683666,
+      "goalID" : "ms-01",
+      "repetition" : 2,
+      "runtimeIterations" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 2,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+          "create_reminder"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "- create_reminder: No results found.",
+      "calls" : [
+        {
+          "arguments" : {
+            "due" : "2026-09-15T20:00",
+            "title" : "Dentist Appointment Confirmation"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-20T18:00",
+            "title" : "Dentist Appointment Confirmation"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-21T18:00",
+            "title" : "Dentist Appointment Confirmation"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 3,
+      "elapsedSeconds" : 7.349718542,
+      "goalID" : "ms-01",
+      "repetition" : 3,
+      "runtimeIterations" : 4,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 3,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+          "create_reminder"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "The team lunch receipt total is $212.40. A 15% tip on this amount is $31.86. A note with the tip amount has been created.",
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "team lunch receipt total"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Team lunch receipt' (2026-09-18): Harbour Kitchen, 8 people, total $212.40."
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        },
+        {
+          "arguments" : {
+            "body" : "15% tip on $212.40 = $31.86",
+            "title" : "15% Tip"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 12.619437333,
+      "goalID" : "ms-02",
+      "repetition" : 1,
+      "runtimeIterations" : 7,
+      "score" : {
+        "completed" : true,
+        "extraCalls" : 3,
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "find" : 0,
+          "save" : 3,
+          "tip" : 1
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 3
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "The team lunch receipt total in your notes is $212.40. A 15% tip on this amount is $31.86. A note with the tip amount has already been created with the arguments provided.",
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "team lunch receipt total"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Team lunch receipt' (2026-09-18): Harbour Kitchen, 8 people, total $212.40."
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        },
+        {
+          "arguments" : {
+            "body" : "$31.86",
+            "title" : "Tip on Team lunch receipt"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 12.217180125,
+      "goalID" : "ms-02",
+      "repetition" : 2,
+      "runtimeIterations" : 6,
+      "score" : {
+        "completed" : true,
+        "extraCalls" : 2,
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "find" : 0,
+          "save" : 3,
+          "tip" : 1
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 3
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "team lunch receipt total"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Team lunch receipt' (2026-09-18): Harbour Kitchen, 8 people, total $212.40."
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        },
+        {
+          "arguments" : {
+            "body" : "Tip amount for the team lunch receipt: $31.86",
+            "title" : "15% Tip"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        },
+        {
+          "arguments" : {
+            "expression" : "212.40 * 0.15"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "31.86"
+        },
+        {
+          "arguments" : {
+            "body" : "Tip amount for the team lunch receipt: $40.99",
+            "title" : "Team lunch tip"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 2,
+      "elapsedSeconds" : 11.639418167,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-02",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 3,
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "find" : 0,
+          "save" : 2,
+          "tip" : 1
+        },
+        "overConfirmedTools" : [
+          "create_note"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 3
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-27T23:59",
+            "start" : "2026-09-26T00:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "(2 * 1) - (2 * 1)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "0"
+        },
+        {
+          "arguments" : {
+            "expression" : "(3 + 2) - (2 + 3)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "0"
+        },
+        {
+          "arguments" : {
+            "expression" : "(2*3)-(2*4)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "-2"
+        },
+        {
+          "arguments" : {
+            "expression" : "(0 + 0 + -2)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "-2"
+        },
+        {
+          "arguments" : {
+            "expression" : "(0 + 0 + -2 + -2)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "-4"
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 11.121523584,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-03",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 6,
+        "firstUnmatchedStep" : "tue",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "(3 + 2) - (2 + 1)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "2"
+        },
+        {
+          "arguments" : {
+            "expression" : "2"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "2"
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-27T23:59",
+            "start" : "2026-09-25T00:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-26T00:00",
+            "start" : "2026-09-26T00:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "2 - 2"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "0"
+        },
+        {
+          "arguments" : {
+            "expression" : "2 - 2"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "0"
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 10.678867166,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-03",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 6,
+        "firstUnmatchedStep" : "tue",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-27T23:59",
+            "start" : "2026-09-25T00:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "(3 - 2)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "1"
+        },
+        {
+          "arguments" : {
+            "expression" : "(2 * 1) - (0 * 1)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "2"
+        },
+        {
+          "arguments" : {
+            "expression" : "2 - 1"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "1"
+        },
+        {
+          "arguments" : {
+            "body" : "This week, I have 2 meetings on Tuesday and 1 meeting on Wednesday.",
+            "title" : "Meeting Comparison"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-26T23:59",
+            "start" : "2026-09-25T00:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 12.620028333,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-03",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 6,
+        "firstUnmatchedStep" : "tue",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "answer" : "The expense policy states that meals are reimbursed up to $75 per day while travelling. The note from the Sydney trip shows: day 1 $68.20, day 2 $91.50, day 3 $77.30.\n\nTotal meal cost: $68.20 + $91.50 + $77.30 = $237.00.\n\nThe total is $237.00, which is $162.00 above the $75 daily limit (3 days × $75 = $225, so $237 - $225 = $12 over).\n\nA reminder to sort out the expense claim is requested for tomorrow at 9am, but no results were found for creating a reminder.",
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "expense policy daily meal limit"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Expense Policy s4.2: Meals are reimbursed up to $75 per day while travelling. Amounts above the limit are not reimbursed."
+        },
+        {
+          "arguments" : {
+            "query" : "daily meal limit"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Expense Policy s4.2: Meals are reimbursed up to $75 per day while travelling. Amounts above the limit are not reimbursed."
+        },
+        {
+          "arguments" : {
+            "query" : "daily meal limit"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Sydney trip meals': day 1 $68.20, day 2 $91.50, day 3 $77.30."
+        },
+        {
+          "arguments" : {
+            "expression" : "(68.20 + 91.50 + 77.30) - 225"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "12"
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Sort out the expense claim"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "68.20 + 91.50 + 77.30"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "237"
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 15.714088666,
+      "goalID" : "ms-04",
+      "repetition" : 1,
+      "runtimeIterations" : 7,
+      "score" : {
+        "completed" : true,
+        "extraCalls" : 2,
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "costs" : 2,
+          "diff" : 3,
+          "policy" : 0,
+          "remind" : 4
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 4,
+        "stepsMatched" : 4
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "The daily meal limit under the Expense Policy s4.2 is $75 per day while travelling.  \n\nFrom the note 'Sydney trip meals':  \n- day 1: $68.20  \n- day 2: $91.50  \n- day 3: $77.30  \n\nTotal meal cost:  \n$68.20 + $91.50 + $77.30 = $237.00  \n\nThe total of $237.00 is $19.50 over the $75 daily limit (3 days × $75 = $225, so $237 − $225 = $12 over, but the note shows total $237, which exceeds the policy).  \n\nA reminder to sort out the expense claim was attempted, but no results were found. The reminder was already done with the provided arguments.",
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "meal costs Sydney trip 3 days"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Expense Policy s4.2: Meals are reimbursed up to $75 per day while travelling. Amounts above the limit are not reimbursed."
+        },
+        {
+          "arguments" : {
+            "query" : "daily meal limit"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Expense Policy s4.2: Meals are reimbursed up to $75 per day while travelling. Amounts above the limit are not reimbursed."
+        },
+        {
+          "arguments" : {
+            "query" : "meal costs Sydney trip"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Sydney trip meals': day 1 $68.20, day 2 $91.50, day 3 $77.30."
+        },
+        {
+          "arguments" : {
+            "expression" : "68.20 + 91.50 + 77.30"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "237"
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Sort out the expense claim"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "237 - 217.5"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "19.5"
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Sort out expense claim"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "expression" : "68.20 + 91.50 + 77.30"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "237"
+        }
+      ],
+      "confirmationsApproved" : 2,
+      "elapsedSeconds" : 19.819000041,
+      "goalID" : "ms-04",
+      "repetition" : 2,
+      "runtimeIterations" : 9,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 5,
+        "firstUnmatchedStep" : "diff",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "costs" : 2,
+          "policy" : 0,
+          "remind" : 4
+        },
+        "overConfirmedTools" : [
+          "create_reminder"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 4,
+        "stepsMatched" : 3
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "- The daily meal limit under Expense Policy s4.2 is $75 per day while travelling.\n- The meal costs from the Sydney trip: day 1 $68.20, day 2 $91.50, day 3 $77.30.\n- Total meal cost: $68.20 + $91.50 + $77.30 = $237.00.\n- Total over the limit: $237.00 - $225.00 (3 days × $75) = $12.00 over the limit.\n- A reminder to sort out the expense claim was already done with the arguments provided.",
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "meal costs Sydney 3-day trip"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Expense Policy s4.2: Meals are reimbursed up to $75 per day while travelling. Amounts above the limit are not reimbursed."
+        },
+        {
+          "arguments" : {
+            "query" : "meal costs Sydney 3-day trip"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Expense Policy s4.2: Meals are reimbursed up to $75 per day while travelling. Amounts above the limit are not reimbursed."
+        },
+        {
+          "arguments" : {
+            "query" : "meal costs Sydney trip"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Sydney trip meals': day 1 $68.20, day 2 $91.50, day 3 $77.30."
+        },
+        {
+          "arguments" : {
+            "expression" : "105.00 - 75"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "30"
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-22T09:00",
+            "title" : "Sort out the expense claim"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 17.533430834,
+      "goalID" : "ms-04",
+      "repetition" : 3,
+      "runtimeIterations" : 6,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 2,
+        "firstUnmatchedStep" : "diff",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "costs" : 2,
+          "policy" : 0,
+          "remind" : 4
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 4,
+        "stepsMatched" : 3
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "You are meeting Daniel Mwangi at 14:00-14:45 'Partnership sync'. His email address is daniel.mwangi@northwind.example. No results were found for creating a note titled with their name.",
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-21T14:00",
+            "start" : "2026-09-21T14:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "1 event: 14:00-14:45 'Partnership sync' with Daniel Mwangi (Northwind Logistics)."
+        },
+        {
+          "arguments" : {
+            "query" : "Daniel Mwangi"
+          },
+          "completed" : true,
+          "name" : "search_contacts",
+          "output" : "Daniel Mwangi - Head of Partnerships, Northwind Logistics - daniel.mwangi@northwind.example - 555-0134"
+        },
+        {
+          "arguments" : {
+            "body" : "daniel.mwangi@northwind.example",
+            "title" : "Daniel Mwangi"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 2,
+      "elapsedSeconds" : 7.427725083,
+      "goalID" : "ms-05",
+      "repetition" : 1,
+      "runtimeIterations" : 4,
+      "score" : {
+        "completed" : true,
+        "extraCalls" : 0,
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "cal" : 0,
+          "contact" : 1,
+          "save" : 2
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 3
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "You are meeting Daniel Mwangi at 14:00-14:45 'Partnership sync' with Daniel Mwangi (Northwind Logistics). His email address is daniel.mwangi@northwind.example.",
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-21T14:00",
+            "start" : "2026-09-21T14:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "1 event: 14:00-14:45 'Partnership sync' with Daniel Mwangi (Northwind Logistics)."
+        },
+        {
+          "arguments" : {
+            "query" : "Daniel Mwangi"
+          },
+          "completed" : true,
+          "name" : "search_contacts",
+          "output" : "Daniel Mwangi - Head of Partnerships, Northwind Logistics - daniel.mwangi@northwind.example - 555-0134"
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 5.449661541,
+      "goalID" : "ms-05",
+      "repetition" : 2,
+      "runtimeIterations" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "save",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "cal" : 0,
+          "contact" : 1
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 2
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "No results found.",
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "2pm"
+          },
+          "completed" : true,
+          "name" : "search_contacts",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : ""
+          },
+          "completed" : true,
+          "name" : "search_contacts",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 2,
+      "elapsedSeconds" : 4.10089875,
+      "goalID" : "ms-05",
+      "repetition" : 3,
+      "runtimeIterations" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 2,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+          "search_contacts"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "vendor contract"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "vendor contract"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.196582458,
+      "error" : "\"provide_create_reminder_arguments\" was called with invalid arguments: due is required; title is required.",
+      "goalID" : "ms-06",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 2,
+        "firstUnmatchedStep" : "file",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "vendor contract"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "vendor contract"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "vendor contract PDF"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "vendor contract"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "vendor contract PDF"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "due" : "2026-09-28T23:59",
+            "title" : "Vendor Contract Notice Deadline"
+          },
+          "completed" : true,
+          "name" : "create_reminder",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 12.291919416,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-06",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 6,
+        "firstUnmatchedStep" : "file",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "answer" : "No results found.",
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "vendor contract"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "vendor contract"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 4.073526125,
+      "goalID" : "ms-06",
+      "repetition" : 3,
+      "runtimeIterations" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 2,
+        "firstUnmatchedStep" : "file",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "answer" : "- list_calendar_events: No results found.\n- The restaurant booking details and cost per person cannot be found as the existing results from list_calendar_events show no results.\n- A note with the per-person amount cannot be saved.\n- A reminder to leave at 5pm on Friday cannot be set.",
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T23:59",
+            "start" : "2026-09-29T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 10.894272667,
+      "goalID" : "ms-07",
+      "repetition" : 1,
+      "runtimeIterations" : 5,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 4,
+        "firstUnmatchedStep" : "free",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 5,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T23:59",
+            "start" : "2026-09-29T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-22T21:00",
+            "start" : "2026-09-21T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T23:59",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T23:59",
+            "start" : "2026-09-29T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-22T22:00",
+            "start" : "2026-09-21T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T23:59",
+            "start" : "2026-09-29T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 19.487839833,
+      "error" : "The request needed more than 9 tool calls, so it was stopped.",
+      "goalID" : "ms-07",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 9,
+        "firstUnmatchedStep" : "free",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 5,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T23:59",
+            "start" : "2026-09-29T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T18:00",
+            "start" : "2026-09-29T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T23:59",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T23:59",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-22T23:59",
+            "start" : "2026-09-25T17:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No events between the requested times."
+        },
+        {
+          "arguments" : {
+            "end" : "2026-09-29T21:00",
+            "start" : "2026-09-29T18:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 19.304129709,
+      "error" : "The request needed more than 9 tool calls, so it was stopped.",
+      "goalID" : "ms-07",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 9,
+        "firstUnmatchedStep" : "free",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 5,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "answer" : "The guest wifi password for the Harbour St office is tidal-7731. It is located in the Harbour St Office Guide p.2 in the documents.",
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "Harbour St office guest wifi password"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "Harbour St office guest wifi password"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "guest wifi password for the Harbour St office"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Harbour St Office Guide p.2: Guest wifi network HSGuest, password tidal-7731. Rotated quarterly."
+        },
+        {
+          "arguments" : {
+            "query" : "Harbour St office guest wifi password"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "Harbour St office guest wifi password"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 8.991991,
+      "goalID" : "ms-08",
+      "repetition" : 1,
+      "runtimeIterations" : 6,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 3,
+        "firstUnmatchedStep" : "save",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "docs" : 2,
+          "notes" : 0
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 2
+      },
+      "stopReason" : "answer"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "Harbour St office wifi password"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "guest wifi password for the Harbour St office"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Harbour St Office Guide p.2: Guest wifi network HSGuest, password tidal-7731. Rotated quarterly."
+        },
+        {
+          "arguments" : {
+            "query" : "Harbour St guest wifi password"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "body" : "Guest wifi network HSGuest, password tidal-7731. Rotated quarterly.",
+            "title" : "Harbour St Office Guest Wifi"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "Harbour St"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "Harbour St"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 10.060682625,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-08",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 3,
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "docs" : 1,
+          "notes" : 0,
+          "save" : 3
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 3
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "Harbour St"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "Harbour St office guest wifi password"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "guest wifi password for the Harbour St office"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Harbour St Office Guide p.2: Guest wifi network HSGuest, password tidal-7731. Rotated quarterly."
+        },
+        {
+          "arguments" : {
+            "query" : "guest wifi password for the Harbour St office"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "body" : "Guest wifi network HSGuest, password tidal-7731. Rotated quarterly.",
+            "title" : "Harbour St Office Guest WiFi"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "Harbour St Office Guide p.2: Guest wifi network HSGuest, password tidal-7731. Rotated quarterly."
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Harbour St Office Guide p.2: Guest wifi network HSGuest, password tidal-7731. Rotated quarterly."
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 10.138197416,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-08",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 3,
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "docs" : 2,
+          "notes" : 0,
+          "save" : 4
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 3
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "expression" : "(2 * 1.5) + (3 * 1.2)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "6.6"
+        },
+        {
+          "arguments" : {
+            "expression" : "6.6"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "6.6"
+        },
+        {
+          "arguments" : {
+            "expression" : "6.6 + 6.6"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "13.2"
+        },
+        {
+          "arguments" : {
+            "expression" : "6.6 + 6.6 + 13.2"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "26.4"
+        },
+        {
+          "arguments" : {
+            "expression" : "6.6 + 6.6 + 13.2 + 26.4"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "52.8"
+        },
+        {
+          "arguments" : {
+            "expression" : "6.6 + 6.6 + 13.2 + 26.4 + 52.8"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "105.6"
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 10.28903825,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-09",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 6,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-22T17:00",
+            "start" : "2026-09-22T08:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "3 events: 09:00-10:30 Quarterly planning; 11:00-12:00 Design review; 13:00-16:00 Customer workshop."
+        },
+        {
+          "arguments" : {
+            "expression" : "(1.5 + 1 + 3.5)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "6"
+        },
+        {
+          "arguments" : {
+            "expression" : "(1.5 + 1 + 3.5)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "6"
+        },
+        {
+          "arguments" : {
+            "expression" : "(1.5 + 1 + 3)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "5.5"
+        },
+        {
+          "arguments" : {
+            "expression" : "1.5 + 1 + 3.5"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "6"
+        },
+        {
+          "arguments" : {
+            "expression" : "(1.5 + 1 + 3.5)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "6"
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 10.722117959,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-09",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 4,
+        "firstUnmatchedStep" : "remind",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "cal" : 0,
+          "sum" : 3
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 1
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "end" : "2026-09-22T17:00",
+            "start" : "2026-09-22T09:00"
+          },
+          "completed" : true,
+          "name" : "list_calendar_events",
+          "output" : "3 events: 09:00-10:30 Quarterly planning; 11:00-12:00 Design review; 13:00-16:00 Customer workshop."
+        },
+        {
+          "arguments" : {
+            "expression" : "(1.5 + 1 + 3)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "5.5"
+        },
+        {
+          "arguments" : {
+            "expression" : "(1.5 + 1 + 3.5)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "6"
+        },
+        {
+          "arguments" : {
+            "expression" : "0.5 * 2480"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "1240"
+        },
+        {
+          "arguments" : {
+            "expression" : "(1.5 + 1 + 3.5)"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "6"
+        },
+        {
+          "arguments" : {
+            "expression" : "0.5 * 6"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "3"
+        }
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 10.425011333,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-09",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 4,
+        "firstUnmatchedStep" : "remind",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+          "cal" : 0,
+          "sum" : 1
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 1
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "phone plan cost"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Bills': Current phone plan (Metro Talk 40) - $49\/month."
+        },
+        {
+          "arguments" : {
+            "query" : "price of the new Unlimited Lite plan"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Carrier brochure 2026: Unlimited Lite - $42 per month, 30GB data, unlimited calls."
+        },
+        {
+          "arguments" : {
+            "expression" : "49 - 42"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "7"
+        },
+        {
+          "arguments" : {
+            "expression" : "49 - 42"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "7"
+        },
+        {
+          "arguments" : {
+            "body" : "The current phone plan is Metro Talk 40 - $49\/month. The new Unlimited Lite plan is $42 per month. Switching would save $7 per month.",
+            "title" : "Save a new note"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "Unlimited Lite - $42 per month, 30GB data, unlimited calls"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Carrier brochure 2026: Unlimited Lite - $42 per month, 30GB data, unlimited calls."
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 10.811414666,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-10",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 3,
+        "forbiddenCalls" : [
+          "create_note"
+        ],
+        "matchedCallIndices" : {
+          "current" : 0,
+          "new" : 1,
+          "saving" : 2
+        },
+        "overConfirmedTools" : [
+          "create_note"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 2
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "phone plan cost"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Bills': Current phone plan (Metro Talk 40) - $49\/month."
+        },
+        {
+          "arguments" : {
+            "query" : "current phone plan cost"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Carrier brochure 2026: Unlimited Lite - $42 per month, 30GB data, unlimited calls."
+        },
+        {
+          "arguments" : {
+            "expression" : "49 - 42"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "7"
+        },
+        {
+          "arguments" : {
+            "expression" : "49 - 42"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "7"
+        },
+        {
+          "arguments" : {
+            "query" : "Unlimited Lite plan price"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Carrier brochure 2026: Unlimited Lite - $42 per month, 30GB data, unlimited calls."
+        },
+        {
+          "arguments" : {
+            "body" : "Current phone plan (Metro Talk 40) - $49\/month.",
+            "title" : "Bills"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 11.359877208,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-10",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 3,
+        "forbiddenCalls" : [
+          "create_note"
+        ],
+        "matchedCallIndices" : {
+          "current" : 0,
+          "new" : 1,
+          "saving" : 2
+        },
+        "overConfirmedTools" : [
+          "create_note"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 2
+      },
+      "stopReason" : "limit"
+    },
+    {
+      "calls" : [
+        {
+          "arguments" : {
+            "query" : "phone plan"
+          },
+          "completed" : true,
+          "name" : "search_notes",
+          "output" : "Note 'Bills': Current phone plan (Metro Talk 40) - $49\/month."
+        },
+        {
+          "arguments" : {
+            "query" : "price of the new Unlimited Lite plan"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Carrier brochure 2026: Unlimited Lite - $42 per month, 30GB data, unlimited calls."
+        },
+        {
+          "arguments" : {
+            "expression" : "49 - 42"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "7"
+        },
+        {
+          "arguments" : {
+            "expression" : "49 - 42"
+          },
+          "completed" : true,
+          "name" : "calculate",
+          "output" : "7"
+        },
+        {
+          "arguments" : {
+            "body" : "Unlimited Lite - $42 per month, 30GB data, unlimited calls.",
+            "title" : "Documents"
+          },
+          "completed" : true,
+          "name" : "create_note",
+          "output" : "No results found."
+        },
+        {
+          "arguments" : {
+            "query" : "Unlimited Lite"
+          },
+          "completed" : true,
+          "name" : "search_documents",
+          "output" : "Carrier brochure 2026: Unlimited Lite - $42 per month, 30GB data, unlimited calls."
+        }
+      ],
+      "confirmationsApproved" : 1,
+      "elapsedSeconds" : 11.132226708,
+      "error" : "The request needed more than 6 tool calls, so it was stopped.",
+      "goalID" : "ms-10",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 3,
+        "forbiddenCalls" : [
+          "create_note"
+        ],
+        "matchedCallIndices" : {
+          "current" : 0,
+          "new" : 1,
+          "saving" : 2
+        },
+        "overConfirmedTools" : [
+          "create_note"
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 2
+      },
+      "stopReason" : "limit"
+    }
+  ],
+  "schemaVersion" : 3,
+  "suite" : "phase0-multi-step",
+  "suiteVersion" : 1,
+  "synthetic" : false,
+  "timeoutSeconds" : 60
+}

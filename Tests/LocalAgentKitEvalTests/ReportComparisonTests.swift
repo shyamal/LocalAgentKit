@@ -204,6 +204,10 @@ private func comparison(_ a: [String: Any], _ b: [String: Any]) throws -> Report
     #expect(result.changes.first { $0.metric == "all/requiredStepMatch" }?.delta == -100)
     #expect(result.changes.first { $0.metric == "all/loops" }?.delta == 100)
     #expect(result.changes.first { $0.metric == "all/failures" }?.delta == 0)
+    report["planner"] = "modelDriven-bounded-v1"
+    let crossPlanner = try comparison(before, report)
+    #expect(crossPlanner.status == "incompatible")
+    #expect(!crossPlanner.observedRegression)
   }
 
   @Test func refusalReviewsAreRevalidatedAndPendingDecisionsAreProvisional() throws {

@@ -353,6 +353,14 @@ Denial, refusal, cancellation, invalid bindings and limits remain terminal. This
 supersedes the earlier no-replanning limitation; no real-model quality or default
 promotion is claimed, and M5-03 remains open.
 
+M5-03 remeasurement (2026-11-21) completed on Mac27.2.1/M5 Max and iOS27.2/iPhone15Pro.
+Model-driven completed 0/30 goals on both; state-machine open completed 4/30 and
+2/30. Neither grounded fixture result supports promotion. Keep the state-machine
+default without claiming open-mode reliability above the target. This closes the
+remeasurement/decision task with a no-go, not a real-tool M5 pass. Paired raw reports,
+independent replay, provenance and thermal limitations are retained in
+`docs/planner-measurement-verification.md`; decision 0002 is reaffirmed.
+
 ### 2.5 Concurrency model
 
 Swift 6 strict concurrency, full checking, no exceptions:

@@ -1,0 +1,98 @@
+{
+  "assessment" : {
+    "byTool" : {
+      "calculate" : {
+        "attempts" : 50,
+        "executed" : 50,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.18,
+        "groundedSuccesses" : 9
+      },
+      "create_note" : {
+        "attempts" : 11,
+        "executed" : 11,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.5454545454545454,
+        "groundedSuccesses" : 6
+      },
+      "create_reminder" : {
+        "attempts" : 16,
+        "executed" : 16,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.1875,
+        "groundedSuccesses" : 3
+      },
+      "list_calendar_events" : {
+        "attempts" : 31,
+        "executed" : 31,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.12903225806451613,
+        "groundedSuccesses" : 4
+      },
+      "search_contacts" : {
+        "attempts" : 4,
+        "executed" : 4,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.5,
+        "groundedSuccesses" : 2
+      },
+      "search_documents" : {
+        "attempts" : 25,
+        "executed" : 25,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.36,
+        "groundedSuccesses" : 9
+      },
+      "search_files" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_notes" : {
+        "attempts" : 20,
+        "executed" : 20,
+        "executionRate" : 1,
+        "groundedSuccessRate" : 0.6,
+        "groundedSuccesses" : 12
+      }
+    },
+    "completedGoals" : 4,
+    "counts" : {
+      "attempts" : 157,
+      "executed" : 157,
+      "executionRate" : 1,
+      "groundedSuccessRate" : 0.28662420382165604,
+      "groundedSuccesses" : 45
+    },
+    "expectedRequiredSteps" : 93,
+    "expectedTrials" : 30,
+    "matchedRequiredSteps" : 40,
+    "metric" : "M5",
+    "missingGroundedToolCoverage" : [
+      "search_files"
+    ],
+    "notes" : [
+      "Execution means the fixture call completed; grounded success also requires valid, goal-matching arguments and dependency order.",
+      "Unemitted required calls remain visible in required-step and per-tool coverage; no calls means an unknown rate, never 100%.",
+      "This suite uses fixture tools (plus real calculator arithmetic), not the actual device tool backends. No verdict establishes the real-tool M5 target.",
+      "Completion, refusal, model and runtime failures remain in the source report; they are not excluded to improve a rate."
+    ],
+    "observedTrials" : 30,
+    "protocolComplete" : true,
+    "realToolTargetVerified" : false,
+    "requiredSteps" : 93,
+    "scope" : "fixture-tools\/stateMachine-open",
+    "target" : "Tool execution success >95% for supported built-in tools",
+    "verdict" : "belowTarget"
+  },
+  "measuredAt" : "2026-11-21T10:57:42Z",
+  "model" : "foundation",
+  "operatingSystem" : "Version 27.2.1 (Build 26B131)",
+  "planner" : "stateMachine-open",
+  "repetitions" : 3,
+  "schemaVersion" : 1,
+  "suite" : "phase0-multi-step",
+  "suiteVersion" : 1,
+  "synthetic" : false,
+  "timeoutSeconds" : 60
+}

@@ -226,3 +226,39 @@ private func goal(_ id: String) throws -> SuiteLoader.Suite.Goal {
     #expect(throws: DecodingError.self) { try matcher(#"{"match":"invented"}"#) }
   }
 }
+
+extension MultiStepRunnerTests {
+  @Test func modelDrivenSelectionUsesTheSameFixturesAndScoring() async throws {
+    func step(_ tool: String, _ arguments: [String: String]) -> JSONValue {
+      .object([
+        "tool": .string(tool), "summary": .string("Synthetic step"),
+        "instruction": .string("Use fixture facts"),
+        "on_empty": .string("skip"),
+        "arguments": .array(
+          arguments.sorted { $0.key < $1.key }.map { name, value in
+            .object(["name": .string(name), "source": .string("literal"), "value": .string(value)])
+          }),
+      ])
+    }
+    let plan = ModelResponse.toolCall(
+      ToolCall(
+        id: "plan", name: "propose_tool_plan",
+        arguments: ToolArguments([
+          "steps": .array([
+            step("search_notes", ["query": "\"lunch receipt\""]),
+            step("calculate", ["expression": "\"212.4 * 0.15\""]),
+            step("create_note", ["title": "\"tip\"", "body": "\"The tip is 31.86.\""]),
+          ]), "answer_instruction": .string("Report the saved tip."),
+        ])))
+    let model = ScriptedModelProvider(responses: [plan, .text("Saved the tip.")])
+    let row = try #require(
+      try await MultiStepRunner.run(
+        model: model, goalID: "ms-02", planner: .modelDriven
+      ).first)
+    #expect(row.score.completed && row.score.stepsMatched == 3, "\(row)")
+    #expect(row.confirmationsApproved == 1)
+    #expect(row.calls.allSatisfy { $0.completed })
+    #expect(await model.requests.first?.tools.first?.name == "propose_tool_plan")
+    #expect(row.runtimeIterations == 4)
+  }
+}

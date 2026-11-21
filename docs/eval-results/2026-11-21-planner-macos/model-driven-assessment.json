@@ -1,0 +1,89 @@
+{
+  "assessment" : {
+    "byTool" : {
+      "calculate" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "create_note" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "create_reminder" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "list_calendar_events" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_contacts" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_documents" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_files" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_notes" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      }
+    },
+    "completedGoals" : 0,
+    "counts" : {
+      "attempts" : 0,
+      "executed" : 0,
+      "groundedSuccesses" : 0
+    },
+    "expectedRequiredSteps" : 93,
+    "expectedTrials" : 30,
+    "matchedRequiredSteps" : 0,
+    "metric" : "M5",
+    "missingGroundedToolCoverage" : [
+      "calculate",
+      "create_note",
+      "create_reminder",
+      "list_calendar_events",
+      "search_contacts",
+      "search_documents",
+      "search_files",
+      "search_notes"
+    ],
+    "notes" : [
+      "Execution means the fixture call completed; grounded success also requires valid, goal-matching arguments and dependency order.",
+      "Unemitted required calls remain visible in required-step and per-tool coverage; no calls means an unknown rate, never 100%.",
+      "This suite uses fixture tools (plus real calculator arithmetic), not the actual device tool backends. No verdict establishes the real-tool M5 target.",
+      "Completion, refusal, model and runtime failures remain in the source report; they are not excluded to improve a rate."
+    ],
+    "observedTrials" : 30,
+    "protocolComplete" : true,
+    "realToolTargetVerified" : false,
+    "requiredSteps" : 93,
+    "scope" : "fixture-tools\/modelDriven-bounded-v1",
+    "target" : "Tool execution success >95% for supported built-in tools",
+    "verdict" : "inconclusive"
+  },
+  "measuredAt" : "2026-11-21T10:52:11Z",
+  "model" : "foundation",
+  "operatingSystem" : "Version 27.2.1 (Build 26B131)",
+  "planner" : "modelDriven-bounded-v1",
+  "repetitions" : 3,
+  "schemaVersion" : 1,
+  "suite" : "phase0-multi-step",
+  "suiteVersion" : 1,
+  "synthetic" : false,
+  "timeoutSeconds" : 60
+}

@@ -1,0 +1,942 @@
+{
+  "attempts" : 30,
+  "completed" : 0,
+  "completionRate" : 0,
+  "context" : {
+    "locale" : "en_US",
+    "referenceDateTime" : "2026-09-21T10:00",
+    "referenceWeekday" : "Monday",
+    "timeZone" : "UTC"
+  },
+  "createdAt" : "2026-11-21T10:52:11Z",
+  "m5" : {
+    "byTool" : {
+      "calculate" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "create_note" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "create_reminder" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "list_calendar_events" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_contacts" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_documents" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_files" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      },
+      "search_notes" : {
+        "attempts" : 0,
+        "executed" : 0,
+        "groundedSuccesses" : 0
+      }
+    },
+    "completedGoals" : 0,
+    "counts" : {
+      "attempts" : 0,
+      "executed" : 0,
+      "groundedSuccesses" : 0
+    },
+    "expectedRequiredSteps" : 93,
+    "expectedTrials" : 30,
+    "matchedRequiredSteps" : 0,
+    "metric" : "M5",
+    "missingGroundedToolCoverage" : [
+      "calculate",
+      "create_note",
+      "create_reminder",
+      "list_calendar_events",
+      "search_contacts",
+      "search_documents",
+      "search_files",
+      "search_notes"
+    ],
+    "notes" : [
+      "Execution means the fixture call completed; grounded success also requires valid, goal-matching arguments and dependency order.",
+      "Unemitted required calls remain visible in required-step and per-tool coverage; no calls means an unknown rate, never 100%.",
+      "This suite uses fixture tools (plus real calculator arithmetic), not the actual device tool backends. No verdict establishes the real-tool M5 target.",
+      "Completion, refusal, model and runtime failures remain in the source report; they are not excluded to improve a rate."
+    ],
+    "observedTrials" : 30,
+    "protocolComplete" : true,
+    "realToolTargetVerified" : false,
+    "requiredSteps" : 93,
+    "scope" : "fixture-tools\/modelDriven-bounded-v1",
+    "target" : "Tool execution success >95% for supported built-in tools",
+    "verdict" : "inconclusive"
+  },
+  "measurementProtocolVersion" : 1,
+  "mode" : "agent-run",
+  "model" : "foundation",
+  "operatingSystem" : "Version 27.2.1 (Build 26B131)",
+  "planner" : "modelDriven-bounded-v1",
+  "repetitions" : 3,
+  "results" : [
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.374619875,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-01",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.077430375,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-01",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.0137655,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-01",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 7.332741292,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-02",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "find",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 5.400191625,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-02",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "find",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 3.925372417,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-02",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "find",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.029102916,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-03",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "tue",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 5.702468041,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-03",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "tue",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.1698035,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-03",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "tue",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 12.005735875,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-04",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "policy",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 4,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 10.790763083,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-04",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "policy",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 4,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 9.547227666,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-04",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "policy",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 4,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.635335375,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-05",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 7.008198292,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-05",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 5.368847333,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-05",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.070121792,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-06",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "file",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 7.047212542,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-06",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "file",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 5.265982667,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-06",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "file",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 8.558883667,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-07",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "free",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 5,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 3.471794416,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-07",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "free",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 5,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 7.34592825,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-07",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "free",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 5,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 4.346578042,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-08",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "notes",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 5.8453209170000004,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-08",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "notes",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 3.115623292,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-08",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "notes",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 3,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.163040292,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-09",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.181922125,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-09",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 9.133216375,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-09",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "cal",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.875558792,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-10",
+      "repetition" : 1,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "current",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 5.113255125,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-10",
+      "repetition" : 2,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "current",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    },
+    {
+      "calls" : [
+
+      ],
+      "confirmationsApproved" : 0,
+      "elapsedSeconds" : 6.741168833,
+      "error" : "\"propose_tool_plan\" was called with invalid arguments: arguments must be a valid bounded plan expression.",
+      "goalID" : "ms-10",
+      "repetition" : 3,
+      "score" : {
+        "completed" : false,
+        "extraCalls" : 0,
+        "firstUnmatchedStep" : "current",
+        "forbiddenCalls" : [
+
+        ],
+        "matchedCallIndices" : {
+
+        },
+        "overConfirmedTools" : [
+
+        ],
+        "schemaInvalidCalls" : 0,
+        "stepsExpected" : 2,
+        "stepsMatched" : 0
+      },
+      "stopReason" : "error"
+    }
+  ],
+  "schemaVersion" : 3,
+  "suite" : "phase0-multi-step",
+  "suiteVersion" : 1,
+  "synthetic" : false,
+  "timeoutSeconds" : 60
+}

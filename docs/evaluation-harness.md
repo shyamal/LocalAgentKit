@@ -532,3 +532,52 @@ so unexpected entries still fail assertions without requiring newest-SDK variant
 Core coverage was 99.77% (438/439), Runtime 98.34% (1482/1507), combined 98.66%
 (1920/1946). That is 0.06 percentage points below the preceding 98.72% pass because
 one fewer Runtime line was covered; EV-08 changed no Runtime code.
+
+## Current-planner measurements (M5-03)
+
+Multi-step runs now select a planner explicitly:
+
+```bash
+swift run LocalAgentKitEval run --suite multi-step --model foundation \
+  --planner model-driven --repetitions 3 --timeout 60 --output /tmp/model-driven.json
+swift run LocalAgentKitEval run --suite multi-step --model foundation \
+  --planner state-machine --repetitions 3 --timeout 60 --output /tmp/state-machine.json
+swift run LocalAgentKitEval assess-m5 --report /tmp/model-driven.json \
+  --output /tmp/model-driven-assessment.json
+```
+
+The default remains `--planner state-machine`. The option applies only to the
+multi-step suite; other suites reject model-driven selection. Reports identify
+`stateMachine-open` or `modelDriven-bounded-v1`, and offline assessment retains
+that identity with a corresponding scope. The latter uses current experimental
+planner defaults: seven planned tool slots, two schema repairs, one suffix revision.
+Changes to those protocol defaults require a new planner identity. Runtime call
+and iteration limits, fixed UTC reference, fixtures, synthetic confirmations and
+scoring are shared. Expected steps and matcher values remain outside model prompts.
+
+Use the single-tool suite separately for P0-09 validity measurements. A multi-step
+report alone is not a full reproduction of both Phase 0 protocols. Complete M5
+fixture protocol is all ten goals, three repetitions, 60-second deadlines. A smoke
+run or single-OS run cannot establish cross-OS promotion readiness. Fixture tools
+and coarse aggregate rates never establish real built-in-tool success.
+
+Generic report comparison deliberately rejects different planner identities; do
+not label a cross-planner side-by-side as a like-for-like model drift comparison.
+Keep raw reports, independent offline replay, source/binary/workload hashes, OS and
+Xcode provenance, execution order, failures and missing coverage. Freeze the
+measurement build directory, including its SwiftPM resource bundles, before rebuilding it, and exclude test compilation or other
+workloads if interpreting latency. Record warm-up and fixed-order limitations.
+Do not tune on the retained evaluation goals and then reuse their outcomes as
+held-out evidence. M5-03 does not change the default automatically.
+
+### Paired result, 2026-11-21
+
+M5-03 completed with a no-go decision. Model-driven completed 0/30 fixture goals on
+both macOS 27.2.1 / M5 Max and iOS 27.2 / iPhone 15 Pro. The state-machine open
+baseline completed 4/30 and 2/30. Neither grounded fixture result meets the target;
+keep the default without asserting that open-mode reliability exceeds the bar.
+Single-tool valid-first-call rates (91/100 Mac, 97/100 iPhone) are separate validity
+observations, not end-to-end or real-tool passes. The phone ended in serious thermal
+state. See [paired evidence and limitations](planner-measurement-verification.md)
+and [decision 0002](decisions/0002-planner-default.md). All raw failures and independent
+replays are retained, including the phone's single-tool timeout and extra calls.
