@@ -46,6 +46,11 @@ jobs:
           swift test --package-path Examples/MultimodalProbe
           xcrun swift-format lint --configuration .swift-format --strict --recursive Examples/MultimodalProbe/Probe Examples/MultimodalProbe/App Examples/MultimodalProbe/Tests Examples/MultimodalProbe/DeviceTests Examples/MultimodalProbe/Package.swift
 
+      - name: Planning probe host (compile only, no native generation)
+        run: |
+          xcrun swift-format lint --configuration .swift-format --strict --recursive Examples/PlanningProbe/App
+          xcodebuild -project Examples/PlanningProbe/PlanningProbe.xcodeproj -scheme PlanningProbe -configuration Debug -destination 'generic/platform=iOS' -derivedDataPath "$RUNNER_TEMP/planning-probe" CODE_SIGNING_ALLOWED=NO build
+
       - name: Layering check
         # Fails if LocalAgentKitCore/LocalAgentKitRuntime import an Apple
         # framework. Runs before the test suite: a layering violation is a

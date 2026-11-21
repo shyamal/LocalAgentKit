@@ -90,8 +90,8 @@ workflows remain available when application code should own the plan shape.
 Unit tests demonstrate proposal validation, structured-result grounding, conditional
 execution and runtime enforcement with scripted/mock providers. They establish no
 real-model success rate. Existing state-machine evaluation reports must not be
-attributed to this configuration. M5-03 still gates promotion with fresh per-OS
-measurements above the >95% target. The default is unchanged.
+attributed to this configuration. Promotion requires fresh per-OS measurements above the >95% target. M5-03
+remeasurement on 2026-11-21 returned a no-go; the default is unchanged.
 
 ## Bounded model-driven replanning
 
@@ -129,4 +129,8 @@ and pending reasons live in AgentContext, not the shared planner instance.
 Tests cover revised-plan events, preserved bindings/prefixes, empty-result fallback,
 protected-tool replay rejection, permission checks, revision limits, cancellation,
 deadlines and refusal. They do not establish real-model planning or replanning
-quality. M5-03 remains required before changing the state-machine default.
+quality. The completed M5-03 fixture measurement found 0/30 model-driven goal completions
+on both tested Mac and iPhone builds; it did not establish real-tool success.
+The state-machine default remains unchanged. See the
+[measurement record](https://github.com/shyamal/LocalAgentKit/blob/main/docs/planner-measurement-verification.md)
+for raw evidence, per-OS scopes and thermal limitations.

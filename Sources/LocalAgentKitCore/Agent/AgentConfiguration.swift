@@ -10,7 +10,7 @@ public enum NetworkPolicy: Sendable, Hashable {
 public enum PlannerChoice: Sendable, Hashable {
   /// Deterministic control flow, the model consulted per decision. The v0.1 default.
   case stateMachine
-  /// Experimental model-proposed linear tool sequences; open-ended replanning is deferred.
+  /// Experimental model-proposed conditional workflows with bounded suffix replanning.
   /// Promoted only if M5-03 clears the >95% bar.
   case modelDriven
 }

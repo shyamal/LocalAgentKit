@@ -42,3 +42,19 @@ Not marginal: the best multi-step figure on either host is **28% against a 95% b
 ## Note
 
 This decision follows the rule the PRD set before the data existed, which is why it is recorded without a fresh debate. The owner can overrule it, but doing so means shipping a default that completes roughly one multi-step task in four.
+
+## M5-03 remeasurement — 2026-11-21
+
+**Do not promote ModelDrivenPlanner.** Fresh paired fixture protocols completed
+on macOS 27.2.1 / Apple M5 Max and iOS 27.2 / iPhone 15 Pro. Model-driven planning
+completed 0/30 goals on each; the state-machine open baseline completed 4/30 and
+2/30 respectively. Grounded fixture-call results also provide no promotion pass.
+Single-tool schema validity was 91/100 on Mac and 97/100 on phone; it cannot replace
+end-to-end grounding evidence or verify real tool backends. The phone ended in
+serious thermal state, retained without censoring failures. Keep the state-machine
+default; this does not assert its open mode meets the target.
+
+[Raw evidence, scope, provenance and limitations](../planner-measurement-verification.md)
+record the completed M5-03 decision. Revisit with fresh versioned measurements
+following improvements, not with these goals reused as held-out evidence. No causal
+hardware/OS advantage, energy result or general reliability guarantee is inferred.

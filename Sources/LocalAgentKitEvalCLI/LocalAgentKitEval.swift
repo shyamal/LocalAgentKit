@@ -31,6 +31,14 @@ struct EvalCommand: AsyncParsableCommand {
   }
 
   enum Model: String, ExpressibleByArgument { case mock, foundation }
+  enum Planner: String, ExpressibleByArgument {
+    case stateMachine = "state-machine"
+    case modelDriven = "model-driven"
+    var choice: PlannerChoice { self == .stateMachine ? .stateMachine : .modelDriven }
+    var reportIdentity: String {
+      self == .stateMachine ? "stateMachine-open" : "modelDriven-bounded-v1"
+    }
+  }
   enum ContextTools: String, ExpressibleByArgument {
     case both
     case contextOnly = "context-only"
@@ -48,6 +56,8 @@ struct EvalCommand: AsyncParsableCommand {
       "single-tool"
     @Option(help: "mock is a synthetic smoke check; foundation uses the on-device model.")
     var model: Model = .mock
+    @Option(help: "Multi-step planner: state-machine (default) or model-driven.")
+    var planner: Planner = .stateMachine
     @Option(help: "Context-load profile ID (all by default).") var profile: String?
     @Option(help: "Context-load tools: both, context-only, registered.")
     var toolMode: ContextTools = .both
@@ -62,6 +72,9 @@ struct EvalCommand: AsyncParsableCommand {
     var reviewTemplate: String?
 
     mutating func validate() throws {
+      if suite != "multi-step" && planner != .stateMachine {
+        throw ValidationError("Planner selection applies only to multi-step.")
+      }
       if suite != "context-load" && (profile != nil || toolMode != .both) {
         throw ValidationError("Profile and tool-mode options apply only to context-load.")
       }
@@ -100,7 +113,16 @@ struct EvalCommand: AsyncParsableCommand {
       switch model {
       case .mock:
         provider = MockModelProvider(handler: { request in
-          .text(
+          if request.tools.first?.name == "propose_tool_plan" {
+            return .toolCall(
+              ToolCall(
+                id: "synthetic-plan", name: "propose_tool_plan",
+                arguments: ToolArguments([
+                  "steps": .array([]),
+                  "answer_instruction": .string("Return a synthetic smoke response."),
+                ])))
+          }
+          return .text(
             request.tools.first?.name == "choose_next_action"
               ? "finish" : "Synthetic harness smoke response.")
         })
@@ -136,11 +158,11 @@ struct EvalCommand: AsyncParsableCommand {
       if suite == "multi-step" {
         let results = try await MultiStepRunner.run(
           model: provider, repetitions: count,
-          limit: limit, goalID: goal, timeout: .seconds(timeout))
+          limit: limit, goalID: goal, timeout: .seconds(timeout), planner: planner.choice)
         let metadata = try SuiteLoader.suite(named: "multi-step")
         let completed = results.filter { $0.score.completed }.count
         let report = MultiReport(
-          schemaVersion: 3, mode: "agent-run", planner: "stateMachine-open",
+          schemaVersion: 3, mode: "agent-run", planner: planner.reportIdentity,
           model: model.rawValue, synthetic: model == .mock,
           operatingSystem: ProcessInfo.processInfo.operatingSystemVersionString,
           createdAt: Date(), suite: metadata.name, suiteVersion: metadata.version,
@@ -148,7 +170,8 @@ struct EvalCommand: AsyncParsableCommand {
           results: results, attempts: results.count, completed: completed,
           completionRate: results.isEmpty ? nil : Double(completed) / Double(results.count),
           m5: try await M5Assessment.assess(
-            results, synthetic: model == .mock, repetitions: count, timeoutSeconds: timeout))
+            results, synthetic: model == .mock, repetitions: count, timeoutSeconds: timeout,
+            planner: planner.choice))
         try write(report, to: output)
         // Completion misses are outcomes; unavailable models and timeouts remain visible failures.
         if results.contains(where: { ["modelUnavailable", "timeout"].contains($0.stopReason) }) {

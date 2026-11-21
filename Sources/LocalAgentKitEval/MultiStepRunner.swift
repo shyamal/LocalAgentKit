@@ -3,7 +3,7 @@ import LocalAgentKitCore
 import LocalAgentKitRuntime
 import LocalAgentKitTools
 
-/// One default-planner run with fixture tools, never the user's real device tools.
+/// One explicitly selected planner run with fixture tools, never the user's real device tools.
 public struct MultiStepResult: Codable, Sendable {
   public let goalID: String
   public let repetition: Int
@@ -17,12 +17,13 @@ public struct MultiStepResult: Codable, Sendable {
   public let elapsedSeconds: Double
 }
 
-/// Executes the fixed multi-step suite in StateMachinePlanner open mode. Expected steps and
+/// Executes the fixed multi-step suite with the selected planner. Expected steps and
 /// matcher values are available to routing/scoring only, not injected into model prompts.
 public enum MultiStepRunner {
   public static func run(
     model: any LocalModelProvider, repetitions: Int = 1,
-    limit: Int? = nil, goalID: String? = nil, timeout: Duration = .seconds(60)
+    limit: Int? = nil, goalID: String? = nil, timeout: Duration = .seconds(60),
+    planner: PlannerChoice = .stateMachine
   ) async throws -> [MultiStepResult] {
     guard (1...100).contains(repetitions), timeout > .zero, limit.map({ $0 > 0 }) ?? true else {
       throw ProbeError.invalidOptions(
@@ -63,7 +64,8 @@ public enum MultiStepRunner {
             model: model,
             limits: ExecutionLimits(
               maxIterations: maxCalls + 1, maxToolCalls: maxCalls,
-              maxDuration: timeout, maxModelCallDuration: timeout), networkPolicy: .never),
+              maxDuration: timeout, maxModelCallDuration: timeout), networkPolicy: .never,
+            planner: planner),
           tools: StaticToolSource(tools), gate: gate, timeZone: zone, now: { reference })
         let stream = await runtime.events()
         let observer = Task { await collect(stream, runtime: runtime) }

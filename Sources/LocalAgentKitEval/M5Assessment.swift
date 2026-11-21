@@ -1,4 +1,5 @@
 import Foundation
+import LocalAgentKitCore
 
 /// Continuous, scoped evidence for PRD §44 M5. Fixture tools cannot establish real-tool success.
 public struct M5Assessment: Codable, Sendable {
@@ -37,9 +38,10 @@ public struct M5Assessment: Codable, Sendable {
   public let notes: [String]
 
   /// Replays catalog and goal matchers against raw calls; saved score aggregates are not trusted.
-  /// Protocol: all bundled multi-step goals, three repetitions each, StateMachinePlanner open mode.
+  /// Protocol: all bundled multi-step goals, three repetitions each; planner identity is retained.
   public static func assess(
-    _ results: [MultiStepResult], synthetic: Bool, repetitions: Int, timeoutSeconds: Double = 60
+    _ results: [MultiStepResult], synthetic: Bool, repetitions: Int, timeoutSeconds: Double = 60,
+    planner: PlannerChoice = .stateMachine
   ) async throws -> M5Assessment {
     guard (1...100).contains(repetitions), timeoutSeconds.isFinite, timeoutSeconds > 0,
       timeoutSeconds <= 3600
@@ -97,7 +99,9 @@ public struct M5Assessment: Codable, Sendable {
       verdict = .insufficientCoverage
     }
     return M5Assessment(
-      metric: "M5", scope: "fixture-tools/stateMachine-open",
+      metric: "M5",
+      scope: planner == .stateMachine
+        ? "fixture-tools/stateMachine-open" : "fixture-tools/modelDriven-bounded-v1",
       target: "Tool execution success >95% for supported built-in tools",
       verdict: verdict, realToolTargetVerified: false, protocolComplete: complete,
       expectedTrials: expected, observedTrials: results.count, completedGoals: completedGoals,
@@ -127,6 +131,7 @@ public struct M5Assessment: Codable, Sendable {
 public struct M5Report: Encodable, Sendable {
   public let schemaVersion = 1
   public let operatingSystem: String
+  public let planner: String
   public let model: String
   public let synthetic: Bool
   public let measuredAt: Date
@@ -141,15 +146,17 @@ public struct M5Report: Encodable, Sendable {
     decoder.dateDecodingStrategy = .iso8601
     let saved = try decoder.decode(Saved.self, from: data)
     let metadata = try SuiteLoader.suite(named: "multi-step")
-    guard saved.schemaVersion == 3, saved.mode == "agent-run", saved.planner == "stateMachine-open",
+    guard saved.schemaVersion == 3, saved.mode == "agent-run",
+      ["stateMachine-open", "modelDriven-bounded-v1"].contains(saved.planner),
       saved.suite == metadata.name, saved.suiteVersion == metadata.version,
       saved.context == metadata.context, !saved.model.isEmpty, !saved.operatingSystem.isEmpty
     else { throw ProbeError.invalidOptions("M5 report protocol mismatch.") }
     let assessment = try await M5Assessment.assess(
       saved.results, synthetic: saved.synthetic,
-      repetitions: saved.repetitions, timeoutSeconds: saved.timeoutSeconds)
+      repetitions: saved.repetitions, timeoutSeconds: saved.timeoutSeconds,
+      planner: saved.planner == "stateMachine-open" ? .stateMachine : .modelDriven)
     return M5Report(
-      operatingSystem: saved.operatingSystem, model: saved.model,
+      operatingSystem: saved.operatingSystem, planner: saved.planner, model: saved.model,
       synthetic: saved.synthetic, measuredAt: saved.createdAt, repetitions: saved.repetitions,
       timeoutSeconds: saved.timeoutSeconds, suite: saved.suite,
       suiteVersion: saved.suiteVersion, assessment: assessment)

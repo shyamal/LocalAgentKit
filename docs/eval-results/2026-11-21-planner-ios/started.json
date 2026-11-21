@@ -1,0 +1,8 @@
+{
+  "configuration" : "Debug",
+  "order" : "modelDriven-bounded-v1,stateMachine-open,single-tool",
+  "os" : "Version 27.2 (Build 24B115)",
+  "runID" : "4FFF785B-454D-4D6D-8BD7-D2CAA60E93C0",
+  "startedAt" : "2026-11-21T11:07:36Z",
+  "thermalStart" : "nominal"
+}

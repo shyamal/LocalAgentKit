@@ -141,3 +141,18 @@ private func m5SavedReport(_ rows: [MultiStepResult], repetitions: Int = 1) thro
     await #expect(throws: ProbeError.self) { try await M5Report.from(data) }
   }
 }
+
+extension M5AssessmentTests {
+  @Test func modelDrivenAssessmentAndReplayRetainTheirOwnScope() async throws {
+    let value = try await M5Assessment.assess(
+      fullM5Rows(), synthetic: false, repetitions: 3, planner: .modelDriven)
+    #expect(value.scope == "fixture-tools/modelDriven-bounded-v1")
+    #expect(!value.realToolTargetVerified)
+    var saved = try m5SavedReport([m5Row(calls: m5Calls())])
+    saved["planner"] = "modelDriven-bounded-v1"
+    let report = try await M5Report.from(JSONSerialization.data(withJSONObject: saved))
+    #expect(report.planner == "modelDriven-bounded-v1")
+    #expect(report.assessment.scope == "fixture-tools/modelDriven-bounded-v1")
+    #expect(report.assessment.verdict == .incomplete)
+  }
+}
