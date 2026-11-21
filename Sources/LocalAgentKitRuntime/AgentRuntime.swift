@@ -309,6 +309,8 @@ public actor AgentRuntime {
         let decision = try await planner.next(context: &context, tools: descriptors, model: model)
         await publishWorkingMemory(context.workingMemory)
         switch decision {
+        case .revisePlan(let plan):
+          await bus.publish(.planCreated(plan))
         case .complete(let text):
           return AgentResponse(text: text, iterations: iterations, toolCallCount: toolCalls)
 

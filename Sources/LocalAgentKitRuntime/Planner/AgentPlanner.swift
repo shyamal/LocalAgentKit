@@ -10,13 +10,17 @@ public enum PlannerDecision: Sendable {
   case complete(String)
   /// The model needs the user to say more. The run suspends until they answer.
   case askUser(String)
+  /// Publishes a validated replacement plan before the next executable decision.
+  /// This decision consumes an iteration like every other planner decision.
+  case revisePlan(AgentPlan)
 }
 
 /// Whether observing a result or handling a failure changed the displayed plan.
 public enum PlanRevision: Sendable {
   /// Continue using the existing plan.
   case `continue`
-  /// The plan changed. Only a model-driven planner produces this (M5-02).
+  /// A synchronous observation handler changed the displayed plan.
+  /// Async model revisions use `PlannerDecision.revisePlan` instead.
   case replanned(AgentPlan)
 }
 

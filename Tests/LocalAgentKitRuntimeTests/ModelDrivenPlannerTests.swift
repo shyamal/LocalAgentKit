@@ -218,7 +218,8 @@ private struct DenyPlanTool: PermissionGate {
         throw AgentError.toolFailed(tool: "read_item", message: "Unavailable")
       })
     let model = ScriptedModelProvider(responses: [proposal([proposedStep("read_item")])])
-    let runtime = try experimentalRuntime(model, tools: [tool])
+    let runtime = try experimentalRuntime(
+      model, tools: [tool], planner: ModelDrivenPlanner(maxReplans: 0))
     #expect(await failure(runtime) == .toolFailed(tool: "read_item", message: "Unavailable"))
     #expect(await tool.executions.count == 1)
     #expect(await model.requests.count == 1)
@@ -510,5 +511,271 @@ extension ModelDrivenPlannerTests {
     }
     #expect(await write.executions.isEmpty)
     #expect(await model.requests.count == 1)
+  }
+}
+
+private struct ApprovePlanTool: PermissionGate {
+  func decide(for call: ToolCall, tool: ToolDescriptor) async -> PermissionDecision { .approved }
+}
+
+extension ModelDrivenPlannerTests {
+  @Test func failureRevisesOnlyTheSuffixAndPublishesTheNewPlan() async throws {
+    let read = MockTool(name: "read", handler: { _ in "Ada" })
+    let broken = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Source unavailable")
+      })
+    let obsolete = MockTool(name: "obsolete")
+    let recovery = MockTool(
+      name: "recover",
+      schema: ToolSchema(
+        parameters: ["name": ToolParameter(.string, description: "Observed name.")],
+        required: ["name"]))
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("read"), advancedStep("broken"), advancedStep("obsolete")]),
+      proposal([
+        advancedStep("recover", ["arguments": .array([source("name", "binding", "step_1")])])
+      ]),
+      .text("Recovered"),
+    ])
+    let runtime = try experimentalRuntime(model, tools: [read, broken, obsolete, recovery])
+    let stream = await runtime.events()
+    let collector = Task { () -> [AgentPlan] in
+      var plans: [AgentPlan] = []
+      for await event in stream { if case .planCreated(let plan) = event { plans.append(plan) } }
+      return plans
+    }
+    let response = try await runtime.run("Read the name and process it")
+    await runtime.finishEvents()
+    let plans = await collector.value
+    #expect(response.text == "Recovered")
+    #expect(plans.count == 2)
+    #expect(plans.last?.steps.map(\.toolName) == ["read", "recover", nil])
+    #expect(await read.executions.count == 1)
+    #expect(await broken.executions.count == 1)
+    #expect(await obsolete.executions.isEmpty)
+    #expect(await recovery.executions.first?.string("name") == "Ada")
+    let requests = await model.requests
+    #expect(requests.count == 3)
+    #expect(requests[1].messages.last?.content.contains("Source unavailable") == true)
+    #expect(requests[1].messages.last?.content.contains("Ada") == true)
+  }
+
+  @Test func anUnexpectedEmptyResultIsPreservedForTheRevisedPlan() async throws {
+    let facts = PlanFacts(value: .array([]), empty: true)
+    let recover = MockTool(name: "recover")
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("read_facts")]),
+      proposal([advancedStep("recover", ["conditions": .array([clause("step_1", "is_empty")])])]),
+      .text("Fallback completed"),
+    ])
+    let response = try await experimentalRuntime(model, tools: [facts, recover]).run(
+      "Find useful facts")
+    #expect(response.text == "Fallback completed")
+    #expect(await recover.executions.count == 1)
+    #expect(await model.requests.count == 3)
+  }
+
+  @Test func aReplanBudgetExhaustionReturnsTheFinalToolFailure() async throws {
+    let first = MockTool(
+      name: "first",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "first", message: "Unavailable")
+      })
+    let second = MockTool(
+      name: "second",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "second", message: "Still unavailable")
+      })
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("first")]), proposal([advancedStep("second")]),
+    ])
+    let runtime = try experimentalRuntime(model, tools: [first, second])
+    #expect(await failure(runtime) == .toolFailed(tool: "second", message: "Still unavailable"))
+    #expect(await model.requests.count == 2)
+    #expect(await first.executions.count == 1)
+    #expect(await second.executions.count == 1)
+  }
+
+  @Test func aProtectedCompletedPrefixIsNotReexecutedDuringRecovery() async throws {
+    let write = MockTool(name: "write", permission: .userConfirmation)
+    let broken = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let recover = MockTool(name: "recover")
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("write"), advancedStep("broken")]),
+      proposal([advancedStep("recover")]), .text("Done"),
+    ])
+    _ = try await experimentalRuntime(
+      model, tools: [write, broken, recover], gate: ApprovePlanTool()
+    ).run("Write once and recover")
+    #expect(await write.executions.count == 1)
+    #expect(await recover.executions.count == 1)
+    let revision = await model.requests[1]
+    let offered = revision.tools.first?.schema.parameters["steps"]
+    if case .array(of: .object(let schema)) = offered?.type {
+      #expect(schema.parameters["tool"]?.allowedValues?.contains("write") == false)
+    } else {
+      Issue.record("Expected a closed revised tool catalog")
+    }
+  }
+
+  @Test(arguments: [false, true])
+  func aRevisionCannotReplayAnAttemptedProtectedTool(_ completed: Bool) async throws {
+    let write = MockTool(
+      name: "write", permission: .userConfirmation,
+      handler: { _ in
+        if !completed { throw AgentError.toolFailed(tool: "write", message: "Outcome uncertain") }
+        return "Saved"
+      })
+    let broken = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let initial =
+      completed ? [advancedStep("write"), advancedStep("broken")] : [advancedStep("write")]
+    let model = ScriptedModelProvider(responses: [
+      proposal(initial), proposal([advancedStep("write")]),
+    ])
+    let runtime = try experimentalRuntime(
+      model, tools: [write, broken], gate: ApprovePlanTool(),
+      planner: ModelDrivenPlanner(maxRepairs: 0))
+    guard case .invalidArguments = await failure(runtime) else {
+      Issue.record("Expected protected-tool replay rejection")
+      return
+    }
+    #expect(await write.executions.count == 1)
+    #expect(await model.requests.count == 2)
+  }
+
+  @Test func aRevisedProtectedToolStillRequiresPermission() async throws {
+    let broken = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let write = MockTool(name: "write", permission: .userConfirmation)
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("broken")]), proposal([advancedStep("write")]),
+    ])
+    let runtime = try experimentalRuntime(model, tools: [broken, write], gate: DenyPlanTool())
+    #expect(await failure(runtime) == .permissionDenied(tool: "write"))
+    #expect(await write.executions.isEmpty)
+    #expect(await model.requests.count == 2)
+  }
+
+  @Test(arguments: [false, true])
+  func replanningIsBoundedByModelDeadlinesAndCancellation(_ cancel: Bool) async throws {
+    let tool = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let model = ScriptedModelProvider([.respond(proposal([advancedStep("broken")])), .hang])
+    let limits = ExecutionLimits(maxModelCallDuration: cancel ? .seconds(30) : .milliseconds(20))
+    let runtime = try experimentalRuntime(model, tools: [tool], limits: limits)
+    let run = Task { await failure(runtime) }
+    if cancel {
+      while await model.requests.count < 2 { await Task.yield() }
+      run.cancel()
+    }
+    #expect(await run.value == (cancel ? .cancelled : .executionTimeout(.modelCall)))
+    #expect(await tool.executions.count == 1)
+  }
+
+  @Test func refusalDuringARevisionIsTerminal() async throws {
+    let tool = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let refusal = GuardrailRefusal(explanation: "Cannot revise this request")
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("broken")]), .refused(refusal),
+    ])
+    let runtime = try experimentalRuntime(model, tools: [tool])
+    #expect(await failure(runtime) == .guardrailRefusal(refusal))
+    #expect(await model.requests.count == 2)
+  }
+
+  @Test func revisedPlanPublicationConsumesAnIteration() async throws {
+    let tool = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let recovery = MockTool(name: "recover")
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("broken")]), proposal([advancedStep("recover")]),
+    ])
+    let runtime = try experimentalRuntime(
+      model, tools: [tool, recovery], limits: ExecutionLimits(maxIterations: 2))
+    #expect(await failure(runtime) == .maximumIterationsReached(limit: 2))
+    #expect(await recovery.executions.isEmpty)
+    #expect(await model.requests.count == 2)
+  }
+}
+
+extension ModelDrivenPlannerTests {
+  @Test func aRevisionCannotExpandTheConfiguredRemainingStepBudget() async throws {
+    let read = MockTool(name: "read")
+    let broken = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let unused = MockTool(name: "unused")
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("read"), advancedStep("broken")]),
+      proposal([advancedStep("unused"), advancedStep("unused")]),
+    ])
+    let runtime = try experimentalRuntime(
+      model, tools: [read, broken, unused], planner: ModelDrivenPlanner(maxSteps: 2))
+    guard case .invalidArguments = await failure(runtime) else {
+      Issue.record("Expected revision step-budget rejection")
+      return
+    }
+    #expect(await read.executions.count == 1)
+    #expect(await unused.executions.isEmpty)
+  }
+
+  @Test func revisionsCannotResetTheRuntimeToolCallBudget() async throws {
+    let broken = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let recovery = MockTool(name: "recover")
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("broken")]), proposal([advancedStep("recover")]),
+    ])
+    let runtime = try experimentalRuntime(
+      model, tools: [broken, recovery], limits: ExecutionLimits(maxToolCalls: 1))
+    #expect(await failure(runtime) == .maximumToolCallsReached(limit: 1))
+    #expect(await recovery.executions.isEmpty)
+    #expect(await model.requests.count == 2)
+  }
+
+  @Test func aSharedPlannerHasAnIndependentRevisionBudgetForEachRun() async throws {
+    let broken = MockTool(
+      name: "broken",
+      handler: { _ in
+        throw AgentError.toolFailed(tool: "broken", message: "Unavailable")
+      })
+    let planner = ModelDrivenPlanner()
+    let model = ScriptedModelProvider(responses: [
+      proposal([advancedStep("broken")]), proposal([]), .text("First recovered"),
+      proposal([advancedStep("broken")]), proposal([]), .text("Second recovered"),
+    ])
+    let runtime = try experimentalRuntime(model, tools: [broken], planner: planner)
+    #expect(try await runtime.run("First request").text == "First recovered")
+    #expect(try await runtime.run("Second request").text == "Second recovered")
+    #expect(await broken.executions.count == 2)
+    #expect(await model.requests.count == 6)
   }
 }

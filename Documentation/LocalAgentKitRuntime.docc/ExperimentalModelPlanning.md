@@ -11,7 +11,7 @@ let runtime = try AgentRuntime(configuration: configuration, tools: toolSource)
 
 The default remains `.stateMachine`, per the Phase 0 findings. Supplying a `planner:`
 instance directly overrides either configured choice. To customize the experimental
-length and repair bounds, pass `ModelDrivenPlanner(maxSteps: 4, maxRepairs: 1)`.
+length and repair bounds, pass `ModelDrivenPlanner(maxSteps: 4, maxRepairs: 1, maxReplans: 1)`.
 The `workflows:` argument configures only the built-in state-machine planner.
 
 ## What the model proposes
@@ -82,14 +82,51 @@ ordinary tool events and final completion remain available to observers.
 
 ## Limits and evidence
 
-This implementation proposes a complete bounded workflow once. It does not revise
-that workflow from unexpected observations, introduce new tools after execution,
-or generate unbounded/recursive expressions. Open-ended replanning remains M5-02;
-parallel execution and dependency scheduling remain M5-04/05. Declared workflows
-remain available when application code should own the plan shape.
+The initial proposal can be revised within the per-run bounds described below.
+It never generates recursive expressions or executes tools outside the registered
+catalog. Parallel execution and dependency scheduling remain M5-04/05. Declared
+workflows remain available when application code should own the plan shape.
 
 Unit tests demonstrate proposal validation, structured-result grounding, conditional
 execution and runtime enforcement with scripted/mock providers. They establish no
 real-model success rate. Existing state-machine evaluation reports must not be
 attributed to this configuration. M5-03 still gates promotion with fresh per-OS
 measurements above the >95% target. The default is unchanged.
+
+## Bounded model-driven replanning
+
+`maxReplans` enables one suffix revision per run by default and is clamped from
+zero through three. Set it to zero to retain the earlier fail-without-revision
+behavior. An exhausted recoverable `toolFailed` or an unexpected empty result
+whose `on_empty` is `fail` requests a new proposal on the next decision. Explicit
+empty-result skip and declared retries run first. Refusal, permission denial,
+cancellation, invalid bindings/arguments, loop detection and limits never request
+model recovery. Successful nonempty results do not trigger a separate semantic
+assessment call.
+
+The model sees the failure as untrusted data, a bounded fact excerpt and the
+completed prefix. It proposes only the unfinished suffix. Completed steps and
+full typed bindings remain in context, so revised arguments can reference their
+original `step_N` identifiers. An observed empty result is preserved as an empty
+binding and is not executed again automatically. A failed operation creates no
+fact binding. Completed and proposed tool slots together must fit `maxSteps`;
+invalid revisions fail without executing a replacement.
+
+Protected tools (confirmation or sensitive tier) already attempted are excluded
+from the revision catalog, including failed writes with uncertain outcomes. This
+conservative policy blocks proposing that tool again even with different
+arguments. Newly proposed protected tools still require their normal permission
+gate. Failed read-only tools can be selected again, but the existing loop detector
+and run budgets still apply. A model revision cannot route around a human denial.
+
+A validated suffix returns `PlannerDecision.revisePlan`. AgentRuntime publishes
+`.planCreated` with the completed prefix plus new steps, then resumes execution
+on the following decision. Publishing a revision consumes an iteration; tool-call,
+model-call, active-duration and context limits are not reset. Custom drivers that
+switch exhaustively over PlannerDecision must handle the new case. Replan counts
+and pending reasons live in AgentContext, not the shared planner instance.
+
+Tests cover revised-plan events, preserved bindings/prefixes, empty-result fallback,
+protected-tool replay rejection, permission checks, revision limits, cancellation,
+deadlines and refusal. They do not establish real-model planning or replanning
+quality. M5-03 remains required before changing the state-machine default.

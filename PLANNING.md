@@ -343,6 +343,16 @@ by model guesses. Open-ended replanning remains M5-02; parallel/DAG scheduling
 remains M5-04/05. This supersedes the earlier linear-only limitation. No default
 promotion or real-model reliability claim is made; M5-03 remains open.
 
+M5-02 update (2026-11-20): `.modelDriven` now supports bounded suffix revisions
+following exhausted tool failures or unexpected empty results. One revision is
+enabled by default (configurable zero through three). Completed steps and typed
+facts survive; protected tools already attempted are excluded from new proposals.
+New tools retain permission checks. Revisions publish `.planCreated` through
+`PlannerDecision.revisePlan`, consume an iteration and never reset run limits.
+Denial, refusal, cancellation, invalid bindings and limits remain terminal. This
+supersedes the earlier no-replanning limitation; no real-model quality or default
+promotion is claimed, and M5-03 remains open.
+
 ### 2.5 Concurrency model
 
 Swift 6 strict concurrency, full checking, no exceptions:

@@ -58,6 +58,8 @@ public struct AgentContext: Sendable {
   var failures: [String: Int] = [:]
   var executed: [ExecutedCall] = []
   var notes: [String] = []
+  var modelReplans = 0
+  var modelReplanReason: AgentError?
 
   /// Creates a fresh run context with a reference clock, earlier transcript and normalized inputs.
   public init(
