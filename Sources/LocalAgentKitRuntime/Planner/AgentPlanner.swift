@@ -6,6 +6,10 @@ public enum PlannerDecision: Sendable {
   /// or ``AgentPlanner/handleFailure(_:context:)``. The runtime gives each invocation a unique
   /// execution ID; use the observed call ID to correlate runtime events and results.
   case callTool(ToolCall)
+  /// Independent ready calls with concrete arguments. The runtime validates, authorizes and
+  /// executes a bounded batch, then observes results in input order. Unsafe tools serialize it.
+  /// Batch failure ends the run; no model argument repair or planner recovery is attempted.
+  case callTools([ToolCall])
   /// The goal is achieved; this is the answer.
   case complete(String)
   /// The model needs the user to say more. The run suspends until they answer.

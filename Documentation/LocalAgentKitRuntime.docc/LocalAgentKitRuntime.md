@@ -37,6 +37,7 @@ before every model call; a provider can still report overflow during generation.
 - ``ModelDrivenPlanner``
 - ``Workflow``
 - ``ToolExecutor``
+- <doc:ParallelToolExecution>
 - ``PermissionGate``
 
 ### Untrusted documents

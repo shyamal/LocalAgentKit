@@ -61,7 +61,7 @@ struct ContentView: View {
                   .id("saved-note-\(index)")
               }
             }
-            if let activeTool = viewModel.activeTool {
+            ForEach(viewModel.activeTools, id: \.id) { activeTool in
               ToolActivityView(call: activeTool)
             }
           }

@@ -8,7 +8,8 @@ public enum RuntimeOperation: String, Sendable, Hashable {
   case planning
   /// A budgeted model request, including context fitting and provider generation.
   case modelCall
-  /// A planned invocation, including validation, permission, repair and observation.
+  /// A planned invocation or explicit batch, including admission and observation.
+  /// Batch spans cover the whole group; per-call events retain individual identities.
   case toolCall
   /// Automatic goal-based retrieval before planning; explicit search tools use tool-call spans.
   case retrieval

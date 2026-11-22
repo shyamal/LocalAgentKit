@@ -361,6 +361,15 @@ remeasurement/decision task with a no-go, not a real-tool M5 pass. Paired raw re
 independent replay, provenance and thermal limitations are retained in
 `docs/planner-measurement-verification.md`; decision 0002 is reaffirmed.
 
+M5-04 (2026-11-22): custom planners can emit independent concrete calls through
+`PlannerDecision.callTools`. Runtime reserves the whole batch against limits and
+loop detection; executor snapshots/validates all tools and obtains confirmations
+serially before work. At most four calls overlap only when every tool declares
+parallel safety; otherwise the batch serializes. Observations retain input order,
+per-call events retain execution IDs/order, and failures cancel siblings without
+resetting budgets. Existing planners remain ordered; automatic dependency scheduling
+is M5-05. AgentViewModel exposes all active calls. No native speed/energy claim is made.
+
 ### 2.5 Concurrency model
 
 Swift 6 strict concurrency, full checking, no exceptions:
