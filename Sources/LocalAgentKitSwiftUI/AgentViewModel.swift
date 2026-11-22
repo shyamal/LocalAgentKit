@@ -67,8 +67,10 @@ public final class AgentViewModel {
   public private(set) var turns: [Turn] = []
   /// Current execution or human-input suspension state.
   public private(set) var state: RunState = .idle
-  /// The tool currently executing, if any — for "visible tool activity" (M1-UI-03).
+  /// Most recently started remaining tool, if any. Use activeTools for all concurrent activity.
   public private(set) var activeTool: ToolCall?
+  /// Currently executing calls in start-event order, including concurrent batches.
+  public private(set) var activeTools: [ToolCall] = []
   /// Every tool result observed this session, oldest first.
   public private(set) var toolActivity: [ToolResult] = []
   /// Latest ephemeral task facts, reset when a new run starts.
@@ -193,10 +195,14 @@ public final class AgentViewModel {
       thermalStatus = status
 
     case .toolStarted(let call):
+      activeTools.removeAll { $0.id == call.id }
+      activeTools.append(call)
       activeTool = call
+      state = .running
 
     case .toolCompleted(let result):
-      activeTool = nil
+      activeTools.removeAll { $0.id == result.callID }
+      activeTool = activeTools.last
       toolActivity.append(result)
 
     case .permissionRequired(let call):
@@ -216,6 +222,7 @@ public final class AgentViewModel {
       turns.append(Turn(role: .assistant, text: lastFailure!))
       state = sendInProgress ? .finishing : .idle
       activeTool = nil
+      activeTools = []
 
     case .completed(let response):
       if let id = streamingTurnID, let index = turns.firstIndex(where: { $0.id == id }) {
@@ -226,6 +233,7 @@ public final class AgentViewModel {
       streamingTurnID = nil
       state = sendInProgress ? .finishing : .idle
       activeTool = nil
+      activeTools = []
 
     case .error(let error):
       discardStreamingTurn()
@@ -233,6 +241,7 @@ public final class AgentViewModel {
       streamingTurnID = nil
       state = sendInProgress ? .finishing : .idle
       activeTool = nil
+      activeTools = []
     }
   }
 

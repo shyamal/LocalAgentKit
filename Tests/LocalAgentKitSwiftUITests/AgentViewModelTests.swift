@@ -264,3 +264,64 @@ private func waitUntil(
     #expect(viewModel.lastFailure != nil)
   }
 }
+
+private actor UIParallelHold {
+  var released: Set<String> = []
+  var pending: [String: AsyncStream<Void>.Continuation] = [:]
+  func perform(_ key: String) async -> String {
+    if released.contains(key) { return key }
+    let (stream, continuation) = AsyncStream<Void>.makeStream()
+    pending[key] = continuation
+    for await _ in stream {}
+    pending.removeValue(forKey: key)
+    return key
+  }
+  func finish(_ key: String) {
+    released.insert(key)
+    pending[key]?.finish()
+  }
+}
+
+private struct UIParallelPlanner: AgentPlanner {
+  func plan(context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider)
+    -> AgentPlan
+  { AgentPlan(steps: []) }
+  func next(context: inout AgentContext, tools: [ToolDescriptor], model: any LocalModelProvider)
+    -> PlannerDecision
+  {
+    context.workingMemory.value(for: "observed") == nil
+      ? .callTools([ToolCall(id: "a", name: "first"), ToolCall(id: "b", name: "second")])
+      : .complete("Done")
+  }
+  func observe(_ observation: ToolObservation, context: inout AgentContext) -> PlanRevision {
+    // Public context facts suffice for a custom planner; no internal mutation is required.
+    context.workingMemory.set(.bool(true), forKey: "observed")
+    return .continue
+  }
+  func handleFailure(_ error: AgentError, context: inout AgentContext) throws -> PlanRevision {
+    throw error
+  }
+}
+
+extension AgentViewModelTests {
+  @Test @MainActor func concurrentActivityKeepsTheOtherToolVisibleWhenOneFinishes() async throws {
+    let hold = UIParallelHold()
+    let first = MockTool(name: "first", handler: { _ in await hold.perform("first") })
+    let second = MockTool(name: "second", handler: { _ in await hold.perform("second") })
+    let runtime = try AgentRuntime(
+      configuration: AgentConfiguration(model: MockModelProvider()),
+      tools: StaticToolSource([first, second]), planner: UIParallelPlanner())
+    let viewModel = AgentViewModel(runtime: runtime)
+    viewModel.send("Run both")
+    await waitUntil { viewModel.activeTools.count == 2 }
+    #expect(Set(viewModel.activeTools.map(\.name)) == ["first", "second"])
+    await hold.finish("first")
+    await waitUntil { viewModel.activeTools.count == 1 }
+    #expect(viewModel.activeTool?.name == "second")
+    await hold.finish("second")
+    await waitUntil { !viewModel.isRunning }
+    #expect(viewModel.activeTools.isEmpty)
+    #expect(viewModel.toolActivity.count == 2)
+    #expect(viewModel.turns.last?.text == "Done")
+  }
+}

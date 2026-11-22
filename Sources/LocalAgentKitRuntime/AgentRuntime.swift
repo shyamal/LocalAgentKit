@@ -331,6 +331,33 @@ public actor AgentRuntime {
           ]
           context.goal += "\n(Clarification: \(answer))"
 
+        case .callTools(let proposed):
+          guard !proposed.isEmpty else {
+            throw AgentError.invalidArguments(
+              tool: "tool_batch", violations: [.missingRequired(path: "calls")])
+          }
+          guard proposed.count <= limits.maxToolCalls - toolCalls else {
+            throw AgentError.maximumToolCallsReached(limit: limits.maxToolCalls)
+          }
+          let calls = proposed.map { call in
+            ToolCall(
+              id: UUID().uuidString + ":" + call.id, name: call.name, arguments: call.arguments)
+          }
+          for call in calls {
+            if case .loop(_, let name) = loopDetector.record(call) {
+              throw AgentError.loopDetected(tool: name)
+            }
+          }
+          toolCalls += calls.count
+          let interval = trace.begin(.toolCall)
+          defer { interval.end() }
+          let observations = try await executor.executeBatch(calls)
+          try Task.checkCancellationAsAgentError()
+          for observation in observations {
+            let revision = try planner.observe(observation, context: &context)
+            await publishWorkingMemory(context.workingMemory)
+            if case .replanned(let plan) = revision { await bus.publish(.planCreated(plan)) }
+          }
         case .callTool(var call):
           // Planner IDs may repeat across runs or retries. Scope each execution so an old
           // permission response (or delayed cancellation handler) cannot resolve a new wait.
