@@ -42,6 +42,9 @@ struct ContentView: View {
       ScrollViewReader { proxy in
         ScrollView {
           LazyVStack(alignment: .leading, spacing: 12) {
+            if !viewModel.planChecklist.rows.isEmpty {
+              PlanChecklistView(checklist: viewModel.planChecklist)
+            }
             ForEach(viewModel.turns) { turn in
               TurnView(turn: turn)
                 .id(turn.id)
@@ -241,5 +244,44 @@ private struct DemoPDFView: View {
       .onDisappear { controller.cancel() }
     }
     .frame(minWidth: 320, minHeight: 480)
+  }
+}
+
+private struct PlanChecklistView: View {
+  let checklist: PlanChecklist
+  @State private var expanded = true
+
+  var body: some View {
+    DisclosureGroup("Current plan", isExpanded: $expanded) {
+      VStack(alignment: .leading, spacing: 10) {
+        ForEach(checklist.rows) { row in
+          HStack(alignment: .top, spacing: 8) {
+            Image(systemName: symbol(row.status))
+              .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+              Text(row.step.summary)
+              Text(row.status.rawValue).font(.caption).foregroundStyle(.secondary)
+            }
+          }
+          .accessibilityElement(children: .combine)
+        }
+        Text("Tool results may lead to retries. Unobserved steps are not marked complete.")
+          .font(.caption).foregroundStyle(.secondary)
+      }
+      .padding(.top, 4)
+    }
+  }
+
+  private func symbol(_ status: PlanChecklist.Status) -> String {
+    switch status {
+    case .pending: "circle"
+    case .requested: "ellipsis.circle"
+    case .awaitingPermission: "hand.raised"
+    case .running: "gearshape"
+    case .resultReceived: "checkmark.circle"
+    case .notObserved: "minus.circle"
+    case .stopped: "stop.circle"
+    case .runFinished: "flag.checkered"
+    }
   }
 }

@@ -202,7 +202,8 @@ public struct StateMachinePlanner: AgentPlanner {
       for (name, value) in answer.values { values[name] = value }
     }
     return ToolCall(
-      id: context.nextCallID(stepID), name: invocation.tool, arguments: ToolArguments(values))
+      id: context.nextCallID(stepID), name: invocation.tool, arguments: ToolArguments(values),
+      planStepID: stepID)
   }
 
   /// One narrow question: just the arguments the model must supply, all required. The rest of
@@ -275,8 +276,9 @@ public struct StateMachinePlanner: AgentPlanner {
         uniqueKeysWithValues: tool.schema.parameters.map { name, parameter in
           (name, ArgumentSource.model(hint: parameter.description))
         }))
-    let call = try await buildCall(
+    var call = try await buildCall(
       invocation, stepID: tool.name, context: &context, tools: tools, model: model)
+    call.planStepID = "open"
 
     // Phase 0: the model created the same note twice in 22 of 50 iOS runs. An identical
     // side-effecting call is not made twice; the run wraps up instead.

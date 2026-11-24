@@ -248,3 +248,11 @@ successful import. An actor gate synchronizes import cancellation after extracti
 reaches the embedding stage. A cancellable scripted model synchronizes question
 cancellation. They do not automate file-picker gestures, cloud-file availability
 or the SwiftUI sheet presentation itself; those remain manual UI checks.
+
+## Live plan checklist
+
+“Current plan” shows the latest plan above the conversation. Rows show preparing,
+awaiting approval, running and result-received activity. Retries can return a row to
+running; an empty tool result is not a claim of successful step completion. Unobserved
+steps stay unchecked. The checklist resets for each question and is not saved with
+conversation history. Revised plans preserve activity only for unchanged steps.
