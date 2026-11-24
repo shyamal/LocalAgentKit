@@ -133,6 +133,7 @@ public enum SuiteLoader {
         ?? Bundle.module.url(forResource: "Suites/notes/\(name)", withExtension: "json")
         ?? Bundle.module.url(forResource: "Suites/contacts/\(name)", withExtension: "json")
         ?? Bundle.module.url(forResource: "Suites/files/\(name)", withExtension: "json")
+        ?? Bundle.module.url(forResource: "Suites/expanded/\(name)", withExtension: "json")
     else {
       throw Error.resourceMissing(name)
     }

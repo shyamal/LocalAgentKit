@@ -1,5 +1,5 @@
 // Validates the bundled eval suites against their tool catalog.
-// Run: swift Scripts/validate-eval-suites.swift [Sources/LocalAgentKitEval/Suites/phase0]
+// Run: swift Scripts/validate-eval-suites.swift [suite-directory] [catalog-json-path]
 // Exits non-zero on any inconsistency. Checks structure only — it does not run a model.
 import Foundation
 
@@ -35,9 +35,10 @@ let requiredFields: [String: [String]] = [
 let dateTimePattern = #/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/#
 let datePattern = #/^\d{4}-\d{2}-\d{2}$/#
 
-guard let catalog = load("\(dir)/tools.json"), let toolList = catalog["tools"] as? [[String: Any]]
+let catalogPath = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "\(dir)/tools.json"
+guard let catalog = load(catalogPath), let toolList = catalog["tools"] as? [[String: Any]]
 else {
-  errors.append("\(dir)/tools.json: missing or has no tools array")
+  errors.append("\(catalogPath): missing or has no tools array")
   for error in errors { print("error: \(error)") }
   exit(1)
 }

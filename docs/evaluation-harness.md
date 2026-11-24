@@ -581,3 +581,15 @@ observations, not end-to-end or real-tool passes. The phone ended in serious the
 state. See [paired evidence and limitations](planner-measurement-verification.md)
 and [decision 0002](decisions/0002-planner-default.md). All raw failures and independent
 replays are retained, including the phone's single-tool timeout and extra calls.
+
+## Expanded multi-step contracts
+
+Use `--suite multi-step-extended` for the eight M5-08 supplemental goals, with the same
+`--planner`, `--goal`, `--limit`, `--repetitions` and timeout options as multi-step runs.
+This fixture-only suite includes longer chains, fan-in, both conditional outcomes,
+empty-result recovery, an untrusted document and distinct confirmed writes. See
+`Sources/LocalAgentKitEval/Suites/README.md` for commands and the scenario inventory.
+
+Its schema-1 `expanded-agent-run` reports are separate from frozen schema-3 baseline
+reports. They intentionally contain no M5 assessment. Real-model outcomes are not yet
+measured; synthetic success validates runner/scorer plumbing only.
