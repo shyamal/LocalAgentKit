@@ -609,6 +609,12 @@ planner choices use the existing runner/scorer; supplemental schema-1 reports do
 enter the frozen schema-3 M5 assessment population. CI validates both suites against the shared catalog.
 Scripted tests prove harness contracts; native model quality remains unmeasured here.
 
+M5-09 adds `LocalAgentKitEval verify-loops`: fixed synthetic planners exercise runtime
+loop admission, batching, approvals and history reset without native generation. Retained
+protocol-1 evidence separates 33 loop detections, 12 controls and six limit boundaries.
+Default periods above three and unknown paraphrases are not claimed detected. CI runs
+the protocol; docs/loop-detection-verification.md records M8 scope and limitations.
+
 ### Milestones
 
 | | Scope | Key exit criterion |

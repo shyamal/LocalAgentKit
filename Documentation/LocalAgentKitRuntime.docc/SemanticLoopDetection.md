@@ -38,3 +38,13 @@ Runtime admission checks serial calls before execution and all batch members bef
 batch work. A match terminates with the existing `AgentError.loopDetected` and failure
 event. Permission gates, run budgets, deadlines and cancellation retain their behavior.
 The batch threshold counts proposed members, including equivalent members in one batch.
+
+## Verify runtime loop admission
+
+Run `swift run LocalAgentKitEval verify-loops --output /tmp/loop-verification.json`
+for deterministic M8 evidence. The fixed synthetic planner exercises exact, alternating,
+semantic and batched loops, valid-retry/changing-argument controls, and limit boundaries.
+It accesses no user records and makes no model calls. The report separates detected
+loops from ordinary limits; passing the period-four boundary means the tool limit
+worked, not that the default detector recognized a period-four loop. This command
+verifies runtime mechanics rather than native model reliability.

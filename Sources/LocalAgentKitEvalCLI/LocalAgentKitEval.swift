@@ -9,8 +9,29 @@ import LocalAgentKitTesting
 struct EvalCommand: AsyncParsableCommand {
   static let configuration = CommandConfiguration(
     commandName: "LocalAgentKitEval", abstract: "Inspect and run local model evaluation suites.",
-    subcommands: [List.self, Run.self, ReviewRefusals.self, Compare.self, AssessM5.self],
+    subcommands: [
+      List.self, Run.self, ReviewRefusals.self, Compare.self, AssessM5.self, VerifyLoops.self,
+    ],
     defaultSubcommand: List.self)
+
+  struct VerifyLoops: AsyncParsableCommand {
+    static let configuration = CommandConfiguration(
+      commandName: "verify-loops",
+      abstract:
+        "Verify M8 runtime loop admission with synthetic tools; no native model or user data.")
+    @Option(help: "Repetitions per fixed scenario (1...100).") var repetitions = 3
+    @Option(help: "JSON report path; omit for stdout.") var output: String?
+    mutating func validate() throws {
+      guard (1...100).contains(repetitions) else {
+        throw ValidationError("Repetitions must be 1...100.")
+      }
+    }
+    func run() async throws {
+      let report = try await LoopVerification.run(repetitions: repetitions)
+      try write(report, to: output)
+      if !report.passed { throw ExitCode.failure }
+    }
+  }
 
   struct List: ParsableCommand {
     static let configuration = CommandConfiguration(
