@@ -367,8 +367,8 @@ loop detection; executor snapshots/validates all tools and obtains confirmations
 serially before work. At most four calls overlap only when every tool declares
 parallel safety; otherwise the batch serializes. Observations retain input order,
 per-call events retain execution IDs/order, and failures cancel siblings without
-resetting budgets. Existing planners remain ordered; automatic dependency scheduling
-is M5-05. AgentViewModel exposes all active calls. No native speed/energy claim is made.
+resetting budgets. Existing planners remain ordered; opt-in TaskGraphPlanner validates declared DAGs and
+schedules ready layers (M5-05), keeping recovery-bearing nodes serial. AgentViewModel exposes all active calls. No native speed/energy claim is made.
 
 ### 2.5 Concurrency model
 

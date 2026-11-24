@@ -6,18 +6,21 @@ public struct PlanStep: Sendable, Hashable, Identifiable {
   public var summary: String
   /// The expected tool name, or nil for a step without a declared tool.
   public var toolName: String?
+  /// Prerequisite step IDs for declared graphs; empty for existing ordered plans.
+  public var dependsOn: Set<String>
 
   /// Creates a displayable step with an identifier, summary and optional tool name.
-  public init(id: String, summary: String, toolName: String? = nil) {
+  public init(id: String, summary: String, toolName: String? = nil, dependsOn: Set<String> = []) {
     self.id = id
     self.summary = summary
     self.toolName = toolName
+    self.dependsOn = dependsOn
   }
 }
 
 /// The ordered steps presented to observers when a run is planned.
 public struct AgentPlan: Sendable, Hashable {
-  /// Intended work in execution order.
+  /// Intended work in presentation order. Graph dependencies determine execution readiness.
   public var steps: [PlanStep]
 
   /// Creates a plan from its ordered display steps.

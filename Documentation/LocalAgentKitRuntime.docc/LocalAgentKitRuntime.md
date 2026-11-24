@@ -35,6 +35,10 @@ before every model call; a provider can still report overflow during generation.
 - ``AgentPlanner``
 - ``StateMachinePlanner``
 - ``ModelDrivenPlanner``
+- ``TaskGraphPlanner``
+- ``TaskGraph``
+- ``TaskNode``
+- <doc:TaskGraphs>
 - ``Workflow``
 - ``ToolExecutor``
 - <doc:ParallelToolExecution>
