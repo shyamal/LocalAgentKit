@@ -92,7 +92,12 @@ private struct GraphFacts: AgentTool {
     #expect(await model.requests.count == 1)
     await runtime.finishEvents()
     var plan: AgentPlan?
-    for await event in events { if case .planCreated(let value) = event { plan = value } }
+    var correlated: [String] = []
+    for await event in events {
+      if case .planCreated(let value) = event { plan = value }
+      if case .toolStarted(let call) = event, let step = call.planStepID { correlated.append(step) }
+    }
+    #expect(Set(correlated) == ["a", "b", "join"])
     #expect(plan?.steps.map(\.id) == ["a", "b", "join", "answer"])
     #expect(plan?.steps.first(where: { $0.id == "join" })?.dependsOn == ["a", "b"])
     #expect(plan?.steps.last?.dependsOn == ["a", "b", "join"])

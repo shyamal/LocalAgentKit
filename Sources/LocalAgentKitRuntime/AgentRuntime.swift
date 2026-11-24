@@ -341,7 +341,8 @@ public actor AgentRuntime {
           }
           let calls = proposed.map { call in
             ToolCall(
-              id: UUID().uuidString + ":" + call.id, name: call.name, arguments: call.arguments)
+              id: UUID().uuidString + ":" + call.id, name: call.name, arguments: call.arguments,
+              planStepID: call.planStepID)
           }
           for call in calls {
             if case .loop(_, let name) = loopDetector.record(call) {
@@ -469,7 +470,9 @@ public actor AgentRuntime {
         try count()
         // The repaired call keeps the original id, so the transcript stays linked (findings §10a).
         result = await attempt(
-          ToolCall(id: call.id, name: repaired.name, arguments: repaired.arguments),
+          ToolCall(
+            id: call.id, name: repaired.name, arguments: repaired.arguments,
+            planStepID: call.planStepID),
           with: executor)
       } catch let error as AgentError {
         // A refusal or a limit is final; exhausted repairs are a failure the planner may handle.

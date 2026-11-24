@@ -377,6 +377,12 @@ rendered-signature collisions and safely normalizes equivalent numeric values. N
 or embedding work is added. Unknown paraphrases still rely on ordinary run limits; see
 the SemanticLoopDetection DocC guide.
 
+M5-07 exposes an event-derived PlanChecklist on AgentViewModel and renders it in the
+demo. Optional ToolCall.planStepID correlates activity without parsing IDs or guessing
+from tool names. Revisions retain only unchanged-step evidence. A returned result is
+not step-success evidence; unobserved and stopped rows stay distinct. No scheduler,
+persistence or new engine state is introduced.
+
 ### 2.5 Concurrency model
 
 Swift 6 strict concurrency, full checking, no exceptions:
