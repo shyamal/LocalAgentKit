@@ -86,6 +86,7 @@ jobs:
           LLVM_PROFILE_FILE: ${{ runner.temp }}/eval-smoke-%p.profraw
         run: |
           swift run --skip-build LocalAgentKitEval run --model mock --limit 1 --output "$RUNNER_TEMP/eval-smoke.json"
+          swift run --skip-build LocalAgentKitEval verify-loops --output "$RUNNER_TEMP/loop-verification.json"
           eval_cli="$(swift build --show-bin-path)/LocalAgentKitEval"
           python3 Scripts/eval_ci.py run --cli "$eval_cli" --output "$RUNNER_TEMP/eval-ci-smoke" --smoke
           python3 Scripts/eval_ci.py run --cli "$eval_cli" --output "$RUNNER_TEMP/eval-ci-compare-smoke" --baseline "$RUNNER_TEMP/eval-ci-smoke" --smoke

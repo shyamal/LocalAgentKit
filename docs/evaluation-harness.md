@@ -593,3 +593,27 @@ empty-result recovery, an untrusted document and distinct confirmed writes. See
 Its schema-1 `expanded-agent-run` reports are separate from frozen schema-3 baseline
 reports. They intentionally contain no M5 assessment. Real-model outcomes are not yet
 measured; synthetic success validates runner/scorer plumbing only.
+
+## Deterministic loop verification (M5-09)
+
+```bash
+swift run LocalAgentKitEval verify-loops --repetitions 3 --output /tmp/loop-verification.json
+```
+
+This command uses a fixed deliberately repeating planner and private synthetic tools;
+it never invokes a model or accesses user records. It verifies runtime loop admission,
+not how often a native model loops. A nonzero exit means a scenario contract failed.
+Repetitions must be 1...100; each scenario reuses its runtime to check per-run reset.
+
+The schema-1/protocol-1 report marks itself synthetic and records proposed, requested,
+started, completed, executed and observed call counts, approvals, model calls, terminal
+events and expected/actual stops. All events are drained after the scenario's runtime
+finishes. Per-trial `passed` values require matching counts and stop reasons, including
+zero model calls and exactly one terminal event per run. The overall CLI verdict is
+its exit status; baseline M5 assessments are not part of this report family.
+
+The retained 2026-11-24 report has 51 passing trials: 33 intended detections, 12 negative
+controls and six explicit boundary trials. The period-four boundary reaches a tool
+limit, not loop detection, because the runtime's default maximum period is three.
+Unknown paraphrases remain outside declared text equivalences. See
+`docs/loop-detection-verification.md` for scenario-level scope and limitations.
