@@ -6,14 +6,19 @@ public struct ToolCall: Sendable, Hashable, Codable, Identifiable {
   public var id: String
   /// Registered tool name the invocation targets.
   public var name: String
+  /// Optional declared plan step identity for presentation; never used for authorization.
+  public var planStepID: String?
   /// Model-produced argument values, validated before execution.
   public var arguments: ToolArguments
 
   /// Creates an invocation with a correlation ID, registered name and optional arguments.
-  public init(id: String, name: String, arguments: ToolArguments = ToolArguments()) {
+  public init(
+    id: String, name: String, arguments: ToolArguments = ToolArguments(), planStepID: String? = nil
+  ) {
     self.id = id
     self.name = name
     self.arguments = arguments
+    self.planStepID = planStepID
   }
 }
 

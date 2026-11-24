@@ -78,7 +78,7 @@ public enum AgentEvent: Sendable {
   case inputProcessingProgress(processed: Int, total: Int)
   /// The runtime is about to request the next planner decision.
   case thinking
-  /// The initial plan is available for display.
+  /// The initial or revised plan is available for display.
   case planCreated(AgentPlan)
   /// Task facts changed or were reset for a new run. This is an in-memory value snapshot.
   case workingMemoryUpdated(WorkingMemory)

@@ -27,4 +27,6 @@ disabled by default, and the host owns the callback’s storage and network poli
 ### Present an agent
 
 - ``AgentViewModel``
+- ``PlanChecklist``
+- <doc:LivePlanChecklist>
 - ``PermissionConfirmationSheet``

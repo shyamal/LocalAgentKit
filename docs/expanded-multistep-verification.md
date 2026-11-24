@@ -58,3 +58,10 @@ behavioral probe, not proof of injection resistance. The paired conditional goal
 held-out facts are fixed public fixtures, not an independent held-out benchmark. Native
 completion/refusal/latency rates remain unmeasured. Deliberate loop scenarios and metric
 M8 verification remain M5-09.
+
+## Integration with merged M5-07
+
+After merging main into this branch, both completed task entries were preserved. The
+combined full and offline suites passed with 901 registered functions. Coverage measured
+98.82% (3936/3983): Core 99.80% (993/995), Runtime 98.49% (2943/2988). This is
+0.05 percentage points below the M5-07 baseline (Core unchanged, Runtime down 0.07).

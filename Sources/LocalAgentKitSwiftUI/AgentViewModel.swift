@@ -73,6 +73,8 @@ public final class AgentViewModel {
   public private(set) var activeTools: [ToolCall] = []
   /// Every tool result observed this session, oldest first.
   public private(set) var toolActivity: [ToolResult] = []
+  /// Run-local plan checklist derived from correlated runtime events.
+  public private(set) var planChecklist = PlanChecklist()
   /// Latest ephemeral task facts, reset when a new run starts.
   public private(set) var workingMemory = WorkingMemory()
   /// Most recently observed model-context measurement, or nil before one arrives.
@@ -174,6 +176,7 @@ public final class AgentViewModel {
   // MARK: Event handling
 
   private func handle(_ event: AgentEvent) {
+    planChecklist.receive(event)
     switch event {
     case .started:
       state = .running
