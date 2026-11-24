@@ -58,6 +58,7 @@ public struct AgentContext: Sendable {
   var failures: [String: Int] = [:]
   var executed: [ExecutedCall] = []
   var notes: [String] = []
+  var graphProgress: GraphProgress?
   var modelReplans = 0
   var modelReplanReason: AgentError?
 

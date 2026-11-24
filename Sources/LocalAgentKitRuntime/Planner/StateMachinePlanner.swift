@@ -149,9 +149,9 @@ public struct StateMachinePlanner: AgentPlanner {
   }
 
   /// Resolves each argument from its source; only what code cannot supply goes to the model.
-  private func buildCall(
+  func buildCall(
     _ invocation: ToolInvocation, stepID: String, context: inout AgentContext,
-    tools: [ToolDescriptor], model: any LocalModelProvider
+    tools: [ToolDescriptor], model: any LocalModelProvider, strictBindings: Bool = false
   ) async throws -> ToolCall {
     guard let descriptor = tools.first(where: { $0.name == invocation.tool }) else {
       throw AgentError.toolNotFound(name: invocation.tool)
@@ -166,6 +166,17 @@ public struct StateMachinePlanner: AgentPlanner {
         guard let value = context.value(for: reference) else {
           throw AgentError.invalidArguments(
             tool: invocation.tool, violations: [.missingRequired(path: name)])
+        }
+        if strictBindings {
+          guard let parameter = descriptor.schema.parameters[name] else {
+            throw AgentError.invalidArguments(
+              tool: invocation.tool, violations: [.unknownProperty(path: name)])
+          }
+          let violations = ToolSchema(parameters: [name: parameter], required: [name])
+            .validate(ToolArguments([name: value]))
+          guard violations.isEmpty else {
+            throw AgentError.invalidArguments(tool: invocation.tool, violations: violations)
+          }
         }
         values[name] = value
       case .input(let index, let path):
@@ -389,7 +400,7 @@ public struct StateMachinePlanner: AgentPlanner {
   // MARK: answers
 
   /// Writes the final answer, telling the model to use only the facts found.
-  private func answer(
+  func answer(
     _ instruction: String, context: AgentContext, model: any LocalModelProvider
   ) async throws -> PlannerDecision {
     // Keep conversation entries intact here. Clipping each to 200 characters loses
@@ -434,7 +445,7 @@ public struct StateMachinePlanner: AgentPlanner {
     }
   }
 
-  private static func defaultAnswer(_ context: AgentContext) -> String {
+  static func defaultAnswer(_ context: AgentContext) -> String {
     if let last = context.observations.last(where: { !$0.result.isEmpty }) {
       return last.result.text
     }

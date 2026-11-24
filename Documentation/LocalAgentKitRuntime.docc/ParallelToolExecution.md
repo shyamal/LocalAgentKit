@@ -27,7 +27,7 @@ planner ID alone.
 
 The built-in state-machine and model-driven planners retain their ordered workflow
 behavior. This API does not infer dependencies or ask the model for parallel plans.
-Graph construction and automatic ready-work scheduling remain M5-05. Custom drivers
+For opt-in declared dependencies and ready-work scheduling, see <doc:TaskGraphs>. Custom drivers
 with exhaustive switches over PlannerDecision must handle the new case.
 
 ## Admission before execution
