@@ -74,4 +74,125 @@ import Testing
     for value in 0..<1000 { _ = detector.record(call("t", .int(value))) }
     #expect(detector.record(call("t", .int(-1))) == .proceed)
   }
+  private func semanticDetector() -> LoopDetector {
+    LoopDetector(
+      configuration: LoopDetectionConfiguration(textRules: [
+        .init(
+          tool: "search", argument: "x",
+          equivalentPhrases: [
+            ["budget review notes", "notes for the budget meeting"],
+            ["notes for the budget meeting", "budget meeting preparation notes"],
+          ])
+      ]))
+  }
+
+  @Test func knownParaphrasesMeetTheSameLoopThreshold() {
+    var detector = semanticDetector()
+    #expect(detector.record(call("search", " Budget Review Notes ")) == .proceed)
+    #expect(detector.record(call("search", "notes for the budget meeting")) == .proceed)
+    #expect(
+      detector.record(call("search", "budget meeting preparation notes"))
+        == .loop(period: 1, toolName: "search"))
+  }
+
+  @Test func semanticAlternationIsDetected() {
+    var detector = semanticDetector()
+    for value in ["budget review notes", "other", "notes for the budget meeting", "other"] {
+      #expect(detector.record(call("search", .string(value))) == .proceed)
+    }
+    #expect(
+      detector.record(call("search", "budget meeting preparation notes"))
+        == .loop(period: 2, toolName: "search"))
+  }
+
+  @Test func textNormalizationIsExplicitAndPreservesUnknownMeaning() {
+    var exact = LoopDetector()
+    var semantic = semanticDetector()
+    for value in [" NEW\nquery", "new query", "New   Query"] {
+      #expect(exact.record(call("search", .string(value))) == .proceed)
+      let result = semantic.record(call("search", .string(value)))
+      if value == "New   Query" {
+        #expect(result == .loop(period: 1, toolName: "search"))
+      } else {
+        #expect(result == .proceed)
+      }
+    }
+    var distinct = semanticDetector()
+    for value in ["budget review notes", "not budget review notes", "budget review notes 2"] {
+      #expect(distinct.record(call("search", .string(value))) == .proceed)
+    }
+  }
+
+  @Test func otherArgumentsTypesToolsAndNestedValuesRemainDistinct() {
+    var detector = semanticDetector()
+    let values: [JSONValue] = [1, "1", ["a", "b"], ["b", "a"], ["name": "Ada"], ["name": "ada"]]
+    for value in values { #expect(detector.record(call("search", value)) == .proceed) }
+    for page in 1...4 {
+      let next = ToolCall(
+        id: "c", name: "search",
+        arguments: ToolArguments([
+          "x": "budget review notes", "page": .int(page),
+        ]))
+      #expect(detector.record(next) == .proceed)
+    }
+    for value in ["A", "a", " A "] {
+      #expect(detector.record(call("write", .string(value))) == .proceed)
+    }
+  }
+
+  @Test func structuralComparisonDoesNotConfuseEscapedStringsAndObjects() {
+    var detector = LoopDetector()
+    let one = ToolCall(id: "1", name: "t", arguments: ToolArguments(["x": "a\",y:\"b"]))
+    let two = ToolCall(id: "2", name: "t", arguments: ToolArguments(["x": "a", "y": "b"]))
+    #expect(detector.record(one) == .proceed)
+    #expect(detector.record(two) == .proceed)
+    #expect(detector.record(one) == .proceed)
+    #expect(detector.record(two) == .proceed)
+    #expect(detector.record(one) == .loop(period: 2, toolName: "t"))
+  }
+
+  @Test func hugeNumbersAndPeriodsCannotOverflow() {
+    var detector = LoopDetector(maxPeriod: Int.max)
+    #expect(detector.maxPeriod == 64)
+    for value in [Double.greatestFiniteMagnitude, Double.infinity, -Double.infinity] {
+      #expect(detector.record(call("t", .double(value))) == .proceed)
+    }
+    var large = LoopDetector()
+    _ = large.record(call("t", .double(1e100)))
+    _ = large.record(call("t", .double(1e100)))
+    #expect(large.record(call("t", .double(1e100))) == .loop(period: 1, toolName: "t"))
+  }
+
+  @Test func resetAlsoClearsSemanticHistory() {
+    var detector = semanticDetector()
+    _ = detector.record(call("search", "budget review notes"))
+    _ = detector.record(call("search", "notes for the budget meeting"))
+    detector.reset()
+    #expect(detector.record(call("search", "budget meeting preparation notes")) == .proceed)
+  }
+
+  @Test func overlappingRulesMergeRegardlessOfDeclarationOrder() {
+    let rules: [LoopDetectionConfiguration.TextRule] = [
+      .init(tool: "search", argument: "x", equivalentPhrases: [[], ["a", "b"]]),
+      .init(tool: "search", argument: "x", equivalentPhrases: [["b", "c"]]),
+      .init(tool: "search", argument: "x", equivalentPhrases: [["c", "d"]]),
+    ]
+    for order in [rules, Array(rules.reversed())] {
+      var detector = LoopDetector(configuration: .init(textRules: order))
+      _ = detector.record(call("search", "a"))
+      _ = detector.record(call("search", "d"))
+      #expect(detector.record(call("search", "b")) == .loop(period: 1, toolName: "search"))
+    }
+  }
+
+  @Test func nestedNumericEquivalenceAndSignedZeroRemainCompatible() {
+    var detector = LoopDetector()
+    let first: JSONValue = ["values": [0, 1, ["number": 2]]]
+    let second: JSONValue = ["values": [.double(-0.0), .double(1.0), ["number": .double(2.0)]]]
+    _ = detector.record(call("t", first))
+    _ = detector.record(call("t", second))
+    #expect(detector.record(call("t", first)) == .loop(period: 1, toolName: "t"))
+    #expect(LoopDetector(maxPeriod: 0).maxPeriod == 1)
+  }
+
 }

@@ -55,6 +55,8 @@ public struct AgentConfiguration: Sendable {
   public var inputLimits: AgentInputLimits
   /// Bounds one run, each model call and the assembled context.
   public var limits: ExecutionLimits
+  /// Opt-in tool-specific text equivalences; exact loop detection always remains enabled.
+  public var loopDetection: LoopDetectionConfiguration
   /// Controls audit recording; cannot weaken tool permission tiers.
   public var security: SecurityPolicy
   /// Whether registered components may require network access.
@@ -77,7 +79,8 @@ public struct AgentConfiguration: Sendable {
     retrieval: RetrievalConfiguration? = nil,
     vision: (any VisionProvider)? = nil,
     speechRecognizer: (any SpeechRecognizer)? = nil,
-    inputLimits: AgentInputLimits = AgentInputLimits()
+    inputLimits: AgentInputLimits = AgentInputLimits(),
+    loopDetection: LoopDetectionConfiguration = LoopDetectionConfiguration()
   ) {
     self.model = model
     self.memory = memory
@@ -89,6 +92,7 @@ public struct AgentConfiguration: Sendable {
     self.speechRecognizer = speechRecognizer
     self.inputLimits = inputLimits
     self.limits = limits
+    self.loopDetection = loopDetection
     self.security = security
     self.networkPolicy = networkPolicy
     self.planner = planner
