@@ -20,12 +20,14 @@ struct EvalCommand: AsyncParsableCommand {
       print(
         "Tool catalog: \(tools.count) tools, \(tools.filter(\.needsConfirmation).count) needing confirmation"
       )
-      for name in SuiteLoader.phase0Names + ["notes-local", "contacts-local", "files-local"] {
+      for name in SuiteLoader.phase0Names + [
+        "notes-local", "contacts-local", "files-local", "multi-step-extended",
+      ] {
         let suite = try SuiteLoader.suite(named: name)
         print("\(name): \(suite.goalCount) goals (\(suite.task))")
       }
       print(
-        "Single-call probes: single-tool, refusal. Agent runs: multi-step. Budgeted probes: context-load."
+        "Single-call probes: single-tool, refusal. Agent runs: multi-step, multi-step-extended. Budgeted probes: context-load."
       )
     }
   }
@@ -50,7 +52,7 @@ struct EvalCommand: AsyncParsableCommand {
       abstract: "Run model probes or fixture-backed agent evaluations.")
     @Option(
       help:
-        "Suite: single-tool, refusal, multi-step, context-load, notes-local, contacts-local or files-local."
+        "Suite: single-tool, refusal, multi-step, multi-step-extended, context-load, notes-local, contacts-local or files-local."
     )
     var suite =
       "single-tool"
@@ -72,8 +74,8 @@ struct EvalCommand: AsyncParsableCommand {
     var reviewTemplate: String?
 
     mutating func validate() throws {
-      if suite != "multi-step" && planner != .stateMachine {
-        throw ValidationError("Planner selection applies only to multi-step.")
+      if !["multi-step", "multi-step-extended"].contains(suite) && planner != .stateMachine {
+        throw ValidationError("Planner selection applies only to multi-step suites.")
       }
       if suite != "context-load" && (profile != nil || toolMode != .both) {
         throw ValidationError("Profile and tool-mode options apply only to context-load.")
@@ -97,12 +99,12 @@ struct EvalCommand: AsyncParsableCommand {
       guard
         [
           "single-tool", "refusal", "multi-step", "context-load", "notes-local", "contacts-local",
-          "files-local",
+          "files-local", "multi-step-extended",
         ]
         .contains(suite)
       else {
         throw ValidationError(
-          "Supported suites: single-tool, refusal, multi-step, context-load, notes-local, contacts-local, files-local."
+          "Supported suites: single-tool, refusal, multi-step, multi-step-extended, context-load, notes-local, contacts-local, files-local."
         )
       }
     }
@@ -155,12 +157,27 @@ struct EvalCommand: AsyncParsableCommand {
         }
         return
       }
-      if suite == "multi-step" {
+      if ["multi-step", "multi-step-extended"].contains(suite) {
         let results = try await MultiStepRunner.run(
           model: provider, repetitions: count,
-          limit: limit, goalID: goal, timeout: .seconds(timeout), planner: planner.choice)
-        let metadata = try SuiteLoader.suite(named: "multi-step")
+          limit: limit, goalID: goal, timeout: .seconds(timeout), planner: planner.choice,
+          suiteName: suite)
+        let metadata = try SuiteLoader.suite(named: suite)
         let completed = results.filter { $0.score.completed }.count
+        if suite == "multi-step-extended" {
+          let report = ExpandedMultiReport(
+            planner: planner.reportIdentity, model: model.rawValue, synthetic: model == .mock,
+            operatingSystem: ProcessInfo.processInfo.operatingSystemVersionString,
+            createdAt: Date(), suite: metadata.name, suiteVersion: metadata.version,
+            context: metadata.context, timeoutSeconds: timeout, repetitions: count,
+            results: results, attempts: results.count, completed: completed,
+            completionRate: results.isEmpty ? nil : Double(completed) / Double(results.count))
+          try write(report, to: output)
+          if results.contains(where: { ["modelUnavailable", "timeout"].contains($0.stopReason) }) {
+            throw ExitCode.failure
+          }
+          return
+        }
         let report = MultiReport(
           schemaVersion: 3, mode: "agent-run", planner: planner.reportIdentity,
           model: model.rawValue, synthetic: model == .mock,
@@ -347,6 +364,26 @@ private struct Report: Encodable {
     try container.encode(validity, forKey: .validity)
     try container.encode(validitySummary, forKey: .validitySummary)
   }
+}
+
+// Separate report family: supplemental outcomes must not enter the frozen M5 baseline.
+private struct ExpandedMultiReport: Encodable {
+  let schemaVersion = 1
+  let mode = "expanded-agent-run"
+  let planner: String
+  let model: String
+  let synthetic: Bool
+  let operatingSystem: String
+  let createdAt: Date
+  let suite: String
+  let suiteVersion: Int
+  let context: SuiteLoader.Suite.Context?
+  let timeoutSeconds: Double
+  let repetitions: Int
+  let results: [MultiStepResult]
+  let attempts: Int
+  let completed: Int
+  let completionRate: Double?
 }
 
 private struct MultiReport: Encodable {

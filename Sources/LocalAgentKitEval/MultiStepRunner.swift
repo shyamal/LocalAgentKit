@@ -17,19 +17,24 @@ public struct MultiStepResult: Codable, Sendable {
   public let elapsedSeconds: Double
 }
 
-/// Executes the fixed multi-step suite with the selected planner. Expected steps and
+/// Executes a versioned multi-step suite with the selected planner. Expected steps and
 /// matcher values are available to routing/scoring only, not injected into model prompts.
+/// `suiteName` accepts the frozen `multi-step` baseline (default) or supplemental
+/// `multi-step-extended`; these reports must be assessed as separate populations.
 public enum MultiStepRunner {
   public static func run(
     model: any LocalModelProvider, repetitions: Int = 1,
     limit: Int? = nil, goalID: String? = nil, timeout: Duration = .seconds(60),
-    planner: PlannerChoice = .stateMachine
+    planner: PlannerChoice = .stateMachine, suiteName: String = "multi-step"
   ) async throws -> [MultiStepResult] {
     guard (1...100).contains(repetitions), timeout > .zero, limit.map({ $0 > 0 }) ?? true else {
       throw ProbeError.invalidOptions(
         "Repetitions must be 1...100; timeout and limit must be positive.")
     }
-    let suite = try SuiteLoader.suite(named: "multi-step")
+    guard ["multi-step", "multi-step-extended"].contains(suiteName) else {
+      throw ProbeError.invalidOptions("Unsupported multi-step suite.")
+    }
+    let suite = try SuiteLoader.suite(named: suiteName)
     guard let context = suite.context,
       let reference = GoalMatcher.parse(context.referenceDateTime, format: "yyyy-MM-dd'T'HH:mm"),
       let zone = TimeZone(identifier: context.timeZone), context.timeZone == "UTC"
@@ -41,7 +46,6 @@ public enum MultiStepRunner {
       guard !goals.isEmpty else { throw ProbeError.invalidOptions("Unknown goal '\(goalID)'.") }
     }
     if let limit { goals = Array(goals.prefix(limit)) }
-    var results: [MultiStepResult] = []
     for goal in goals {
       guard let maxCalls = goal.maxIterations, maxCalls > 0, !(goal.steps ?? []).isEmpty else {
         throw ProbeError.invalidOptions("Goal \(goal.id) has no steps or call bound.")
@@ -51,6 +55,10 @@ public enum MultiStepRunner {
         for matcher in fixture.when.values { try matcher.validate() }
       }
       _ = try await MultiStepScorer.score(goal: goal, calls: [], tools: catalog, answered: false)
+    }
+    var results: [MultiStepResult] = []
+    for goal in goals {
+      let maxCalls = goal.maxIterations ?? 0
       let tools = try catalog.map { spec in
         FixtureTool(
           descriptor: try ProbeRunner.descriptor(spec), fixtures: goal.fixtures ?? [],

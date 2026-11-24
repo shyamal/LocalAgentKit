@@ -83,3 +83,32 @@ Run `swift run LocalAgentKitEval run --suite files-local --model mock` for a syn
 plumbing check. The probe executes no filesystem search and leaves Phase 0
 baselines unchanged. FilesToolTests scans temporary fixture directories to verify
 scope, traversal exclusions, partial results and cancellation separately.
+
+## Supplemental multi-step scenarios (M5-08)
+
+`expanded/multi-step-extended.json` adds eight versioned synthetic scenarios without
+changing Phase 0 files: a five-step chain, independent-read fan-in, paired conditional
+write/no-write cases, empty-note fallback to indexed documents, an untrusted document
+instruction, two distinct confirmed writes, and file-to-content arithmetic grounding.
+All tool backends are fixtures (the calculator evaluates expressions); auto-approval
+is restricted to those synthetic backends. No device records are read or written.
+
+```bash
+swift run LocalAgentKitEval run --suite multi-step-extended --model mock --output /tmp/expanded-smoke.json
+swift run LocalAgentKitEval run --suite multi-step-extended --model foundation --planner state-machine --repetitions 3 --output /tmp/expanded-state-machine.json
+swift run LocalAgentKitEval run --suite multi-step-extended --model foundation --planner model-driven --repetitions 3 --output /tmp/expanded-model-driven.json
+swift Scripts/validate-eval-suites.swift Sources/LocalAgentKitEval/Suites/expanded Sources/LocalAgentKitEval/Suites/phase0/tools.json
+```
+
+Mock CLI runs check plumbing and are marked synthetic; they deliberately do not replay
+reference answers to earn completion. Scripted unit tests separately prove that reference
+traces satisfy every contract and that missing/wrong/forbidden work fails scoring.
+
+Reports use schema 1, mode `expanded-agent-run`, suite `m5-expanded-multi-step` and
+include suite version, planner, context, repetitions, timing, raw calls and scores.
+They have no M5 assessment field and must not be fed to baseline M5 assessment or
+historical report-comparison tools. Original `multi-step` reports remain schema 3.
+No real-model rate has been measured for this supplemental suite. Expected steps and
+matcher values are scoring labels; the runner does not put them in prompts. Completion
+checks tool argument grounding, not final-answer semantic accuracy or parallel speed.
+The untrusted-document case is a behavioral probe, not a security guarantee.

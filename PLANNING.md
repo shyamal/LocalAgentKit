@@ -603,6 +603,12 @@ Measure, against the real shipping on-device model:
 
 The throwaway spike code becomes the seed of `LocalAgentKitEval` (FR-029).
 
+M5-08 adds a separate versioned `multi-step-extended` fixture suite for longer chains,
+fan-in, conditional outcomes, empty recovery, untrusted text and multiple writes. Both
+planner choices use the existing runner/scorer; supplemental schema-1 reports do not
+enter the frozen schema-3 M5 assessment population. CI validates both suites against the shared catalog.
+Scripted tests prove harness contracts; native model quality remains unmeasured here.
+
 ### Milestones
 
 | | Scope | Key exit criterion |
