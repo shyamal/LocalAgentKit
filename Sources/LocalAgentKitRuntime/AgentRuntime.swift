@@ -293,7 +293,7 @@ public actor AgentRuntime {
       await publishWorkingMemory(context.workingMemory)
       await bus.publish(.planCreated(plan))
 
-      var loopDetector = LoopDetector()
+      var loopDetector = LoopDetector(configuration: configuration.loopDetection)
       var iterations = 0
       var toolCalls = 0
 

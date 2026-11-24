@@ -65,3 +65,4 @@ before every model call; a provider can still report overflow during generation.
 - ``ContextBudgetConfiguration``
 - ``ContextInputs``
 - ``LoopDetector``
+- <doc:SemanticLoopDetection>

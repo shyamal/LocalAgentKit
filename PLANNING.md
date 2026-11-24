@@ -370,6 +370,13 @@ per-call events retain execution IDs/order, and failures cancel siblings without
 resetting budgets. Existing planners remain ordered; opt-in TaskGraphPlanner validates declared DAGs and
 schedules ready layers (M5-05), keeping recovery-bearing nodes serial. AgentViewModel exposes all active calls. No native speed/energy claim is made.
 
+M5-06 extends loop admission with opt-in tool-specific text equivalence rules in
+AgentConfiguration.loopDetection. Case/spacing normalization and declared phrase groups
+are deterministic; unconfigured values stay exact. Structural JSON comparison prevents
+rendered-signature collisions and safely normalizes equivalent numeric values. No model
+or embedding work is added. Unknown paraphrases still rely on ordinary run limits; see
+the SemanticLoopDetection DocC guide.
+
 ### 2.5 Concurrency model
 
 Swift 6 strict concurrency, full checking, no exceptions:
